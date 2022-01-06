@@ -1,0 +1,201 @@
+{
+    "name" : "爬梯",
+    "appid" : "__UNI__ABC6F0F",
+    "description" : "",
+    "versionName" : "1.0.7",
+    "versionCode" : 107,
+    "transformPx" : false,
+    /* 5+App特有相关 */
+    "app-plus" : {
+        "usingComponents" : true,
+        "nvueCompiler" : "uni-app",
+        "compilerVersion" : 3,
+        "compatible" : {
+            "ignoreVersion" : true //true表示忽略版本检查提示框，HBuilderX1.9.0及以上版本支持  
+        },
+        "splashscreen" : {
+            "alwaysShowBeforeRender" : false,
+            "waiting" : true,
+            "autoclose" : true,
+            "delay" : 0
+        },
+        "privacy" : {
+            "prompt" : "template", //template, none, custom
+            "template" : {
+                "title" : "App用户协议及服务协议提示",
+                "message" : "    请您在使用爬梯秀App前点击 <a href=\"\">《用户协议》</a> 及 <a href=\"\">《隐私政策》</a> 并仔细阅读。 如您同意《隐私协议》和《服务协议》的全部内容，请点击“同意并继续”， 开始使用我们的服务。",
+                "buttonAccept" : "同意并继续",
+                "buttonRefuse" : "不同意"
+            }
+        },
+        /* 模块配置 */
+        "modules" : {
+            "Push" : {},
+            "SQLite" : {},
+            "OAuth" : {},
+            "Share" : {},
+            "Geolocation" : {},
+            "Payment" : {},
+            "VideoPlayer" : {}
+        },
+        /* 应用发布信息 */
+        "distribute" : {
+            /* android打包配置 */
+            "android" : {
+                "permissions" : [
+                    "<uses-feature android:name=\"android.hardware.camera\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
+                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+                    "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
+                    "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
+                    "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
+                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+                ],
+                "schemes" : "patixiu"
+            },
+            /* ios打包配置 */
+            "ios" : {
+                "idfa" : false,
+                "capabilities" : {
+                    "entitlements" : {
+                        "com.apple.developer.associated-domains" : [ "applinks:erp.patixiu.com" ]
+                    }
+                },
+                "privacyDescription" : {
+                    "NSPhotoLibraryUsageDescription" : "此APP将在发布动态，商家入驻，修改头像，填写信息的时候访问您的相册权限",
+                    "NSPhotoLibraryAddUsageDescription" : "此APP将在发布动态，商家入驻，修改头像，填写信息的时候访问您的相册权限",
+                    "NSCameraUsageDescription" : "此APP将在发布动态，商家入驻，修改头像，填写信息的时候访问您的相机权限",
+                    "NSMicrophoneUsageDescription" : "需要使用麦克风进行录音是否允许此APP获取使用麦克风权限？",
+                    "NSLocationWhenInUseUsageDescription" : "需要使用位置信息是否允许此APP获取使用运行期访问位置权限来获取附近酒吧或者动态？",
+                    "NSLocationAlwaysUsageDescription" : "需要使用位置信息是否允许此APP获取使用后台运行期访问位置权限来获取附近酒吧或者动态？",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "需要使用位置信息是否允许此APP获取使用访问位置权限来获取附近酒吧或者动态？"
+                },
+                "urltypes" : "patixiu"
+            },
+            /* SDK配置 */
+            "sdkConfigs" : {
+                "ad" : {},
+                "push" : {
+                    "unipush" : {}
+                },
+                "oauth" : {
+                    "weixin" : {
+                        "appid" : "wx510d0e9d9c259e6c",
+                        "appsecret" : "bf24ecfc3068d2038fcc9a3eed193060",
+                        "UniversalLinks" : "https://erp.patixiu.com/ulink/"
+                    }
+                },
+                "share" : {
+                    "weixin" : {
+                        "appid" : "wx510d0e9d9c259e6c",
+                        "UniversalLinks" : "https://erp.patixiu.com/ulink/"
+                    },
+                    "qq" : {
+                        "appid" : "101987552",
+                        "UniversalLinks" : "https://erp.patixiu.com/qq_conn/101987552"
+                    },
+                    "sina" : {
+                        "appkey" : "3260098010",
+                        "redirect_uri" : "http://erp.patixiu.com/api/wb/authNotify",
+                        "UniversalLinks" : "https://erp.patixiu.com/ulink/"
+                    }
+                },
+                "geolocation" : {
+                    "amap" : {
+                        "__platform__" : [ "ios", "android" ],
+                        "appkey_ios" : "b6b4cc7c7650f6465a3aa3a0a44eff61",
+                        "appkey_android" : "6c18d2efed202273710590e790c68a55"
+                    }
+                },
+                "payment" : {
+                    "alipay" : {
+                        "__platform__" : [ "ios", "android" ]
+                    },
+                    "weixin" : {
+                        "__platform__" : [ "ios", "android" ],
+                        "appid" : "wx510d0e9d9c259e6c",
+                        "UniversalLinks" : "https://erp.patixiu.com/ulink/"
+                    }
+                }
+            },
+            "orientation" : [
+                "portrait-primary",
+                "landscape-primary",
+                "portrait-secondary",
+                "landscape-secondary"
+            ],
+            "icons" : {
+                "android" : {
+                    "hdpi" : "unpackage/res/icons/72x72.png",
+                    "xhdpi" : "unpackage/res/icons/96x96.png",
+                    "xxhdpi" : "unpackage/res/icons/144x144.png",
+                    "xxxhdpi" : "unpackage/res/icons/192x192.png"
+                },
+                "ios" : {
+                    "appstore" : "unpackage/res/icons/1024x1024.png",
+                    "ipad" : {
+                        "app" : "unpackage/res/icons/76x76.png",
+                        "app@2x" : "unpackage/res/icons/152x152.png",
+                        "notification" : "unpackage/res/icons/20x20.png",
+                        "notification@2x" : "unpackage/res/icons/40x40.png",
+                        "proapp@2x" : "unpackage/res/icons/167x167.png",
+                        "settings" : "unpackage/res/icons/29x29.png",
+                        "settings@2x" : "unpackage/res/icons/58x58.png",
+                        "spotlight" : "unpackage/res/icons/40x40.png",
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png"
+                    },
+                    "iphone" : {
+                        "app@2x" : "unpackage/res/icons/120x120.png",
+                        "app@3x" : "unpackage/res/icons/180x180.png",
+                        "notification@2x" : "unpackage/res/icons/40x40.png",
+                        "notification@3x" : "unpackage/res/icons/60x60.png",
+                        "settings@2x" : "unpackage/res/icons/58x58.png",
+                        "settings@3x" : "unpackage/res/icons/87x87.png",
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png",
+                        "spotlight@3x" : "unpackage/res/icons/120x120.png"
+                    }
+                }
+            },
+            "splashscreen" : {
+                "useOriginalMsgbox" : true
+            }
+        },
+        "nativePlugins" : {}
+    },
+    /* 快应用特有相关 */
+    "quickapp" : {},
+    /* 小程序特有相关 */
+    "mp-weixin" : {
+        "appid" : "",
+        "setting" : {
+            "urlCheck" : false
+        },
+        "usingComponents" : true
+    },
+    "mp-alipay" : {
+        "usingComponents" : true
+    },
+    "mp-baidu" : {
+        "usingComponents" : true
+    },
+    "mp-toutiao" : {
+        "usingComponents" : true
+    },
+    "uniStatistics" : {
+        "enable" : false
+    }
+}

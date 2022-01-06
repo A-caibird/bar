@@ -1,0 +1,99 @@
+<template>
+	<view class="container">
+		<view class="header-box">
+			<u-navbar back-icon-color="#FFFFFF" title="通知设置" title-size="36" title-color="#FFFFFF" :background="{ background: '#191C3F' }" :border-bottom="false"></u-navbar>
+		</view>
+		<view class="notify-box">
+			<view class="notify-item" v-for="(item, index) in list" :key="index">
+				<text>{{ item.content }}</text>
+				<u-switch :value="item.checked" @change="changeHandle($event, index)" size="46" active-color="#F32CB7" inactive-color="#3A3F6B"></u-switch>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			list: [
+				{
+					content: '点赞通知',
+					checked: false,
+					way: 'toggleOpenPraise'
+				},
+				{
+					content: '评论通知',
+					checked: false,
+					way: 'toggleOpenComment'
+				},
+				{
+					content: '邀约通知',
+					checked: false,
+					way: 'toggleOpenInvite'
+				},
+				{
+					content: '关注我的',
+					checked: false,
+					way: 'toggleOpenAtt'
+				},
+				{
+					content: '礼物提醒',
+					checked: false,
+					way: 'toggleGiftTips'
+				}
+			]
+		};
+	},
+	onLoad() {
+		this.show();
+	},
+	methods: {
+		// switch打开或者关闭时触发，值为true或者false
+		// 即使不监听此事件，this.checked此时也会相应的变成true或者false
+		changeHandle: function(e, index) {
+			let key = this.list[index].way;
+			if (this.list[index].checked == true) {
+				this.$u.api[key](!e).then(res=>{
+					if (parseInt(res.code) == 0) {
+						this.list[index].checked = false;
+					}
+				})
+			} else {
+				this.$u.api[key](!e)
+					.then(res => {
+						if (parseInt(res.code) == 0) {
+							this.list[index].checked = true;
+						}
+					})
+					.catch(e => {
+						console.log(e);
+					});
+			}
+		},
+		show:function(){
+	         
+		}
+	}
+
+};
+</script>
+
+<style lang="scss" scoped>
+.container {
+	padding: 0 30rpx;
+
+	.notify-box {
+		display: flex;
+		flex-direction: column;
+
+		.notify-item {
+			display: flex;
+			justify-content: space-between;
+			font-size: 30rpx;
+			color: #ffffff;
+			padding: 30rpx 0;
+		}
+	}
+}
+</style>

@@ -1,0 +1,417 @@
+<template>
+	<view class="container">
+		<u-navbar back-icon-color="#FFFFFF" :background="{'background': 'rgba(0,0,0,0)'}" :border-bottom="false" :immersive="true"></u-navbar>
+		<view class="myinfo">
+			<image class="avatar" :src="otherList.avatar"  ></image>
+			<view class="myinfo-details">
+				<view class="myinfo-details-head">
+					<text class="text-name">{{otherList.nickName}}</text>
+					<image v-if="otherList.sex == '男'" src="/static/imgs/register/male_icon.png"></image>
+					<image v-else src="/static/imgs/register/female_icon.png"></image>
+				</view>
+				<view class="myinfo-details-body">
+					<text>动态：{{otherList.dynamicNumber}}</text>
+					<text @tap="tapAttentionList">关注：{{otherList.attentionNumber}}</text>
+					<text @tap="tapFansList">粉丝：{{otherList.fanNumber}}</text>
+				</view>
+			</view>
+			<view class="attention-btn">
+				<view v-if="flag==true" class="btn-attench0" >
+					<button plain="true" type="default" @tap="atten_btn()">
+						<u-icon name="heart" color="#FFFFFF" size="28"></u-icon>
+						<text>未关注</text>
+					</button>
+				</view>
+				<view v-if="flag==false" class="btn-attench1" >
+					<button plain="true" type="default" @tap="atten_btn()">
+						<u-icon name="heart-fill" color="#FFFFFF" size="28"></u-icon>
+						<text>已关注</text>
+					</button>
+				</view>
+			</view>
+			
+		</view>
+		<view class="content-box">
+			<view class="intro_box" v-if="otherList.personalProfile">
+				{{otherList.personalProfile}}
+			</view>
+			<view class="content-title">
+				<view  class="content-dynamic" 
+				:class="{active:currentIndex === '0' }" @tap="select('0')">动态</view>
+				
+				<view  class="content-dynamic"
+				:class="{active:currentIndex === '1' }" @tap="select('1')">资料</view>
+			</view>
+			<swiper @change="change" class="swiper-tab" :class="{'intro': otherList.personalProfile}" :current="currentIndex">
+				<swiper-item>
+					<scroll-view class="dynamic-details" scroll-y="true" @scrolltolower="reachBottom">
+						<view class="dynamic-details-item" v-for="(item,index) in pageList" :key="index">
+							<image @tap="$u.route('pages/discovery/dynamic_detail?id=' + item.id)" :src="item.imgList[0]" mode="aspectFill"></image>
+						</view>
+					</scroll-view>
+				</swiper-item>
+				<swiper-item>
+					<view class="info-details">
+						<view class="info-details-item" v-for="(item,index) in list" :key="index">
+							<text class="item-name">{{item.name}}</text>
+							<text class="item-info">{{item.info}}</text>
+						</view>
+					</view>
+				</swiper-item>
+			</swiper>
+		
+		</view>
+	</view>
+</template>
+
+<script>
+	import pageable from '@/mixins/pageable.js';
+	var app = getApp();
+	
+	export default {
+		mixins: [pageable],
+		data() {
+			return {
+				currentIndex: '0',
+				otherList:{},
+				flag:'',
+				showMyAttentionUser:'',
+				showMyFans:'',
+				list: [{
+						name: '地区',
+						info: ''
+					},
+					{
+						name: '性别',
+						info: ''
+					},
+					{
+						name: '出生年月',
+						info: ''
+					},
+					{
+						name: '个性签名',
+						info: ''
+					}
+				],
+				params:{
+					userId:-1,
+					lng:121.557239,//不需要用到但必须传
+					lat: 29.809815,//接口不需要传
+				},
+				url:'/api/dynamic/otherPublishList',
+			}
+		},
+		onLoad(option) {
+			this.userid = option.id
+			this.params.userId = option.id
+			this.otherMsg()
+			this.pullRefresh()
+			//console.log(this.userid)
+		},
+		methods: {
+			tapAttentionList:function(){
+				if(this.showMyAttentionUser == false){
+					this.$u.toast('不可以查看该用户的关注信息')
+					 return 
+				}
+				this.$u.route('/pages/others/othersFollow',{
+					userId:this.userid
+				})
+			},
+			tapFansList:function(){
+				if(this.showMyFans == false){
+					this.$u.toast('不可以查看该用户的粉丝信息')
+					 return 
+				}
+				this.$u.route('/pages/others/fans',{
+					userId:this.userid
+				})
+			},
+			select: function(e) {
+				this.currentIndex=e
+			},
+			change(e){
+				const{current} = e.detail
+				this.currentIndex = ''+current
+			},
+			reachBottom:function(){
+				console.log("触底")
+				this.reachBottomLoad()
+			},
+			
+			
+			//获取他人信息
+			otherMsg:async function(){
+				let params={
+					userId:this.userid
+				};
+				let {code,data} = await this.$u.api.otherMsgApi(params)
+				if(code==0) {
+					console.log(data)
+					this.otherList=data.info;
+					this.list[0].info=this.otherList.areaName;
+					this.list[1].info=this.otherList.sex;
+					this.list[2].info=this.otherList.birthday;
+					this.list[3].info=this.otherList.signature;
+					this.showMyAttentionUser = this.otherList.showMyAttentionUser
+					this.showMyFans = this.otherList.showMyFans
+					if(this.otherList.hasAttention==true){
+						this.flag=false;
+					}else{
+						this.flag=true;
+					}
+				}
+				
+			
+			},
+			//获取他人动态
+			
+			atten_btn: function(){
+				//this.flag=!this.flag;
+				if(this.flag==true){
+					let params={
+						userId:this.userid
+					};
+					this.$u.api.orattenchApi(params).then(res=>{
+						console.log(res)
+						if(res.code==0){
+							this.flag=false;
+							this.otherMsg()
+							uni.$emit('personal-info-refresh')
+							this.$u.toast('关注成功')
+						}
+					})
+					
+				}else{
+					let params={
+						userId:this.userid
+					};
+					this.$u.api.noattenchApi(params).then(res=>{
+						console.log(res)
+						if(res.code==0){
+							this.flag=true;
+							this.otherMsg()
+							uni.$emit('personal-info-refresh')
+							this.$u.toast('取消关注成功')
+						}
+					})
+				}
+				
+			}
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.container {
+		.myinfo {
+			display: flex;
+			height: 402rpx;
+			background: url(/static/imgs/personalDynamic/dynamic_bgimg.png);
+			background-size: cover;
+			padding-top: 270rpx;
+			padding-left: 30rpx;
+			color: #FFFFFF;
+			display: flex;
+			.avatar {
+				width: 90rpx;
+				height: 90rpx;
+				border-radius: 50%;
+			}
+
+			.myinfo-details {
+				flex: 1;
+				min-width: 0;
+				display: flex;
+				flex-direction: column;
+				padding-left: 24rpx;
+				.myinfo-details-head{
+					.text-name{
+						padding: 0rpx;
+						font-size: 42rpx;
+					}
+					image{
+						width: 30rpx;
+						height: 30rpx;
+						padding-left: 20rpx;
+					}
+				}
+				.myinfo-details-body {
+					@include height-center();
+					justify-content: space-between;
+					padding-right: 30rpx;
+					text {
+						font-size: 28rpx;
+					}
+				}
+			}
+
+			
+			
+			.attention-btn {
+				width: 180rpx;
+				
+				padding-top: 50rpx;
+				padding-right: 30rpx;
+				.btn-attench0{
+					width: 150rpx;
+					height: 50rpx;
+					border-radius: 49rpx;
+					color: #FFFFFF;
+					font-size: 28rpx;
+					button {
+						padding: 0;
+						width: 150rpx;
+						height: 50rpx;
+						color: #FFFFFF;
+						background: null;
+						font-size: 26rpx;
+						border-radius: 49rpx;
+						@include flex-center();
+						box-sizing: content-box;
+						border: 1px solid #ffffff;
+						&>text{
+							margin-left: 8rpx;
+						}
+					}
+				}
+				
+				.btn-attench1{
+					width: 150rpx;
+					height: 50rpx;
+					border-radius: 49rpx;
+					color: #FFFFFF;
+					font-size: 28rpx;
+					button {
+						padding: 0;
+						width: 150rpx;
+						height: 50rpx;
+						color: #FFFFFF;
+						background: null;
+						font-size: 26rpx;
+						border-radius: 49rpx;
+						@include flex-center();
+						box-sizing: content-box;
+						background-color:#F72EB2 ;
+						&>text{
+							margin-left: 8rpx;
+						}
+					}
+				}
+			}
+		}
+
+		.content-box {
+			display: flex;
+			flex-direction: column;
+			.intro_box{
+				width: 100%;
+				box-sizing: border-box;
+				padding: 0rpx 30rpx;
+				padding-top: 30rpx;
+				color: #FFFFFF;
+				height: 110rpx;
+				white-space: pre-wrap;
+				word-break: break-word;
+				line-height: 40rpx;
+				overflow: hidden;
+				@include multipleOmit(2);
+			}
+			.content-title {
+				display: flex;
+				align-items: center;
+				width: 100%;
+				height: 121rpx;
+				color: #B7B9D6;
+				font-size: 30rpx;
+				margin-bottom: 30rpx;
+				.content-dynamic{
+					position: relative;
+					margin: 0 30rpx;
+					&.active{
+						font-size: 34rpx;
+						color: #FFFFFF;
+					&:after{
+							content: "";
+							position: absolute;
+							bottom: -10rpx;
+							left: 10rpx;
+							width: 50rpx; 
+							height: 6rpx;
+							background: #FF59C9;
+							border-radius: 3rpx;
+					}
+						
+					}
+
+				}
+			}
+
+			.swiper-tab {
+				height: calc(100vh - 550rpx);
+				&.intro{
+					height: calc(100vh - 664rpx);
+				}
+				.dynamic-details {
+					display: flex;
+
+					width: 100%;
+					height: 100%;
+
+					.dynamic-details-item {
+						display: inline-block;
+						width: 250rpx;
+						height: 250rpx;
+
+						image {
+							width: 250rpx;
+							height: 250rpx;
+						}
+					}
+				}
+
+				.info-details {
+					padding: 0 30rpx;
+
+					.info-details-item {
+						display: flex;
+						justify-content: space-between;
+						font-size: 28rpx;
+						padding-bottom: 50rpx;
+
+						.item-name {
+							color: #9292BA;
+						}
+
+						.item-info {
+							display: flex;
+							justify-content: flex-end;
+							color: #FFFFFF;
+							width: 50%;
+						}
+					}
+				}
+				
+				.btn{
+					margin-top: 605rpx;
+					margin-bottom: 30rpx;
+					
+					
+					&>button{
+						line-height: 90rpx;
+						color: #FFFFFF;
+						font-size: 30rpx;
+						width: 690rpx;
+						height: 90rpx;
+						background: linear-gradient(270deg,#bb0cf9, #f92faf);
+						border-radius: 49rpx;
+					}
+					
+				}
+
+			}
+
+		}
+	}
+</style>

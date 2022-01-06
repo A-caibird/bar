@@ -1,0 +1,494 @@
+{
+	"easycom": {
+		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/init/init"
+		},{
+			"path": "pages/test/test",
+			"style" : {
+				"navigationBarBackgroundColor":"#191C3F",
+				"navigationBarTitleText": "测试",
+				"navigationStyle":"default"
+			}
+		},
+		{
+			"path":"pages/customerRoom/index",
+			"style":{
+				"navigationBarTextStyle":"black",
+				"app-plus":{
+					"softinputMode": "adjustResize"
+				}
+			}
+		},
+		{
+			"path": "pages/coupon/coupon-center"
+		},{
+			"path": "pages/coupon/coupon"
+		},
+		{
+			"path": "pages/coupon/choose-coupon"
+		},
+		{
+			"path": "pages/index/index"
+		},
+		{
+			"path":"pages/discovery/dynamic_detail" //动态详情
+		},
+		{
+			"path":"pages/discovery/report" //举报
+		},
+		{
+			"path": "pages/login/login"
+		},
+		{
+			"path": "pages/register/index"
+		},
+		{
+			"path": "pages/recoverPassword/recoverPassword"
+		},
+		{
+			"path": "pages/register/phoneBind"
+		},
+		{
+			"path": "pages/register/information"
+		},
+		{
+			"path": "pages/register/dynamic"
+		},
+		{
+			"path": "pages/search/index"
+		},
+		{
+			"path": "pages/club/list",
+			"navigationBarBackgroundColor":"#191C3F",
+			"navigationBarTitleText": "",
+			"navigationStyle":"default",
+			"style": {
+				"app-plus": {
+					"titleNView": {
+						"backgroundColor":"#191C3F",
+						"searchInput": {
+							"align":"left",
+							"autoFocus": "false",
+							"color":"#FFFFFF",
+							"backgroundColor": "#33365B",
+							"placeholderColor": "#FF9497B5",
+							"borderRadius": "16px", //输入框圆角
+							"placeholder": "搜索酒吧",
+							"disabled": false //disable时点击输入框不置焦，可以跳到新页面搜索
+						}
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/club/search-list",
+			"navigationBarBackgroundColor":"#191C3F",
+			"navigationBarTitleText": "",
+			"navigationStyle":"default",
+			"style": {
+				"app-plus": {
+					"titleNView": {
+						"backgroundColor":"#191C3F",
+						"searchInput": {
+							"align":"left",
+							"autoFocus": "true",
+							"color":"#FFFFFF",
+							"backgroundColor": "#33365B",
+							"placeholderColor": "#FF9497B5",
+							"borderRadius": "16px", //输入框圆角
+							"placeholder": "搜索酒吧",
+							"disabled": false //disable时点击输入框不置焦，可以跳到新页面搜索
+						}
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/select/city"
+		},
+		{
+			"path": "pages/club/detail"
+		},
+		{
+			"path": "pages/evaluate/list"
+		},
+		{
+			"path": "pages/club/job/job-detail"
+		},
+		{
+			"path": "pages/club/job/apply"
+		},
+		{
+			"path": "pages/club/job/list"
+		},
+		{
+			"path": "pages/club/activity/list"
+		},
+		{
+			"path": "pages/club/activity/detail"
+		},
+		{
+			"path": "pages/club/dynamic/list"
+		},
+		{
+			"path": "pages/club/dynamic/detail"
+		},
+		{
+			"path":"pages/club/consumption/paySuccess",
+			"style" : {
+				"navigationBarBackgroundColor":"#191C3F",
+				"navigationBarTitleText": "支付成功",
+				"navigationStyle":"default"
+				
+			}
+			
+		},
+		{
+			"path": "pages/club/consumption/seat"
+		},
+		{
+			"path": "pages/club/consumption/wineCellar/wineCellar"
+		},
+		{
+			"path": "pages/club/consumption/wineCellar/orderChange"
+		},
+		{
+			"path": "pages/club/consumption/drinks"
+		},
+		{
+			"path": "pages/club/consumption/detail"
+		},
+		{
+			"path": "pages/club/consumption/detail-not-save"
+		},
+		{
+			"path": "pages/club/consumption/create_order"
+		},
+		{
+			"path": "pages/club/consumption/payPage",
+			"style" : {
+				"navigationBarBackgroundColor":"#191C3F",
+				"navigationBarTitleText": "我要支付",
+				"navigationStyle":"default"
+			}
+		},
+		{
+			"path":"pages/mine/wallet/index"
+		},
+		{
+			"path":"pages/mine/balance/withdraw"
+		},
+		{
+			"path":"pages/mine/balance/withdrawRecord"
+		},
+		{
+			"path":"pages/mine/balance/incomeRecord"
+		},
+		{
+			"path":"pages/mine/balance/balance"
+		},
+		{
+			"path":"pages/mine/setting/setPassword"
+		},
+		{
+			"path": "pages/mine/setting/index"
+		},
+		{
+			"path": "pages/mine/setting/yinsi"
+		},
+		{
+			"path": "pages/mine/setting/account"
+		},
+		{
+			"path": "pages/mine/setting/pay_password"
+		},
+		{
+			"path": "pages/mine/setting/amend"
+		},
+		{
+			"path": "pages/mine/setting/forget_password" 
+		},
+		{
+			"path": "pages/mine/setting/about_us"
+		},
+		{
+			"path": "pages/mine/setting/password_amend"
+		},
+		{
+			"path": "pages/mine/follow/follow" //关注
+		},
+		{
+			"path": "pages/others/othersFollow" //他人关注
+		},
+		{
+			"path": "pages/mine/credit/credit" //信用积分
+		},
+		{
+			"path": "pages/mine/credit/rule" //信用积分规则说明
+		},
+		{
+			"path": "pages/mine/wineCellar/wineCellar" //我的酒库
+		},
+		{
+			"path": "pages/mine/wineCellar/detail" //我的酒库详细
+		},
+		{
+			"path": "pages/mine/wineCellar/wineRecord" //取酒记录
+		},
+		{
+			"path": "pages/mine/memberCenter/memberCenter" //会员中心
+		},
+		{
+			"path": "pages/mine/memberRight/memberRight" //会员权益
+		},
+		{
+			"path": "pages/mine/personalSetting/personalSetting" //个人设置
+		},
+		{
+			"path": "pages/mine/personalSetting/intro" //个人简介
+		},
+		{
+			"path": "pages/mine/dynamic/personalDynamic" //个人动态
+		},
+		{
+			"path": "pages/mine/dynamic/myDynamic" //我的动态
+		},
+		{
+			"path": "pages/mine/myCollection/myCollection" //我的收藏
+			
+		},
+		{
+			"path": "pages/mine/setting/certification" //实名认证
+		},
+		{
+			"path": "pages/mine/notifySetting/notifySetting" //通知设置
+		},
+		{
+			"path": "pages/mine/setPassword/setPassword" //设置登陆密码
+		},
+		{
+			"path": "pages/discovery/addDynamic" //新增动态
+		},
+		{
+			"path": "pages/discovery/location" //所在位置
+		},
+		{
+			"path": "pages/order/groupBuying" //拼团
+		},
+		{
+			"path": "pages/order/spellBill" //全部拼单
+		},
+		{
+			"path":"pages/order/index" //订单（我的订单， 拼享订单）
+		},
+		{
+			"path":"pages/order/bill/add" //开具发票
+		},
+		{
+			"path":"pages/order/yao-create-detail" //邀约订单创建者详情
+		},
+		{
+			"path":"pages/order/yao-invited-detail" //邀约订单被邀请者详情
+		},
+		{
+			"path":"pages/order/ping-create-detail" //拼享订单创建者详情
+		},
+		{
+			"path":"pages/order/ping-invited-detail" //拼享订单被邀请者详情
+		},
+		{
+			"path":"pages/order/evaluation" //我要评价
+		},
+		{
+			"path": "pages/info/comment"  //消息模块 评论
+		},
+		{
+			"path": "pages/info/gift"  //消息模块 礼物
+		},
+		{
+			"path": "pages/info/fans"  //消息模块 粉丝
+		},
+		{
+			"path": "pages/others/fans"  //他人的粉丝
+		},
+		{
+			"path": "pages/info/systemNotification"  //消息模块 系统通知
+		},
+		{
+			"path": "pages/mine/mydiamond/mydiamond"  //我的钻石
+		},
+		{
+			"path": "pages/mine/mydiamond/gift_income"  
+		},
+		{
+			"path": "pages/mine/mydiamond/deposit"  
+		},
+		{
+			"path": "pages/mine/mydiamond/record"  
+		},
+		{
+			"path": "pages/mine/myWallet/myWallet"  //我的钱包
+		},
+	    {
+            "path" : "pages/mine/myWallet/incomeRecord"
+        },
+        {
+            "path" : "pages/mine/myWallet/recharge"
+        },
+        {
+            "path" : "pages/mine/myWallet/recharge-record"
+        },
+        {
+            "path" : "pages/mine/myWallet/paySuccess"
+			
+        },
+        {
+            "path" : "pages/mine/myWallet/accountDetails"
+        },
+		{
+			"path":"pages/article/article" //文章列表
+		},
+		{
+            "path" : "pages/snatch/snatch"//夺宝  
+        },
+		{
+            "path" : "pages/order/add-wine"//加酒水
+        },
+		{
+            "path" : "pages/cut-avatar/cut-avatar"//裁剪头像
+        },
+		{
+            "path" : "pages/order/add-wine-goods-detail"//加酒水 套餐详情
+        }, {
+			"path": "pages/chat/chat",
+			"style": {
+				"navigationBarBackgroundColor":"#191C3F",
+				"navigationBarTitleText": "消息",
+				"navigationStyle":"default",
+				 "app-plus": {
+					"titleNView": {
+						"buttons": [ 
+							{
+								"text": "资料",
+								"fontSize": "14px"
+							},
+							{
+								"text": "举报",
+								"fontSize": "14px"
+							}
+						]
+					}
+				}
+			}
+		}
+        ,{
+            "path" : "pages/receptionist-list/receptionist-list",
+            "style" : {
+				"navigationBarBackgroundColor":"#191C3F",
+				"navigationBarTitleText": "接待员",
+				"navigationStyle":"default"
+			}
+        }
+        ,{
+            "path" : "pages/update-alipay-info/update-alipay-info"
+        }
+        ,{
+            "path" : "pages/gift-animation/gift-animation",
+            "style" : {
+				"navigationStyle": "custom",
+				"backgroundColor": "transparent",
+				"app-plus": {
+					"animationType": "fade-in",
+					"background": "transparent",
+					"popGesture": "none"
+				}
+			}
+        }
+        ,{
+            "path" : "pages/snatch-back/snatch-back",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/feedback/feedback",
+            "style" : {
+				"navigationBarBackgroundColor":"#191C3F",
+				"navigationBarTitleText": "意见反馈",
+				"navigationStyle":"default"
+			}
+        }
+        ,{
+            "path" : "pages/feedbackHelp/feedbackHelp",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/common-problem/common-problem",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/fetch-wine",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/business-settlement/business-settlement",
+            "style" : {
+				"navigationBarBackgroundColor":"#191C3F",
+				"navigationBarTitleText": "商家入驻",
+				"navigationStyle":"default"
+			}
+        }
+        ,{
+            "path" : "pages/ping-yao-list/ping-yao-list",
+            "style" : {
+            	"navigationBarBackgroundColor":"#191C3F",
+            	"navigationBarTitleText": "选择尬酒订单",
+            	"navigationStyle":"default"
+            }
+        }
+        ,{
+            "path" : "pages/discovery/report2"
+        }
+        ,{
+            "path" : "pages/mine/points-detail/points-detail",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/snatch-record/snatch-record",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/snatch-record-before/snatch-record-before",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/snatch-record-back/snatch-record-back",
+            "style" : {}
+        }
+    ],
+	"globalStyle": {
+		"navigationStyle": "custom",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"navigationBarTextStyle": "white",
+		"pageOrientation": "portrait-primary",
+		"backgroundColor":"#191C3F",
+		"app-plus":{
+			"bounce":"none",
+			"background":"#191C3F",
+			"backgroundColor": "#191C3F",
+			"animationType":"slide-in-right"
+		}
+	}
+	// ,
+	// "condition": {
+	// 	"current": 0, //当前激活的模式(list 的索引项)
+	// 	"list": [
+	// 		{
+	// 			"name": "测试", //模式名称
+	// 			"path": "pages/test/test", //启动页面，必选
+	// 			"query": "" //启动参数，在页面的onLoad函数里面得到
+	// 		}
+	// 	]
+	// }
+}

@@ -1,0 +1,277 @@
+<template>
+	<view class="container">
+		<u-navbar back-icon-color="#FFFFFF" title="提现金额" title-size="36" title-color="#FFFFFF" :background="{ background: '#191C3F' }" :border-bottom="false"></u-navbar>
+		<view class="content">
+			<view class="first_item">
+				<text>可提现钻石数量</text>
+				<text>{{ diamondAll }}个</text>
+			</view>
+			<view class="second_item"><text>需提现钻石数量</text></view>
+			<view class="third_item">
+				<view style="height: 40px;color: #9292BA;font-size: 28rpx;" @tap="diamondKeyBoardShow=true">{{amount}}</view>
+			</view>
+			<view class="forth_item">
+				<text>到账金额</text>
+				<text>¥{{amount}}(元)</text>
+			</view>
+			<view class="bg"></view>
+			<view class="fifth_item">
+				<view class="left">
+					<view class="line"></view>
+					<text>支付宝提现<template v-if="!hasBindAliAccount"><text style="color : #ff59c9;margin-left: 5rpx;">(未绑定支付宝)</text></template></text>
+				</view>
+				<template v-if="hasBindAliAccount">
+					<view class="right" @tap="$u.throttle(tapGoAlipayInfo('update'))">
+						修改
+					</view>
+				</template>
+				<template v-else>
+					<view class="right" @tap="$u.throttle(tapGoAlipayInfo('bind'))">
+						绑定
+					</view>
+				</template>
+				
+			</view>
+			<template v-if="hasBindAliAccount">
+				<view class="bg2"></view>
+				<view class="msg_part">
+					<text>真实姓名</text>
+					<view class="part"><text>{{aliAccountRealName}}</text></view>
+					<text>支付宝账号</text>
+					<view class="part"><text>{{aliAccount}}</text></view>
+				</view>
+				<view class="sure_btn" @tap="$u.throttle(tapAliPayCashOut)"><button type="default" hover-class="none" >提现</button></view>
+			</template>
+			
+		</view>
+		<u-keyboard ref="diamondKeyBoard" mode="number" safe-area-inset-bottom :mask="false" :tooltip="false" :dot-enabled="false" v-model="diamondKeyBoardShow" @change="diamondKeyBoardC" @backspace="diamondKeyBoardB"></u-keyboard>
+		<pay ref="alipayCashOut" :fillPassword="false" mode="cashOut" @pay="aliPayCashOut($event)"></pay>
+	</view>
+</template>
+
+<script>
+	const app = getApp()
+	export default {
+		data() {
+			return {
+				diamondAll: '',
+				diamond: '',
+				diamondKeyBoardShow:false,
+				
+				hasBindAliAccount:false,
+				aliAccount: '',
+				aliAccountRealName: '',
+			};
+		},
+		computed:{
+			amount(){
+				if(this.diamond=='') return 0
+				return parseInt(this.diamond)
+			},
+		
+		},
+		onLoad(options) {
+			this.load()
+			uni.$on('update-deposit',this.getBindAliAccountInfo)
+			uni.$on('update-diamond',this.getMyDiamond)
+		},
+		onUnload() {
+			uni.$off('update-deposit',this.getBindAliAccountInfo)
+			uni.$off('update-diamond',this.getMyDiamond)
+		},
+		methods: {
+			tapGoAlipayInfo(mode){
+				this.$u.route('/pages/update-alipay-info/update-alipay-info'+`?mode=${mode}` + `&aliAccountRealName=${this.aliAccountRealName}` + `&aliAccount=${this.aliAccount}`)
+			},
+			async aliPayCashOut({password}) {
+				let params = {
+					diamond: this.amount,
+					payPassword: password,
+				}
+				console.log(params)
+				let {code,data} = await this.$u.api.cashOutAliPayApi(params)
+				if(code==0) {
+					uni.$emit('update-diamond')
+					uni.$emit('update-walletIndex')
+					this.$toast.confirm('','提现申请提交成功！',false)
+					setTimeout(()=>{
+						this.$u.route({type:'back'})
+					},1200)
+					this.setPayPasswordToStorage(params.payPassword)
+				}  else {
+					this.removePayPasswordToStorage()
+				}
+			},
+			async tapAliPayCashOut(){
+				if(this.amount==0) return this.$toast.text('请输入提现金额！')
+				await this.judgePayCode()
+				let password = getApp().globalData.payPassword;
+				this.$refs.alipayCashOut.open(this.amount)
+			},
+			
+			diamondKeyBoardC(val) {
+				this.diamond += val
+				if(parseInt(this.diamond)>parseInt(this.diamondAll)) {
+					this.diamond = this.diamondAll.toString()
+				} 
+			},
+			diamondKeyBoardB() {
+				if(this.diamond.length) this.diamond = this.diamond.substr(0, this.diamond.length - 1)
+			},
+			load(){
+				this.getMyDiamond()
+				this.getBindAliAccountInfo()
+			},
+			async getBindAliAccountInfo(){
+				let {code,data} = await this.$u.api.getBindAliAccountInfoApi()
+				if(code==0){
+					console.log(data)
+					let {hasBindAliAccount,aliAccount,aliAccountRealName} = data
+					this.hasBindAliAccount = hasBindAliAccount
+					if(hasBindAliAccount) {
+						this.aliAccount = aliAccount
+						this.aliAccountRealName = aliAccountRealName
+					} 
+				}
+			},
+			async getMyDiamond(){
+				let {code,data} = await this.$u.api.myDiamondApi()
+				if(code==0){
+					let {diamond} = data
+					this.diamondAll = diamond
+				}
+			},
+			
+		}
+	};
+	
+</script>
+
+<style lang="scss">
+.content {
+	margin-top: 39rpx;
+	margin-right: 30rpx;
+	margin-left: 30rpx;
+}
+
+.first_item {
+	font-size: 30rpx;
+	color: #ffffff;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	& > text:nth-last-child(1) {
+		color: #ff59c9;
+	}
+}
+
+.second_item {
+	margin-top: 42rpx;
+	font-size: 30rpx;
+	color: #ffffff;
+}
+.third_item {
+	margin-top: 42rpx;
+	width: 690rpx;
+	height: 90rpx;
+	border: 1px solid #474d7e;
+	padding-left: 25rpx;
+	padding-top: 25rpx;
+}
+.forth_item {
+	font-size: 30rpx;
+	color: #ffffff;
+	margin-top: 29rpx;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	& > text:nth-last-child(1) {
+		color: #ff59c9;
+	}
+}
+
+.bg {
+	margin-left: -30rpx;
+	margin-top: 24rpx;
+	width: 750rpx;
+	height: 20rpx;
+	background: #20234b;
+}
+
+.fifth_item {
+	margin-top: 33rpx;
+	@include height-center();
+	justify-content: space-between;
+	.left {
+		@include height-center();
+		.line {
+			width: 6rpx;
+			height: 26rpx;
+			background: #ff59c9;
+			margin-right: 14rpx;
+		}
+		text {
+			font-size: 30rpx;
+			color: #ffffff;
+		}
+	}
+	.right {
+		font-size: 28rpx;
+		color: #ff59c9;
+	}
+}
+
+
+.bg2 {
+	margin-top: 30rpx;
+	width: 690rpx;
+	height: 1rpx;
+	border: 1rpx solid #31345b;
+}
+
+.sixth_item {
+	margin-top: 22rpx;
+	color: #aeaee7;
+	font-size: 26rpx;
+}
+
+.msg_part {
+	margin-top: 35rpx;
+	& > text {
+		font-size: 30rpx;
+		color: #ffffff;
+	}
+}
+
+.part {
+	margin-top: 21rpx;
+	width: 100%;
+	height: 90rpx;
+	border: 1px solid #474d7e;
+	padding-left: 25rpx;
+	padding-right: 25rpx;
+	padding-top: 25rpx;
+	margin-bottom: 31rpx;
+	
+	text {
+		@include ellipsis();
+		color: #ffffff;
+	}
+}
+
+.sure_btn {
+	margin-bottom: 30rpx;
+	margin-top: 50rpx;
+	& > button {
+		color: #ffffff;
+		font-size: 30rpx;
+		line-height: 90rpx;
+		width: 690rpx;
+		height: 90rpx;
+		background: linear-gradient(270deg, #bb0cf9, #f92faf);
+		border-radius: 49rpx;
+	}
+}
+</style>

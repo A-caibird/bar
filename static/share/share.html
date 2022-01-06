@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title></title>
+</head>
+<style>
+.container{
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	overflow: hidden;
+	box-sizing: border-box;
+	padding-top:100px;
+}
+.container .icon{
+	height: 100px;
+	width: 100px;
+}
+.icon>img{
+	height: 100%;
+	width: 100%;
+	border-radius: 10px;
+}
+.desc_text{
+	width: calc(100% - 80px);
+	font-size: 16px;
+	margin-top: 50px;
+	text-align: center;
+}
+.btn_box{
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 50px;
+}
+.btn_box .common_btn{
+	line-height: 40px;
+	border-radius: 20px;
+	border: 1px solid #191C3F;
+	width: 120px;
+	text-align: center;
+}
+.common_btn>a{
+	color: #191C3F;
+	font-size: 16px;
+	line-height: 40px;
+	text-decoration: none;
+}
+</style>
+<body style="margin: 0px;">
+	<div class="container">
+		<div class="icon">
+			<img src="./static/icon1.png"/>
+		</div>
+		<div class="desc_text">
+			<label>一起来狂欢尬酒呀</label>
+		</div>
+		<div class="btn_box">
+			<div class="common_btn">
+				<a href="https://itunes.apple.com/cn/app/id1514743503?mt=8">苹果下载</a>
+			</div>
+			<div class="common_btn" style="margin-left: 20px;">
+				<a href="https://erp.patixiu.com/resources/apk/patixiu.apk">安卓下载</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>	
