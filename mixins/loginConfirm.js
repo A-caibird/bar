@@ -20,7 +20,7 @@ export default{
 						uni.navigateTo({
 							url: '/pages/login/login'
 						})
-					}, 1000)
+					}, 600)
 				}
 				return false; //未登录
 			}else{

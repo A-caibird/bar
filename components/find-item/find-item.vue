@@ -90,7 +90,7 @@
 					</view>
 				</view> -->
 				<view style="display: flex;" v-if="!info.myself&&showPercent">
-					<view class="feature_btn" @tap.stop="tapAwkwardWine">
+					<view class="feature_btn" @tap.stop="$u.throttle(tapAwkwardWine)">
 						<image src="/static/imgs/common/club-white.png"></image>
 						<text>尬酒</text>
 					</view>
@@ -206,6 +206,10 @@
 				this.$u.route('/pages/discovery/dynamic_detail?id='+this.info.id)
 			},
 			tapAwkwardWine(){
+				if(!this.loginConfirmHandle(false)){
+					// console.log('clickEvent')
+					return ;
+				}
 				this.$u.route('/pages/ping-yao-list/ping-yao-list',{
 					dynamicInfo:encodeURIComponent(JSON.stringify(this.info))
 				})
