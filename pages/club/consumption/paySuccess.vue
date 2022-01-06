@@ -1,5 +1,17 @@
 <template>
 	<view class="container">
+		<u-navbar
+			:border-bottom="false"
+			:is-fixed="true"
+			title-color="#FFFFFF"
+			:background="{
+				background: `rgba(25,28,63,1)`
+			}"
+			title="支付成功"
+			:immersive=true
+			:customBack="back"
+			back-icon-color="#FFFFFF"
+		></u-navbar>
 		<view class="display—box">
 			<image src="/static/imgs/mine/paySuccess.png" mode=""></image>
 			<view class="money-text">

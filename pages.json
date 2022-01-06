@@ -141,7 +141,7 @@
 			"style" : {
 				"navigationBarBackgroundColor":"#191C3F",
 				"navigationBarTitleText": "支付成功",
-				"navigationStyle":"default"
+				"navigationStyle":"custom"
 				
 			}
 			

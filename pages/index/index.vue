@@ -135,7 +135,7 @@ export default {
 		else if(opt&&opt.goWallet) {
 			this.goWallet()
 			this.pageloading = false;
-		} if(opt&&opt.index){
+		}else if(opt&&opt.index){
 			this.pageloading = false;
 		}else{
 			this.pageloading = true;
