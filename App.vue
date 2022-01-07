@@ -2,6 +2,7 @@
 	import $storage from '@/common/storage.js'
 	import init from '@/utils/init/index.js'
 	import checkLocationPermision from '@/utils/checkLocationPermision.js'
+	import $store from '@/store/index.js'
 	export default {
 		onLaunch: async function(options) {
 			console.log('App Launch')
@@ -25,6 +26,7 @@
 		},
 		onUnload() {
 			console.log('App unload');
+			$store.commit('disconnectGoEasy');
 		},
 		methods:{
 			requestAPI(url ,params){

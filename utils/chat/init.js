@@ -25,8 +25,7 @@ async function pushMessage(msg){
 }
 
 function msgArrived(res){
-	// console.log(res)
-	
+	console.log(res)
 	let chatToken = $storage.getUserInfo().chatToken
 	let chatUserList = []
 	let msg = JSON.parse(res.payload)
@@ -172,7 +171,9 @@ const init = function(vm){
 	uni.$on('mqtt-delivered-msg',msgDelivered)
 	
 	if($storage.getLoginToken()) {
-		$store.commit('initMQTT',$storage.getUserInfo().chatToken)
+		// $store.commit('initMQTT',$storage.getUserInfo().chatToken)
+		
+		$store.commit('initGoEasy',JSON.stringify($storage.getUserInfo()));
 	}
 	
 }

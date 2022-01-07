@@ -165,11 +165,9 @@
 					this.getUserInfo();
 				})
 			}
-			// #ifdef APP-PLUS
 			if($storage.getLoginToken()) {
-				$store.commit('closeMqtt');
+				$store.commit('disconnectGoEasy');
 			}
-			// #endif
 			
 		},
 		onShow() {
@@ -184,7 +182,7 @@
 			}
 			// #ifdef APP-PLUS
 			if($storage.getLoginToken()) {
-				$store.commit('openMqtt');
+				$store.commit('connetGoEasy', $storage.getUserInfo().chatToken);
 			}
 			// #endif
 		},

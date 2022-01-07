@@ -128,6 +128,20 @@ function creatMessage(im, chatInfo, sendMsg) { // 生成 Message 对象
 			}
 		});
 	};
+	case 2: {
+		message = im.createCustomMessage({ // 自定义类型类型
+			type: 'chat',
+			payload: sendMsg,
+			to: {
+				type: chatType, //私聊还是群聊，群聊为GoEasy.IM_SCENE.GROUP
+				id: id,
+				data: {
+					"avatar": avatar,
+					"nickname": nickname
+				} //好友扩展数据, 任意格式的字符串或者对象，用于更新会话列表conversation.data
+			}
+		});
+	};
 	break;
 	default:
 		break;

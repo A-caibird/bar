@@ -107,7 +107,6 @@ export default {
 		this.getSInfo()
 		// #ifdef APP-PLUS
 		if(app.globalData.token) {
-			console.log('token',app.globalData.token)
 			this.$u.api.setClientId({
 				clientId:plus.push.getClientInfo().clientid,
 			})

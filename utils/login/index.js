@@ -13,12 +13,9 @@ const login = function (data, register = false) {
 		$storage.setUserInfo(info)
 		
 		// #ifdef APP-PLUS
-		$store.commit('initMQTT',info.chatToken)
-		// #endif
 		// $store.commit('initMQTT',info.chatToken)
-		// uni.reLaunch({
-		// 	url: '/pages/index/index'
-		// })
+		// #endif
+		$store.commit('initGoEasy', JSON.stringify(info))
 		if(register){
 			uni.reLaunch({
 				url: '/pages/index/index'

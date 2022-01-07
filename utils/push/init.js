@@ -252,22 +252,28 @@ function openAPPMsg(payload){ //APP 处于关闭状态下 点击消息跳转页�
 		let infoStr = JSON.stringify(info)
 		slientHandle(() => {
 			console.log('聊天')
-			vm.goChat({
-				userInfo:infoStr
+			slientHandle(() => {
+				uni.navigateTo({
+					url:'/pages/chat/chat'+`?userInfo=${infoStr}`
+				})
 			})
 		})
 	}
 	if(type=='gift') {
 		console.log('礼物')
 		slientHandle(() => {
-			vm.goInfoGift()
+			uni.navigateTo({
+				url: '/pages/info/gift'
+			});
 		})	
 	}
 	if(type=='attention') {
 		console.log('关注')
 		let {userId} =  payload
 		slientHandle(() => {
-			vm.goPersonalHomepage(userId)
+			uni.navigateTo({
+				url: '/pages/mine/dynamic/myDynamic' + `?id=${userId}`
+			})
 		})	
 	}
 	if(type=='orderInviteSuccess') {
