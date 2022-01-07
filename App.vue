@@ -3,8 +3,9 @@
 	import init from '@/utils/init/index.js'
 	import checkLocationPermision from '@/utils/checkLocationPermision.js'
 	export default {
-		onLaunch: async function() {
+		onLaunch: async function(options) {
 			console.log('App Launch')
+			console.log(options);
 			init(this)
 			if($storage.getLoginToken()){
 				console.log('/api/user/use')
