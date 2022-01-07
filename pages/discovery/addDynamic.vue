@@ -294,8 +294,6 @@
 					}
 
 				})
-
-
 			},
 			//删除图片
 			deletePhoto: function(e) {

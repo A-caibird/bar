@@ -50,6 +50,12 @@
 					<image class="arrow-img" src="/static/imgs/common/right.png" mode=""></image>
 				</view>
 			</view>
+			<view class="info-box-item" @tap="$u.debounce(goBg, 400, true)">
+				<text>个性背景</text>
+				<view class="info-box-right">
+					<image class="arrow-img" src="/static/imgs/common/right.png" mode=""></image>
+				</view>
+			</view>
 			<view class="info-box-item">
 				<text>个性签名</text>
 				<view class="info-box-right">
@@ -99,6 +105,9 @@
 		methods: {
 			goIntro(){
 				this.$u.route('/pages/mine/personalSetting/intro', {info: JSON.stringify(this.info)})
+			},
+			goBg(){
+				this.$u.route('/pages/mine/personalSetting/personalBg', {info: JSON.stringify(this.info)})
 			},
 			load(){
 				this.getMyInfo();

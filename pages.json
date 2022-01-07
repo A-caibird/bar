@@ -251,6 +251,9 @@
 			"path": "pages/mine/personalSetting/intro" //个人简介
 		},
 		{
+			"path": "pages/mine/personalSetting/personalBg" //个性背景
+		},
+		{
 			"path": "pages/mine/dynamic/personalDynamic" //个人动态
 		},
 		{

@@ -2,6 +2,7 @@
 	<view class="container">
 		<u-navbar back-icon-color="#FFFFFF" :background="{'background': 'rgba(0,0,0,0)'}" :border-bottom="false" :immersive="true"></u-navbar>
 		<view class="myinfo">
+			<image class="bg_img" src="/static/imgs/personalDynamic/dynamic_bgimg.png"></image>
 			<image class="avatar" :src="otherList.avatar"  ></image>
 			<view class="myinfo-details">
 				<view class="myinfo-details-head">
@@ -208,16 +209,25 @@
 		.myinfo {
 			display: flex;
 			height: 402rpx;
-			background: url(/static/imgs/personalDynamic/dynamic_bgimg.png);
-			background-size: cover;
 			padding-top: 270rpx;
 			padding-left: 30rpx;
 			color: #FFFFFF;
 			display: flex;
+			position: relative;
+			.bg_img{
+				width: 100%;
+				height: 402rpx;
+				position: absolute;
+				top: 0rpx;
+				left: 0rpx;
+				z-index: 1;
+			}
 			.avatar {
 				width: 90rpx;
 				height: 90rpx;
 				border-radius: 50%;
+				position: relative;
+				z-index: 10;
 			}
 
 			.myinfo-details {
@@ -226,6 +236,8 @@
 				display: flex;
 				flex-direction: column;
 				padding-left: 24rpx;
+				position: relative;
+				z-index: 10;
 				.myinfo-details-head{
 					.text-name{
 						padding: 0rpx;
