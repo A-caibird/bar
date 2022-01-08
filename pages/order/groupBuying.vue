@@ -218,9 +218,50 @@
 				</view>
 			</view>
 		</view>
-		<view class="footer_box">
-			<club-footer @clickTap="clickEvent" :collect="collect" :isPing="true" :isJoin="pingOrderInfo.isJoin"></club-footer>
+		<view class="club_footer">
+			<view class="footer_box">
+				<view class="common_item" @tap="$u.throttle(clickEvent('service'), 800)">
+					<view class="common_icon">
+						<image src="/static/imgs/common/kefu.png"></image>
+					</view>		
+					<text>客服</text>
+				</view>
+				<view class="common_item" @tap="$u.throttle(clickEvent('collect'), 800)">
+					<!-- <image src="/static/imgs/common/collect_pre.png"></image> -->
+					<view class="common_icon">
+						<u-icon color="#ffffff" size="38" name="star" v-if="!collect"></u-icon>
+						<u-icon color="#FF59C9" size="38" name="star-fill" v-else></u-icon>
+					</view>
+					<text>收藏</text>
+				</view>
+				<view class="common_item" @tap="$u.throttle(clickEvent('share'), 800)">
+					<view class="common_icon">
+						<image src="/static/imgs/mine/forward.png"></image>
+					</view>
+					<text>分享</text>
+				</view>
+				<view class="btn_text" @tap="$u.throttle(clickEvent('ping'), 800)" v-if="pingStatus=='canPing'">
+					<block>
+						<image src="/static/imgs/common/seat_icon.png"></image>
+						<text>拼享</text>
+					</block>
+				</view>
+				<view class="btn_text end" v-if="pingStatus=='hasJoin'">
+					<block>
+						<text>已加入</text>
+					</block>
+				</view>
+				<view class="btn_text end" v-if="pingStatus=='complete'">
+					<block>
+						<text>拼享结束</text>
+					</block>
+				</view>
+			</view>
 		</view>
+		<pop-share v-model="shareShow"></pop-share>
+		<!-- <view class="footer_box">
+			<club-footer @clickTap="clickEvent" :collect="collect" :isPing="true" :isJoin="pingOrderInfo.isJoin"></club-footer>
+		</view> -->
 	</view>
 </template>
 
@@ -296,7 +337,9 @@
 				hasAttention:false,
 				upperThreshold:10,
 				statusBarHeight: 0,
-				userInfo:app.globalData.userInfo
+				userInfo:app.globalData.userInfo,
+				shareShow: false,
+				pingStatus: '',
 			}
 		},
 		computed:{
@@ -309,6 +352,7 @@
 			let id = options.id;
 			this.clubId = id;
 			this.orderId = options.orderId
+			this.pingStatus = options.pingStatus
 			this.getClubDetail();
 			this.getClubIntro();
 			this.getCommentList();
@@ -500,13 +544,31 @@
 			},
 			// 点击事件
 			clickEvent: function(e){
-				let type = e.type;
-				console.log(type)
+				let type = e;
 				switch(type){
 					case 'collect': this.toggleCollect(); break; 
 					case 'ping':this.tapPingTap();break; 
-					case 'service': break;
-					case 'share': {this.shareSystem()};break;
+					case 'service': {
+						this.$u.api.clubServiceAPI(this.clubId).then(res => {
+							console.log(res);
+							if(res.data.hasStaff){
+								this.$u.route('/pages/customerRoom/index',{
+									id: res.data.id,
+									avatar: res.data.avatar,
+									nickname: res.data.nickname
+								});
+							}else{
+								uni.showToast({
+									title: '暂无客服人员',
+									icon: 'none'
+								})
+							}
+							
+						}).catch(e => {
+							console.log(e);
+						})
+					};break;
+					case 'share': {this.shareShow = true;};break;
 					default: break;
 				}
 			},
@@ -548,6 +610,68 @@
 </script>
 
 <style lang="scss">
+	.club_footer{
+		position: fixed;
+		bottom: 0rpx;
+		left: 0rpx;
+		z-index: 100;
+		width: 100%;
+		.footer_box{
+			height: 120rpx;
+			width: 100%;
+			display: flex;
+			align-items: center;
+			background: $uni-title-color;
+			border-top: 1px solid #31345B;
+			position: relative;
+			.common_item{
+				height: 100%;
+				width: 100rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-direction: column;
+				.common_icon {
+					width: 50rpx;
+					height: 50rpx;
+					@include flex-center();
+					image{
+						height: 32rpx;
+						width: 32rpx;
+					}
+				}
+				&>text{
+					font-size: 22rpx;
+					color: #FFFFFF;
+					margin-top: 10rpx;
+				}
+			}
+			.btn_text{
+				height: 80rpx;
+				width: 200rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background: $uni-button-color;
+				font-size: 28rpx;
+				color: #FFFFFF;
+				border-radius: 48rpx;
+				position: absolute;
+				right: 30rpx;
+				&.share_btn{
+					right: 260rpx;
+				}
+				&.end {
+					background: #585E8D;
+				}
+				&>image{
+					height: 30rpx;
+					width: 30rpx;
+					margin-right: 14rpx;
+				}
+			}
+		}
+	}
 	.container {
 		width: 100%;
 		padding-bottom: 120rpx;

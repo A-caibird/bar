@@ -1,8 +1,0 @@
-{
-	"msg": "success",
-	"code": 0,
-	"data": {
-		"hasVerified": false,
-		"hasAdult": false
-	}
-}

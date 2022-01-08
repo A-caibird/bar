@@ -170,7 +170,8 @@
 				let orderId = info.id
 				this.$u.route('/pages/order/groupBuying', {
 					id: clubId,
-					orderId : orderId
+					orderId : orderId,
+					pingStatus: info.pingStatus
 				});
 			}
 		}
