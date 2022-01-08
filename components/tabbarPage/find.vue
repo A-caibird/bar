@@ -282,12 +282,15 @@
 				this.$refs.yaoyuePop.open(e)
 			},
 			switchToGift() { //显示礼物排行
+			console.log('显示礼物排行')
 				this.swiperCurrent = 3;
 			},
 			switchToPing() { //显示拼享快乐
+				console.log('显示拼享快乐')
 				this.swiperCurrent = 2;
 			},
-			switchToFind() { //显示礼物排行
+			switchToFind() { //显示附近动态
+			console.log('显示附近动态')
 				this.swiperCurrent = 1;
 				this.$nextTick(() => {
 					if(this.$refs['nearby-dynamic-list']){

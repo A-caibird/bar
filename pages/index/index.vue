@@ -231,7 +231,7 @@ export default {
 			this.tabExit[this.current] = 1;
 			this.$nextTick(()=>{
 				setTimeout(() => {
-					this.$refs.find.switchToFind()
+					this.$refs.find.switchToPing()
 				},50);
 			})
 		},
