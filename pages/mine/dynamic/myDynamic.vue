@@ -2,7 +2,7 @@
 	<view class="container">
 		<u-navbar back-icon-color="#FFFFFF" :background="{'background': 'rgba(0,0,0,0)'}" :border-bottom="false" :immersive="true"></u-navbar>
 		<view class="myinfo">
-			<image class="bg_img" src="/static/imgs/personalDynamic/dynamic_bgimg.png"></image>
+			<image class="bg_img" :src=" otherList.background || '/static/imgs/personalDynamic/dynamic_bgimg.png'"></image>
 			<image class="avatar" :src="otherList.avatar"  ></image>
 			<view class="myinfo-details">
 				<view class="myinfo-details-head">

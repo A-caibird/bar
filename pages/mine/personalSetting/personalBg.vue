@@ -55,7 +55,8 @@
 			},
 			//执行完上传，隐藏提示
 			async upImg(res) {
-				await this.uploadImg(res);
+				var url = await this.uploadImg(res);
+				this.replaceBackImg(url);
 				btnAvaliable = true;
 				uni.hideLoading()
 			},
@@ -64,10 +65,10 @@
 				return new Promise((resolve, reject) => {
 					let vm = this
 					//判断上传的图片数量有没有超过9张
-					var filePath = res.tempFilePaths[i]
+					var filePath = res.tempFilePaths[0]
 					vm.$u.api.uploadFile(filePath).then(url => {
-						vm.bgImg = url
-						resolve()
+						// vm.bgImg = url
+						resolve(url)
 					}).catch(e => {
 						console.log(e);
 						btnAvaliable = true
@@ -77,6 +78,18 @@
 			
 				})
 			},
+			
+			// 更换图片背景
+			replaceBackImg(url){
+				this.$u.api.replaceBackImgAPI({
+					background: url,
+				}).then(res => {
+					console.log(res);
+					this.bgImg = url;
+				}).catch(e => {
+					console.log(e);
+				})
+			}
 		}
 	}
 </script>
