@@ -22,7 +22,7 @@
 		},
 		onLoad(options) {
 			this.info = JSON.parse(options.info);
-			this.introText = this.info.personalProfile;
+			this.bgImg = this.info.background;
 		},
 		methods:{
 			replaceTap(){
