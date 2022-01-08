@@ -14,6 +14,7 @@ const store = new Vuex.Store({
 			{
 				'text': '发现',
 				'customIcon': false,
+				"count": 0,
 			},
 			{
 				'iconPath': "/static/imgs/common/publish.png",
@@ -25,10 +26,13 @@ const store = new Vuex.Store({
 			{
 				'text': '消息',
 				'customIcon': false,
+				"count": 0,
+				"isDot": false
 			},
 			{
 				'text': '我的',
 				'customIcon': false,
+				"count": 0,
 			},
 		],
 		// goEasy 对象
@@ -37,7 +41,11 @@ const store = new Vuex.Store({
 		userInfo: {},
 	},
 	mutations: {
-
+		// 设置消息已读未读
+		setInfoCount(state, count){
+			console.log('setInfoCount2', count);
+			state.list[3].count = count
+		},
 		// goEasy 初始化
 		initGoEasy(state, info) {
 			console.log(info);

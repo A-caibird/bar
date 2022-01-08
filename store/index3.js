@@ -22,6 +22,7 @@ const store = new Vuex.Store({
 		'list': [{
 				'text': 'Club',
 				'customIcon': false,
+				
 			},
 			{
 				'text': '发现',

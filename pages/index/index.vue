@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations} from 'vuex';
 import selfTabbar from '@/components/self-tabbar/self-tabbar.vue';
 import homePage from '@/components/tabbarPage/home.vue';
 import findPage from '@/components/tabbarPage/find.vue';
@@ -68,6 +68,7 @@ import mePage from '@/components/tabbarPage/me.vue';
 import infoPage from '@/components/tabbarPage/info.vue';
 import tipsPop from '@/components/pop/tips.vue';
 import loginMixin from '@/mixins/loginConfirm.js'
+import $chat from '@/utils/chat/index.js'
 var app = getApp();
 export default {
 	components: {
@@ -89,6 +90,7 @@ export default {
 			pageloading: true,
 			contentShow: false,
 			tabExit: [1, 0, 1, 0, 1],
+			noReadNum: 0,
 		};
 	},
 	computed: {
@@ -142,6 +144,11 @@ export default {
 		this.$nextTick(() => {
 			this.changeHandle(this.current);
 		});
+		uni.$on('information_listenr', this.infoListenerEvent);
+		this.infoListenerEvent();
+	},
+	onUnload() {
+		uni.$off('information_listenr');
 	},
 	onShow: function() {
 		// #ifdef APP-PLUS
@@ -165,6 +172,17 @@ export default {
 		}
 	},
 	methods: {
+		...mapMutations(['setInfoCount']),
+		infoListenerEvent(){
+			var chatToken = getApp().globalData.userInfo.chatToken;
+			var chatUserList = $chat.getChatUserListFromStorage(chatToken) || [];
+			let noRead = 0;
+			chatUserList.forEach((item, index) => {
+				noRead = item.notReadNum + noRead;
+			})
+			// this.noReadNum = noRead;
+			this.setInfoCount(noRead)
+		},
 		goInfoGift(){
 			this.$nav.navigateTo({
 				url: '/pages/info/gift'
@@ -291,10 +309,6 @@ export default {
 			}
 			
 		},
-		
-		
-		
-		
 	}
 };
 </script>

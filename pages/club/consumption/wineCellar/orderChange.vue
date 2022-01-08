@@ -91,11 +91,11 @@
 									<view class="label_text">接待人</view>
 								</view>
 							</view>
-							<view class="person_info">
-								<image :src="orderInfo.receptionistAvatar"></image>
+							<view class="person_info" @tap="$u.throttle(tapGoSelectStaff)">
+								<image :src="receptorInfo.receptionistAvatar"></image>
 								<view class="info_name">
-									<text>{{orderInfo.receptionistName}}</text>
-									<!-- <u-icon name="arrow-right" color="#777CBF"></u-icon> -->
+									<text>{{receptorInfo.receptionistName}}</text>
+									<u-icon name="arrow-right" color="#777CBF"></u-icon>
 								</view>
 							</view>
 						</view>
@@ -181,6 +181,11 @@
 				data:{
 					arrivalTime: '',
 					arrivalTimeHM: ''
+				},
+				receptorInfo: {
+					receptionistId: '',
+					receptionistName: '',
+					receptionistAvatar: ''
 				}
 			}
 		},
@@ -192,12 +197,24 @@
 			this.orderId = orderId
 			this.info = info;
 			this.data.date = info.date;
-			this.load()
+			this.load(info.orderType)
+			uni.$on('select-receptionist',this.handleReceptionist)
 		},
 		onUnload() {
-
+			uni.$off('select-receptionist');
 		},
 		methods: {
+			handleReceptionist(e){
+				this.receptorInfo.receptionistId = e.id
+				this.receptorInfo.receptionistName = e.name
+				this.receptorInfo.receptionistAvatar = e.avatar
+			},
+			tapGoSelectStaff(){
+				this.$u.route('/pages/receptionist-list/receptionist-list',{
+					receptionistId:this.receptorInfo.receptionistId,
+					clubId:this.clubInfo.clubId,
+				})
+			},
 			tapGoPayPage(){
 				if(this.data.arrivalTime=='') return uni.showToast({title:'请选择到店时间！',icon:'none'})
 				if(this.compareTime(new Date(this.data.arrivalTime.replace(/-/g, '/')),new Date())==-1) return this.$toast.text('预约时间必须晚于当前时间！')	
@@ -213,6 +230,7 @@
 					cardTableId: this.info.seatId,//座位id
 					arrivalTime: this.data.arrivalTime,//到店时间(yyyy-MM-dd HH:mm)
 					orderId:this.orderId,
+					receptionistId: this.receptorInfo.receptionistId
 				};
 				let type = this.info.orderType=='fullAmount'?'yao-order':'ping-order'
 				let res =  await this.$u.api.changeOrderAPI(data)
@@ -271,8 +289,12 @@
 					this.data.arrivalTimeHM = e
 				}
 			},
-			load() {
-				this.getInviteOrderView()
+			load(type) {
+				if(type == 'share'){
+					this.getPingOrderView()
+				}else{
+					this.getInviteOrderView()
+				}
 			},
 			async getInviteOrderView() {
 				let {
@@ -285,6 +307,26 @@
 				this.canRefund = data.canRefund;
 				this.canBill = data.pingOrderViewVo.canBill;
 				this.orderInfo = data.pingOrderViewVo
+				// this.data.arrivalTime = this.orderInfo.arriveTime;
+				// this.data.arrivalTimeHM = this.orderInfo.arriveTime.split(' ')[1];
+				if (this.orderInfo.isJoin) {
+					this.inviteId = this.orderInfo.inviteId
+				}
+			},
+			async getPingOrderView() {
+				let {
+					code,
+					data
+				} = await this.$u.api.getPingOrderView({
+					orderId: this.orderId,
+				})
+				this.clubInfo = data.pingOrderViewVo.clubSimpleInfoVo
+				this.canRefund = data.canRefund;
+				this.canBill = data.pingOrderViewVo.canBill;
+				this.orderInfo = data.pingOrderViewVo
+				this.receptorInfo.receptionistId = data.pingOrderViewVo.receptionistId;
+				this.receptorInfo.receptionistName = data.pingOrderViewVo.receptionistName;
+				this.receptorInfo.receptionistAvatar = data.pingOrderViewVo.receptionistAvatar;
 				// this.data.arrivalTime = this.orderInfo.arriveTime;
 				// this.data.arrivalTimeHM = this.orderInfo.arriveTime.split(' ')[1];
 				if (this.orderInfo.isJoin) {

@@ -35,6 +35,7 @@ function msgArrived(res){
 		uni.$emit('chat-user-list-refresh',chatUserList) //聊天列表的刷新
 		msg = $chat.setChatListFromStorage(chatToken,msg) 
 		uni.$emit('chat-msg-push',msg) //聊天记录的刷新
+		uni.$emit('information_listenr')
 	} else if(msg.type === 1) {
 		msg.status = 1
 		uni.downloadFile({
@@ -51,12 +52,14 @@ function msgArrived(res){
 						uni.$emit('chat-user-list-refresh',chatUserList)
 						msg = $chat.setChatListFromStorage(chatToken,msg)
 						uni.$emit('chat-msg-push',msg)
+						uni.$emit('information_listenr')
 					}, err => {
 						msg.src = ''
 						msg.status = 3
 						chatUserList = $chat.addChatUserListFromStorage(chatToken,msg)
 						uni.$emit('chat-user-list-refresh',chatUserList)
 						uni.$emit('chat-msg-push',msg)
+						uni.$emit('information_listenr')
 					})
 				}
 			},
@@ -67,6 +70,7 @@ function msgArrived(res){
 				uni.$emit('chat-user-list-refresh',chatUserList)
 				msg = $chat.setChatListFromStorage(chatToken,msg)
 				uni.$emit('chat-msg-push',msg)
+				uni.$emit('information_listenr')
 			}
 		});
 						
@@ -76,30 +80,35 @@ function msgArrived(res){
 		uni.$emit('chat-user-list-refresh',chatUserList) //聊天列表的刷新
 		msg = $chat.setChatListFromStorage(chatToken,msg) 
 		uni.$emit('chat-msg-push',msg) //聊天记录的刷新
+		uni.$emit('information_listenr')
 	} else if(msg.type === 3 ) {
 		msg.status = 2
 		chatUserList = $chat.addChatUserListFromStorage(chatToken,msg)
 		uni.$emit('chat-user-list-refresh',chatUserList) //聊天列表的刷新
 		msg = $chat.setChatListFromStorage(chatToken,msg) 
 		uni.$emit('chat-msg-push',msg) //聊天记录的刷新
+		uni.$emit('information_listenr')
 	} else if(msg.type === 4 ) {
 		msg.status = 2
 		chatUserList = $chat.addChatUserListFromStorage(chatToken,msg)
 		uni.$emit('chat-user-list-refresh',chatUserList) //聊天列表的刷新
 		msg = $chat.setChatListFromStorage(chatToken,msg) 
 		uni.$emit('chat-msg-push',msg) //聊天记录的刷新
+		uni.$emit('information_listenr')
 	} else if(msg.type === 5 ) {
 		msg.status = 2
 		chatUserList = $chat.addChatUserListFromStorage(chatToken,msg)
 		uni.$emit('chat-user-list-refresh',chatUserList) //聊天列表的刷新
 		msg = $chat.setChatListFromStorage(chatToken,msg) 
 		uni.$emit('chat-msg-push',msg) //聊天记录的刷新
+		uni.$emit('information_listenr')
 	} else if(msg.type === 6 ) {
 		msg.status = 2
 		chatUserList = $chat.addChatUserListFromStorage(chatToken,msg)
 		uni.$emit('chat-user-list-refresh',chatUserList) //聊天列表的刷新
 		msg = $chat.setChatListFromStorage(chatToken,msg) 
 		uni.$emit('chat-msg-push',msg) //聊天记录的刷新
+		uni.$emit('information_listenr')
 	}
 }
 	

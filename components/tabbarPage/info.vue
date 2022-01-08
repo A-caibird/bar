@@ -109,6 +109,7 @@
 				this.chatUserList.forEach((item, index) => {
 					noRead = item.notReadNum + noRead;
 				})
+				uni.$emit('information_listenr')
 				return noRead;
 			},
 			classifyList(){
