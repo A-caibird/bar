@@ -265,10 +265,11 @@
 				}
 			},
 			refreshPersonalInfo() {
-				if(this.authorized){
+				let authorized = app.globalData.authorized;
+				console.log('refreshPersonalInfo');
+				if(authorized){
 					this.getMyInfo()
 				}else{
-					console.log('refreshPersonalInfo');
 					uni.showToast({
 						title: '请先登录',
 						icon: 'none'

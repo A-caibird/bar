@@ -11,6 +11,7 @@ export default{
 		loginConfirmHandle:function(onlyShow = true){
 			let app = getApp();
 			if(!app.globalData.authorized){
+				console.log("请先登录");
 				uni.showToast({
 					title: '请先登录',
 					icon: 'none'
