@@ -3,7 +3,12 @@
 		<view class="header-box">
 			<u-navbar :is-fixed="true" :isBack="false" :background="{
 				'background': '#191C3F'
-			}" title="消息" :titleColor="'#FFFFFF'" :borderBottom="false"></u-navbar>
+			}" :titleColor="'#FFFFFF'" :borderBottom="false">
+				<view class="info" style="color: #FFFFFF; width: 100%; display: flex; align-items: center; justify-content: center;">
+					<text>消息</text>
+					<u-badge :absolute="false" type="error" :count="allNoRead"></u-badge>
+				</view>
+			</u-navbar>
 		</view>
 		<view class="middle_box">
 			<view class="info_classify">
@@ -62,7 +67,6 @@
 		},
 		data() {
 			return {
-				
 				chatToken:app.globalData.userInfo.chatToken,
 				chatUserList:[],
 				noticeNum: 0,
@@ -82,7 +86,6 @@
 				],
 			}
 		},
-		
 		mounted() {
 			this.chatUserList = $chat.getChatUserListFromStorage(this.chatToken)
 			// console.log(this.chatUserList)
@@ -101,6 +104,13 @@
 			uni.$off('refreshInfo')
 		},
 		computed:{
+			allNoRead(){
+				let noRead = 0;
+				this.chatUserList.forEach((item, index) => {
+					noRead = item.notReadNum + noRead;
+				})
+				return noRead;
+			},
 			classifyList(){
 				return this.isAppleAudit?[
 					{
