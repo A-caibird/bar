@@ -254,6 +254,9 @@
 			"path": "pages/mine/personalSetting/personalBg" //个性背景
 		},
 		{
+			"path": "pages/mine/personalSetting/sign" //个性签名
+		},
+		{
 			"path": "pages/mine/dynamic/personalDynamic" //个人动态
 		},
 		{

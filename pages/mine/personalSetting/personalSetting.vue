@@ -56,11 +56,13 @@
 					<image class="arrow-img" src="/static/imgs/common/right.png" mode=""></image>
 				</view>
 			</view>
-			<view class="info-box-item">
+			<view class="info-box-item" @tap="$u.debounce(goSign, 400, true)">
 				<text>个性签名</text>
 				<view class="info-box-right">
-					<u-input v-model="signature" @blur="changeSignature()" type="textarea" :clearable="false" input-align="right"
-					 height="70" :custom-style="{'color':'#FFFFFF','font-size':'28rpx'}" />
+					<view class="text">{{signature}}</view>
+					<image class="arrow-img" src="/static/imgs/common/right.png" mode=""></image>
+					<!-- <u-input v-model="signature" @confirm="changeSignature()" type="textarea" :clearable="false" input-align="right"
+					 height="70" :custom-style="{'color':'#FFFFFF','font-size':'28rpx'}" /> -->
 				</view>
 			</view>
 		</view>
@@ -103,6 +105,9 @@
 			uni.$off('personal-info-refresh',this.handlePersonalInfoRefresh)
 		},
 		methods: {
+			goSign(){
+				this.$u.route('/pages/mine/personalSetting/sign', {info: JSON.stringify(this.info)})
+			},
 			goIntro(){
 				this.$u.route('/pages/mine/personalSetting/intro', {info: JSON.stringify(this.info)})
 			},
