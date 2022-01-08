@@ -639,6 +639,8 @@
 					$chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken,item.time,item.type,item)
 					$chat.sendMsg(userInfo,friendUserInfo,'single','text',{content: '同意邀请',})
 					this.$forceUpdate()
+				}else {
+					console.log(code);
 				}
 			},
 			load(){

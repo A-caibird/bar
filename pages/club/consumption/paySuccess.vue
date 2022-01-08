@@ -8,7 +8,6 @@
 				background: `rgba(25,28,63,1)`
 			}"
 			title="支付成功"
-			:immersive=true
 			:customBack="back"
 			back-icon-color="#FFFFFF"
 		></u-navbar>
