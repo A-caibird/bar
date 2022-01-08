@@ -158,6 +158,7 @@ const install = (Vue, vm) => {
 		getCanChatApi: (params) => vm.$u.get('/api/user/canChat', params), //获取双方是否可以聊天
 
 		//个人设置
+		hasVerifyAPI: () => vm.$u.post('/api/user/hasVerified'), //是否实名认证
 		replaceBackImgAPI: (params) => vm.$u.post('/api/user/changeBackground', params), //设置个人背景
 		setPersonIntroAPI: (params) => vm.$u.get('/api/user/changePersonalProfile', params), //设置个人简介
 		setPayPasswordApi: (params) => vm.$u.post('/api/user/setPayPassword', params), //设置支付密码
