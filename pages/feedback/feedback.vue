@@ -6,7 +6,7 @@
 		<view class="photo-box">
 			<view class="photo-text">
 				<text class="text-left">上传照片</text>
-				<text class="text-right">(必填，最多提交9张图片)</text>
+				<text class="text-right">(选填，最多提交9张图片)</text>
 			</view>
 			<view class="photo-area">
 				<view class="photo-area-item" v-for="(item, index) in imgList" :key="index">
