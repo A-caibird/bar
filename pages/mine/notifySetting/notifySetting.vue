@@ -49,6 +49,13 @@ export default {
 		this.show();
 	},
 	methods: {
+		getPushInfo(){
+			this.$u.api.getPushInfoAPI().then((res) => {
+				console.log(res);
+			}).catch(e => {
+				console.log(e);
+			})
+		},
 		// switch打开或者关闭时触发，值为true或者false
 		// 即使不监听此事件，this.checked此时也会相应的变成true或者false
 		changeHandle: function(e, index) {
@@ -75,7 +82,7 @@ export default {
 			}
 		},
 		show:function(){
-	         
+	         this.getPushInfo();
 		}
 	}
 
