@@ -60,7 +60,10 @@ const store = new Vuex.Store({
 				appkey: "BC-025546bc12d04071b9113d33a63bbaca",
 				modules: ['pubsub', 'im'] //根据需要，传入‘pubsub’或'im’，或数组方式同时传入
 			});
-			goEasyUtils.connect(state.goEasy, chatId, state.userInfo, function(){
+			goEasyUtils.connect(state.goEasy, chatId, {
+				avatar: state.userInfo.avatar,
+				nickname: state.userInfo.nickName
+			}, function(){
 				goEasyUtils.receiveMessage(state.goEasy.im, (msg) => {
 					console.log(msg);
 					var msgInfo = msg.payload.payloadString;

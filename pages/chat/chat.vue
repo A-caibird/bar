@@ -488,7 +488,7 @@
 				let lastTime='';
 				let list = this.$u.deepClone(arr)
 				list.forEach(ele => {
-					console.log(ele)
+					// console.log(ele)
 					let timeStamp = ele.time
 					// 消息时间
 					let infoTime = new Date(timeStamp)
@@ -550,7 +550,7 @@
 						} else {
 							ele['timeStr'] = ''
 						}
-						console.log(ele)
+						// console.log(ele)
 					}
 				})
 				
@@ -683,9 +683,9 @@
 				$chat.getChatList(chatToken,friendChatToken).then(res => {
 					
 					let chatList = this.chatListTimeStamp(res)
-					console.log(chatList)
+					// console.log(chatList)
 					this.chatList = chatList
-					console.log(this.chatList)
+					// console.log(this.chatList)
 					setTimeout(() => {
 						this.pageScrollToBottom()
 					}, 100)

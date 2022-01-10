@@ -6,7 +6,6 @@
 	export default {
 		onLaunch: async function(options) {
 			console.log('App Launch')
-			console.log(options);
 			init(this)
 			if($storage.getLoginToken()){
 				console.log('/api/user/use')
