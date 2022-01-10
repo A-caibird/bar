@@ -91,6 +91,7 @@ export default {
 			contentShow: false,
 			tabExit: [1, 0, 1, 0, 1],
 			noReadNum: 0,
+			noticeNum: 0, //系统通知
 		};
 	},
 	computed: {
@@ -151,6 +152,9 @@ export default {
 		uni.$off('information_listenr');
 	},
 	onShow: function() {
+		if(getApp().globalData.authorized){
+			this.getNoticeCount();
+		}
 		// #ifdef APP-PLUS
 		plus.screen.lockOrientation('portrait-primary');
 		// #endif
@@ -173,6 +177,13 @@ export default {
 	},
 	methods: {
 		...mapMutations(['setInfoCount']),
+		getNoticeCount(){
+			this.$u.api.getNoticeCountAPI().then(res => {
+				this.noticeNum = res.data.num;
+			}).catch(e => {
+				console.log(e);
+			})
+		},
 		infoListenerEvent(){
 			var chatToken = getApp().globalData.userInfo.chatToken;
 			var chatUserList = $chat.getChatUserListFromStorage(chatToken) || [];
@@ -181,7 +192,7 @@ export default {
 				noRead = item.notReadNum + noRead;
 			})
 			// this.noReadNum = noRead;
-			this.setInfoCount(noRead)
+			this.setInfoCount(noRead + this.noticeNum);
 		},
 		goInfoGift(){
 			this.$nav.navigateTo({
@@ -290,6 +301,11 @@ export default {
 				this.$refs.addDynamic.close()
 			}
 			this.current = e;
+			if(e==0) {
+				if(getApp().globalData.authorized){
+					this.getNoticeCount();
+				}
+			}
 			if(e==1) {
 				this.$nextTick(() => {
 					if(this.$refs.find){

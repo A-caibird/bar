@@ -110,7 +110,7 @@
 					noRead = item.notReadNum + noRead;
 				})
 				uni.$emit('information_listenr')
-				return noRead;
+				return (noRead + this.noticeNum);
 			},
 			classifyList(){
 				return this.isAppleAudit?[
