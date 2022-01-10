@@ -43,12 +43,12 @@ const store = new Vuex.Store({
 	mutations: {
 		// 设置消息已读未读
 		setInfoCount(state, count){
-			console.log('setInfoCount2', count);
+			// console.log('setInfoCount2', count);
 			state.list[3].count = count
 		},
 		// goEasy 初始化
 		initGoEasy(state, info) {
-			console.log(info);
+			// console.log(info);
 			info = JSON.parse(info);
 			var chatId = info.chatToken;
 			state.userInfo = {

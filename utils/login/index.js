@@ -5,7 +5,7 @@ const login = function (data, register = false) {
 	let {token,fillInformation,info} = data
 	
 	if(fillInformation){
-		// console.log(data)
+		console.log(data)
 		getApp().globalData.authorized=true;
 		getApp().globalData.token = token
 		getApp().globalData.userInfo = info
@@ -15,6 +15,7 @@ const login = function (data, register = false) {
 		// #ifdef APP-PLUS
 		// $store.commit('initMQTT',info.chatToken)
 		// #endif
+		uni.$emit('refresh_chat');
 		$store.commit('initGoEasy', JSON.stringify(info))
 		if(register){
 			uni.reLaunch({

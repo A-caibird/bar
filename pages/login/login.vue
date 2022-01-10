@@ -3,7 +3,8 @@
 		<view class="header_box">
 			<view class="nav_box">
 				<view class="back_panel" @tap="backTap">
-					<u-icon name="arrow-left" color="#FFFFFF" size="44"></u-icon>
+					<u-icon name="home-fill" color="#FFFFFF" size="40" v-if="isHome"></u-icon>
+					<u-icon name="arrow-left" color="#FFFFFF" size="44" v-else></u-icon>
 				</view>
 			</view>
 			<view class="filter_panel"></view>
@@ -83,6 +84,7 @@
 				passText: '',
 				isSelect:false,
 				options:"",
+				isHome: false,
 			}
 		},
 		computed: {
@@ -103,18 +105,27 @@
 		onLoad:function(options){
 			if (options.data) {
 				this.options = JSON.parse(decodeURIComponent(options.data))
+				console.log(this.options);
 			}
+			console.log(options)
+			
 		},
 		methods: {
 			backTap: function(){
-				uni.navigateBack();
+				if(this.isHome){
+					uni.reLaunch({
+						url: '/pages/index/index'
+					})
+				}else{
+					uni.navigateBack();
+				}
 			},
 			async wxLogin(params){
 				let {code,data} = await this.$u.api.wxLoginApi(params)
 				// console.log(data)
 				if(code==0) {
 					data['options'] = this.options;
-					login(data)
+					login(data, this.isHome);
 				} else if(code==1) {//未绑定手机
 					this.$u.route('/pages/register/phoneBind',{
 						openId:params.openId,
@@ -189,7 +200,7 @@
 					var code = res.code;
 					if(parseInt(code) == 0){
 						console.log(res)
-						login(res.data)
+						login(res.data, this.isHome)
 					}
 				}).catch(e => {
 					console.log(e)

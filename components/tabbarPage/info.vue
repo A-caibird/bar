@@ -94,6 +94,9 @@
 			uni.$on('refreshInfo', () => {
 				this.getNoticeCount();
 			})
+			uni.$on('refresh_chat', () => {
+				this.chatUserList = $chat.getChatUserListFromStorage(this.chatToken)
+			});
 			if(getApp().globalData.authorized){
 				this.getNoticeCount();
 			}
@@ -102,6 +105,7 @@
 			uni.$off('chat-user-list-refresh',this.chatUserListRefresh)
 			uni.$off('read-chat',this.readChat)
 			uni.$off('refreshInfo')
+			uni.$off('refresh_chat')
 		},
 		computed:{
 			allNoRead(){

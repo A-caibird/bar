@@ -178,8 +178,8 @@ function setChatUserListNameAvatarFromStorageByUserId(account,userId,name,avatar
 		})
 		if(index!=-1) {
 			let user = JSON.parse(JSON.stringify(list[index]))
-			console.log(avatar)
-			console.log(user.avatar)
+			// console.log(avatar)
+			// console.log(user.avatar)
 			if(avatar==user.avatar) {//相同
 				if(user.hasSave) {//已保存文件
 					plus.io.getImageInfo({

@@ -25,7 +25,7 @@
 				<text>隐私设置</text>
 				<image src="/static/imgs/mine/common_right.png" mode=""></image>
 			</view>
-			<view class="second_part" @tap="logOut"><button type="default">退出登录</button></view>
+			<view class="second_part" @tap="$u.throttle(logOut)"><button type="default">退出登录</button></view>
 		</view>
 	</view>
 </template>
