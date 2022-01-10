@@ -223,6 +223,11 @@ const install = (Vue, vm) => {
 		dynamicReport: (params) => vm.$u.post('/api/dynamic/report', params), // 动态举报
 
 		//隐私设置
+		toggleOpenPraiseAPI: (params) => vm.$u.post('/api/user/changeLikeNotification', params), //是否打开点赞通知
+		toggleOpenCommentAPI: (params) => vm.$u.post('/api/user/changeCommentNotification', params), //是否打开评论通知
+		toggleOpenInviteAPI: (params) => vm.$u.post('/api/user/changeInvitationNotice', params), //是否打开邀约通知
+		toggleOpenAttAPI: (params) => vm.$u.post('/api/user/changeFollowNotifications', params), //是否打开关注通知
+		toggleGiftTipsAPI: (params) => vm.$u.post('/api/user/changeGiftReminder', params), //是否打开礼物提醒通知
 		myOpenChooseApi: (params) => vm.$u.post('/api/user/myOpenChoose', params), // 我选择的开关的状态
 		changeShowMyAttentionUserApi: (params) => vm.$u.post('/api/user/changeShowMyAttentionUser', params), // 是否显示我关注的用户，
 		changeShowMyFansApi: (params) => vm.$u.post('/api/user/changeShowMyFans', params), // 是否展示我的粉丝，

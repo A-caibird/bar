@@ -13,7 +13,7 @@
 					<view class="deadline">{{coupon.canUseDate}}</view>
 				</view>
 			</view>
-			<view class="use_btn" @tap="goPage" v-if="btnShow && status == 'unused'">去使用</view>
+			<view class="use_btn" @tap="$u.throttle(goPage)" v-if="btnShow && status == 'unused'">去使用</view>
 			<view class="bottom">
 				<view class="desc">{{ coupon.rule ? coupon.rule : '' }}</view>
 			</view>
@@ -64,7 +64,7 @@
 		methods: {
 			goPage: function(){
 				uni.navigateTo({
-					url: '/pages/club/list'
+					url: '/pages/club/list?mode=list'
 				})
 			},
 			clickCoupon: function() {

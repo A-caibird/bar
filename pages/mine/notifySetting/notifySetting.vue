@@ -20,27 +20,27 @@ export default {
 				{
 					content: '点赞通知',
 					checked: false,
-					way: 'toggleOpenPraise'
+					way: 'toggleOpenPraiseAPI'
 				},
 				{
 					content: '评论通知',
 					checked: false,
-					way: 'toggleOpenComment'
+					way: 'toggleOpenCommentAPI'
 				},
 				{
 					content: '邀约通知',
 					checked: false,
-					way: 'toggleOpenInvite'
+					way: 'toggleOpenInviteAPI'
 				},
 				{
 					content: '关注我的',
 					checked: false,
-					way: 'toggleOpenAtt'
+					way: 'toggleOpenAttAPI'
 				},
 				{
 					content: '礼物提醒',
 					checked: false,
-					way: 'toggleGiftTips'
+					way: 'toggleGiftTipsAPI'
 				}
 			]
 		};
@@ -54,14 +54,17 @@ export default {
 		changeHandle: function(e, index) {
 			let key = this.list[index].way;
 			if (this.list[index].checked == true) {
-				this.$u.api[key](!e).then(res=>{
+				this.$u.api[key]({
+					open: !e
+				}).then(res=>{
 					if (parseInt(res.code) == 0) {
 						this.list[index].checked = false;
 					}
 				})
 			} else {
-				this.$u.api[key](!e)
-					.then(res => {
+				this.$u.api[key]({
+					open: !e
+				}).then(res => {
 						if (parseInt(res.code) == 0) {
 							this.list[index].checked = true;
 						}
