@@ -41,6 +41,16 @@ export default {
 					content: '礼物提醒',
 					checked: false,
 					way: 'toggleGiftTipsAPI'
+				},
+				{
+					content: '加入拼享',
+					checked: false,
+					way: 'toggleJoinPingAPI'
+				},
+				{
+					content: '发布动态 ',
+					checked: false,
+					way: 'togglePublishDynamicAPI'
 				}
 			]
 		};
@@ -51,7 +61,14 @@ export default {
 	methods: {
 		getPushInfo(){
 			this.$u.api.getPushInfoAPI().then((res) => {
-				console.log(res);
+				let pushInfo = res.data.pushInfo;
+				this.list[0].checked = pushInfo.likeNotification || false;
+				this.list[1].checked = pushInfo.commentNotification || false;
+				this.list[2].checked = pushInfo.invitationNotice || false;
+				this.list[3].checked = pushInfo.followNotifications || false;
+				this.list[4].checked = pushInfo.giftReminder || false;
+				this.list[5].checked = pushInfo.pingNotice || false;
+				this.list[6].checked = pushInfo.pushDynamicNotice || false;
 			}).catch(e => {
 				console.log(e);
 			})
