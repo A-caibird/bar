@@ -219,8 +219,12 @@
 			// 申请工作
 			async applyJob() {
 				let params = this.getParams();
-				if (!params.name || !params.elevated || !params.bodyWeight || !params.selfIntroduction || this.imgList.length <= 0) {
-					this.$u.toast('请将信息补充完整')
+				if (!params.name || !params.phone || !params.sex || !params.elevated || !params.bodyWeight || !params.selfIntroduction) {
+					this.checkTips(params)
+					return
+				}
+				if(this.imgList.length <= 0){
+					this.$u.toast('请至少添加一张个人形象图片')
 					return
 				}
 				let {code} = await this.$u.api.applyJob(params)
@@ -231,18 +235,38 @@
 					},500)
 				}
 			},
-			
+			checkTips(params){
+				console.log(params);
+				var tips = "";
+				for(var key in params){
+					if(!params[key]){
+						switch(key){
+							case 'name': tips="请填写姓名";break;
+							case 'phone': tips="请填写手机号";break;
+							case 'sex': tips="请选择性别";break;
+							case 'elevated': tips="请填写身高";break;
+							case 'bodyWeight': tips="请填写体重";break;
+							case 'selfIntroduction': tips="请填写自我介绍";break;
+							default:break;
+						}
+						if(tips){
+							this.$u.toast(tips);
+							break;
+						}
+					}
+				}
+			},
 			getParams: function() {
 				let formInfo = this.formInfo;
 				let params = {
 					id: this.id,
-					"elevated": formInfo.height, //招聘人升高(m)
-					"bodyWeight": formInfo.weight, //招聘人体重(kg)
-					"selfIntroduction": formInfo.intro,
-					"name": formInfo.name,
-					'sex': this.picker.sex.value,
+					name: formInfo.name,
 					phone: formInfo.phone,
+					sex: this.picker.sex.value,
 					birthday: this.picker.birthday.value,
+					elevated: formInfo.height, //招聘人升高(m)
+					bodyWeight: formInfo.weight, //招聘人体重(kg)
+					selfIntroduction: formInfo.intro,
 					videoUrl: this.videoList.length > 0 ? this.videoList[0].videoUrl : '',
 				}
 				let imgs = this.imgList;
