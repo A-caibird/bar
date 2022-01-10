@@ -37,8 +37,9 @@
 				<commonInput v-model="formInfo.name" label='姓名' placeholder="请填写姓名" :isArrow="false"></commonInput>
 				<commonInput type="number" v-model="formInfo.phone" label='手机号' placeholder="请填写手机号" :isArrow="false"></commonInput>
 				<commonInput :isArrow="true" @select="selectPicker('sex')" v-model="picker.sex.value" label='性别' placeholder="请选择性别"></commonInput>
-				<commonInput :isArrow="true" @select="selectPicker('birthday')" v-model="picker.birthday.value" label='生日'
-				 placeholder="请选择生日"></commonInput>
+				<!-- <commonInput :isArrow="true" @select="selectPicker('birthday')" v-model="picker.birthday.value" label='生日'
+				 placeholder="请选择生日"></commonInput> -->
+				<commonInput type="number" v-model="formInfo.age" label='年龄' placeholder="请填写年龄" :isArrow="false"></commonInput>
 				<commonInput type="digit" v-model="formInfo.height" label='身高(cm)' placeholder="请填写身高" :isArrow="false"></commonInput>
 				<commonInput type="digit" v-model="formInfo.weight" label='体重(kg)' placeholder="请填写体重" :isArrow="false"></commonInput>
 			</view>
@@ -151,7 +152,8 @@
 					height: '',
 					weight: '',
 					intro: '',
-					phone:''
+					phone:'',
+					age: '',
 				},
 				jobInfo: {},
 				videoList:[],
@@ -236,7 +238,6 @@
 				}
 			},
 			checkTips(params){
-				console.log(params);
 				var tips = "";
 				for(var key in params){
 					if(!params[key]){
@@ -263,7 +264,8 @@
 					name: formInfo.name,
 					phone: formInfo.phone,
 					sex: this.picker.sex.value,
-					birthday: this.picker.birthday.value,
+					age: this.formInfo.age,
+					// birthday: this.picker.birthday.value,
 					elevated: formInfo.height, //招聘人升高(m)
 					bodyWeight: formInfo.weight, //招聘人体重(kg)
 					selfIntroduction: formInfo.intro,
@@ -274,7 +276,6 @@
 					let key = `personalImagePhoto[${index}]`;
 					params[key] = item.avatar;
 				})
-				console.log(params);
 				return params
 			},
 			// 获取工作详情
