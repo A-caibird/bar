@@ -41,16 +41,20 @@ export default{
 					for (let i = 0; i < (res.tempFilePaths).length; i++) {
 						const filePath = res.tempFilePaths[i]
 						console.log(filePath)
-						vm.$u.api.uploadFile(filePath).then(url => {
-							let obj={};
-							obj.avatar=url;
-							vm.imgList.push(obj);
-							console.log(vm.imgList)
-							resolve()
+						this.sCompressImg(filePath).then(rs => {
+							let path = rs.tempFilePath;
+							console.log('压缩成功', path);
+							this.uploadEvent(path).then(() => {
+								resolve()
+							}).catch(() => {
+								reject()
+							})
 						}).catch(e => {
-							console.log(e);
-							uni.hideLoading();
-							reject()
+							this.uploadEvent(filePath).then(() => {
+								resolve()
+							}).catch(() => {
+								reject()
+							})
 						})
 				
 					}
@@ -61,22 +65,65 @@ export default{
 					for (let i = 0; i < remainLen; i++) {
 						const filePath = res.tempFilePaths[i]
 						console.log(filePath)
-						vm.$u.api.uploadFile(filePath).then(url => {
-							let obj={};
-							obj.avatar = url;
-							vm.imgList.push(obj);
-							console.log(vm.imgList)
-							resolve()
+						this.sCompressImg(filePath).then(rs => {
+							let path = res.tempFilePath;
+							this.uploadEvent(path).then(() => {
+								resolve()
+							}).catch(() => {
+								reject()
+							})
 						}).catch(e => {
-							console.log(e);
-							uni.hideLoading();
-							reject()
+							this.uploadEvent(filePath).then(() => {
+								resolve()
+							}).catch(() => {
+								reject()
+							})
 						})
+						
+				// 		vm.$u.api.uploadFile(filePath).then(url => {
+				// 			let obj={};
+				// 			obj.avatar = url;
+				// 			vm.imgList.push(obj);
+				// 			console.log(vm.imgList)
+				// 			resolve()
+				// 		}).catch(e => {
+				// 			console.log(e);
+				// 			uni.hideLoading();
+				// 			reject()
+				// 		})
+				
 				
 					}
 				}
 		
 			})		
+		},
+		uploadEvent(filePath){
+			return new Promise((resolve, reject) => {
+				this.$u.api.uploadFile(filePath).then(url => {
+					let obj={};
+					obj.avatar = url;
+					this.imgList.push(obj);
+					resolve()
+				}).catch(e => {
+					console.log(e);
+					uni.hideLoading();
+					reject()
+				})
+			})
+		},
+		sCompressImg(path){
+			return new Promise((resolve, reject) => {
+				uni.compressImage({
+					src: path,
+					success(res){
+						resolve(res)
+					},
+					fail(e) {
+						reject(e);
+					}
+				})
+			})
 		},
 		
 		//删除图片

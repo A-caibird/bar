@@ -297,12 +297,8 @@ let utils = ({
 					reject(err)
 				})
 			})
-
-
 		},
-
-
-
+		
 		//emoji
 		uni16ToStr(point) { //16进制转字符串
 			if (point > 0xffff) {

@@ -34,7 +34,6 @@
 			<view class="btn_text share_btn" @tap="$u.throttle(clickTap('fight'), 800)" v-if="showSetSeat&&!isPing">
 				<image src="/static/imgs/common/seat_icon.png"></image>
 				<text>拼享</text>
-				
 			</view>
 			<view class="btn_text" @tap="$u.throttle(clickTap('book'), 800)" v-if="showSetSeat&&!isPing">
 				<image src="/static/imgs/common/seat_icon.png"></image>
