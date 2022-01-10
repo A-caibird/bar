@@ -14,10 +14,11 @@
 					token: $storage.getLoginToken(),
 				})
 			}
+			console.log('clientid', plus.push.getClientInfo().clientid);
 		},
 		onShow: function() {
 			console.log('App Show')
-			// #ifdef APP-PLUS
+			// #ifdef APP-PLUSz
 			checkLocationPermision()
 			// #endif
 		},

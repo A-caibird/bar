@@ -12,6 +12,7 @@
 
 <script>
 	var btnAvaliable = true;
+	import photoUtils from '@/mixins/photo.js'
 	export default {
 		data() {
 			return {
@@ -20,6 +21,7 @@
 				bgImg:''
 			}
 		},
+		mixins:[photoUtils],
 		onLoad(options) {
 			this.info = JSON.parse(options.info);
 			this.bgImg = this.info.background;
@@ -65,12 +67,21 @@
 				return new Promise((resolve, reject) => {
 					let vm = this
 					//判断上传的图片数量有没有超过9张
-					var filePath = res.tempFilePaths[0]
-					vm.$u.api.uploadFile(filePath).then(url => {
-						// vm.bgImg = url
-						resolve(url)
+					var filePath = res.tempFilePaths[0];
+					console.log(filePath);
+					this.sCompressImg(filePath).then(rs => {
+						console.log(rs);
+						let path = rs.tempFilePath;
+						vm.$u.api.uploadFile(path).then(url => {
+							// vm.bgImg = url
+							resolve(url)
+						}).catch(e => {
+							console.log(e);
+							btnAvaliable = true
+							uni.hideLoading();
+							reject()
+						})
 					}).catch(e => {
-						console.log(e);
 						btnAvaliable = true
 						uni.hideLoading();
 						reject()
@@ -86,6 +97,7 @@
 				}).then(res => {
 					console.log(res);
 					this.bgImg = url;
+					uni.$emit('personal-info-refresh');
 				}).catch(e => {
 					console.log(e);
 				})

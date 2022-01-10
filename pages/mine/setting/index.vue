@@ -9,10 +9,10 @@
 				<text>账号与安全</text>
 				<image src="/static/imgs/mine/common_right.png" mode=""></image>
 			</view>
-			<!-- <view class="items" @tap="$u.route('/pages/mine/notifySetting/notifySetting')">
+			<view class="items" @tap="$u.route('/pages/mine/notifySetting/notifySetting')">
 				<text>通知设置</text>
 				<image src="/static/imgs/mine/common_right.png"  mode=""></image>
-			</view> -->
+			</view>
 		<!-- 	<view class="items" @tap="$u.throttle($u.route('/pages/feedbackHelp/feedbackHelp'))">
 				<text>反馈与帮助</text>
 				<image src="/static/imgs/mine/common_right.png" mode=""></image>

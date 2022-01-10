@@ -125,6 +125,19 @@ export default{
 				})
 			})
 		},
+		sCompressVideo(path){
+			return new Promise((resolve, reject) => {
+				uni.compressImage({
+					src: path,
+					success(res){
+						resolve(res)
+					},
+					fail(e) {
+						reject(e);
+					}
+				})
+			})
+		},
 		
 		//删除图片
 		deletePhoto:function(e){

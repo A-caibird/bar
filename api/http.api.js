@@ -8,9 +8,9 @@ const install = (Vue, vm) => {
 				mask: true,
 			})
 			uploadFile(filePath, dir, function success(res) {
-				console.log(res)
-				console.log(filePath)
-				console.log(dir)
+				// console.log(res)
+				// console.log(filePath)
+				// console.log(dir)
 				resolve(res) //返回网络地址
 				uni.hideLoading()
 			}, function fail(err) {
