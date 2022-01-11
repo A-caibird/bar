@@ -70,6 +70,17 @@
 				</view>
 				<u-gap height="10" bgColor="#20234B"></u-gap>
 			</view>
+			<view class="service_box">
+				<view class="service_left">
+					<image src="/static/imgs/common/service-fill.png"></image>
+					<view class="service_text">
+						<view class="service_text1">客服小助手</view>
+						<view class="service_text2"></view>
+					</view>
+				</view>
+				<view class="service_btn" @tap="$u.throttle(serviceTap)">联系客服</view>
+			</view>
+			<u-gap height="10" bgColor="#20234B"></u-gap>
 			<view class="order_club">
 				<view class="user-list">
 					<view class="user-list-item">
@@ -282,6 +293,26 @@
 			uni.$off('fetch-wine',this.load)
 		},
 		methods:{
+			serviceTap(){
+				let clubId = this.clubInfo.clubId;
+				this.$u.api.clubServiceAPI(clubId).then(res => {
+					console.log(res);
+					if(res.data.hasStaff){
+						this.$u.route('/pages/customerRoom/index',{
+							id: res.data.id,
+							avatar: res.data.avatar,
+							nickname: res.data.nickname
+						});
+					}else{
+						uni.showToast({
+							title: '暂无客服人员',
+							icon: 'none'
+						})
+					}	
+				}).catch(e => {
+					console.log(e);
+				})
+			},
 			tapBill(){
 				this.$u.route('/pages/order/bill/add', {
 					orderId:this.orderId
@@ -532,6 +563,37 @@
 					}
 				}
 			}		
+		}
+		.service_box{
+			width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			box-sizing: border-box;
+			padding: 20rpx 30rpx;
+			.service_left{
+				display: flex;
+				align-items: center;
+				&>image{
+					height: 60rpx;
+					width: 60rpx;
+					border-radius: 50%;
+				}
+				.service_text{
+					margin-left: 20rpx;
+					color: #FFFFFF;
+					font-size: 28rpx;
+				}
+			}
+			
+			.service_btn{
+				line-height: 54rpx;
+				border-radius: 30rpx;
+				border: 1px solid #F92FAF;
+				color: #F92FAF;
+				box-sizing: border-box;
+				padding: 0 20rpx;
+			}
 		}
 		.common_info_item{
 			width: 100%;
