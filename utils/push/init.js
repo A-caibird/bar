@@ -112,6 +112,12 @@ function handlePushReceive(msg) {
 			content = payload.content
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
 		}
+		if(type == 'like'){ //点赞通知
+			console.log('某人点赞我的动态')
+			option.title = payload.title
+			content = payload.content
+			plus.push.createMessage(content,  JSON.stringify(payload), option);
+		}
 	}
 }
 function handlePushClick(msg) {
@@ -228,6 +234,13 @@ function handlePushClick(msg) {
 				url:'/pages/info/comment'+`?mode=jump`+`&commentId=${id}`
 			})
 		}
+		if(type=='like') {
+			console.log(payload)
+			let {id} =  payload
+			uni.navigateTo({
+				url: `/pages/discovery/dynamic_detail?id=${id}`
+			})
+		}
 	}else{
 		openAPPMsg(payload);
 	}
@@ -338,6 +351,16 @@ function openAPPMsg(payload){ //APP 处于关闭状态下 点击消息跳转页�
 			})
 		})
 	}
+	if(type=='like') {
+		console.log('点赞')
+		let {id} =  payload
+		slientHandle(() => {
+			uni.navigateTo({
+				url: `/pages/discovery/dynamic_detail?id=${id}`
+			})
+		})
+	}
+	
 }
 
 function slientHandle(callback,time = 2000){
