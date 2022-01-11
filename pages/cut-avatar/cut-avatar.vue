@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<tui-picture-cropper :lockRatio="true" :imageUrl="imageUrl" @ready="ready" @cropper="cropper" :width="300" :height="300" ></tui-picture-cropper>
+		<tui-picture-cropper :lockRatio="true" :imageUrl="imageUrl" @ready="ready" @cropper="cropper" :width="width" :height="height" ></tui-picture-cropper>
 	</view>
 </template>
 
@@ -18,10 +18,14 @@
 				lockHeight: false, //裁剪框高度锁定
 				disableRotate: true, //是否禁用触摸旋转 组件默认是true
 				limitMove: true, //是否限制移动范围(剪裁框只能在图片内,为true不可触摸转动图片)
+				width: '',
+				height: '',
 			}
 		},
 		onLoad(options) {
 			this.pic = options.pic
+			this.width = options.width ? parseInt(options.width) : 300;
+			this.height = options.height ? parseInt(options.height) : 300;
 		},
 		methods:{
 			ready(){
@@ -32,7 +36,13 @@
 				console.log(this.imageUrl)
 				console.log(e)
 				let avatar = await this.$u.api.uploadImg(e.url)
-				uni.$emit('upload-avatar',{avatar:avatar})
+				let beforePage = this.$cross.beforePage();
+				console.log(beforePage.route);
+				if(beforePage.route == 'pages/mine/personalSetting/personalBg'){
+					this.$cross.applyPageMethod(beforePage, 'setImg', avatar);
+				}else{
+					uni.$emit('upload-avatar',{avatar:avatar})
+				}
 				this.$u.route({
 					type:'back',
 				})
