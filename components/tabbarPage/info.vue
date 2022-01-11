@@ -3,11 +3,7 @@
 		<view class="header-box">
 			<u-navbar :is-fixed="true" :isBack="false" :background="{
 				'background': '#191C3F'
-			}" :titleColor="'#FFFFFF'" :borderBottom="false">
-				<view class="info" style="color: #FFFFFF; width: 100%; display: flex; align-items: center; justify-content: center;">
-					<text>消息</text>
-					<u-badge :absolute="false" type="error" :count="allNoRead"></u-badge>
-				</view>
+			}" :titleColor="'#FFFFFF'" title="消息" :borderBottom="false">
 			</u-navbar>
 		</view>
 		<view class="middle_box">
