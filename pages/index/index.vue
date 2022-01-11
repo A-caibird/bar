@@ -90,12 +90,22 @@ export default {
 			pageloading: true,
 			contentShow: false,
 			tabExit: [1, 0, 1, 0, 1],
-			noReadNum: 0,
+			noRead: 0,
 			noticeNum: 0, //系统通知
 		};
 	},
 	computed: {
 		...mapState(['list'])
+	},
+	watch: {
+		noRead(newValue) {
+			console.log('修改noRead: ' + newValue);
+			this.setInfoCount(newValue + this.noticeNum);
+		},
+		noticeNum(newValue) {
+			console.log('修改noticeNum: ' + newValue);
+			this.setInfoCount(newValue + this.noRead);
+		}
 	},
 	beforeCreate() {
 		// #ifdef APP-PLUS
@@ -192,7 +202,7 @@ export default {
 				noRead = item.notReadNum + noRead;
 			})
 			// this.noReadNum = noRead;
-			this.setInfoCount(noRead + this.noticeNum);
+			this.noRead = noRead;
 		},
 		goInfoGift(){
 			this.$nav.navigateTo({

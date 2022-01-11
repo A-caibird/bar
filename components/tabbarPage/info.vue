@@ -218,6 +218,7 @@
 				this.chatUserList = chatUserList
 			},
 			readChat(res){
+				console.log('readChat');
 				let {chatToken,friendChatToken} = res
 				// console.log(this.chatUserList)
 				let index = this.chatUserList.findIndex(e=>{
@@ -227,6 +228,7 @@
 					this.chatUserList[index].notReadNum = 0
 					$chat.setChatUserListFromStorage(chatToken,this.chatUserList)
 				}
+				uni.$emit('information_listenr')
 			},
 		}
 	}

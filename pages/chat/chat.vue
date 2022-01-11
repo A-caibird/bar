@@ -580,8 +580,7 @@
 					this.$u.route('pages/order/yao-invited-detail',{
 						orderId
 					})
-				}
-				
+				}		
 			},
 			async tapAgreePing(item){
 				let userInfo = this.$u.deepClone(this.userInfo)
@@ -657,10 +656,20 @@
 			async tapAgreeYaoyue(item){
 				let userInfo = this.$u.deepClone(this.userInfo)
 				let friendUserInfo = this.$u.deepClone(this.friendUserInfo)
+				let res = await this.$u.api.hasVerifyAPI();
+				let hasVerified = res.data.hasVerified;
+				let hasAdult = res.data.hasAdult;
+				if(!hasVerified){
+					this.$u.toast('请先实名');
+					setTimeout(() => {
+						uni.navigateTo({
+							url: '/pages/mine/setting/certification' +
+								`?hasVerified=unverify`
+						})
+					}, 500);
+					return
+				}
 				await this.$toast.confirm('','确定要同意邀请吗？')
-				let res = await this.$u.api.hasVerifyAPI;
-				console.log(res);
-				return 
 				let {code} = await this.$u.api.agreeYaoyueApi({
 						awkwardWineId:item.awkwardWineId,
 					})
