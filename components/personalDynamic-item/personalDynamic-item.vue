@@ -21,11 +21,26 @@
 				<view class="item-personal-content">
 					<view class="content-msg">
 						<view class="text-msg"><text>{{item.content}}</text></view>
-						<view class="dynamic-image" v-if="item.imgList.length > 1">
-							<u-swiper bg-color="#191C3F" height="390" :list="item.imgList" @click="$u.route('pages/discovery/dynamic_detail',{id:item.id})"></u-swiper>
+						<view class="dynamic-image" v-if=" (item.videoUrl && item.imgList.length >= 1) || item.imgList.length > 1">
+							<swiper class="swiper_box" :indicator-dots="true" indicator-color="#CCCCCC" indicator-active-color="#FFFFFF">
+								<swiper-item v-if="item.videoUrl">
+									<u-image width="100%" height="100%" class="dy_img" :src="item.videoCover" @click="$u.route('/pages/discovery/dynamic_detail?id=' + item.id)"></u-image>
+									<image class="play_icon" src="/static/imgs/common/play_icon.png" @click="$u.route('/pages/discovery/dynamic_detail?id=' + item.id)"></image>
+								</swiper-item>
+								<block v-for="(item, index) in item.imgList" :key="index">
+									<swiper-item>
+										<u-image width="100%" height="100%" class="dy_img" :src="item" @click="$u.route('/pages/discovery/dynamic_detail?id=' + item.id)"></u-image>
+									</swiper-item>
+								</block>
+							</swiper>
+							<!-- <u-swiper bg-color="#191C3F" height="390" :list="item.imgList" @click="$u.route('pages/discovery/dynamic_detail',{id:item.id})"></u-swiper> -->
 						</view>
-						<view class="dynamic-image" v-if="item.imgList.length == 1">
-							<image :src="item.imgList[0]"  mode="aspectFill"></image>
+						<view class="dynamic-image" @tap.stop="" v-if="item.imgList.length == 1 && !item.videoUrl">
+							<u-image width="100%" height="100%" :src="item.imgList[0]" @click="$u.route('/pages/discovery/dynamic_detail?id=' + item.id)"></u-image>
+						</view>
+						<view class="dynamic-image" @tap.stop="$u.route('/pages/discovery/dynamic_detail?id=' + item.id)" v-if="item.videoUrl && item.imgList.length <= 0">
+							<u-image class="dy_img" width="100%" height="100%" :src="item.videoCover"></u-image>
+							<image class="play_icon" src="/static/imgs/common/play_icon.png"></image>
 						</view>
 					</view>
 					<view class="content-icon">
@@ -197,12 +212,33 @@
 
 					.dynamic-image {
 						width: 100%;
-						height: 390rpx;
+						height: 468.75rpx;
 						//background-color: blue;
 						margin-top: 25rpx;
-						image{
+						&>image{
 							width: 100%;
 							height: 100%;
+						}
+						position: relative;
+						.swiper_box{
+							width: 100%;
+							height: 460rpx;
+							border-radius: 20rpx;
+							overflow: hidden;
+							position: relative;
+						}
+						.dy_img{
+							border-radius: 20rpx;
+							height: 100%;
+							width: 100%;
+						}
+						.play_icon{
+							position: absolute;
+							left: 50%;
+							top: 50%;
+							transform: translate(-50%, -50%);
+							height: 120rpx;
+							width: 120rpx;
 						}
 					}
 				}
