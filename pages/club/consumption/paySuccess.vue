@@ -77,15 +77,6 @@
 			}
 			console.log('type', opt.type);
 		},
-		onBackPress(options) {
-			console.log(123213);
-			return
-			if (options.from === 'navigateBack') {
-				return false;
-			}
-			this.back(this.distance)
-			return true;
-		},
 		methods: {
 			tapGoYaoOrderList() {
 				this.$u.route({
@@ -93,28 +84,28 @@
 					url: '/pages/order/index',
 					params: {
 						goYaoOrderList: true,
-						distance: 4,
+						distance: this.distance,
 					}
 				})
 			},
 			tapGoPingOrderList() {
 				this.$u.route({
 					type: 'redirectTo',
-					url: '/pages/order/index?type=share&distance=4'
+					url: '/pages/order/index?type=share&distance=' + this.distance
 				})
 			},
-			back(delta) {
-				// this.$u.route({
-				// 	type: 'back',
-				// 	delta: delta
-				// })
+			back() {
 				this.$u.route({
-					type: 'reLaunch',
-					url: '/pages/index/index',
-					params: {
-						index: true
-					}
+					type: 'back',
+					delta: this.distance
 				})
+				// this.$u.route({
+				// 	type: 'reLaunch',
+				// 	url: '/pages/index/index',
+				// 	params: {
+				// 		index: true
+				// 	}
+				// })
 			},
 			tapGoFind() {
 				// this.$u.route({

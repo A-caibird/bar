@@ -152,6 +152,7 @@
 				this.params = params
 				this.downCallback()
 				setTimeout(() => {
+					console.log(this.pageList);
 					this.$refs.dropDown.close()
 				}, 300)
 			},

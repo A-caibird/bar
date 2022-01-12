@@ -29,7 +29,7 @@
 						<view class="form_box">
 							<common-input :disabled="true" :value="orderInfo.name" @input="orderInfo.name=$event" label="姓名"
 								placeholder="请填写您的真实姓名"></common-input>
-							<common-input :disabled="true" :value="orderInfo.phone" @input="orderInfo.phone=$event" type="number" label="联系手机号"
+							<common-input :value="form.phone" @input="form.phone=$event" type="number" label="联系手机号"
 								placeholder="请输入您的联系手机号"></common-input>
 							<uni-datetime-picker type="time" :value="data.arrivalTimeHM" hide-second="true"
 								:start="startDate" :end="endDate" return-type="timestamp" @change="arrivalTimeConfirm">
@@ -186,6 +186,9 @@
 					receptionistId: '',
 					receptionistName: '',
 					receptionistAvatar: ''
+				},
+				form:{
+					phone: '', //联系方式
 				}
 			}
 		},
@@ -230,7 +233,8 @@
 					cardTableId: this.info.seatId,//座位id
 					arrivalTime: this.data.arrivalTime,//到店时间(yyyy-MM-dd HH:mm)
 					orderId:this.orderId,
-					receptionistId: this.receptorInfo.receptionistId
+					receptionistId: this.receptorInfo.receptionistId,
+					phone: this.form.phone
 				};
 				let type = this.info.orderType=='fullAmount'?'yao-order':'ping-order'
 				let res =  await this.$u.api.changeOrderAPI(data)
@@ -243,7 +247,7 @@
 							orderId:this.orderId,
 							distance: 3,
 							type:type,
-						},
+						}
 					})
 				} else {
 					console.log(res);
@@ -307,6 +311,10 @@
 				this.canRefund = data.canRefund;
 				this.canBill = data.pingOrderViewVo.canBill;
 				this.orderInfo = data.pingOrderViewVo
+				this.receptorInfo.receptionistId = data.pingOrderViewVo.receptionistId;
+				this.receptorInfo.receptionistName = data.pingOrderViewVo.receptionistName;
+				this.receptorInfo.receptionistAvatar = data.pingOrderViewVo.receptionistAvatar;
+				this.form.phone = data.pingOrderViewVo.phone
 				// this.data.arrivalTime = this.orderInfo.arriveTime;
 				// this.data.arrivalTimeHM = this.orderInfo.arriveTime.split(' ')[1];
 				if (this.orderInfo.isJoin) {
@@ -327,6 +335,7 @@
 				this.receptorInfo.receptionistId = data.pingOrderViewVo.receptionistId;
 				this.receptorInfo.receptionistName = data.pingOrderViewVo.receptionistName;
 				this.receptorInfo.receptionistAvatar = data.pingOrderViewVo.receptionistAvatar;
+				this.form.phone = data.pingOrderViewVo.phone
 				// this.data.arrivalTime = this.orderInfo.arriveTime;
 				// this.data.arrivalTimeHM = this.orderInfo.arriveTime.split(' ')[1];
 				if (this.orderInfo.isJoin) {

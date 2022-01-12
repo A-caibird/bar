@@ -104,7 +104,7 @@
 					</view>
 				</view>
 				<view class="yaoyue-wrap" v-if="item.type==4">
-					<view class="yaoyue" @tap="tapGoPingDetail(item.orderId,item.fromId!=userInfo.chatToken)">
+					<view class="yaoyue" @tap="tapGoPingDetail(item.orderId,item.fromId==userInfo.chatToken)">
 						<view class="club-cover">
 							<image :src="item.clubCover" />
 						</view>

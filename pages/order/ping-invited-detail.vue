@@ -193,7 +193,7 @@
 				</view>
 			</view>
 			<u-gap height="20" bgColor="#20234B"></u-gap>
-			<view class="order_info">
+			<!-- <view class="order_info">
 				<common-label leftText="订单信息" :showRight="false"></common-label>
 				<view class="common_info_item">
 					<view class="item_left"> 
@@ -221,7 +221,7 @@
 					</view>
 				</view>
 			</view>
-			<u-gap height="20" bgColor="#20234B"></u-gap>
+			<u-gap height="20" bgColor="#20234B"></u-gap> -->
 			<view class="oerder_goods">
 				<common-label leftText="酒水套餐" :showRight="false"></common-label>
 				<view class="goods_box">
