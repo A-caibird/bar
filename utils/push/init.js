@@ -111,7 +111,7 @@ function handlePushReceive(msg) {
 			plus.push.createMessage(content, JSON.stringify(payload), option);
 		}
 		if(type == 'pushDynamic'){ //关注通知
-			console.log('某人点赞我的动态')
+			console.log('关注通知')
 			option.title = payload.title
 			content = payload.content
 			plus.push.createMessage(content, JSON.stringify(payload), option);
@@ -399,12 +399,13 @@ function openAPPMsg(payload){ //APP 处于关闭状态下 点击消息跳转页�
 		})
 	}
 	if(type=='pushDynamic'){
-		let pages = getCurrentPages();
-		let page = pages[pages.length - 1];
-		let route = '/'+page.route
-		let vm = page.$vm
-		console.log(route);
+		console.log('关注动态');
 		slientHandle(() => {
+			let pages = getCurrentPages();
+			let page = pages[pages.length - 1];
+			let route = '/'+page.route
+			let vm = page.$vm
+			console.log(route);
 			if(route=='/pages/index/index') {
 				vm.goAtten();
 			}else{

@@ -114,15 +114,19 @@
 					let {code} = await this.$u.api.dynamicCancelLike(this.id)
 					if(code==0) {
 						this.info.isLike = false
-						uni.$emit('dynamic-refresh',{msg:''})
+						this.refreshDynamic();
 					}
 				}else{
 					let {code} = await this.$u.api.dynamicLike(this.id)
 					if(code==0) {
 						this.info.isLike = true
-						uni.$emit('dynamic-refresh',{msg:''})
+						this.refreshDynamic();
 					}
 				}
+			},
+			refreshDynamic(){
+				uni.$emit('dynamic-refresh',{msg:''})
+				uni.$emit('dynamic-refresh-follow',{msg:''})
 			}
 		},
 		onLoad(opt) {

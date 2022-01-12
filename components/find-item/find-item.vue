@@ -190,7 +190,7 @@
 						this.info.isLike = false
 						this.info.likeNum --
 						this.$forceUpdate()
-						uni.$emit('dynamic-refresh',{msg:this.mode})
+						this.refreshDynamic();
 					}
 				}else{
 					let {code} = await this.$u.api.dynamicLike(this.info.id)
@@ -198,9 +198,13 @@
 						this.info.isLike = true
 						this.info.likeNum ++
 						this.$forceUpdate()
-						uni.$emit('dynamic-refresh',{msg:this.mode})
+						this.refreshDynamic();
 					}
 				}
+			},
+			refreshDynamic(){
+				uni.$emit('dynamic-refresh',{msg:this.mode})
+				uni.$emit('dynamic-refresh-follow',{msg:this.mode})
 			},
 			tapGoDetail(){
 				this.$u.route('/pages/discovery/dynamic_detail?id='+this.info.id)

@@ -130,6 +130,7 @@
 								if(parseInt(res.code) == 0){
 									vm.$u.toast('成功删除');
 									uni.$emit('dynamic-refresh',{msg:'dynamic-detail'})
+									uni.$emit('dynamic-refresh-follow',{msg:'dynamic-detail'})
 									setTimeout(() => {
 										uni.navigateBack({
 											delta:1
@@ -170,7 +171,8 @@
 				}
 			},
 			handleSendComment() {
-				uni.$emit('dynamic-refresh',{msg:'dynamic-detail'}) //刷新类表等其他接口
+				uni.$emit('dynamic-refresh',{msg:'dynamic-detail'})
+				uni.$emit('dynamic-refresh-follow',{msg:'dynamic-detail'})
 				this.refreshDynamic();
 			},
 			handleSendGiftSuccess(e) {

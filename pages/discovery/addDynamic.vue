@@ -189,10 +189,15 @@
 					return
 				}
 				console.log(params)
+				uni.showLoading({
+					title: '发布中'
+				})
 				this.$u.api.publishDynamic(params).then(res => {
 					var code=res.code;
+					uni.hideLoading();
 					if (parseInt(code) == 0) {
 						uni.$emit('dynamic-refresh',{msg:''})
+						uni.$emit('dynamic-refresh-follow',{msg:''})
 						this.$cross.applyPageMethod(this.$cross.beforePage(), 'goFind')
 						this.$u.toast('发布成功')
 						uni.navigateBack({
@@ -207,6 +212,7 @@
 						// })
 					}
 				}).catch(e => {
+					uni.hideLoading();
 					console.log(e);
 				})
 			},

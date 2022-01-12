@@ -213,7 +213,7 @@ export default {
 			this.$nextTick(()=>{
 				setTimeout(() => {
 					this.$refs.find.switchToAtt()
-				},50);
+				},100);
 			})
 		},
 		goInfoGift(){

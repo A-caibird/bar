@@ -116,7 +116,7 @@
 						info.isLike = false
 						info.likeNum --
 						this.$forceUpdate()
-						uni.$emit('dynamic-refresh',{msg:'myDynamic'})
+						this.refreshDynamic();
 					}
 				}else{
 					let {code} = await this.$u.api.dynamicLike(info.id)
@@ -124,10 +124,14 @@
 						info.isLike = true
 						info.likeNum ++
 						this.$forceUpdate()
-						uni.$emit('dynamic-refresh',{msg:'myDynamic'})
+						this.refreshDynamic();
 					}
 				}
 			},
+			refreshDynamic(){
+				uni.$emit('dynamic-refresh',{msg:'myDynamic'})
+				uni.$emit('dynamic-refresh-follow',{msg:'myDynamic'})
+			}
 		}
 		
 	};

@@ -2,7 +2,7 @@
 	<view class="find-page">
 		<block v-if="!pageLoading">
 			<view class="find_header_box">
-				<classify fontSize="28" bgColor="#191C3F" ref="tabs" :list="list" :current="current" @change="change"
+				<classify fontSize="28" bgColor="#191C3F" ref="tabs" :list="list" :current="swiperCurrent" @change="change"
 					:is-scroll="false" swiperWidth="750" inactiveColor="#B7B9D6" activeColor="#ffffff" :activeItemStyle="{
 						'font-size': '34rpx'
 					}"></classify>
@@ -10,14 +10,14 @@
 			<view class="find_middle_box" v-if="!pageLoading">
 				<swiper class="swiper-box" :duration="250" :current="swiperCurrent" @change="animationfinish">
 					<swiper-item class="swiper-item">
-						<dynamic-list @shareTap="$emit('shareTap')" ref="follow-dynamic-list" :i="0" :index="swiperCurrent" mode="follow"
+						<dynamic-list2 @shareTap="$emit('shareTap')" ref="follow-dynamic-list" :index="swiperCurrent" 
 							@showYaoyue="handleShowYaoyue" @showPing="handleShowPing" :showPercent="!isAppleAudit"
 							@oepnComment="$emit('openDynamicComment',$event)" @oepnGift="$emit('oepnGift',$event)">
-						</dynamic-list>
+						</dynamic-list2>
 					</swiper-item>
 					<swiper-item class="swiper-item">
 						<view style="height: 100%;">
-							<dynamic-list @shareTap="$emit('shareTap')" ref="nearby-dynamic-list" :i="1" :index="swiperCurrent" mode="nearby"
+							<dynamic-list @shareTap="$emit('shareTap')" ref="nearby-dynamic-list" :index="swiperCurrent"
 								@showYaoyue="handleShowYaoyue" @showPing="handleShowPing" :showPercent="!isAppleAudit"
 								@oepnComment="$emit('openDynamicComment',$event)" @oepnGift="$emit('oepnGift',$event)">
 							</dynamic-list>
@@ -55,6 +55,7 @@
 	import findShare from '@/components/find-share/find-share.vue';
 	import findShareList from '@/components/find-share-list/find-share-list.vue';
 	import dynamicList from '@/components/dynamic-list/dynamic-list.vue';
+	import dynamicList2 from '@/components/dynamic-list/list2.vue';
 	import giftBoard from '@/components/gift-board/gift-board.vue';
 	import invite from '@/components/pop/invite.vue';
 	import askward from '@/components/pop/awkward-tips.vue';
@@ -71,6 +72,7 @@
 			invite,
 			askward,
 			dynamicList,
+			dynamicList2,
 			findShareList,
 			giftBoard,
 			giftAnimation,
@@ -310,10 +312,12 @@
 			},
 			switchToAtt(){
 				this.swiperCurrent = 0;
-				if(this.$refs['follow-dynamic-list']){
-					let ref = this.$refs['follow-dynamic-list']
-					ref.refreshScrll()
-				}
+				this.$nextTick(() => {
+					if(this.$refs['follow-dynamic-list']){
+						let ref = this.$refs['follow-dynamic-list']
+						ref.refreshScrll()
+					}
+				})
 			},
 
 			// tab栏切换
@@ -327,7 +331,6 @@
 				}
 			}) {
 				this.swiperCurrent = current;
-				this.current = current;
 			},
 
 		}
