@@ -91,6 +91,7 @@
 				this.getNoticeCount();
 			})
 			uni.$on('refresh_chat', () => {
+				this.chatToken = app.globalData.userInfo?.chatToken
 				this.chatUserList = $chat.getChatUserListFromStorage(this.chatToken)
 			});
 			if(getApp().globalData.authorized){
