@@ -74,8 +74,7 @@
 						} else {
 							this.selectedCoupon = detail
 						}
-					} else {
-						this.selectedCoupon = {};
+						break;
 					}
 				}
 				this.pageList = pageList

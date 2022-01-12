@@ -92,14 +92,15 @@
 					type: 'redirectTo',
 					url: '/pages/order/index',
 					params: {
-						goYaoOrderList: true
+						goYaoOrderList: true,
+						distance: 4,
 					}
 				})
 			},
 			tapGoPingOrderList() {
 				this.$u.route({
 					type: 'redirectTo',
-					url: '/pages/order/index?type=share'
+					url: '/pages/order/index?type=share&distance=4'
 				})
 			},
 			back(delta) {

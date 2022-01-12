@@ -1,7 +1,9 @@
 <template>
 	<view class="container">
 		<view class="header-box">
-			<u-navbar back-icon-color="#FFFFFF" :title="title" title-size="36" titleColor="#FFFFFF" :background="{
+			<u-navbar 
+				:customBack="backEvent"
+				back-icon-color="#FFFFFF" :title="title" title-size="36" titleColor="#FFFFFF" :background="{
 						'background': '#191C3F'
 					}"
 			 :border-bottom="false">
@@ -47,7 +49,7 @@
 					
 				yaoOrderWaitPayNum:0,
 				pingOrderWaitPayNum:0,
-				
+				distance: 0,
 			}
 		},
 		onLoad: function(options) {
@@ -60,6 +62,9 @@
 			} else {
 				this.mode = 'common'
 				this.getNotPayInviteOrderSize()
+			}
+			if(options.distance){
+				this.distance = parseInt(options.distance);
 			}
 		},
 		onUnload() {
@@ -80,6 +85,15 @@
 			},
 		},
 		methods: {
+			backEvent(){
+				let distance = this.distance;
+				if(distance <= 0){
+					distance = 1;
+				}
+				uni.navigateBack({
+					delta: distance
+				})
+			},
 			refreshOrderWaitPaySize(){
 				if(this.mode == 'share') {
 					this.getNotPayJoinOrderSize()
