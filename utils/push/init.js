@@ -90,37 +90,37 @@ function handlePushReceive(msg) {
 			console.log('踢掉')
 			option.title = payload.title
 			content = payload.content
-			plus.push.createMessage(content,  JSON.stringify(payload), option);
+			plus.push.createMessage(content,JSON.stringify(payload), option);
 		}
 		if (type == 'endOrder') {//清台
 			console.log('清台')
 			option.title = payload.title
 			content = payload.content
-			plus.push.createMessage(content,  JSON.stringify(payload), option);
+			plus.push.createMessage(content,JSON.stringify(payload), option);
 		}
 		if (type == 'comment') {//某人评论了我的动态
 			console.log('某人评论了我的动态')
 			option.title = payload.title
 			content = payload.content
-			plus.push.createMessage(content,  JSON.stringify(payload), option);
+			plus.push.createMessage(content, JSON.stringify(payload), option);
 		}
 		if(type == 'like'){ //点赞通知
 			console.log('某人点赞我的动态')
 			option.title = payload.title
 			content = payload.content
-			plus.push.createMessage(content,  JSON.stringify(payload), option);
+			plus.push.createMessage(content, JSON.stringify(payload), option);
 		}
 		if(type == 'pushDynamic'){ //关注通知
 			console.log('某人点赞我的动态')
 			option.title = payload.title
 			content = payload.content
-			plus.push.createMessage(content,  JSON.stringify(payload), option);
+			plus.push.createMessage(content, JSON.stringify(payload), option);
 		}
 		if(type == 'joinOrder'){ //加入拼享
 			console.log('加入拼享')
 			option.title = payload.title
 			content = payload.content
-			plus.push.createMessage(content,  JSON.stringify(payload), option);
+			plus.push.createMessage(content,JSON.stringify(payload), option);
 		}
 		if(type == 'customerChat'){
 			console.log('客服')
