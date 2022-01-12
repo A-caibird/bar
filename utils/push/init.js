@@ -126,7 +126,7 @@ function handlePushReceive(msg) {
 			console.log('客服')
 			option.title = payload.title
 			content = payload.content
-			plus.push.createMessage(content,  JSON.stringify(payload), option);
+			plus.push.createMessage(content, JSON.stringify(payload), option);
 		}
 	}
 }
@@ -271,10 +271,12 @@ function handlePushClick(msg) {
 			})
 		}
 		if(type == 'customerChat'){
-			console.log('客服')
-			let id,avatar,nickname;
+			console.log('客服click')
+			console.log(payload)
+			let{senderId, avatar, nickname} = payload;
+			if(route=='/pages/customerRoom/index')return;
 			uni.navigateTo({
-				url: `/pages/customerRoom/index?id=${id}&avatar=${avatar}&nickname=${nickname}`
+				url: `/pages/customerRoom/index?id=${senderId}&avatar=${avatar}&nickname=${nickname}`
 			})
 		}
 	}else{
@@ -421,11 +423,11 @@ function openAPPMsg(payload){ //APP 处于关闭状态下 点击消息跳转页�
 		})
 	}
 	if(type == 'customerChat'){
-		console.log('客服')
-		let id,avatar,nickname;
+		console.log('客服click')
+		let{senderId, avatar, nickname} = payload;
 		slientHandle(() => {
 			uni.navigateTo({
-				url: `/pages/customerRoom/index?id=${id}&avatar=${avatar}&nickname=${nickname}`
+				url: `/pages/customerRoom/index?id=${senderId}&avatar=${avatar}&nickname=${nickname}`
 			})
 		})
 	}
