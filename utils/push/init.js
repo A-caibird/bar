@@ -57,42 +57,36 @@ function handlePushReceive(msg) {
 					return 
 				}
 			}
-			// console.log(payload)
 			option.title = payload.nickName
 			option.icon = payload.avatar
 			content = payload.content
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
 		}
 		if (type == 'attention') {//某人关注我
-			// console.log(payload)
 			console.log('关注我')
 			option.title = payload.title
 			content = payload.content
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
 		}
 		if (type == 'orderInviteSuccess') {//被邀请者同意加入了我的邀约订单
-			// console.log(payload)
 			console.log('同意邀约')
 			option.title = payload.title
 			content = payload.content
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
 		}
 		if (type == 'quitInviteOrder') {//被邀请者退出了我的邀约订单
-			// console.log(payload)
 			console.log('退出邀约')
 			option.title = payload.title
 			content = payload.content
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
 		}
 		if (type == 'quitJoinOrder') {//拼享者退出了我的拼享订单
-			// console.log(payload)
 			console.log('退出拼享')
 			option.title = payload.title
 			content = payload.content
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
 		}
 		if (type == 'kickOut') {//我作为拼享者被爬梯主（拼享订单发起者）踢掉
-			// console.log(payload)
 			console.log('踢掉')
 			option.title = payload.title
 			content = payload.content
@@ -100,13 +94,11 @@ function handlePushReceive(msg) {
 		}
 		if (type == 'endOrder') {//清台
 			console.log('清台')
-			// console.log(payload)
 			option.title = payload.title
 			content = payload.content
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
 		}
 		if (type == 'comment') {//某人评论了我的动态
-			// console.log(payload)
 			console.log('某人评论了我的动态')
 			option.title = payload.title
 			content = payload.content
@@ -114,6 +106,24 @@ function handlePushReceive(msg) {
 		}
 		if(type == 'like'){ //点赞通知
 			console.log('某人点赞我的动态')
+			option.title = payload.title
+			content = payload.content
+			plus.push.createMessage(content,  JSON.stringify(payload), option);
+		}
+		if(type == 'pushDynamic'){ //关注通知
+			console.log('某人点赞我的动态')
+			option.title = payload.title
+			content = payload.content
+			plus.push.createMessage(content,  JSON.stringify(payload), option);
+		}
+		if(type == 'joinOrder'){ //加入拼享
+			console.log('加入拼享')
+			option.title = payload.title
+			content = payload.content
+			plus.push.createMessage(content,  JSON.stringify(payload), option);
+		}
+		if(type == 'customerChat'){
+			console.log('客服')
 			option.title = payload.title
 			content = payload.content
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
@@ -235,10 +245,36 @@ function handlePushClick(msg) {
 			})
 		}
 		if(type=='like') {
-			console.log(payload)
 			let {id} =  payload
 			uni.navigateTo({
 				url: `/pages/discovery/dynamic_detail?id=${id}`
+			})
+		}
+		if(type=='pushDynamic'){
+			let pages = getCurrentPages();
+			let page = pages[pages.length - 1];
+			let route = '/'+page.route
+			let vm = page.$vm
+			console.log(route);
+			if(route=='/pages/index/index') {
+				vm.goAtten();
+			}else{
+				uni.reLaunch({
+					url: '/pages/index/index?goAtten=true'
+				})
+			}
+		}
+		if(type == 'joinOrder'){
+			let {id} =  payload
+			uni.navigateTo({
+				url: `/pages/order/spellBill?orderId=${id}&type=creater`
+			})
+		}
+		if(type == 'customerChat'){
+			console.log('客服')
+			let id,avatar,nickname;
+			uni.navigateTo({
+				url: `/pages/customerRoom/index?id=${id}&avatar=${avatar}&nickname=${nickname}`
 			})
 		}
 	}else{
@@ -360,10 +396,42 @@ function openAPPMsg(payload){ //APP 处于关闭状态下 点击消息跳转页�
 			})
 		})
 	}
-	
+	if(type=='pushDynamic'){
+		let pages = getCurrentPages();
+		let page = pages[pages.length - 1];
+		let route = '/'+page.route
+		let vm = page.$vm
+		console.log(route);
+		slientHandle(() => {
+			if(route=='/pages/index/index') {
+				vm.goAtten();
+			}else{
+				uni.reLaunch({
+					url: '/pages/index/index?goAtten=true'
+				})
+			}
+		})
+	}
+	if(type == 'joinOrder'){
+		let {id} =  payload
+		slientHandle(() => {
+			uni.navigateTo({
+				url: `pages/order/spellBill?orderId=${id}&type=creater`
+			})
+		})
+	}
+	if(type == 'customerChat'){
+		console.log('客服')
+		let id,avatar,nickname;
+		slientHandle(() => {
+			uni.navigateTo({
+				url: `/pages/customerRoom/index?id=${id}&avatar=${avatar}&nickname=${nickname}`
+			})
+		})
+	}
 }
 
-function slientHandle(callback,time = 2000){
+function slientHandle(callback,time = 1000){
 	setTimeout(() => {
 		callback();
 	}, time)

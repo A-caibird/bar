@@ -149,6 +149,9 @@ export default {
 			this.pageloading = false;
 		}else if(opt&&opt.index){
 			this.pageloading = false;
+		}else if(opt&&opt.goAtten){
+			this.goAtten();
+			this.pageloading = false;
 		}else{
 			this.pageloading = true;
 		}
@@ -204,6 +207,15 @@ export default {
 			// this.noReadNum = noRead;
 			this.noRead = noRead;
 		},
+		goAtten(){
+			this.current = 1;
+			this.tabExit[this.current] = 1;
+			this.$nextTick(()=>{
+				setTimeout(() => {
+					this.$refs.find.switchToAtt()
+				},50);
+			})
+		},
 		goInfoGift(){
 			this.$nav.navigateTo({
 				url: '/pages/info/gift'
@@ -236,7 +248,6 @@ export default {
 		goClubList(){
 			this.current = 0
 			this.$refs.home.scrollToClubList()
-			
 		},
 		goWallet(){
 			this.current = 4

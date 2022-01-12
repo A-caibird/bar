@@ -258,12 +258,10 @@
 					}
 				}
 			}
-
-			
-			
 			.attention-btn {
 				width: 180rpx;
-				
+				position: relative;
+				z-index: 10;
 				padding-top: 50rpx;
 				padding-right: 30rpx;
 				.btn-attench0{

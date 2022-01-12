@@ -91,6 +91,9 @@
 		
 		},
 		methods:{
+			refreshScrll(){
+				this.mescroll.resetUpScroll()
+			},
 			searchChange(e){
 				this.params.searchKey = e;
 				this.mescroll.resetUpScroll()

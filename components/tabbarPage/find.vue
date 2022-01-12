@@ -301,6 +301,19 @@
 			},
 			switchToNearby() { //显示附近动态
 				this.swiperCurrent = 1;
+				this.$nextTick(() => {
+					if(this.$refs['nearby-dynamic-list']){
+						let ref = this.$refs['nearby-dynamic-list'];
+						ref.searchChange("");
+					}
+				})
+			},
+			switchToAtt(){
+				this.swiperCurrent = 0;
+				if(this.$refs['follow-dynamic-list']){
+					let ref = this.$refs['follow-dynamic-list']
+					ref.refreshScrll()
+				}
 			},
 
 			// tab栏切换
