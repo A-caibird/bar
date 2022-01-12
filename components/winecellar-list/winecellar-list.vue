@@ -17,9 +17,9 @@
 						</view>
 						<view class="order-wine-num">
 							<text class="title">剩余酒量：</text>
-							<text class="text-content">
+							<view class="text-content">
 								<block v-for="wine,wineIndex in item.saveWineItemList">{{wine.commodity.name}}: {{wine.surplusNum}}瓶<block v-if="wineIndex!=item.saveWineItemList.length-1">、</block></block>
-							</text>
+							</view>
 						</view>
 					</view>
 					<template v-if="!item.canTake">
@@ -125,10 +125,11 @@
 					}
 					.text-content {
 						@include ellipsis();
+						width: 360rpx;
 						font-size: 26rpx; 
 						color: #FFFFFF;
-						flex: 1;
-						min-width: 0;
+						// flex: 1;
+						// min-width: 0;
 					}
 				}
 			}
