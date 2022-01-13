@@ -45,9 +45,9 @@
 				</view>
 				
 				<view class="yaoyue-wrap" v-if="item.type==2" >
-					<view class="yaoyue" @tap="tapGoYaodDetail(item.orderId,item.fromId==userInfo.chatToken)">
+					<view class="yaoyue" @tap="tapGoYaodDetail(item.orderId)">
 						<view class="club-cover">
-							<image :src="item.clubCover" @tap.stop="tapGoYaodDetail(item.orderId,item.fromId==userInfo.chatToken)"/>
+							<image :src="item.clubCover"/>
 						</view>
 						<view class="order-info">
 							<view class="club-name">
@@ -75,9 +75,9 @@
 				</view>
 			
 				<view class="yaoyue-wrap" v-if="item.type==3">
-					<view class="yaoyue" @tap="tapGoPingDetail(item.orderId,item.fromId==userInfo.chatToken)">
+					<view class="yaoyue" @tap="tapGoPingDetail(item.orderId)">
 						<view class="club-cover">
-							<image :src="item.clubCover"  @tap.stop="tapGoPingDetail(item.orderId,item.fromId==userInfo.chatToken)"/>
+							<image :src="item.clubCover"/>
 						</view>
 						<view class="order-info">
 							<view class="club-name">
@@ -104,7 +104,7 @@
 					</view>
 				</view>
 				<view class="yaoyue-wrap" v-if="item.type==4">
-					<view class="yaoyue" @tap="tapGoPingDetail(item.orderId,item.fromId==userInfo.chatToken)">
+					<view class="yaoyue" @tap="tapGoPingDetail(item.orderId)">
 						<view class="club-cover">
 							<image :src="item.clubCover" />
 						</view>
@@ -557,30 +557,15 @@
 				return list
 			},
 			
-			tapGoPingDetail(orderId,isCreater){
-				console.log(orderId)
-				if(isCreater) {
-					this.$u.route('/pages/order/ping-create-detail', {
-						orderId
-					})
-				} else {
-					this.$u.route('/pages/order/ping-invited-detail', {
-						orderId
-					})
-				}
-				
-				
+			tapGoPingDetail(orderId){
+				this.$u.route('/pages/order/ping-create-detail', {
+					orderId
+				})
 			},
-			tapGoYaodDetail(orderId,isCreater){
-				if(isCreater) {
-					this.$u.route('pages/order/yao-create-detail',{
-						orderId
-					})
-				} else {
-					this.$u.route('pages/order/yao-invited-detail',{
-						orderId
-					})
-				}		
+			tapGoYaodDetail(orderId){
+				this.$u.route('pages/order/yao-create-detail',{
+					orderId
+				})	
 			},
 			async tapAgreePing(item){
 				let userInfo = this.$u.deepClone(this.userInfo)

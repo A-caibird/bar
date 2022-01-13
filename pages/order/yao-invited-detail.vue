@@ -29,12 +29,12 @@
 				</view>
 			</block>
 			
-			<view class="club_info">
+			<view class="club_info" @tap="goClub">
 				<view class="club_img" v-if="clubInfo.bannerList.length > 1">
-					<u-swiper :list="clubInfo.bannerList" height="435" bgColor="#191C3F" @click="$u.throttle(previewImgList(clubInfo.bannerList,$event,key=''))"></u-swiper>
+					<u-swiper :list="clubInfo.bannerList" height="435" bgColor="#191C3F" @click="$u.throttle(goClub)"></u-swiper>
 				</view>
 				<view class="club_img" v-if="clubInfo.bannerList.length == 1">
-					<image :src="clubInfo.bannerList[0]" mode="aspectFill" @click="$u.throttle(previewImg(clubInfo.bannerList[0]))"></image>
+					<image :src="clubInfo.bannerList[0]" mode="aspectFill"></image>
 				</view>
 				<view class="info_box">
 					<view class="first_line">
@@ -74,9 +74,9 @@
 			</view>
 			<view class="order_club">
 				<view class="user-list">
-					<view class="user-list-item">
+					<view class="user-list-item" @tap="$u.throttle(goInfo)">
 						<text class="title">下单人：</text>
-						<image class="avatar" @tap="$u.throttle(previewImg(orderInfo.sponsorAvatar))" :src="orderInfo.sponsorAvatar"></image>
+						<image class="avatar" :src="orderInfo.sponsorAvatar"></image>
 						<text class="name">{{orderInfo.name}}</text>
 					</view>
 					<view class="user-list-item">
@@ -263,6 +263,16 @@
 			uni.$off('yao-order-detail-refresh',this.load)
 		},
 		methods:{
+			goInfo(){
+				this.$u.route('/pages/mine/dynamic/myDynamic',{
+					id: this.clubInfo.clubId
+				});
+			},
+			goClub(){
+				this.$u.route('/pages/club/detail', {
+					id: this.clubInfo.clubId
+				})
+			},
 			async tapQuitYao(){
 				await this.$toast.confirm('','确定要退出邀约？')
 				let {code} = await this.$u.api.quitInviteOrderApi({

@@ -27,12 +27,12 @@
 				<text style="font-weight: 500;margin-left: 16rpx;">已完成</text>
 				<text style="font-size: 26rpx;">(欢迎下次继续光临本店)</text>
 			</view>
-			<view class="club_info">
+			<view class="club_info" @tap="$u.throttle(goClub)">
 				<view class="club_img" v-if="clubInfo.bannerList.length > 1">
-					<u-swiper :list="clubInfo.bannerList" height="435" bgColor="#191C3F" @click="$u.throttle(previewImg(clubInfo.bannerList[$event]))"></u-swiper>
+					<u-swiper :list="clubInfo.bannerList" height="435" bgColor="#191C3F" @click="$u.throttle(goClub)"></u-swiper>
 				</view>
 				<view class="club_img" v-if="clubInfo.bannerList.length == 1">
-					<image :src="clubInfo.bannerList[0]" mode="aspectFill" @click="$u.throttle(previewImg(clubInfo.bannerList[0]))"></image>
+					<image :src="clubInfo.bannerList[0]" mode="aspectFill"></image>
 				</view>
 				<view class="info_box">
 					<view class="first_line">
@@ -45,7 +45,7 @@
 								<image src="@/static/imgs/common/kefu.png"></image>
 								<text>客服</text>
 							</view> -->
-							<view class="common_btn" @tap="callPhone">
+							<view class="common_btn" @tap.stop="callPhone">
 								<u-icon size="32" name="phone" color="#FFFFFF"></u-icon>
 								<text>电话</text>
 							</view>
@@ -83,9 +83,9 @@
 			<u-gap height="10" bgColor="#20234B"></u-gap>
 			<view class="order_club">
 				<view class="user-list">
-					<view class="user-list-item">
+					<view class="user-list-item" @tap="$u.throttle(goInfo)">
 						<text class="title">下单人：</text>
-						<image class="avatar" @tap="$u.throttle(previewImg(orderInfo.sponsorAvatar))" :src="orderInfo.sponsorAvatar"></image>
+						<image class="avatar" :src="orderInfo.sponsorAvatar"></image>
 						<text class="name">{{orderInfo.name}}</text>
 					</view>
 					<view class="user-list-item">
@@ -118,30 +118,6 @@
 						<text style="color: #FFFFFF;">{{orderInfo.cardTableName}} 卡台</text>
 					</view>
 				</view>
-				<!-- <view class="common_info_item" style="padding: 20rpx 0;">
-					<view class="item_left"> 
-						<text style="color: #9292BA;">下单人：</text> 
-					</view>
-					<view class="item_right">
-						<view style="display: flex;align-items: center;">
-							<text style="color: #FFFFFF;margin-right: 20rpx;">{{orderInfo.name}}</text>
-							<image @tap="$u.throttle(previewImg(orderInfo.sponsorAvatar))" style="width: 80rpx;height: 80rpx;border-radius: 50%;" :src="orderInfo.sponsorAvatar"></image>
-						</view>
-					</view>
-				</view>
-				<view class="common_info_item" style="padding: 20rpx 0;">
-					<view class="item_left"> 
-						<text style="color: #9292BA;">接待人：</text> 
-					</view>
-					<view class="item_right">
-						<view style="display: flex;align-items: center;">
-							<text style="color: #FFFFFF;margin-right: 20rpx;">{{orderInfo.receptionistName}}</text>
-							<image @tap="$u.throttle(previewImg(orderInfo.receptionistAvatar))" style="width: 80rpx;height: 80rpx;border-radius: 50%;" :src="orderInfo.receptionistAvatar"></image>
-						</view>
-					</view>
-				</view> -->
-			
-			
 				<view class="textarea-info-item">
 					<view class="left">
 						<text >备注要求：</text>
@@ -171,44 +147,46 @@
 				</view>
 			</view>
 			<u-gap height="20" bgColor="#20234B"></u-gap>
-			<view class="order_info">
-				<common-label leftText="订单信息" :showRight="false"></common-label>
-				<view class="common_info_item">
-					<view class="item_left"> 
-						<text style="color: #9292BA;">订单编号：</text> 
+			<block v-if="orderInfo.isCreator">
+				<view class="order_info">
+					<common-label leftText="订单信息" :showRight="false"></common-label>
+					<view class="common_info_item">
+						<view class="item_left"> 
+							<text style="color: #9292BA;">订单编号：</text> 
+						</view>
+						<view class="item_right">
+							<text style="color: #FFFFFF; font-size: 28;">{{orderInfo.sn}}</text>
+							<view class="copy_btn" @tap="copyClipvoard(orderInfo.sn,'订单编号已复制')"> <text>复制</text> </view>
+						</view>
 					</view>
-					<view class="item_right">
-						<text style="color: #FFFFFF; font-size: 28;">{{orderInfo.sn}}</text>
-						<view class="copy_btn" @tap="copyClipvoard(orderInfo.sn,'订单编号已复制')"> <text>复制</text> </view>
+					<view class="common_info_item">
+						<view class="item_left"> 
+							<text style="color: #9292BA;">核销码：</text> 
+						</view>
+						<view class="item_right">
+							<text style="color: #FFFFFF; font-size: 28;">{{orderInfo.code}}</text>
+							<view class="copy_btn" @tap="$u.debounce(getQrCode, 600, true)"> <text>核销</text> </view>
+						</view>
+					</view>
+					<view class="common_info_item">
+						<view class="item_left"> 
+							<text style="color: #9292BA;">下单时间：</text> 
+						</view>
+						<view class="item_right">
+							<text style="color: #FFFFFF;">{{orderInfo.orderTime}}</text>
+						</view>
+					</view>
+					<view class="common_info_item">
+						<view class="item_left"> 
+							<text style="color: #9292BA;">手机号：</text> 
+						</view>
+						<view class="item_right">
+							<text style="color: #FFFFFF;">{{orderInfo.phone}}</text>
+						</view>
 					</view>
 				</view>
-				<view class="common_info_item" v-if="orderInfo.isCreator">
-					<view class="item_left"> 
-						<text style="color: #9292BA;">核销码：</text> 
-					</view>
-					<view class="item_right">
-						<text style="color: #FFFFFF; font-size: 28;">{{orderInfo.code}}</text>
-						<view class="copy_btn" @tap="$u.debounce(getQrCode, 600, true)"> <text>核销</text> </view>
-					</view>
-				</view>
-				<view class="common_info_item">
-					<view class="item_left"> 
-						<text style="color: #9292BA;">下单时间：</text> 
-					</view>
-					<view class="item_right">
-						<text style="color: #FFFFFF;">{{orderInfo.orderTime}}</text>
-					</view>
-				</view>
-				<view class="common_info_item">
-					<view class="item_left"> 
-						<text style="color: #9292BA;">手机号：</text> 
-					</view>
-					<view class="item_right">
-						<text style="color: #FFFFFF;">{{orderInfo.phone}}</text>
-					</view>
-				</view>
-			</view>
-			<u-gap height="20" bgColor="#20234B"></u-gap>
+				<u-gap height="20" bgColor="#20234B"></u-gap>
+			</block>
 			<view class="oerder_goods">
 				<common-label leftText="酒水套餐" :showRight="false"></common-label>
 				<view class="goods_box">
@@ -228,36 +206,52 @@
 				</view>
 			</view>
 		</view>
-		<view class="foot_box" v-if="orderInfo.status=='paying'">
-			<view class="common_btn" @tap="tapCancel"> <text>取消订单</text> </view>
-			<view class="common_btn color" @tap="$u.throttle($u.route('/pages/club/consumption/payPage',{allAmount:orderInfo.totalAmount,orderId:orderId,type:'yao-order'}))"> <text>去付款</text> </view>
-		</view>
-		<view class="foot_box" v-if="orderInfo.status=='noShop'">
-			<view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view>
-			<!-- <view class="common_btn" @tap="$u.throttle(tapRefund)" v-if="canRefund"> <text>退款</text> </view> -->
-			<view class="common_btn" @tap="$u.throttle(tapGoYaoyue)"> <text>去邀约</text> </view>
-			<view class="common_btn color" @tap="tapArrive"> <text>确认到店</text> </view>
-		</view>
-		<view class="foot_box" v-if="orderInfo.status=='arrived'">
-			<view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view>
-			<view class="common_btn"  v-if="orderInfo.canFetch " @tap="$u.throttle(tapFetchWIne)"> <text>取酒</text> </view>
-			<view class="common_btn" @tap="$u.throttle(tapGoYaoyue)"> <text>去邀约</text> </view>
-			<view class="common_btn color" @tap="$u.throttle(tapGoAddWine)"> <text>加单酒水</text> </view>
-		</view>
-		<view class="foot_box" v-if="orderInfo.status=='comment'">
-			<view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view>
-			<view class="common_btn color" @tap="$u.throttle($u.route('/pages/order/evaluation',{orderId:orderId}))"> <text>我要评价</text> </view>
-		</view>
-		<view class="foot_box" v-if="orderInfo.status=='complete'">
-			<view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view>
-			<!-- <view class="common_btn" @tap="tapDelete"> <text>删除</text> </view> -->
-		</view>
-		<view class="foot_box" v-if="orderInfo.status=='cancel'">
-			<!-- <view class="common_btn" @tap="tapDelete"> <text>删除</text> </view> -->
-		</view>
-		<view class="foot_box" v-if="orderInfo.status=='refund'">
-			<!-- <view class="common_btn" @tap="tapDelete"> <text>删除</text> </view> -->
-		</view>
+		<block v-if="orderInfo.isCreator">
+			<view class="foot_box" v-if="orderInfo.status=='paying'">
+				<view class="common_btn" @tap="tapCancel"> <text>取消订单</text> </view>
+				<view class="common_btn color" @tap="$u.throttle($u.route('/pages/club/consumption/payPage',{allAmount:orderInfo.totalAmount,orderId:orderId,type:'yao-order'}))"> <text>去付款</text> </view>
+			</view>
+			<view class="foot_box" v-if="orderInfo.status=='noShop'">
+				<view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view>
+				<!-- <view class="common_btn" @tap="$u.throttle(tapRefund)" v-if="canRefund"> <text>退款</text> </view> -->
+				<view class="common_btn" @tap="$u.throttle(tapGoYaoyue)"> <text>去邀约</text> </view>
+				<view class="common_btn color" @tap="tapArrive"> <text>确认到店</text> </view>
+			</view>
+			<view class="foot_box" v-if="orderInfo.status=='arrived'">
+				<view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view>
+				<view class="common_btn"  v-if="orderInfo.canFetch " @tap="$u.throttle(tapFetchWIne)"> <text>取酒</text> </view>
+				<view class="common_btn" @tap="$u.throttle(tapGoYaoyue)"> <text>去邀约</text> </view>
+				<view class="common_btn color" @tap="$u.throttle(tapGoAddWine)"> <text>加单酒水</text> </view>
+			</view>
+			<view class="foot_box" v-if="orderInfo.status=='comment'">
+				<view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view>
+				<view class="common_btn color" @tap="$u.throttle($u.route('/pages/order/evaluation',{orderId:orderId}))"> <text>我要评价</text> </view>
+			</view>
+			<view class="foot_box" v-if="orderInfo.status=='complete'">
+				<view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view>
+				<!-- <view class="common_btn" @tap="tapDelete"> <text>删除</text> </view> -->
+			</view>
+			<view class="foot_box" v-if="orderInfo.status=='cancel'">
+				<!-- <view class="common_btn" @tap="tapDelete"> <text>删除</text> </view> -->
+			</view>
+			<view class="foot_box" v-if="orderInfo.status=='refund'">
+				<!-- <view class="common_btn" @tap="tapDelete"> <text>删除</text> </view> -->
+			</view>
+		</block>
+		<block v-else>
+			<block v-if="orderInfo.isJoin">
+				<view class="foot_box" v-if="orderInfo.status=='noShop'">
+					<view class="common_btn color" @tap="$u.throttle(tapQuitYao)"> <text>退出邀约</text> </view>
+				</view>
+				<view class="foot_box" v-if="orderInfo.status=='arrived'">
+					<view class="common_btn color" @tap="$u.throttle(tapQuitYao)"> <text>退出邀约</text> </view>
+					<view class="common_btn color" @tap="$u.throttle(tapGoAddWine)"> <text>加单酒水</text> </view>
+				</view>
+				<view class="foot_box" v-if="orderInfo.status=='comment'">
+					<view class="common_btn color" @tap="$u.throttle($u.route('/pages/order/evaluation',{orderId:orderId}))"> <text>我要评价</text> </view>
+				</view>
+			</block>
+		</block>
 	</view>
 </template>
 
@@ -293,6 +287,14 @@
 			uni.$off('fetch-wine',this.load)
 		},
 		methods:{
+			goInfo(){
+				this.$u.route('/pages/mine/personalSetting/personalSetting');
+			},
+			goClub(){
+				this.$u.route('/pages/club/detail', {
+					id: this.clubInfo.clubId
+				})
+			},
 			serviceTap(){
 				let clubId = this.clubInfo.clubId;
 				this.$u.api.clubServiceAPI(clubId).then(res => {
@@ -335,6 +337,19 @@
 					orderId:this.orderId,
 				})
 			},
+			// 退出邀约
+			async tapQuitYao(){
+				await this.$toast.confirm('','确定要退出邀约？')
+				let {code} = await this.$u.api.quitInviteOrderApi({
+					inviteId:this.inviteId
+				})
+				if(code==0) {
+					this.$toast.text('退出成功！')
+					uni.$emit('order-list-refresh')
+					this.load()
+				}
+			},
+			// 加单酒水
 			tapGoAddWine(){
 				this.$u.route('/pages/order/add-wine',{
 					orderId:this.orderId,
