@@ -50,7 +50,7 @@
 			:mid-button="true"
 			@change="changeHandle"
 		></selfTabbar>
-		<add-dynamic ref="addDynamic" @goClubList="goClubList" :bottomHeight="bottomHeight"></add-dynamic>
+		<add-dynamic ref="addDynamic" @goDynamic="goFind" @joinPingTap="goPing" @goClubList="goClubList" :bottomHeight="bottomHeight"></add-dynamic>
 		<dynamic-comment ref="dynamicComment" @sendComment="$refs.find.handleSendComment($event)"></dynamic-comment>
 		<dynamic-gift ref="dynamicGift" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @openPay="openPayhandle" @sendGiftSuccess="$refs.find.handleSendGiftSuccess($event)"></dynamic-gift>
 		<dynamic-gift-edit ref="dynamicGiftEdit" @confirm="$refs.dynamicGift.setSendNum($event)"></dynamic-gift-edit>

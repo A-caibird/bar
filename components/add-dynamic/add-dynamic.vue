@@ -19,7 +19,7 @@
 			v-if="popShow"
 			title="拼享提醒" 
 			content="您当前没有订单，请先在酒吧下单后邀约人一起拼享订单吧" 
-			cancelText="等等再下单" confirmText="去下订单"
+			cancelText="加入拼享" confirmText="去下订单"
 			:isMask="true"
 			@cancel="popCancelTap"
 			@confirm="popConfirmTap"
@@ -49,6 +49,7 @@
 		methods:{
 			popCancelTap(){
 				this.close();
+				this.$emit('joinPingTap')
 			},
 			popConfirmTap(){
 				this.close();
@@ -61,9 +62,19 @@
 				this.show = false
 			},
 			tapGoClub(){
-				// this.show = false
-				// this.$emit('goClubList')
-				this.popShow = true;
+				this.$u.api.hasPingOrderAPI().then(res => {
+					console.log(res);
+					let result = res.data.has;
+					if(result){
+						this.close();
+						this.$emit('goDynamic');
+					}else{
+						this.popShow = true;
+					}
+				}).catch(e => {
+					console.log(e);
+					this.popShow = true;
+				})
 			},
 			open(){
 				this.show = true
