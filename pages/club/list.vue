@@ -56,7 +56,8 @@
 				},
 				url: '/api/club/list',
 				params: {
-					areaName: app.globalData.location.cityName,
+					cityName: app.globalData.location.cityName,
+					areaName: "",
 					lng: app.globalData.location.lng,
 					lat: app.globalData.location.lat,
 					sortCondition: '',
@@ -96,10 +97,6 @@
 			this.load()
 
 		},
-		// onNavigationBarSearchInputChanged(e) {
-		// 	console.log(e)
-		// 	this.$u.debounce(this.searchKeyChange(e.text), 200)
-		// },
 		onNavigationBarSearchInputConfirmed(e){
 			this.$u.debounce(this.searchKeyChange(e.text), 200,true)
 			webView.setTitleNViewSearchInputFocus(false)
@@ -142,7 +139,7 @@
 				this.dropDownOptions[e.headerIndex].header = e.content.name
 				if (e.headerIndex == 0) {
 					if (e.content.name == '全部') {
-						params.areaName = app.globalData.location.cityName
+						params.areaName = "";
 					} else {
 						params.areaName = e.content.name
 					}

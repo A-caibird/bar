@@ -114,7 +114,8 @@ export default {
 			
 			cityName: app.globalData.location.cityName,
 			params: {
-				areaName: app.globalData.location.cityName,
+				cityName: app.globalData.location.cityName,
+				areaName: '',
 				lng: app.globalData.location.lng,
 				lat: app.globalData.location.lat,
 				sortCondition: 'distance',
@@ -149,7 +150,7 @@ export default {
 		},
 		cityName: function(value) {
 			// console.log(value);
-			this.params.areaName = value;
+			this.params.cityName = value;
 			this.pullRefresh();
 		}
 	},
@@ -167,7 +168,7 @@ export default {
 			this.setLocation(()=>{
 				let {cityName,lng,lat} = app.globalData.location
 				this.cityName = cityName
-				this.params.areaName = cityName
+				this.params.areaName = ""
 				this.params.lng = lng
 				this.params.lat = lat
 				this.pullRefresh();
