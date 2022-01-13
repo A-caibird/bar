@@ -66,7 +66,6 @@
 		
 		methods: {
 			setHandle: function() {
-				
 				let params = {
 					   "phone": this.phone,     
 					   "newPassword": this.password,     
@@ -92,7 +91,7 @@
 					if (parseInt(code) == 0) {
 						this.$u.toast('修改密码成功');
 						uni.reLaunch({
-							url: '/pages/login/login'
+							url: '/pages/login/login?register=1'
 						})
 					}
 				}).catch(e => {

@@ -107,8 +107,11 @@
 				this.options = JSON.parse(decodeURIComponent(options.data))
 				console.log(this.options);
 			}
-			console.log(options)
-			
+			if(options.register){
+				if(parseInt(options.register) == 1){
+					this.isHome = true;
+				}
+			}
 		},
 		methods: {
 			backTap: function(){
