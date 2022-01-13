@@ -57,7 +57,7 @@
 			</view>
 		</view>
 		<dynamic-comment ref="dynamicComment" @sendComment="handleSendComment"></dynamic-comment>
-		<dynamic-gift ref="dynamicGift" @refreshInputTimes="$refs.pay.subInputTimes" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)"
+		<dynamic-gift ref="dynamicGift" @refreshInputTimes="refreshInputTimes" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)"
 			@openPay="openPayhandle" @sendGiftSuccess="handleSendGiftSuccess"></dynamic-gift>
 		<dynamic-gift-edit ref="dynamicGiftEdit" @confirm="$refs.dynamicGift.setSendNum($event)"></dynamic-gift-edit>
 		<pay ref="pay" @pay="$refs.dynamicGift.pay($event)"></pay>
@@ -97,6 +97,9 @@
 		onUnload() {
 		},
 		methods: {
+			refreshInputTimes(){
+				this.$refs.pay.subInputTimes()
+			},
 			openPayhandle(e){
 				let password = getApp().globalData.payPassword;
 				if(password){

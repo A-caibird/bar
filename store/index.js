@@ -83,8 +83,9 @@ const store = new Vuex.Store({
 		},
 		
 		// goEasy 断开连接
-		disconnectGoEasy(state){
-			goEasyUtils.disconnect(state.goEasy);
+		disconnectGoEasy(state, {callback}){
+			callback = callback ? callback : null;
+			goEasyUtils.disconnect(state.goEasy, callback);
 		},
 
 		sendMsg(state, {

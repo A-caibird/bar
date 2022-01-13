@@ -160,13 +160,16 @@
 			})
 			this.toUserInfo = options;
 			this.title = options.nickname || '暂无客服';
-			if(options.id){
-				this.$nextTick(() => {
-					this.getUserInfo();
-				})
-			}
 			if($storage.getLoginToken()) {
-				$store.commit('disconnectGoEasy');
+				$store.commit('disconnectGoEasy', {
+					callback: () => {
+						if(options.id){
+							this.$nextTick(() => {
+								this.getUserInfo();
+							})
+						}
+					}
+				});
 			}
 			
 		},
@@ -178,13 +181,12 @@
 		},
 		onUnload() {
 			if(this.chatConnect){
-				this.disconnect();
+				this.disconnect(() => {
+					if($storage.getLoginToken()) {
+						$store.commit('connetGoEasy', $storage.getUserInfo().chatToken);
+					}
+				});
 			}
-			// #ifdef APP-PLUS
-			if($storage.getLoginToken()) {
-				$store.commit('connetGoEasy', $storage.getUserInfo().chatToken);
-			}
-			// #endif
 		},
 		methods: {
 			fullScreenChange(e){
@@ -375,8 +377,8 @@
 					}, 400)
 				});
 			},
-			disconnect: function() {
-				chatUtils.disconnectChat(() => {});
+			disconnect: function(callback = null) {
+				chatUtils.disconnectChat(callback);
 			},
 			// 发送文字
 			judgePullback: function() {
