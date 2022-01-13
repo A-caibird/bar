@@ -158,7 +158,7 @@
 					let {
 						code,
 						data
-					} = await this.$u.api.getLowerCitys(this.params.areaName)
+					} = await this.$u.api.getLowerCitys(this.params.cityName)
 					if (code == 0) {
 						let {
 							areaList

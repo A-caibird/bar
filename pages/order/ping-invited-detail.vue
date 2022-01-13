@@ -308,7 +308,7 @@
 		methods:{
 			goInfo(){
 				this.$u.route('/pages/mine/dynamic/myDynamic',{
-					id: this.clubInfo.clubId
+					id: this.orderInfo.sponsorId
 				});
 			},
 			goClub(){

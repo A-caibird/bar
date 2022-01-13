@@ -343,7 +343,11 @@
 		},
 		methods:{
 			goInfo(){
-				this.$u.route('/pages/mine/personalSetting/personalSetting');
+				if(this.orderInfo.isCreator){
+					this.$u.route('/pages/mine/personalSetting/personalSetting');
+				}else{
+					this.$u.route('/pages/mine/dynamic/myDynamic', {id: this.orderInfo.sponsorId});
+				}
 			},
 			goClub(){
 				this.$u.route('/pages/club/detail', {
