@@ -1,5 +1,6 @@
 import $store from '@/store/index.js'
 import $storage from '@/common/storage.js'
+import $cross from '@/common/cross.js'
 
 const login = function (data, register = false) {
 	let {token,fillInformation,info} = data
@@ -25,6 +26,14 @@ const login = function (data, register = false) {
 			if (data.options && data.options.from === 'nav') {
 				uni.redirectTo(data.options.nav)
 			} else {
+				let pages = getCurrentPages();
+				if(pages.length >= 2){
+					let beforePage = pages[pages.length - 2];
+					if(beforePage){
+						$cross.applyPageMethod(beforePage, 'refreshPage');
+					}
+				}
+				
 				uni.navigateBack()
 			}
 		}

@@ -298,6 +298,9 @@
 			
 		},
 		methods: {
+			refreshPage(){
+				this.getClubDetail();
+			},
 			navigateAll(){
 				let index = this.selectIndex;
 				let url = "";

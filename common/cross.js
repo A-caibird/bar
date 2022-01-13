@@ -3,11 +3,16 @@
 // 执行Vue对象的方法
 function applyPageMethod(page, method, params = "") {
 	// #ifdef H5
-	page[method](params)
+	if(page[method]){
+		page[method](params)
+	}
 	// #endif
 
 	// #ifndef H5
-	page.$vm[method](params)
+	if(page.$vm[method]){
+		page.$vm[method](params)
+	}
+	
 	// #endif
 }
 
