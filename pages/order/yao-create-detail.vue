@@ -70,17 +70,19 @@
 				</view>
 				<u-gap height="10" bgColor="#20234B"></u-gap>
 			</view>
-			<view class="service_box">
-				<view class="service_left">
-					<image src="/static/imgs/common/service-fill.png"></image>
-					<view class="service_text">
-						<view class="service_text1">客服小助手</view>
-						<view class="service_text2"></view>
+			<block v-if="orderInfo.isCreator">
+				<view class="service_box">
+					<view class="service_left">
+						<image src="/static/imgs/common/service-fill.png"></image>
+						<view class="service_text">
+							<view class="service_text1">客服小助手</view>
+							<view class="service_text2"></view>
+						</view>
 					</view>
+					<view class="service_btn" @tap="$u.throttle(serviceTap)">联系客服</view>
 				</view>
-				<view class="service_btn" @tap="$u.throttle(serviceTap)">联系客服</view>
-			</view>
-			<u-gap height="10" bgColor="#20234B"></u-gap>
+				<u-gap height="10" bgColor="#20234B"></u-gap>
+			</block>
 			<view class="order_club">
 				<view class="user-list">
 					<view class="user-list-item" @tap="$u.throttle(goInfo)">
