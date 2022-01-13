@@ -45,20 +45,20 @@
 								<text>CLUB</text>
 							</view>
 						</u-grid-item>
-						<u-grid-item bgColor="#191C3F" @tap="goPing">
+						<u-grid-item bgColor="#191C3F" @tap="$u.throttle(goPing, 1200)">
 							<view class="feature_item">
 								<image src="/static/imgs/index/share.png"></image>
 								<text>拼享快乐</text>
 							</view>
 						</u-grid-item>
 						<u-grid-item bgColor="#191C3F">
-							<view class="feature_item" @tap="goGift">
+							<view class="feature_item" @tap="$u.throttle(goGift, 1200)">
 								<image src="/static/imgs/index/gift.png"></image>
 								<text>礼物排行</text>
 							</view>
 						</u-grid-item>
 						<u-grid-item bgColor="#191C3F">
-							<view class="feature_item" @tap="$u.throttle($u.route('/pages/snatch/snatch'))">
+							<view class="feature_item" @tap="$u.throttle(goWheel, 1200)">
 								<image src="/static/imgs/index/treasure.png"></image>
 								<text>夺宝</text>
 							</view>
@@ -102,9 +102,10 @@ import club from '@/components/club-item/club-item.vue';
 import pageable from '@/mixins/pageable.js';
 import location from '@/mixins/location.js';
 import appleAudit from '@/mixins/apple-audit.js'
+import loginConfirm from '@/mixins/loginConfirm.js'
 var app = getApp();
 export default {
-	mixins: [pageable,location,appleAudit],
+	mixins: [pageable, location, appleAudit, loginConfirm],
 	components: {
 		club
 	},
@@ -155,6 +156,10 @@ export default {
 		}
 	},
 	methods: {
+		goWheel(){
+			if(!this.loginConfirmHandle(false)) return;
+			this.$u.route('/pages/snatch/snatch')
+		},
 		bannerTap(e){
 			let index = e;
 			let info = this.bannerList[index];
@@ -237,9 +242,11 @@ export default {
 			}
 		},
 		goGift:function(){
+			if(!this.loginConfirmHandle(false)) return;
 			this.$emit('goGift')
 		},
 		goPing:function(){
+			if(!this.loginConfirmHandle(false)) return;
 			this.$emit('goPing')
 		},
 	}
