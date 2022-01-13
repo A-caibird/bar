@@ -1,13 +1,13 @@
 <template>
 	<view class="club_footer">
 		<view class="footer_box">
-			<view class="common_item" v-if="!isAppleAudit" @tap="$u.throttle(clickTap('service'), 800)">
+			<view class="common_item" v-if="!isAppleAudit" @tap="$u.throttle(clickTap('service'),1200)">
 				<view class="common_icon">
 					<image src="/static/imgs/common/kefu.png"></image>
 				</view>		
 				<text>客服</text>
 			</view>
-			<view class="common_item" @tap="$u.throttle(clickTap('collect'), 800)">
+			<view class="common_item" @tap="$u.throttle(clickTap('collect'), 1200)">
 				<!-- <image src="/static/imgs/common/collect_pre.png"></image> -->
 				<view class="common_icon">
 					<u-icon color="#ffffff" size="38" name="star" v-if="!collect"></u-icon>
@@ -15,7 +15,7 @@
 				</view>
 				<text>收藏</text>
 			</view>
-			<view class="common_item" @tap="$u.throttle(clickTap('share'), 800)">
+			<view class="common_item" @tap="$u.throttle(clickTap('share'), 1200)">
 				<view class="common_icon">
 					<image src="/static/imgs/mine/forward.png"></image>
 				</view>
@@ -31,11 +31,11 @@
 				</block>
 				
 			</view>
-			<view class="btn_text share_btn" @tap="$u.throttle(clickTap('fight'), 800)" v-if="showSetSeat&&!isPing">
+			<view class="btn_text share_btn" @tap="$u.throttle(clickTap('fight'), 1200)" v-if="showSetSeat&&!isPing">
 				<image src="/static/imgs/common/seat_icon.png"></image>
 				<text>拼享</text>
 			</view>
-			<view class="btn_text" @tap="$u.throttle(clickTap('book'), 800)" v-if="showSetSeat&&!isPing">
+			<view class="btn_text" @tap="$u.throttle(clickTap('book'), 1200)" v-if="showSetSeat&&!isPing">
 				<image src="/static/imgs/common/seat_icon.png"></image>
 				<text>订座</text>
 				
