@@ -12,7 +12,12 @@
 		<view class="dynamic-img" v-if="dynamicInfo.imgList.length==1 && !dynamicInfo.videoUrl">
 			<u-image width="100%" height="100%" :src="dynamicInfo.imgList[0]" @click="$u.throttle(previewImgList(dynamicInfo.imgList, 0))"></u-image>
 		</view>
-		<view class="dynamic-details" v-else>
+		<view class="dynamic-img" v-if="dynamicInfo.imgList.length <= 0 && dynamicInfo.videoUrl" @tap="videoPlayTap">
+			<image mode="aspectFill" :src="dynamicInfo.videoCover"></image>
+			<image class="play_icon" src="/static/imgs/common/play_icon.png"></image>
+			<video @fullscreenchange="fullScreenChange" class="videoBox" id="videoId" :src="playUrl"></video>
+		</view>
+		<view class="dynamic-details" v-if="(dynamicInfo.imgList.length > 1) || (dynamicInfo.imgList.length == 1 && dynamicInfo.videoUrl)">
 			<view class="dynamic-details-item" v-if="dynamicInfo.videoCover" @tap="videoPlayTap">
 				<image mode="aspectFill" :src="dynamicInfo.videoCover"></image>
 				<image class="play_icon" src="/static/imgs/common/play_icon.png"></image>
@@ -260,13 +265,20 @@
 			image {
 				width: 100%;
 			}
+			position: relative;
+			.play_icon{
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				height: 120rpx;
+				width: 120rpx;
+			}
 		}
-
 		.dynamic-details {
 			display: flex;
 			flex-wrap: wrap;
 			width: 100%;
-
 			.dynamic-details-item {
 				width: 250rpx;
 				height: 250rpx;
@@ -282,18 +294,18 @@
 					top: 50%;
 					transform: translate(-50%, -50%);
 					height: 80rpx;
-					width: 80rpx;
-				}
-				.videoBox{
-					position: absolute;
-					left: 0rpx;
-					top: 0rpx;
-					z-index: -1;
-					height: 0rpx;
-					width: 0rpx;
-					opacity: 0;
+					width: 80rpx !important;
 				}
 			}
+		}
+		.videoBox{
+			position: absolute;
+			left: 0rpx;
+			top: 0rpx;
+			z-index: -1;
+			height: 0rpx;
+			width: 0rpx;
+			opacity: 0;
 		}
 
 		.swiper_box {
