@@ -14,11 +14,14 @@
 				<text v-else>￥{{allAmount}}</text>
 			</view>
 			<view class="pay_input">
-				<message-input :dotFill="true" v-model="password" :bold="false" font-size="50" active-color="#CCCCCC" inactive-color="#CCCCCC" :maxlength="6" width="90" height="100"></message-input>
+				<message-input :breathe="canInput" :dotFill="true" v-model="password" :bold="false" font-size="50" active-color="#CCCCCC" inactive-color="#CCCCCC" :maxlength="6" width="90" height="100"></message-input>
 			</view>
+			<view class="tips" v-if="inputTimes > 0">目前还有{{inputTimes}}次输入机会</view>
+			<view class="tips red" v-else>密码输入已被锁定</view>
+			
 			<!-- <view class="btn" @tap="$u.throttle(tapEmitPay)"> <text>支付</text> </view> -->
 		</view>
-		<view class="input_box" >
+		<view class="input_box" v-if="canInput">
 			<!-- <u-number-keyboard @change="changeHandle" @backspace="backspaceHandle" :dot-enabled="false"></u-number-keyboard> -->
 			<keyboard-package ref="number"  @onInput="changeHandle" @onDelete="backspaceHandle" @onConfirm="handleConfirm" :disableDot="true" :showConfirm="true"/>
 		</view>
@@ -27,7 +30,6 @@
 
 <script>
 	import messageInput from '@/components/self-message-input/self-message-input.vue'
-	
 	export default{
 		props:{
 			mode:{
@@ -51,9 +53,17 @@
 				show: false,
 				password: '',
 				allAmount:'',
+				inputTimes: 0,
 			}
 		},
 		computed:{
+			canInput(){
+				if(this.inputTimes > 0){
+					return true;
+				}else{
+					return false
+				}
+			},
 			titleText(){
 				let str = ''
 				switch (this.mode){
@@ -73,14 +83,21 @@
 			async open(allAmount){
 				await this.judgePayCode()
 				this.allAmount = allAmount
-				console.log(getApp().globalData.payPassword)
-				console.log(this.$storage.getPayPassword())
 				if(this.fillPassword){
 					this.password = getApp().globalData.payPassword ? getApp().globalData.payPassword : (this.$storage.getPayPassword() || "")
 				}else{
 					this.password = "";
 				}
 				this.show = true
+				this.getInputTimes();
+			},
+			getInputTimes(){
+				console.log('刷新 inputTimes')
+				this.inputTimes = getApp().globalData.passwordInputTimes;
+			},
+			subInputTimes(){
+				console.log('减少 subInputTimes')
+				this.inputTimes = this.inputTimes - 1;
 			},
 			close(){
 				this.show = false
@@ -173,6 +190,14 @@
 			.pay_input{
 				width: 100%;
 				margin-top: 40rpx;
+			}
+			.tips{
+				font-size: 24rpx;
+				color: #999999;
+				margin-top: 10rpx;
+				&.red{
+					color: red;
+				}
 			}
 			.btn{
 				width: calc(100% - 60rpx);

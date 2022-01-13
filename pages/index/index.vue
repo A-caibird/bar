@@ -52,7 +52,7 @@
 		></selfTabbar>
 		<add-dynamic ref="addDynamic" @goDynamic="goFind" @joinPingTap="goPing" @goClubList="goClubList" :bottomHeight="bottomHeight"></add-dynamic>
 		<dynamic-comment ref="dynamicComment" @sendComment="$refs.find.handleSendComment($event)"></dynamic-comment>
-		<dynamic-gift ref="dynamicGift" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @openPay="openPayhandle" @sendGiftSuccess="$refs.find.handleSendGiftSuccess($event)"></dynamic-gift>
+		<dynamic-gift ref="dynamicGift" @refreshInputTimes="$refs.payDynamicGift.subInputTimes" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @openPay="openPayhandle" @sendGiftSuccess="$refs.find.handleSendGiftSuccess($event)"></dynamic-gift>
 		<dynamic-gift-edit ref="dynamicGiftEdit" @confirm="$refs.dynamicGift.setSendNum($event)"></dynamic-gift-edit>
 		<pay ref="payDynamicGift" @pay="$refs.dynamicGift.pay($event)"></pay>
 		<pop-share v-model="popShareShow"></pop-share>
@@ -118,13 +118,15 @@ export default {
 		}
 		this.loadingAnimalHandle();
 		this.getSInfo()
-		// #ifdef APP-PLUS
+		
 		if(app.globalData.token) {
+			this.getPasswordInputTimes();
+			// #ifdef APP-PLUS
 			this.$u.api.setClientId({
 				clientId:plus.push.getClientInfo().clientid,
 			})
+			// #endif
 		}
-		// #endif
 		console.log(opt)
 		if(opt&&opt.current=='info') {
 			this.current = 3

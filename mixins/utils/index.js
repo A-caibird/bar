@@ -111,6 +111,7 @@ let utils = ({
 		removePayPasswordToStorage() {
 			getApp().globalData.payPassword = ''
 			$storage.removePayPassword()
+			this.getPasswordInputTimes();
 		},
 		shareSystem() {
 			var shareInfo = {
@@ -298,7 +299,19 @@ let utils = ({
 				})
 			})
 		},
-		
+		getPasswordInputTimes(){
+			return new Promise((resolve, reject) => {
+				this.$u.api.getPasswordInputTimesAPI().then(res => {
+					let count = res.data.count ? parseInt(res.data.count) : 0;
+					getApp().globalData.passwordInputTimes = count;	
+					resolve(count)
+				}).catch(e => {
+					console.log(e);
+					getApp().globalData.passwordInputTimes = 0;	
+					reject(e)
+				})
+			})
+		},
 		//emoji
 		uni16ToStr(point) { //16进制转字符串
 			if (point > 0xffff) {

@@ -20,7 +20,7 @@
 			</mescroll-uni>
 		</view>
 		<dynamic-comment ref="dynamicComment" @sendComment="setCommentNum($event)"></dynamic-comment>
-		<dynamic-gift ref="dynamicGift" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @openPay="$refs.payDynamicGift.open($event)" @sendGiftSuccess="handleSendGiftSuccess($event)"></dynamic-gift>
+		<dynamic-gift ref="dynamicGift" @refreshInputTimes="$refs.payDynamicGift.subInputTimes" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @openPay="$refs.payDynamicGift.open($event)" @sendGiftSuccess="handleSendGiftSuccess($event)"></dynamic-gift>
 		<dynamic-gift-edit ref="dynamicGiftEdit" @confirm="$refs.dynamicGift.setSendNum($event)"></dynamic-gift-edit>
 		<pay ref="payDynamicGift" @pay="$refs.dynamicGift.pay($event)"></pay>
 		<giftAnimation ref="giftAnimation"></giftAnimation>

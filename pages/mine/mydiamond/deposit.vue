@@ -88,8 +88,7 @@
 					diamond: this.amount,
 					payPassword: password,
 				}
-				console.log(params)
-				let {code,data} = await this.$u.api.cashOutAliPayApi(params)
+				let {code,data,msg} = await this.$u.api.cashOutAliPayApi(params)
 				if(code==0) {
 					uni.$emit('update-diamond')
 					uni.$emit('update-walletIndex')
@@ -100,6 +99,9 @@
 					this.setPayPasswordToStorage(params.payPassword)
 				}  else {
 					this.removePayPasswordToStorage()
+					if(msg.indexOf('支付密码不正确') >= 0){
+						this.$refs.alipayCashOut.subInputTimes();
+					}
 				}
 			},
 			async tapAliPayCashOut(){

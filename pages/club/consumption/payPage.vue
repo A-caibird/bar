@@ -243,6 +243,7 @@
 					// 	})
 					// },500)
 				} else {
+					this.$refs.pay.subInputTimes();
 					this.btnAvaliable = true;
 					this.removePayPasswordToStorage()
 				}
@@ -299,6 +300,7 @@
 					// 	})
 					// },500)
 				} else {
+					this.$refs.pay.subInputTimes();
 					this.removePayPasswordToStorage()
 					this.btnAvaliable = true;
 				}
@@ -348,6 +350,7 @@
 				} else {
 					this.removePayPasswordToStorage()
 					this.btnAvaliable = true;
+					this.$refs.pay.subInputTimes();
 				}
 			},
 			refreshPage(){

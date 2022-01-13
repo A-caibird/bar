@@ -54,6 +54,7 @@
 		},
 		
 		globalData: {
+			passwordInputTimes: 0,
 			baseUrl: 'https://erp.patixiu.com',
 			authorized: false, //是否登录
 			// 用户识别码

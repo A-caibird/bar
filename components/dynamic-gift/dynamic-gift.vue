@@ -192,7 +192,7 @@
 					sendNum: this.sendNum,
 					payPassword: payPassword.password,
 				}
-				let {code,data} = await this.$u.api.sendGiftApi(params)
+				let {code,data, msg} = await this.$u.api.sendGiftApi(params)
 				if (code == 0) {
 					console.log(data)
 					let {giftNum} = data
@@ -215,6 +215,9 @@
 					},500)
 				} else {
 					this.removePayPasswordToStorage()
+					if(msg.indexOf('支付密码不正确') >= 0){
+						this.$emit('refreshInputTimes');
+					}
 				}
 			},
 				

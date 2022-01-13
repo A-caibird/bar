@@ -180,6 +180,7 @@ const install = (Vue, vm) => {
 		untieWeChatApi: (params) => vm.$u.post('/api/user/untieWeChat',params), //解绑微信
 		getIdentityNumberRealNameApi: (params) => vm.$u.get('/api/user/verifiedInformation',params), //获取身份证和真实姓名
 		checkPayPasswordCorrectApi: (params) => vm.$u.get('/api/user/checkPayPassword',params), //检查支付密码是否正确
+		getPasswordInputTimesAPI: () => vm.$u.get('/api/user/hasCanUserPayPasswordCount'), //获取用户今天密码可输入次数
 		feedBackSaveApi: (params) => vm.$u.post('/api/feedBack/save',params), //反馈提交
 		getCommonProblemListApi: (params) => vm.$u.get('/api/feedBack/feedBackTitleList',params), //帮助中心问题
 		
