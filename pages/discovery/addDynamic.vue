@@ -20,7 +20,7 @@
 					<image @tap="deletePhoto(index)" class="delete_icon" src="/static/imgs/common/cancel.png" mode=""></image>
 					<image :src="item.avatar" mode=""></image>
 				</view>
-				<view class="photo-area-select" @tap="select_photo" v-if="imgList.length<9">
+				<view class="photo-area-select" @tap="$u.throttle(select_photo)" v-if="imgList.length<9">
 					<image src="/static/imgs/discovery/photo_select.png" mode=""></image>
 				</view>
 			</view>
@@ -70,10 +70,11 @@
 
 <script>
 	import location from '@/mixins/location.js';
+	import photoMixins from '@/mixins/photo.js'
 	var videoBtnAvaliabe = true;
 	var app = getApp();
 	export default {
-		mixins: [location], // 使用mixin (在main.js注册全局组件)
+		mixins: [location, photoMixins], // 使用mixin (在main.js注册全局组件)
 		data() {
 			return {
 				playUrl: '',
@@ -196,7 +197,7 @@
 					var code=res.code;
 					uni.hideLoading();
 					if (parseInt(code) == 0) {
-						uni.$emit('dynamic-refresh',{msg:''})
+						// uni.$emit('dynamic-refresh',{msg:''})
 						uni.$emit('dynamic-refresh-follow',{msg:''})
 						this.$cross.applyPageMethod(this.$cross.beforePage(), 'goFind')
 						this.$u.toast('发布成功')
@@ -243,9 +244,7 @@
 						uni.showLoading({
 							title: '上传中'
 						})
-
 						vm.upImg(res)
-
 					}
 				});
 			},
@@ -264,43 +263,63 @@
 						for (let i = 0; i < (res.tempFilePaths).length; i++) {
 							const filePath = res.tempFilePaths[i]
 							console.log(filePath)
-							vm.$u.api.uploadFile(filePath).then(url => {
-								let obj = {};
-								obj.avatar = url;
-								vm.imgList.push(obj);
-								console.log(vm.imgList)
-								resolve()
+							this.sCompressImg(filePath).then(rs => {
+								let path = rs.tempFilePath;
+								vm.uploadFileHandle(path).then(() => {
+									resolve()
+								}).catch(e=> {
+									reject()
+								})
 							}).catch(e => {
-								console.log(e);
-								uni.hideLoading();
-								reject()
+								vm.uploadFileHandle(filePath).then(() => {
+									resolve()
+								}).catch(e=> {
+									reject()
+								})
 							})
-
 						}
-
 					} else {
 						//超过九张，判断还可以加入几张照片
 						let remainLen = 9 - (vm.imgList).length
 						for (let i = 0; i < remainLen; i++) {
 							const filePath = res.tempFilePaths[i]
 							console.log(filePath)
-							vm.$u.api.uploadFile(filePath).then(url => {
-								let obj = {};
-								obj.avatar = url;
-								vm.imgList.push(obj);
-								console.log(vm.imgList)
-								resolve()
+							this.sCompressImg(filePath).then(rs => {
+								let path = rs.tempFilePath;
+								vm.uploadFileHandle(path).then(() => {
+									resolve()
+								}).catch(e=> {
+									reject()
+								})
 							}).catch(e => {
-								console.log(e);
-								uni.hideLoading();
-								reject()
+								vm.uploadFileHandle(filePath).then(() => {
+									resolve()
+								}).catch(e=> {
+									reject()
+								})
 							})
-
 						}
 					}
 
 				})
 			},
+			uploadFileHandle(filePath){
+				var vm = this;
+				return new Promise(function(resolve,reject){
+					vm.$u.api.uploadFile(filePath).then(url => {
+						let obj = {};
+						obj.avatar = url;
+						vm.imgList.push(obj);
+						console.log(vm.imgList)
+						resolve()
+					}).catch(e => {
+						console.log(e);
+						uni.hideLoading();
+						reject()
+					})
+				})
+			},
+			
 			//删除图片
 			deletePhoto: function(e) {
 				console.log(e)

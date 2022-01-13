@@ -43,7 +43,6 @@ export default{
 						console.log(filePath)
 						this.sCompressImg(filePath).then(rs => {
 							let path = rs.tempFilePath;
-							console.log('压缩成功', path);
 							this.uploadEvent(path).then(() => {
 								resolve()
 							}).catch(() => {
@@ -117,9 +116,12 @@ export default{
 				uni.compressImage({
 					src: path,
 					success(res){
+						console.log('压缩成功', res.tempFilePath);
 						resolve(res)
 					},
 					fail(e) {
+						console.log('压缩失败')
+						console.log(e);
 						reject(e);
 					}
 				})
