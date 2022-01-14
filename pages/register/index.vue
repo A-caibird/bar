@@ -86,15 +86,19 @@
 				if(!this.isSelect) {
 					return this.$toast.text('请同意用户协议和隐私协议！')
 				}
+				uni.showLoading({
+					title:'注册中'
+				})
 				this.$u.api.registerInfo(params).then(res => {
 					let code = res.code;
 					if (parseInt(code) == 0) {
 						this.$u.route('/pages/register/information',{token:res.data.token})
 					} 
+					uni.hideLoading();
 				}).catch(e => {
-
+					console.log(e);
+					uni.hideLoading();
 				})
-
 			},
 			// 清除手机号
 			clearPhone: function() {

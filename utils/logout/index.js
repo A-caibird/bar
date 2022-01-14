@@ -11,6 +11,7 @@ const logout = function (out = true) {
 	$storage.removeLocation()
 	$storage.removePayPassword()
 	getApp().globalData.token = ""
+	getApp().globalData.passwordInputTimes = 0;
 	getApp().globalData.authorized = false
 	getApp().globalData.userInfo = {}
 	getApp().globalData.location = {cityName: '宁波',lng: 121.557239,lat: 29.809815}

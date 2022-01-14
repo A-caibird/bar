@@ -1,6 +1,7 @@
 import $store from '@/store/index.js'
 import $storage from '@/common/storage.js'
 import $cross from '@/common/cross.js'
+import {ajax} from '@/utils/ajax.js'
 
 const login = function (data, register = false) {
 	let {token,fillInformation,info} = data
@@ -13,6 +14,13 @@ const login = function (data, register = false) {
 		$storage.setLoginToken(token)
 		$storage.setUserInfo(info)
 		
+		ajax('/api/user/hasCanUserPayPasswordCount',{},'GET').then(res => {
+			let count = res.data.count || 0;
+			getApp().globalData.passwordInputTimes = count;
+		}).catch(e => {
+			console.log(e);
+			getApp().globalData.passwordInputTimes = 0;
+		})
 		// #ifdef APP-PLUS
 		// $store.commit('initMQTT',info.chatToken)
 		// #endif
