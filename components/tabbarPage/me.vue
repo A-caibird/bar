@@ -349,14 +349,20 @@
 								}
 							},
 							fail: function(err) {
+								// #ifdef APP-PLUS
 								vm.setAvatarFromStorage(name, avatar)
+								// #endif
 							}
 						})
 					} else {
+						// #ifdef APP-PLUS
 						vm.setAvatarFromStorage(name, avatar)
+						// #endif
 					}
 				} else {
+					// #ifdef APP-PLUS
 					vm.setAvatarFromStorage(name, avatar)
+					// #endif
 				}
 
 			},

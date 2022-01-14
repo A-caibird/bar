@@ -124,8 +124,12 @@
 				}
 			},
 			async wxLogin(params){
+				uni.showLoading({
+					title: '加载中'
+				})
 				let {code,data} = await this.$u.api.wxLoginApi(params)
 				// console.log(data)
+				uni.hideLoading();
 				if(code==0) {
 					data['options'] = this.options;
 					login(data, this.isHome);
@@ -199,7 +203,11 @@
 					this.$u.toast('请勾选爬梯秀用户协议')
 					return;
 				}	
+				uni.showLoading({
+					title: '加载中'
+				})
 				this.$u.api.phoneLoginApi(params).then(res => {
+					uni.hideLoading();
 					var code = res.code;
 					if(parseInt(code) == 0){
 						console.log(res)
@@ -207,6 +215,7 @@
 					}
 				}).catch(e => {
 					console.log(e)
+					uni.hideLoading();
 				})
 				
 			},

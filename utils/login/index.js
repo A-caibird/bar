@@ -7,7 +7,6 @@ const login = function (data, register = false) {
 	let {token,fillInformation,info} = data
 	
 	if(fillInformation){
-		console.log(data)
 		getApp().globalData.authorized=true;
 		getApp().globalData.token = token
 		getApp().globalData.userInfo = info
@@ -16,6 +15,7 @@ const login = function (data, register = false) {
 		
 		ajax('/api/user/hasCanUserPayPasswordCount',{},'GET').then(res => {
 			let count = res.data.count || 0;
+			console.log("count: " + count);
 			getApp().globalData.passwordInputTimes = count;
 		}).catch(e => {
 			console.log(e);
