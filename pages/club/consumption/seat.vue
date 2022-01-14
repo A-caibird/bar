@@ -199,7 +199,10 @@
 				this.load()
 			},
 			async tapGoDrinks(){
-				if(!this.canSubmit) return 
+				if(!this.canSubmit) return
+				uni.showLoading({
+					title: '加载中'
+				})
 				let {code} = await this.$u.api.extendCardTableSelectTimeApi({selectId:this.seat.selectId})
 				if(code!=0) {
 					return this.handleRefreshSeat()
@@ -210,6 +213,7 @@
 					date: selectDate,
 					isInvite: this.orderType == 'book' ? true : false
 				})
+				uni.hideLoading();
 				let hasOrder = res.data.hasOrder;
 				if(hasOrder){
 					this.popShow = true;

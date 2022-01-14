@@ -94,7 +94,9 @@ const MescrollMixin = {
 					var app = getApp()
 					if(!app.globalData.token){
 						uni.hideLoading();
+						this.pageList = [];
 						this.mescroll.endErr()
+						this.mescroll.showEmpty();
 						return
 					}
 				}

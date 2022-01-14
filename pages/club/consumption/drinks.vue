@@ -194,7 +194,11 @@
 				if(code==0) this.getShoppingCardView()
 			},
 			async shoppingCardDelete(data){
+				uni.showLoading({
+					title: '修改中'
+				})
 				let {code} = await this.$u.api.shoppingCardDeleteApi(data)
+				uni.hideLoading();
 				if(code==0) this.getShoppingCardView()
 			},
 			handleCommodityPlus(info){

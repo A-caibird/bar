@@ -229,7 +229,11 @@
 					this.$u.toast('请至少添加一张个人形象图片')
 					return
 				}
+				uni.showLoading({
+					title: '申请中'
+				})
 				let {code} = await this.$u.api.applyJob(params)
+				uni.hideLoading()
 				if (code == 0) {
 					this.$toast.text('申请成功！') 
 					setTimeout(()=>{

@@ -45,8 +45,7 @@
 												<view class="circular-select" :class="{'pink-active':info.value==data.type}"></view>
 												<text>{{info.label}}</text>
 											</view>
-										</block>	
-																
+										</block>												
 									</view>
 								</view>
 								<view class="share_people">
@@ -160,8 +159,7 @@
 				<view class="btn_text buy" @tap="tapGoDrinks">
 					<text>继续选购</text>
 				</view>
-				<!-- <view class="btn_text active" @tap="$u.route('pages/club/consumption/payPage')"> -->
-				<view class="btn_text active" @tap="tapGoPayPage">
+				<view class="btn_text active" @tap="$u.throttle(tapGoPayPage, 2000)">
 					<text>去付款</text>
 				</view>
 			</view>
@@ -471,6 +469,9 @@
 				})
 			},
 			async createOrder(){
+				uni.showLoading({
+					title: '加载中'
+				})
 				let vm = this
 				let data = this.$u.deepClone (this.data)
 				let type = data.type=='fullAmount'?'yao-order':'ping-order'
@@ -481,6 +482,7 @@
 				data = this.$u.deepMerge(data,{cardTableId:data.seat.id,shareWay:JSON.stringify(data.shareWay)})
 				data['couponId'] = this.coupon.id || "";
 				let res =  await this.$u.api.createOrderApi(data)
+				uni.hideLoading();
 				console.log(res)
 				if(res.code==0) {
 					this.$u.route({

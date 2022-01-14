@@ -282,12 +282,10 @@
 		onLoad:function(options){
 			let id = options.id;
 			this.clubId = id;
-			setTimeout(() => {
+			this.$nextTick(() => {
 				uni.showLoading({
 					title: '加载中'
 				})
-			}, 300)
-			this.$nextTick(() => {
 				this.getClubDetail();
 				// this.getClubIntro();
 				// this.getCommentList();

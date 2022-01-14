@@ -58,6 +58,10 @@ const install = (Vue, vm) => {
 			// console.log(res.data)
 			uni.hideLoading();
 			console.log('请求异常');
+			uni.showToast({
+				title: '网络异常，请确认在网络良好状态下使用',
+				icon: 'none'
+			})
 		}
 	}
 }
