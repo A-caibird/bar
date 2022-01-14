@@ -26,7 +26,6 @@
 		},
 		onUnload() {
 			console.log('App unload');
-			$store.commit('disconnectGoEasy');
 		},
 		methods:{
 			requestAPI(url ,params){

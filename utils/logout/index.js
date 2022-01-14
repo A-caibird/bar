@@ -15,7 +15,7 @@ const logout = function (out = true) {
 	getApp().globalData.userInfo = {}
 	getApp().globalData.location = {cityName: '宁波',lng: 121.557239,lat: 29.809815}
 	getApp().globalData.payPassword = ''
-	$store.commit('disconnectGoEasy');
+	$store.commit('disconnectGoEasy',{callback: null});
 	uni.navigateTo({
 		url: '/pages/login/login'
 	})
