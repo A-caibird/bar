@@ -387,6 +387,9 @@
 						});
 					};break;
 					case 'service':{
+						uni.showLoading({
+							title: '进入中'
+						})
 						this.$u.api.clubServiceAPI(this.clubId).then(res => {
 							console.log(res);
 							if(res.data.hasStaff){
@@ -395,6 +398,7 @@
 									avatar: res.data.avatar,
 									nickname: res.data.nickname
 								});
+								uni.hideLoading();
 							}else{
 								uni.showToast({
 									title: '暂无客服人员',

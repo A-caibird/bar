@@ -48,9 +48,10 @@ const store = new Vuex.Store({
 		},
 		// goEasy 初始化
 		initGoEasy(state, info) {
-			// console.log(info);
 			info = JSON.parse(info);
+			console.log(info);
 			var chatId = info.chatToken;
+			let callback = info.callback || null
 			state.userInfo = {
 				nickName: info.name,
 				avatar: info.avatar
@@ -77,9 +78,28 @@ const store = new Vuex.Store({
 			});
 		},
 		// goEasy 连接
-		connetGoEasy(state, chatId){
+		connetGoEasy(state, {chatId, callback}){
 			console.log("chatId: ", chatId);
-			goEasyUtils.connect(state.goEasy, chatId, state.userInfo);
+			let callBackEvent = callback
+			if(callback){
+				callBackEvent = callback
+			}else{
+				callBackEvent = null
+			}
+			goEasyUtils.connect(state.goEasy, chatId, {
+				avatar: state.userInfo.avatar,
+				nickname: state.userInfo.nickName
+			}, function(){
+				callBackEvent();
+				goEasyUtils.receiveMessage(state.goEasy.im, (msg) => {
+					var msgInfo = msg.payload.payloadString;
+					goEasyUtils.markPrivateMessageAsRead(state.goEasy.im, msg.senderId);
+					// 触发全局事件
+					uni.$emit('mqtt-arrived-msg', {
+						payload: msgInfo
+					})
+				});
+			});
 		},
 		
 		// goEasy 断开连接

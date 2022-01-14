@@ -152,26 +152,31 @@ function handlePushClick(msg) {
 					hasSave:false,
 				}
 			let infoStr = JSON.stringify(info)
-			if(route=='/pages/index/index') {
-				vm.goChat({
-					userInfo:infoStr
+			if(route!='/pages/chat/chat') {
+				uni.navigateTo({
+					url:'/pages/chat/chat'+`?userInfo=${infoStr}`
 				})
-			}  else if(route=='/pages/chat/chat') {
-				if(vm.userInfo.chatToken==payload.identifier&&vm.friendUserInfo.chatToken!=payload.sendUserId) {
-					uni.redirectTo({
-						url:'/pages/chat/chat'+`?userInfo=${infoStr}`
-					})
-				}
-			} else {
-				uni.reLaunch({
-					url: '/pages/index/index'+`?current=info`,
-					success:function(){
-						uni.navigateTo({
-							url:'/pages/chat/chat'+`?userInfo=${infoStr}`
-						})
-					}
-				})
-			}
+			} 
+			// if(route=='/pages/index/index') {
+			// 	vm.goChat({
+			// 		userInfo:infoStr
+			// 	})
+			// }  else if(route=='/pages/chat/chat') {
+			// 	if(vm.userInfo.chatToken==payload.identifier&&vm.friendUserInfo.chatToken!=payload.sendUserId) {
+			// 		uni.redirectTo({
+			// 			url:'/pages/chat/chat'+`?userInfo=${infoStr}`
+			// 		})
+			// 	}
+			// } else {
+			// 	uni.reLaunch({
+			// 		url: '/pages/index/index'+`?current=info`,
+			// 		success:function(){
+			// 			uni.navigateTo({
+			// 				url:'/pages/chat/chat'+`?userInfo=${infoStr}`
+			// 			})
+			// 		}
+			// 	})
+			// }
 		}
 		if(type=='gift') {
 			if(route=='/pages/index/index') {

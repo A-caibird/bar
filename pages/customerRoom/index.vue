@@ -1,6 +1,6 @@
 <template>
 	<view class="wrapper" :style="{'paddingBottom': (0 + 'px')}">
-		<u-navbar :title="title"></u-navbar>
+		<u-navbar :title="title" :customBack="customBackEvent"></u-navbar>
 		<view :style="{height: (swiperHeight) + 'px'}">
 			<scroll-view class="scroll_view" :scroll-y="true"
 				:style="{height: (scrollHeightCal)+'px', 'overflow-anchor': 'auto',}" 
@@ -79,10 +79,10 @@
 <script>
 	const app = getApp()
 	import chatItem from '@/components/chatInfo/chatInfo.vue'
-	import $store from '@/store/index.js'
 	import $storage from '@/common/storage.js'
 	import chatUtils from '@/utils/chatJS/chat.js'
 	import {emojiList} from '@/utils/chatJS/emoji.js'
+	import $store from '@/store/index.js'
 	export default {
 		data() {
 			return {
@@ -160,18 +160,15 @@
 			})
 			this.toUserInfo = options;
 			this.title = options.nickname || '暂无客服';
-			if($storage.getLoginToken()) {
-				$store.commit('disconnectGoEasy', {
-					callback: () => {
-						if(options.id){
-							this.$nextTick(() => {
-								this.getUserInfo();
-							})
-						}
+			$store.commit('disconnectGoEasy', {
+				callback: () => {
+					if(options.id){
+						this.$nextTick(() => {
+							this.getUserInfo();
+						})
 					}
-				});
-			}
-			
+				}
+			});
 		},
 		onShow() {
 
@@ -180,15 +177,31 @@
 
 		},
 		onUnload() {
-			if(this.chatConnect){
-				this.disconnect(() => {
-					if($storage.getLoginToken()) {
-						$store.commit('connetGoEasy', $storage.getUserInfo().chatToken);
-					}
-				});
-			}
+			
 		},
 		methods: {
+			customBackEvent(){
+				if(this.chatConnect){
+					uni.showLoading({
+						title: '退出中'
+					})
+					this.disconnect(() => {
+						setTimeout(() => {
+							let userInfo = $storage.getUserInfo();
+							let info = {
+								chatId: userInfo.chatToken,
+								callback:function(){
+									uni.hideLoading();
+									uni.navigateBack({
+										delta:1
+									})
+								}
+							}
+							$store.commit('connetGoEasy',info);
+						}, 500)
+					});
+				}
+			},
 			fullScreenChange(e){
 				if(!e.detail.fullScreen){
 					this.playUrl = "";
