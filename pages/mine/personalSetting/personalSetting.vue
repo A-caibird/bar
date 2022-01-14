@@ -71,6 +71,7 @@
 
 <script>
 	import {provice} from '@/common/city.js'
+	import photoMixins from '@/mixins/photo.js'
 	export default {
 		data() {
 			return {
@@ -95,6 +96,7 @@
 				info:""
 			}
 		},
+		mixins:[photoMixins],
 		onLoad:function(){
 			this.load();
 			uni.$on('upload-avatar',this.uploadAvatarHandler)
@@ -164,25 +166,18 @@
 				uni.chooseImage({
 					count: 1, //默认9
 					success: (res) => {
-						vm.$u.route('/pages/cut-avatar/cut-avatar',{
-							pic:res.tempFilePaths[0]
+						let filePath = res.tempFilePaths[0];
+						this.sCompressImg(filePath).then(rs => {
+							let path = rs.tempFilePath;
+							vm.$u.route('/pages/cut-avatar/cut-avatar',{
+								pic:path
+							})
+						}).catch(e => {
+							console.log(e);
+							vm.$u.route('/pages/cut-avatar/cut-avatar',{
+								pic:filePath
+							})
 						})
-						// const filePath = res.tempFilePaths[0]
-						// // console.log(filePath);
-						// uni.showLoading({
-						// 	title: '上传中'
-						// })
-						// vm.$u.api.uploadFile(filePath).then(url => {
-						// 	console.log(res);
-						// 	this.avatar = url;
-						// 	this.$nextTick(function() {
-						// 		this.changeAvatar()
-						// 		uni.hideLoading();
-						// 	})
-						// }).catch(e => {
-						// 	console.log(e);
-						// 	uni.hideLoading();
-						// })
 					}
 				});
 			},
