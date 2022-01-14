@@ -4,10 +4,12 @@
 			<u-navbar back-icon-color="#FFFFFF" title="通知设置" title-size="36" title-color="#FFFFFF" :background="{ background: '#191C3F' }" :border-bottom="false"></u-navbar>
 		</view>
 		<view class="notify-box">
-			<view class="notify-item" v-for="(item, index) in list" :key="index">
-				<text>{{ item.content }}</text>
-				<u-switch :value="item.checked" @change="changeHandle($event, index)" size="46" active-color="#F32CB7" inactive-color="#3A3F6B"></u-switch>
-			</view>
+			<block v-for="(item, index) in list" :key="index">
+				<view class="notify-item" v-if="item.isShow">
+					<text>{{ item.content }}</text>
+					<u-switch :value="item.checked" @change="changeHandle($event, index)" size="46" active-color="#F32CB7" inactive-color="#3A3F6B"></u-switch>
+				</view>
+			</block>
 		</view>
 	</view>
 </template>
@@ -20,37 +22,44 @@ export default {
 				{
 					content: '点赞通知',
 					checked: false,
-					way: 'toggleOpenPraiseAPI'
+					way: 'toggleOpenPraiseAPI',
+					isShow: true,
 				},
 				{
 					content: '评论通知',
 					checked: false,
-					way: 'toggleOpenCommentAPI'
+					way: 'toggleOpenCommentAPI',
+					isShow: true,
 				},
 				{
 					content: '邀约通知',
 					checked: false,
-					way: 'toggleOpenInviteAPI'
+					way: 'toggleOpenInviteAPI',
+					isShow: false,
 				},
 				{
 					content: '关注我的',
 					checked: false,
-					way: 'toggleOpenAttAPI'
+					way: 'toggleOpenAttAPI',
+					isShow: true,
 				},
 				{
 					content: '礼物提醒',
 					checked: false,
-					way: 'toggleGiftTipsAPI'
+					way: 'toggleGiftTipsAPI',
+					isShow: true,
 				},
 				{
 					content: '加入拼享',
 					checked: false,
-					way: 'toggleJoinPingAPI'
+					way: 'toggleJoinPingAPI',
+					isShow: false,
 				},
 				{
 					content: '发布动态 ',
 					checked: false,
-					way: 'togglePublishDynamicAPI'
+					way: 'togglePublishDynamicAPI',
+					isShow: true,
 				}
 			]
 		};
