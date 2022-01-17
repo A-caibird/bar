@@ -14,7 +14,7 @@
 				<text v-else>￥{{allAmount}}</text>
 			</view>
 			<view class="pay_input">
-				<message-input :breathe="canInput" :dotFill="true" v-model="password" :bold="false" font-size="50" active-color="#CCCCCC" inactive-color="#CCCCCC" :maxlength="6" width="90" height="100"></message-input>
+				<message-input :disabledKeyboard="true" :breathe="canInput" :dotFill="true" v-model="password" :bold="false" font-size="50" active-color="#CCCCCC" inactive-color="#CCCCCC" :maxlength="6" width="90" height="100"></message-input>
 			</view>
 			<view class="tips" v-if="inputTimes > 0">目前还有{{inputTimes}}次输入机会</view>
 			<view class="tips red" v-else>密码输入已被锁定</view>
@@ -22,7 +22,6 @@
 			<!-- <view class="btn" @tap="$u.throttle(tapEmitPay)"> <text>支付</text> </view> -->
 		</view>
 		<view class="input_box" v-if="canInput">
-			<!-- <u-number-keyboard @change="changeHandle" @backspace="backspaceHandle" :dot-enabled="false"></u-number-keyboard> -->
 			<keyboard-package ref="number"  @onInput="changeHandle" @onDelete="backspaceHandle" @onConfirm="handleConfirm" :disableDot="true" :showConfirm="true"/>
 		</view>
 	</view>
@@ -94,6 +93,14 @@
 			getInputTimes(){
 				console.log('刷新 inputTimes')
 				this.inputTimes = getApp().globalData.passwordInputTimes;
+				if(this.inputTimes <= 0){
+					setTimeout(() => {
+						this.close();
+						uni.navigateTo({
+							url: '/pages/mine/setting/forget_password'
+						})
+					}, 1600)
+				}
 			},
 			subInputTimes(){
 				console.log('减少 subInputTimes')

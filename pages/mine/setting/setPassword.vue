@@ -13,14 +13,10 @@
 				</view>
 			</view>
 			<view class="bd"></view>
-			<!-- <view class="item2" @tap="$u.throttle(goToBtn)">
-				<text>忘记密码?</text>
-			</view> -->
 			<view class="save_btn">
 				<button type="default" :class="{'active': btnActive}" @tap="$u.throttle(setHandle, 600)">保存</button>
 			</view>
 			<view class="input_box" v-if="showKeyboard">
-				<!-- <u-number-keyboard @change="changeHandle" @backspace="backspaceHandle" :dot-enabled="false"></u-number-keyboard> -->
 				<keyboard-package ref="number"  @onInput="changeHandle" @onDelete="backspaceHandle" :disableDot="true"/>
 			</view>
 		</view>
@@ -40,6 +36,9 @@
 				passwordType: 'newPayPassword',
 				showKeyboard: false,
 				title:'设置支付密码',
+				type:'',
+				phone:'',
+				code:''
 			}
 		},
 		components: {
@@ -75,8 +74,14 @@
 		},
 		onLoad:function(options){
 			let type = options.type;
+			this.type = type;
 			if(type=='forget') {
 				this.title = '重置支付密码'
+			}
+			if(type == 'modify'){
+				this.title = '修改支付密码'
+				this.phone = options.phone;
+				this.code = options.code;
 			}
 		},
 		methods: {
@@ -101,13 +106,27 @@
 				}
 				console.log('设置当前密码')
 				this.setNewPayPassword(params.newPayPassword);
+				
 			},
 			//设置新支付密码
 			setNewPayPassword: function(newPayPassword) {
 				let params = {
 					"newPayPassword": newPayPassword, //密码
 				}
-				this.$u.api.forgetPayPasswordApi(params).then(res => {
+				let apiMethod  = "";
+				if(this.type == 'forget'){
+					apiMethod = this.$u.api.forgetPayPasswordApi(params)
+				}
+				if(this.type == 'modify'){
+					params = {
+						"newPayPassword": newPayPassword, //密码
+						phone: this.phone,
+						code: this.code,
+					}
+					apiMethod = this.$u.api.changePayPasswordApi(params);
+				}
+				if(!apiMethod) return;
+				apiMethod.then(res => {
 					let code = res.code;
 					if (parseInt(code) == 0) {
 						this.$u.toast("设置支付密码成功");
@@ -125,10 +144,10 @@
 						this.passwordType = 'newPayPassword'
 						console.log("错误失败")
 					}
+					this.getPasswordInputTimes();
 				}).catch(e => {
 					console.log(e)
 				})
-			
 			},
 			changeHandle: function(e) {
 				this.password = this.password + e;
@@ -160,11 +179,6 @@
 					this.repeatPassword = this.password
 				}
 			},
-			//跳转到忘记支付密码界面
-			goToBtn: function() {
-				this.$u.route('/pages/mine/setting/forget_password')
-			},
-
 		}
 	}
 </script>
