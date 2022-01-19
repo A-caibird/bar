@@ -97,7 +97,7 @@
 					setTimeout(() => {
 						this.close();
 						uni.navigateTo({
-							url: '/pages/mine/setting/forget_password'
+							url: '/pages/mine/setting/amend'
 						})
 					}, 1600)
 				}

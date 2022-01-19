@@ -10,7 +10,7 @@
 						</view>
 					</block>
 				</view>
-				<view class="award_intro" v-if="giftFilter.gift.selectIndex == 1 && resultInfo.award.introduce">
+				<view class="award_intro" v-if="giftFilter.gift.selectIndex == 0 && resultInfo.award.introduce">
 					<text>{{resultInfo.award.introduce}}</text>
 				</view>
 				<view class="time_classify" v-if="resultInfo.award">
