@@ -17,7 +17,7 @@
 		},
 		onShow: function() {
 			console.log('App Show')
-			// #ifdef APP-PLUSz
+			// #ifdef APP-PLUS
 			checkLocationPermision()
 			// #endif
 		},

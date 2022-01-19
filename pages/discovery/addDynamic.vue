@@ -127,6 +127,7 @@
 				}
 				uni.chooseVideo({
 					compressed: true,
+					maxDuration: 20,
 					success(res) {
 						let tempPath = res.tempFilePath;
 						videoBtnAvaliabe = false;

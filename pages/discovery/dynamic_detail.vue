@@ -114,12 +114,11 @@
 				}
 			},
 			videoPlayTap(index){
-				this.playUrl = this.dynamicInfo.videoUrl;
-				console.log(this.playUrl);
+				let playUrl = this.dynamicInfo.videoUrl;
 				var vm = this;
-				this.$nextTick(() => {
-					var videoContext = uni.createVideoContext("videoId", this);
-					console.log(videoContext)
+				vm.playUrl = playUrl;
+				vm.$nextTick(() => {
+					var videoContext = uni.createVideoContext("videoId", vm);
 					videoContext.requestFullScreen({
 						direction:0
 					});

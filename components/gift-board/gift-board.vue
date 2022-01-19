@@ -174,6 +174,9 @@
 						selectIndex: 0
 					}
 				},
+				resultInfo:{
+					award:{}
+				}
 				
 			}
 		},
