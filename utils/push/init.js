@@ -62,6 +62,15 @@ function handlePushReceive(msg) {
 			content = payload.content
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
 		}
+		/*
+		 存酒过期提醒， 优惠券过期提醒
+		 */
+		if (type == 'saveWineEnd' || type == 'couponEnd') {//某人关注我
+			console.log('关注我')
+			option.title = payload.title
+			content = payload.content
+			plus.push.createMessage(content,  JSON.stringify(payload), option);
+		}
 		if (type == 'attention') {//某人关注我
 			console.log('关注我')
 			option.title = payload.title
@@ -157,26 +166,6 @@ function handlePushClick(msg) {
 					url:'/pages/chat/chat'+`?userInfo=${infoStr}`
 				})
 			} 
-			// if(route=='/pages/index/index') {
-			// 	vm.goChat({
-			// 		userInfo:infoStr
-			// 	})
-			// }  else if(route=='/pages/chat/chat') {
-			// 	if(vm.userInfo.chatToken==payload.identifier&&vm.friendUserInfo.chatToken!=payload.sendUserId) {
-			// 		uni.redirectTo({
-			// 			url:'/pages/chat/chat'+`?userInfo=${infoStr}`
-			// 		})
-			// 	}
-			// } else {
-			// 	uni.reLaunch({
-			// 		url: '/pages/index/index'+`?current=info`,
-			// 		success:function(){
-			// 			uni.navigateTo({
-			// 				url:'/pages/chat/chat'+`?userInfo=${infoStr}`
-			// 			})
-			// 		}
-			// 	})
-			// }
 		}
 		if(type=='gift') {
 			if(route=='/pages/index/index') {
@@ -199,6 +188,14 @@ function handlePushClick(msg) {
 				})
 			}
 			
+		}
+		/*
+		 存酒过期提醒、优惠券过期提醒
+		 */
+		if (type == 'saveWineEnd' || type == 'couponEnd') {
+			uni.navigateTo({
+				url:'/pages/info/systemNotification'
+			})
 		}
 		if(type=='attention') {
 			let {userId} =  payload
@@ -230,7 +227,7 @@ function handlePushClick(msg) {
 		}
 		if(type=='endOrder') {
 			console.log(payload)
-			let {orderId,inviteOrder} =  payload
+			let {orderId,inviteOrder} = payload
 			if(inviteOrder) {
 				uni.navigateTo({
 					url:'/pages/order/yao-create-detail'+`?orderId=${orderId}`
@@ -239,8 +236,7 @@ function handlePushClick(msg) {
 				uni.navigateTo({
 					url:'/pages/order/ping-create-detail'+`?orderId=${orderId}`
 				})
-			}
-			
+			}	
 		}
 		if(type=='comment') {
 			console.log(payload)
@@ -314,7 +310,13 @@ function openAPPMsg(payload){ //APP 处于关闭状态下 点击消息跳转页�
 				})
 			})
 		})
+	}else{
+		pageJump(payload)
 	}
+
+}
+function pageJump(payload){
+	let type = payload.type
 	if(type=='gift') {
 		console.log('礼物')
 		slientHandle(() => {
@@ -322,6 +324,14 @@ function openAPPMsg(payload){ //APP 处于关闭状态下 点击消息跳转页�
 				url: '/pages/info/gift'
 			});
 		})	
+	}
+	/*
+	 存酒过期提醒、优惠券过期提醒
+	 */
+	if (type == 'saveWineEnd' || type == 'couponEnd') {
+		uni.navigateTo({
+			url:'/pages/info/systemNotification'
+		})
 	}
 	if(type=='attention') {
 		console.log('关注')
