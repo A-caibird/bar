@@ -15,7 +15,7 @@
 			<view class="order_status_text" v-if="orderInfo.status=='paying'">
 				<image src="@/static/imgs/common/five-clock.png"></image>
 				<text style="font-weight: 500;margin-left: 16rpx;">待付款</text>
-				<text style="font-size: 26rpx;">（3分钟后自动关闭）</text>
+				<text style="font-size: 26rpx;">（5分钟后自动关闭）</text>
 			</view>
 			<view class="order_status_text" v-if="orderInfo.status=='comment'">
 				<image src="/static/imgs/common/white-hook.png"></image>
