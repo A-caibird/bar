@@ -63,10 +63,9 @@ function handlePushReceive(msg) {
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
 		}
 		/*
-		 存酒过期提醒， 优惠券过期提醒
+		 存酒过期提醒， 优惠券过期提醒、订单到店提醒、订单过期
 		 */
-		if (type == 'saveWineEnd' || type == 'couponEnd') {//某人关注我
-			console.log('关注我')
+		if (type == 'saveWineEnd' || type == 'couponEnd' || type == 'outTime' || type == 'notShop') {
 			option.title = payload.title
 			content = payload.content
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
@@ -190,9 +189,10 @@ function handlePushClick(msg) {
 			
 		}
 		/*
-		 存酒过期提醒、优惠券过期提醒
+		存酒过期提醒、优惠券过期提醒、订单到店提醒 订单过期提醒
 		 */
-		if (type == 'saveWineEnd' || type == 'couponEnd') {
+		if (type == 'saveWineEnd' || type == 'couponEnd' || type == 'notShop' || type == 'outTime') {
+			console.log(type);
 			uni.navigateTo({
 				url:'/pages/info/systemNotification'
 			})
@@ -286,10 +286,6 @@ function handlePushClick(msg) {
 }
 
 function openAPPMsg(payload){ //APP 处于关闭状态下 点击消息跳转页面
-	let pages = getCurrentPages();
-	let page = pages[pages.length - 1];
-	let route = '/'+page.route
-	let vm = page.$vm
 	let type = payload.type
 	if (type == 'msg') {
 		let {chatUserId,sendUserId,nickName,avatar,identifier,userId} = payload
@@ -326,11 +322,14 @@ function pageJump(payload){
 		})	
 	}
 	/*
-	 存酒过期提醒、优惠券过期提醒
+	 存酒过期提醒、优惠券过期提醒、订单到店提醒
 	 */
-	if (type == 'saveWineEnd' || type == 'couponEnd') {
-		uni.navigateTo({
-			url:'/pages/info/systemNotification'
+	if (type == 'saveWineEnd' || type == 'couponEnd' || type == 'notShop' || type == 'outTime') {
+		console.log(type);
+		slientHandle(() => {
+			uni.navigateTo({
+				url:'/pages/info/systemNotification'
+			})
 		})
 	}
 	if(type=='attention') {
