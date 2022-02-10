@@ -79,10 +79,10 @@
 					align-items: center;
 					width: 100%;
 					height: 150rpx;
-					&.active {
-						background-color: orange;
-						color: #FFFFFF;
-					}
+					// &.active {
+					// 	background-color: orange;
+					// 	color: #FFFFFF;
+					// }
 					.avatar {
 						padding-right: 30rpx;
 						image {
