@@ -254,6 +254,15 @@
 				return label
 			}
 		},
+		watch: {
+			"selectIndex"(newValue) {
+				if(newValue == 4){
+					if(this.commentList.length <= 0){
+						this.getCommentList();
+					}
+				}
+			}
+		},
 		onPageScroll: function() {
 			let vm = this;
 			this.$u.getRect('.classify_box').then(res => {
@@ -288,7 +297,6 @@
 				})
 				this.getClubDetail();
 				// this.getClubIntro();
-				// this.getCommentList();
 				// this.selectIndex = 0;
 			})
 		},
@@ -343,6 +351,7 @@
 					if(parseInt(res.code) == 0){
 						this.commentList = res.data.list
 					}else {
+						this.commentList = [];
 						console.log("获取评价列表失败")
 					}
 				})
@@ -473,7 +482,7 @@
 				})
 				this.classifyShow = true;
 				this.getClubIntro();
-				this.getCommentList();
+				// this.getCommentList();
 				this.selectIndex = 0;
 			},
 			goBack:function(){

@@ -348,6 +348,15 @@
 			}
 			
 		},
+		watch: {
+			"selectIndex"(newValue) {
+				if(newValue == 4){
+					if(this.commentList.length <= 0){
+						this.getCommentList();
+					}
+				}
+			}
+		},
 		onLoad:function(options){
 			let id = options.id;
 			this.clubId = id;
@@ -355,7 +364,7 @@
 			this.pingStatus = options.pingStatus
 			this.getClubDetail();
 			this.getClubIntro();
-			this.getCommentList();
+			// this.getCommentList();
 			this.getPingOderInfo()
 			this.getPingUserList()
 			this.selectIndex = 0;
