@@ -17,8 +17,7 @@
 				<message-input :disabledKeyboard="true" :breathe="canInput" :dotFill="true" v-model="password" :bold="false" font-size="50" active-color="#CCCCCC" inactive-color="#CCCCCC" :maxlength="6" width="90" height="100"></message-input>
 			</view>
 			<view class="tips" v-if="inputTimes > 0">目前还有{{inputTimes}}次输入机会</view>
-			<view class="tips red" v-else>密码输入已被锁定</view>
-			
+			<view class="tips red" v-else>密码已被锁定，请重置支付密码</view>
 			<!-- <view class="btn" @tap="$u.throttle(tapEmitPay)"> <text>支付</text> </view> -->
 		</view>
 		<view class="input_box" v-if="canInput">
