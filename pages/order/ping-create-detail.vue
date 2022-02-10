@@ -258,24 +258,24 @@
 				<view class="common_btn color" @tap="$u.throttle($u.route('/pages/club/consumption/payPage',{allAmount:orderInfo.totalAmount,orderId:orderId,type:'ping-order'}))"> <text>去付款</text> </view>
 			</view>
 			<view class="foot_box" v-if="orderInfo.status=='noShop'">
-				<view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view>
+				<!-- <view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view> -->
 				<view class="common_btn" v-if="orderInfo.canChangePing" @tap="$u.throttle(tapEndPingJoin)"> <text>结束拼享</text> </view>
 				<view class="common_btn" v-if="orderInfo.canChangePing" @tap="$u.throttle(tapGoPing)"> <text>去拼享</text> </view>
 				<view class="common_btn color" @tap="$u.throttle(tapArrive)"> <text>确认到店</text> </view>
 			</view>
 			<view class="foot_box" v-if="orderInfo.status=='arrived'">
-				<view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view>
+				<!-- <view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view> -->
 				<view class="common_btn" v-if="orderInfo.canChangePing" @tap="$u.throttle(tapEndPingJoin)"> <text>结束拼享</text> </view>
 				<view class="common_btn" v-if="orderInfo.canChangePing" @tap="$u.throttle(tapGoPing)"> <text>去拼享</text> </view>
 				<view class="common_btn color" @tap="$u.throttle(tapGoAddWine)"> <text>加单酒水</text> </view>
 				<view class="common_btn" v-if="orderInfo.canFetch " @tap="$u.throttle(tapFetchWIne)"> <text>取酒</text> </view>
 			</view>
 			<view class="foot_box" v-if="orderInfo.status=='comment'">
-				<view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view>
+				<!-- <view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view> -->
 				<view class="common_btn color" @tap="$u.throttle($u.route('/pages/order/evaluation',{orderId:orderId}))"> <text>我要评价</text> </view>
 			</view>
 			<view class="foot_box" v-if="orderInfo.status=='complete'">
-				<view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view>
+				<!-- <view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view> -->
 				<!-- <view class="common_btn color" @tap="tapDelete"> <text>删除</text> </view> -->
 			</view>
 			<view class="foot_box" v-if="orderInfo.status=='cancel'">
