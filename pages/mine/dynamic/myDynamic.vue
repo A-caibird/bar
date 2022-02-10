@@ -3,7 +3,7 @@
 		<u-navbar back-icon-color="#FFFFFF" :background="{'background': 'rgba(0,0,0,0)'}" :border-bottom="false" :immersive="true"></u-navbar>
 		<view class="myinfo">
 			<image class="bg_img" :src=" otherList.background || '/static/imgs/personalDynamic/dynamic_bgimg.png'"></image>
-			<image class="avatar" :src="otherList.avatar"  ></image>
+			<image class="avatar" :src="otherList.avatar"  @tap="previewTap"></image>
 			<view class="myinfo-details">
 				<view class="myinfo-details-head">
 					<text class="text-name">{{otherList.nickName}}</text>
@@ -111,6 +111,13 @@
 			//console.log(this.userid)
 		},
 		methods: {
+			previewTap:function(){
+				let urls = [this.otherList.avatar];
+				uni.previewImage({
+					urls:urls,
+					current: 0
+				})
+			},
 			tapAttentionList:function(){
 				if(this.showMyAttentionUser == false){
 					this.$u.toast('不可以查看该用户的关注信息')
