@@ -116,7 +116,7 @@ export default{
 				uni.compressImage({
 					src: path,
 					success(res){
-						console.log('压缩成功', res.tempFilePath);
+						// console.log('压缩成功', res.tempFilePath);
 						resolve(res)
 					},
 					fail(e) {

@@ -8,7 +8,7 @@
 var loop_times = 0;
 const uploadFile = function(filePath, dir, successc, failc) {
 	getOssInfo().then(res => {
-		console.log(res);
+		// console.log(res);
 		let {code, data} = res.data;
 		if(parseInt(code) == 0){
 			uploadFileAPI(filePath, dir, successc, failc, data.sign)

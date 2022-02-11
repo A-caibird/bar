@@ -14,7 +14,6 @@ function connect(goeasy, id = null, userInfo = null, callback = null) { //id 相
 			if (callback) {
 				callback();
 			}
-			console.log(avatar, nickname);
 			console.log(id + ", GoEasy connect successfully.") //连接成功
 		},
 		onFailed: function(error) { //连接失败

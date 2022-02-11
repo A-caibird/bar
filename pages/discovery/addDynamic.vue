@@ -16,7 +16,7 @@
 				<text class="text-right">(最多提交9张图片)</text>
 			</view>
 			<view class="photo-area">
-				<view class="photo-area-item" v-for="(item, index) in imgList" :key="index">
+				<view class="photo-area-item" v-for="(item, index) in imgList" :key="index" @tap="previewTap(index)">
 					<image @tap="deletePhoto(index)" class="delete_icon" src="/static/imgs/common/cancel.png" mode=""></image>
 					<image :src="item.avatar" mode=""></image>
 				</view>
@@ -101,6 +101,16 @@
 			uni.$off('updataLocation', this.handelUpdataLocation)
 		},
 		methods: {
+			previewTap:function(index){
+				let urls = [];
+				this.imgList.forEach((item, i) => {
+					urls.push(item.avatar);
+				})
+				uni.previewImage({
+					urls,
+					current: index
+				})
+			},
 			fullScreenChange(e){
 				if(!e.detail.fullScreen){
 					this.playUrl = "";
