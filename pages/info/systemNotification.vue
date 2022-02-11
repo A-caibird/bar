@@ -74,12 +74,13 @@
 					flex-direction: column;
 					justify-content: center;
 					width: 690rpx;
-					height: 212rpx;
+					min-height: 212rpx;
 					background: #2c3158;
 					border-radius: 6rpx;
 					margin: 0 30rpx;
 					margin-top: 30rpx;
-				
+					box-sizing: border-box;
+					padding: 20rpx 0rpx;
 					.message-title {
 						display: flex;
 						justify-content: space-between;
