@@ -20,7 +20,6 @@ async function downloadAvatar(url) {
 							reject(res)
 						}
 					})
-					
 		        } else {
 					reject(res)
 				}

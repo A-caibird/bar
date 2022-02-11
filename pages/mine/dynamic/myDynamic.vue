@@ -1,9 +1,11 @@
 <template>
 	<view class="container">
-		<u-navbar back-icon-color="#FFFFFF" :background="{'background': 'rgba(0,0,0,0)'}" :border-bottom="false" :immersive="true"></u-navbar>
-		<view class="myinfo">
+		<u-navbar v-if="!navShow" back-icon-color="#FFFFFF" :background="{'background': 'rgba(0,0,0,0)'}" :border-bottom="false" :immersive="true"></u-navbar>
+		<view class="header_img">
 			<image class="bg_img" :src=" otherList.background || '/static/imgs/personalDynamic/dynamic_bgimg.png'"></image>
-			<image class="avatar" :src="otherList.avatar"  @tap="previewTap"></image>
+		</view>
+		<view class="myinfo">
+			<image class="avatar" :src="otherList.avatar"  @tap.stop="previewTap"></image>
 			<view class="myinfo-details">
 				<view class="myinfo-details-head">
 					<text class="text-name">{{otherList.nickName}}</text>
@@ -30,22 +32,30 @@
 					</button>
 				</view>
 			</view>
-			
 		</view>
 		<view class="content-box">
 			<view class="intro_box" v-if="otherList.personalProfile">
 				{{otherList.personalProfile}}
 			</view>
-			<view class="content-title">
-				<view  class="content-dynamic" 
-				:class="{active:currentIndex === '0' }" @tap="select('0')">动态</view>
-				
-				<view  class="content-dynamic"
-				:class="{active:currentIndex === '1' }" @tap="select('1')">资料</view>
+			<view class="content-title" :style="{'paddingTop': statusBarHeight + 'px'}">
+				<view class="content-title-box">
+					<view class="nav_box" :class="{'show': navShow}" @tap="$u.throttle($u.route({type:'back'}))">
+						<u-icon name="arrow-left" color="#FFFFFF" size="44"></u-icon>
+					</view>
+					<view  class="content-dynamic" 
+					:class="{active:currentIndex === '0' }" @tap="select('0')">动态</view>
+					
+					<view  class="content-dynamic"
+					:class="{active:currentIndex === '1' }" @tap="select('1')">资料</view>
+				</view>
+				<view class="gajiu_btn" @tap.stop="tapAwkwardWine">
+					<image src="/static/imgs/common/club-white.png"></image>
+					<text>尬酒</text>
+				</view>
 			</view>
-			<swiper @change="change" class="swiper-tab" :class="{'intro': otherList.personalProfile}" :current="currentIndex">
+			<swiper @change="change" class="swiper-tab" :current="currentIndex" :style="{'height': swiperHeight + 'px'}">
 				<swiper-item>
-					<scroll-view class="dynamic-details" scroll-y="true" @scrolltolower="reachBottom">
+					<scroll-view class="dynamic-details" :style="{'height': swiperHeight + 'px'}" :scroll-y="false" @scrolltolower="reachBottom">
 						<view class="dynamic-details-item" v-for="(item,index) in pageList" :key="index">
 							<image @tap="$u.route('pages/discovery/dynamic_detail?id=' + item.id)" :src="item.imgList[0]" mode="aspectFill"></image>
 						</view>
@@ -68,11 +78,14 @@
 <script>
 	import pageable from '@/mixins/pageable.js';
 	var app = getApp();
-	
+	var {windowHeight, statusBarHeight} = uni.getSystemInfoSync();
+	var proportion = uni.getSystemInfoSync().windowWidth / 750;
 	export default {
 		mixins: [pageable],
 		data() {
 			return {
+				statusBarHeight: statusBarHeight,
+				navShow: false,
 				currentIndex: '0',
 				otherList:{},
 				flag:'',
@@ -97,10 +110,14 @@
 				],
 				params:{
 					userId:-1,
-					lng:121.557239,//不需要用到但必须传
+					lng:121.557239,//不需要用到但,必须传
 					lat: 29.809815,//接口不需要传
 				},
+				pageSize: 20,
 				url:'/api/dynamic/otherPublishList',
+				maxHeight: 0, // swiper 最大高度
+				minHeight: 0, // swiper 最小高度
+				swiperHeight: 0, // swiper 当前高度
 			}
 		},
 		onLoad(option) {
@@ -108,9 +125,68 @@
 			this.params.userId = option.id
 			this.otherMsg()
 			this.pullRefresh()
-			//console.log(this.userid)
+			this.maxHeight = windowHeight - statusBarHeight - ( 150 * proportion);
+			this.minHeight = windowHeight - statusBarHeight - (402 + 164 + 150 + 110) * proportion;
+		},
+		onPageScroll:function(){
+			var vm = this;
+			this.$u.getRect('.content-title').then(res => {
+				let top = res.top;
+				if(top <= 20){
+					if(!vm.navShow){
+						
+						vm.navShow = true
+					}
+				}else{
+					if(vm.navShow){
+						vm.navShow = false
+					}
+				}
+			})
+		},
+		onReachBottom:function(){
+			this.reachBottom();
+		},
+		watch: {
+			pageList(newValue) {
+				this.swiperHeight =  this.getSwiperHeight(newValue)
+			},
+			currentIndex(index){
+				if(index == 1){
+					this.swiperHeight = this.minHeight;
+				}else{
+					this.swiperHeight = this.getSwiperHeight(this.pageList);
+				}
+			}
+			
 		},
 		methods: {
+			tapAwkwardWine:function(){
+				this.$u.route('/pages/ping-yao-list/ping-yao-list',{
+					dynamicInfo:encodeURIComponent(JSON.stringify(this.pageList[0]))
+				})
+			},
+			getSwiperHeight:function(pageList){
+				let pageLength = pageList.length;
+				let maxHeight = this.maxHeight;
+				let minHeight = this.minHeight;
+				let sumLine = parseInt(pageLength / 3);
+				if((pageLength % 3) > 0){
+					sumLine + 1
+				}
+				let currentHeight = sumLine * 250 * proportion;
+				console.log(maxHeight, minHeight, currentHeight);
+				if(currentHeight > minHeight){
+					// if(currentHeight < maxHeight){
+					// 	return currentHeight; // 单位px
+					// }else{
+					// 	return maxHeight; // 单位px
+					// }
+					return currentHeight; // 单位px
+				}else{
+					return currentHeight; // 单位px
+				}	 
+			},
 			previewTap:function(){
 				let urls = [this.otherList.avatar];
 				uni.previewImage({
@@ -144,10 +220,8 @@
 				this.currentIndex = ''+current
 			},
 			reachBottom:function(){
-				console.log("触底")
 				this.reachBottomLoad()
 			},
-			
 			
 			//获取他人信息
 			otherMsg:async function(){
@@ -213,22 +287,22 @@
 
 <style lang="scss" scoped>
 	.container {
-		.myinfo {
-			display: flex;
+		.header_img{
+			width: 100%;
 			height: 402rpx;
-			padding-top: 270rpx;
-			padding-left: 30rpx;
-			color: #FFFFFF;
-			display: flex;
-			position: relative;
 			.bg_img{
 				width: 100%;
 				height: 402rpx;
-				position: absolute;
-				top: 0rpx;
-				left: 0rpx;
 				z-index: 1;
 			}
+		}
+		.myinfo {
+			display: flex;
+			align-items: center;
+			color: #FFFFFF;
+			position: relative;
+			box-sizing: border-box;
+			padding: 30rpx;
 			.avatar {
 				width: 90rpx;
 				height: 90rpx;
@@ -326,9 +400,8 @@
 				width: 100%;
 				box-sizing: border-box;
 				padding: 0rpx 30rpx;
-				padding-top: 30rpx;
 				color: #FFFFFF;
-				height: 110rpx;
+				max-height: 110rpx;
 				white-space: pre-wrap;
 				word-break: break-word;
 				line-height: 40rpx;
@@ -338,11 +411,50 @@
 			.content-title {
 				display: flex;
 				align-items: center;
+				justify-content: space-between;
 				width: 100%;
-				height: 121rpx;
+				height: 120rpx;
 				color: #B7B9D6;
 				font-size: 30rpx;
-				margin-bottom: 30rpx;
+				padding-bottom: 30rpx;
+				position: sticky;
+				top: 0rpx;
+				left: 0rpx;
+				z-index: 10;
+				background: #191C3F;
+				.content-title-box{
+					display: flex;
+					align-items: center;
+				}
+				.gajiu_btn{
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					height: 60rpx;
+					width: 170rpx;
+					background: $uni-button-color;
+					border-radius: 30rpx;
+					margin-right: 30rpx;
+					&>image{
+						height: 28rpx;
+						width: 22rpx;
+						margin-right: 10rpx;
+					}
+					&>text{
+						font-size: 28rpx;
+						color: #FFFFFF;
+					}
+				}
+				.nav_box{
+					display: none;
+					opacity: 0;
+					transition: all 0.3s;
+					padding-left: 24rpx;
+					&.show{
+						display: block;
+						opacity: 1;
+					}
+				}
 				.content-dynamic{
 					position: relative;
 					margin: 0 30rpx;
@@ -364,71 +476,67 @@
 
 				}
 			}
-
-			.swiper-tab {
-				height: calc(100vh - 550rpx);
-				&.intro{
-					height: calc(100vh - 664rpx);
-				}
-				.dynamic-details {
-					display: flex;
-
-					width: 100%;
-					height: 100%;
-
-					.dynamic-details-item {
-						display: inline-block;
+			.swiper-tab{
+				width: 100%;
+				overflow: hidden;
+			}
+			.dynamic-details {
+				display: flex;
+				width: 100%;
+				font-size: 0rpx;
+				.dynamic-details-item {
+					display: inline-block;
+					vertical-align: top;
+					width: 250rpx;
+					height: 250rpx;
+					font-size: 0rpx;
+					margin: 0rpx;
+					image {
 						width: 250rpx;
 						height: 250rpx;
-
-						image {
-							width: 250rpx;
-							height: 250rpx;
-						}
 					}
 				}
-
-				.info-details {
-					padding: 0 30rpx;
-
-					.info-details-item {
-						display: flex;
-						justify-content: space-between;
-						font-size: 28rpx;
-						padding-bottom: 50rpx;
-
-						.item-name {
-							color: #9292BA;
-						}
-
-						.item-info {
-							display: flex;
-							justify-content: flex-end;
-							color: #FFFFFF;
-							width: 50%;
-						}
+			}
+			
+			.info-details {
+				padding: 0 30rpx;
+			
+				.info-details-item {
+					display: flex;
+					justify-content: space-between;
+					font-size: 28rpx;
+					padding-bottom: 50rpx;
+			
+					.item-name {
+						color: #9292BA;
 					}
+			
+					.item-info {
+						display: flex;
+						justify-content: flex-end;
+						color: #FFFFFF;
+						width: 50%;
+					}
+				}
+			}
+			
+			.btn{
+				margin-top: 605rpx;
+				margin-bottom: 30rpx;
+				
+				
+				&>button{
+					line-height: 90rpx;
+					color: #FFFFFF;
+					font-size: 30rpx;
+					width: 690rpx;
+					height: 90rpx;
+					background: linear-gradient(270deg,#bb0cf9, #f92faf);
+					border-radius: 49rpx;
 				}
 				
-				.btn{
-					margin-top: 605rpx;
-					margin-bottom: 30rpx;
-					
-					
-					&>button{
-						line-height: 90rpx;
-						color: #FFFFFF;
-						font-size: 30rpx;
-						width: 690rpx;
-						height: 90rpx;
-						background: linear-gradient(270deg,#bb0cf9, #f92faf);
-						border-radius: 49rpx;
-					}
-					
-				}
-
 			}
-
+		
 		}
 	}
 </style>
