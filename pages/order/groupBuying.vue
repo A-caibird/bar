@@ -64,29 +64,39 @@
 							<text>拼享详情</text>
 						</view>
 						<view class="detail_item">
-							<text class="left">时间:</text><text class="right">{{pingOrderInfo.orderTime}}</text>
+							<text class="left">到店时间:</text><text class="right">{{pingOrderInfo.orderTime}}</text>
 						</view>
 						<view class="common_info_item" >
 							<view class="item_left"> 
-								<text style="color: #9292BA;">拼单方式：</text> 
+								<text style="color: #9292BA;">拼享方式：</text> 
 							</view>
 							<view class="item_right" v-if="pingOrderInfo.type=='AA'">
 								<text style="color: #FFFFFF; ">AA 每人 {{pingOrderInfo.shareWay.avgWineCoin}}酒币</text>
 							</view>
 							<view class="item_right" v-if="pingOrderInfo.type=='customize'">
-								<block v-if="pingOrderInfo.shareWay.menNumber>0">
-									<text style="color: #FFFFFF; margin-right: 14rpx;" v-if="pingOrderInfo.shareWay.menWineCoin">男：{{pingOrderInfo.shareWay.menWineCoin}}酒币</text>
-									<text style="color: #FFFFFF; margin-right: 14rpx;" v-else>男：免费</text>
-								</block>
-								<block v-if="pingOrderInfo.shareWay.womenNumber>0">
-									<text style="color: #FFFFFF; " v-if="pingOrderInfo.shareWay.womenWineCoin">女：{{pingOrderInfo.shareWay.womenWineCoin}}酒币</text>
-									<text style="color: #FFFFFF; " v-else>女：免费</text>
-								</block>
+								<text style="color: #FFFFFF; ">自定义</text>
+
 							</view>
 							<view class="item_right" v-if="pingOrderInfo.type=='treat'">
 								<text style="color: #FFFFFF; ">发起人买单</text>
 							</view>
 						</view>
+						<view class="common_info_item" style="align-items: flex-start;">
+							<view class="item_left"> 
+								<text style="color: #9292BA;">拼享方式：</text> 
+							</view>
+							<view class="item_right" style="flex-direction: column; align-items: flex-start;">
+								<view v-if="pingOrderInfo.shareWay.menNumber>0">
+									<text style="color: #FFFFFF; margin-right: 14rpx;" v-if="pingOrderInfo.shareWay.menWineCoin">男：{{pingOrderInfo.shareWay.menNumber}}人 {{pingOrderInfo.shareWay.menWineCoin}}酒币</text>
+									<text style="color: #FFFFFF; margin-right: 14rpx;" v-else>男：{{pingOrderInfo.shareWay.menNumber}}人 免费</text>
+								</view>
+								<view v-if="pingOrderInfo.shareWay.womenNumber>0">
+									<text style="color: #FFFFFF; " v-if="pingOrderInfo.shareWay.womenWineCoin">女：{{pingOrderInfo.shareWay.womenNumber}}人 {{pingOrderInfo.shareWay.womenWineCoin}}酒币</text>
+									<text style="color: #FFFFFF; " v-else>女：{{pingOrderInfo.shareWay.womenNumber}}人 免费</text>
+								</view>
+							</view>
+						</view>
+						
 						<view class="detail_item">
 							<text class="left">备注：</text><text class="right">{{pingOrderInfo.demo}}</text>
 						</view>
@@ -902,6 +912,7 @@
 							width: 100%;
 							display: flex;
 							align-items: center;
+							margin-bottom: 10rpx;
 							.item_left{
 								display: flex;
 								align-items: center;
@@ -918,7 +929,7 @@
 							display: flex;
 							font-size: 26rpx;
 							margin-top: 10rpx;
-							padding-bottom: 10rpx;
+							margin-bottom: 10rpx;
 							width: 100%;
 							.left {
 								color: #B3B3DD;
