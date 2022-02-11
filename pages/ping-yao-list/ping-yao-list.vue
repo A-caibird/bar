@@ -108,18 +108,6 @@
 					}
 				}
 			},
-			// selectOrder({orderInfo}){
-			// 	console.log(orderInfo)
-			// 	console.log(this.dynamicInfo)
-			// 	let friendUserInfo = this.$u.deepClone(this.dynamicInfo)
-			// 	friendUserInfo.name = friendUserInfo.nickName
-			// 	friendUserInfo.hasSave = false
-			// 	if(orderInfo.type=='yao') {
-			// 		this.sendYaoyue(orderInfo,friendUserInfo)
-			// 	} else {
-			// 		this.sendPing(orderInfo,friendUserInfo)
-			// 	}
-			// },
 			async sendYaoyue(orderInfo, friendUserInfo) {
 				let userInfo = this.$u.deepClone(this.userInfo)
 				console.log(orderInfo)
@@ -154,18 +142,27 @@
 				console.log(orderInfo)
 				console.log(userInfo)
 				console.log(friendUserInfo)
-				$chat.sendMsg(userInfo, friendUserInfo, 'single', 'ping', {
+				let {
+					code,
+					data
+				} = await this.$u.api.pingInviteApi({
 					orderId: orderInfo.id,
-					clubCover: orderInfo.clubCover,
-					clubName: orderInfo.clubName,
-					date: orderInfo.date,
-					cardTableName: orderInfo.cardTableName,
-					agreeStatus: 'none',
+					userId: friendUserInfo.userId
 				})
-				this.$toast.text('已发送拼享请求')
-				setTimeout(()=>{
-					this.$u.route({type:'back'})
-				},500)
+				if(code == 0){
+					$chat.sendMsg(userInfo, friendUserInfo, 'single', 'ping', {
+						orderId: orderInfo.id,
+						clubCover: orderInfo.clubCover,
+						clubName: orderInfo.clubName,
+						date: orderInfo.date,
+						cardTableName: orderInfo.cardTableName,
+						agreeStatus: 'none',
+					})
+					this.$toast.text('已发送拼享请求')
+					setTimeout(()=>{
+						this.$u.route({type:'back'})
+					},500)
+				}
 			},
 		},
 		onLoad(opt) {

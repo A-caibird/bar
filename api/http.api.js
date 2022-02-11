@@ -129,6 +129,8 @@ const install = (Vue, vm) => {
 		getNotPayInviteOrderSizeApi: (params) => vm.$u.post('/api/order/getNotPayInviteOrderSize', params), //未付款邀约订单数
 		
 		//拼享订单
+		pingInviteApi: (params) => vm.$u.post('/api/order/sendOrderPingInfo', params), //拼享单邀请别人
+		refusePingInviteApi: (params) => vm.$u.post('/api/order/disAgreeOrderPingInfo', params), // 拒绝拼享单邀请
 		getPingOrderView: (params) => vm.$u.get('/api/order/pingOrderView', params), //拼享订单详情
 		deletePingOrderApi: (params) => vm.$u.post('/api/order/deleteJoinOrder', params), //删除拼享订单
 		endPingJoinApi: (params) => vm.$u.post('/api/order/endJoin', params), //结束拼享
