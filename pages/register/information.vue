@@ -163,20 +163,6 @@
 						vm.$u.route('/pages/cut-avatar/cut-avatar',{
 							pic:res.tempFilePaths[0]
 						})
-						// console.log(filePath);
-						// uni.showLoading({
-						// 	title: '上传中'
-						// })
-						// vm.$u.api.uploadFile(filePath).then(url => {
-						// 	console.log(res);
-						// 	this.avatar = url;
-						// 	this.$nextTick(function(){
-						// 		uni.hideLoading();
-						// 	})
-						// }).catch(e => {
-						// 	console.log(e);
-						// 	uni.hideLoading();
-						// })
 				    },
 					fail(e) {
 						console.log(e);
@@ -245,8 +231,8 @@
 						res.data.fillInformation = true
 						login(res.data, this.register);
 					} else {
-						if(res.data.msg){
-							this.$u.toast(res.data.msg);
+						if(res.msg){
+							this.$u.toast(res.msg);
 						}else{
 							this.$u.toast('请重试');
 						}
