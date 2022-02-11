@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<mescroll-uni ref="mescrollRef" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" @up="upCallback">
+		<mescroll-uni ref="mescrollRef" :canShowTop="false" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" @up="upCallback">
 			<block v-if="hasLocation">
 				<view  v-for="(info, index) in pageList" :key="index">
 					<block v-if="info.type=='club'">
@@ -86,6 +86,9 @@
 		
 		},
 		methods:{
+			toTopClick(){
+				return this.$refs.mescrollRef ? this.$refs.mescrollRef.toTopClick() : "" 
+			},
 			refreshScrll(){
 				this.mescroll.resetUpScroll()
 			},

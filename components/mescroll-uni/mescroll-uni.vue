@@ -127,6 +127,10 @@
 				type: Boolean,
 				default: true
 			},
+			canShowTop: { //是否显示返回顶部按钮
+				type: Boolean,
+				default: true,
+			}, 
 			canScroll:{
 				type: Boolean,
 				default: true,
@@ -334,7 +338,7 @@
 					// 回到顶部
 					toTop: {
 						onShow(isShow) { // 显示隐藏的回调
-							vm.isShowToTop = isShow;
+							vm.isShowToTop = this.canShowTop ? isShow : false;
 						}
 					},
 					// 派发上拉加载的回调

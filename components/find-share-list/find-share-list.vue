@@ -1,5 +1,5 @@
 <template>
-	<mescroll-uni :ref="'mescrollRef'+i" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" @up="upCallback">
+	<mescroll-uni :ref="'mescrollRef'+i" :canShowTop="false" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" @up="upCallback">
 		<block v-if="hasLocation">
 			<block v-for="(info, index) in pageList" :key="index">
 				<view class="common_item">
@@ -66,6 +66,10 @@
 		
 		},
 		methods:{
+			toTopClick(){
+				let mescrollRef = 'mescrollRef' + this.i;
+				return this.$refs[mescrollRef] ? this.$refs[mescrollRef].toTopClick() : "" 
+			},
 			judgeLoad(){
 				if(app.globalData.location.cityName!='未定位') {
 					this.hasLocation = true

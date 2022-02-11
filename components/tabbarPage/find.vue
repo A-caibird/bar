@@ -2,7 +2,7 @@
 	<view class="find-page">
 		<block v-if="!pageLoading">
 			<view class="find_header_box">
-				<classify fontSize="28" bgColor="#191C3F" ref="tabs" :list="list" :current="swiperCurrent" @change="change"
+				<classify fontSize="28" bgColor="#191C3F" ref="tabs" :list="list" :current="swiperCurrent" @dbTap="dbTap" @change="change"
 					:is-scroll="false" swiperWidth="750" inactiveColor="#B7B9D6" activeColor="#ffffff" :activeItemStyle="{
 						'font-size': '34rpx'
 					}"></classify>
@@ -319,7 +319,11 @@
 					}
 				})
 			},
-
+			// tab 栏双击
+			dbTap(index){
+				let refs = ['follow-dynamic-list', 'nearby-dynamic-list', 'find-share-list', 'gift-board'];
+				this.$refs[refs[index]].toTopClick();
+			},
 			// tab栏切换
 			change(index) {
 				this.swiperCurrent = index;

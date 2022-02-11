@@ -1,5 +1,5 @@
 <template>
-	<mescroll-uni :ref="'mescrollRef'+i" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" @up="upCallback">
+	<mescroll-uni :ref="'mescrollRef'+i" :canShowTop="false" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" @up="upCallback">
 		<view class="page_box">
 			<view class="top_rank">
 				<view class="list_classify">
@@ -191,6 +191,10 @@
 			}
 		},
 		methods:{
+			toTopClick(){
+				let mescrollRef = 'mescrollRef' + this.i;
+				return this.$refs[mescrollRef] ? this.$refs[mescrollRef].toTopClick() : "" 
+			},
 			// 动态点击
 			dynamicTap(id){
 				let isMy = false;

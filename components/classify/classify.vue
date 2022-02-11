@@ -28,7 +28,9 @@
 		windowWidth
 	} = uni.getSystemInfoSync();
 	const preId = 'UEl_';
-
+	var tapIndex = 0;
+	var tapStartTime = 0;
+	var tapEndTime = 0;
 	/**
 	 * tabsSwiper 全屏选项卡
 	 * @description 该组件内部实现主要依托于uniapp的scroll-view和swiper组件，主要特色是切换过程中，tabsSwiper文字的颜色可以渐变，底部滑块可以 跟随式滑动，活动tab滚动居中等。应用场景可以用于需要左右切换页面，比如商城的订单中心(待收货-待付款-待评价-已退货)等应用场景。
@@ -297,7 +299,32 @@
 				this.sW = uni.upx2px(Number(this.swiperWidth));
 			},
 			emit(index) {
-				this.$emit('change', index);
+				if(this.dbClick()){
+					this.$emit('dbTap', index);
+				}else{
+					this.$emit('change', index);
+				}
+			},
+			dbClick(){
+				if(tapIndex <= 0){
+					tapIndex = tapIndex + 1;
+					tapStartTime = new Date().getTime();
+					setTimeout(() => {
+						tapIndex = tapStartTime = tapStartTime = 0;
+						return false;
+					}, 300)
+				}else{
+					tapEndTime = new Date().getTime();
+					if(tapEndTime - tapStartTime <= 300){
+						tapIndex = tapStartTime = tapStartTime = 0;
+						return true;
+					}else{
+						tapIndex = tapStartTime = tapStartTime = 0;
+						console.log(2);
+						return false;
+					}
+				}
+				
 			},
 			change() {
 				this.setScrollViewToCenter();
