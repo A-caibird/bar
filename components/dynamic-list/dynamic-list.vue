@@ -125,7 +125,7 @@
 			},
 			refresh(e){
 				if(e.msg!=this.mode) {
-					console.log('刷新视频列表')
+					console.log('刷新附近动态列表')
 					this.mescroll.resetUpScroll()
 				}
 			},

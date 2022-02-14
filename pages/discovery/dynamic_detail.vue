@@ -15,13 +15,13 @@
 		<view class="dynamic-img" v-if="dynamicInfo.imgList.length <= 0 && dynamicInfo.videoUrl" @tap="videoPlayTap">
 			<image mode="aspectFill" :src="dynamicInfo.videoCover"></image>
 			<image class="play_icon" src="/static/imgs/common/play_icon.png"></image>
-			<video @fullscreenchange="fullScreenChange" class="videoBox" id="videoId" :src="playUrl"></video>
+			<video @fullscreenchange="fullScreenChange" class="videoBox" id="videoId" v-if="playUrl" :src="playUrl"></video>
 		</view>
 		<view class="dynamic-details" v-if="(dynamicInfo.imgList.length > 1) || (dynamicInfo.imgList.length == 1 && dynamicInfo.videoUrl)">
 			<view class="dynamic-details-item" v-if="dynamicInfo.videoCover" @tap="videoPlayTap">
 				<image mode="aspectFill" :src="dynamicInfo.videoCover"></image>
 				<image class="play_icon" src="/static/imgs/common/play_icon.png"></image>
-				<video @fullscreenchange="fullScreenChange" class="videoBox" id="videoId" :src="playUrl"></video>
+				<video @fullscreenchange="fullScreenChange" class="videoBox" id="videoId" v-if="playUrl" :src="playUrl"></video>
 			</view>
 			<view class="dynamic-details-item" v-for="item,index in dynamicInfo.imgList" :key="index">
 				<image :src="item" mode="aspectFill" @tap="$u.throttle(previewImgList(dynamicInfo.imgList,index))">
@@ -110,6 +110,8 @@
 			},
 			fullScreenChange(e){
 				if(!e.detail.fullScreen){
+					var videoContext = uni.createVideoContext("videoId", this);
+					videoContext.stop()
 					this.playUrl = "";
 				}
 			},
@@ -301,12 +303,12 @@
 			}
 		}
 		.videoBox{
-			position: absolute;
+			position: fixed;
 			left: 0rpx;
 			top: 0rpx;
 			z-index: -1;
-			height: 0rpx;
-			width: 0rpx;
+			height: 100%;
+			width: 100%;
 			opacity: 0;
 		}
 

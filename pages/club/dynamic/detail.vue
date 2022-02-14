@@ -24,7 +24,7 @@
 			<u-image class="dy_img" width="100%" height="100%" :src="info.videoCover"></u-image>
 			<image class="play_icon" src="/static/imgs/common/play_icon.png"></image>
 		</view>
-		<video @fullscreenchange="fullScreenChange" class="videoBox" id="videoId" :src="playUrl"></video>
+		<video @fullscreenchange="fullScreenChange" class="videoBox" id="videoId" v-if="playUrl" :src="playUrl"></video>
 		<view class="middle_box">
 			<view class="activity_info">
 				<view class="activity_name"> <text>{{info.title}}</text> </view>
@@ -71,6 +71,8 @@
 		methods:{
 			fullScreenChange(e){
 				if(!e.detail.fullScreen){
+					var videoContext = uni.createVideoContext("videoId", this);
+					videoContext.stop()
 					this.playUrl = "";
 				}
 			},
@@ -147,12 +149,12 @@
 		box-sizing: border-box;
 		position: relative;
 		.videoBox{
-			position: absolute;
+			position: fixed;
 			left: 0rpx;
 			top: 0rpx;
 			z-index: -1;
-			height: 0rpx;
-			width: 0rpx;
+			height: 100%;
+			width: 100%;
 			opacity: 0;
 		}
 		.media_box{

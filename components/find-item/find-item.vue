@@ -51,7 +51,6 @@
 			<u-image class="dy_img" width="100%" height="100%" :src="info.videoCover"></u-image>
 			<image class="play_icon" src="/static/imgs/common/play_icon.png"></image>
 		</view>
-		<video @fullscreenchange="fullScreenChange" class="videoBox" id="videoId" :src="playUrl"></video>
 		<view class="club_footer">
 			<view class="club_intro">
 				<text>{{info.content}}</text>
@@ -129,22 +128,6 @@
 			this.playUrl = this.info.videoUrl;
 		},
 		methods:{
-			fullScreenChange(e){
-				if(!e.detail.fullScreen){
-					this.playUrl = "";
-				}
-			},
-			videoPlayTap(index){
-				this.playUrl = this.info.videoUrl;
-				var vm = this;
-				this.$nextTick(function(){
-					var videoContext = uni.createVideoContext("videoId", vm);
-					videoContext.requestFullScreen({
-						// direction: 0
-					});
-					videoContext.play()
-				})
-			},
 			goPage(url){
 				this.$nav.navigateTo({url});
 			},
@@ -354,12 +337,12 @@
 			}
 		}
 		.videoBox{
-			position: absolute;
+			position: fixed;
 			left: 0rpx;
 			top: 0rpx;
 			z-index: -1;
-			height: 0rpx;
-			width: 0rpx;
+			height: 100%;
+			width: 100%;
 			opacity: 0;
 		}
 		.club_img{

@@ -72,7 +72,7 @@
 				</view>
 			</view>
 		</view>
-		<video :direction="0" @fullscreenchange="fullScreenChange" class="videoBox" id="videoId" :src="playUrl"></video>
+		<video :direction="0" @fullscreenchange="fullScreenChange" class="videoBox" id="videoId" v-if="playUrl" :src="playUrl"></video>
 	</view>
 </template>
 
@@ -454,8 +454,8 @@
 		left: 0rpx;
 		top: 0rpx;
 		z-index: -1;
-		height: 0rpx;
-		width: 0rpx;
+		height: 100%;
+		width: 100%;
 		opacity: 0;
 	}
 	.bottom-wrapper {

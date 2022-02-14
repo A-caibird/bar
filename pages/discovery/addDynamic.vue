@@ -39,7 +39,7 @@
 				<view class="photo-area-select" @tap="chooseVideoHandle" v-if="videoList.length == 0">
 					<image src="/static/imgs/discovery/photo_select.png" mode=""></image>
 				</view>
-				<video :direction="0" @fullscreenchange="fullScreenChange" class="videoBox" id="videoId" :src="playUrl"></video>
+				<video :direction="0" @fullscreenchange="fullScreenChange" class="videoBox" v-if="playUrl" id="videoId" :src="playUrl"></video>
 			</view>
 		</view>
 		<view class="location-box" @tap="$u.route('pages/discovery/location')" v-if="hasLocation">
@@ -113,6 +113,8 @@
 			},
 			fullScreenChange(e){
 				if(!e.detail.fullScreen){
+					var videoContext = uni.createVideoContext("videoId", this);
+					videoContext.stop()
 					this.playUrl = "";
 				}
 			},
@@ -355,9 +357,9 @@
 			left: 0rpx;
 			top: 0rpx;
 			z-index: -1;
-			height: 0rpx;
-			width: 0rpx;
-			opacity: 0;
+			height: 100%;
+			width: 100%;
+			display: block;
 		}
 		.input-box {
 			height: 265rpx;

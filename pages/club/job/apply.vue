@@ -93,7 +93,7 @@
 							<image class="img" src="/static/imgs/common/upload.png"></image>
 							<!-- <image class="cancel_icon" src="/static/imgs/common/cancel.png"></image> -->
 						</view>
-						<video :direction="0" @fullscreenchange="fullScreenChange" class="videoBox" id="videoId" :src="playUrl"></video>
+						<video :direction="0" @fullscreenchange="fullScreenChange" class="videoBox" id="videoId" v-if="playUrl" :src="playUrl"></video>
 					</view>
 				</view>
 			</view>
@@ -172,6 +172,8 @@
 		methods: {
 			fullScreenChange(e){
 				if(!e.detail.fullScreen){
+					var videoContext = uni.createVideoContext("videoId", this);
+					videoContext.stop()
 					this.playUrl = "";
 				}
 			},
@@ -476,8 +478,8 @@
 						left: 0rpx;
 						top: 0rpx;
 						z-index: -1;
-						height: 0rpx;
-						width: 0rpx;
+						height: 100%;
+						width: 100%;
 						opacity: 0;
 					}
 					.img_list {
