@@ -6,7 +6,7 @@
 			}" title="活动详情" title-color="#FFFFFF" back-icon-color="#FFFFFF"></u-navbar>
 		</view>
 		<view class="middle_box">
-			<view class="activity_info">
+			<view class="activity_info" @tap="$u.throttle(goClub)">
 				<view class="activity_name"> <text>{{activity.title}}</text> </view>
 				<view class="second_line">
 					<view class="act_location"> <text>{{clubName}}</text> </view>
@@ -31,6 +31,7 @@
 				},
 				clubName:'',
 				id: "",
+				clubId: '', //酒吧id
 			}
 		},
 		onLoad:function(options){
@@ -39,6 +40,9 @@
 			this.activityDetail();
 		},
 		methods:{
+			goClub:function(){
+				this.goClubDetail(this.clubId);
+			},
 			activityDetail: async function(){
 				let {code,data} = await this.$u.api.activityDetail(this.id)
 				if(code==0) {
@@ -46,6 +50,7 @@
 					console.log(data)
 					this.clubName = clubName
 					this.activity = activity
+					this.clubId =  activity.club.id;
 				}
 			}
 		}
