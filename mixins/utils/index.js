@@ -344,11 +344,10 @@ let utils = ({
 						obj1[e] = obj[e]
 					})
 					this.$forceUpdate();
-					console.log(list)
 					resolve()
 				} else {
 					reject({
-						msg: 'noitem'
+						msg: 'no item'
 					})
 				}
 			})

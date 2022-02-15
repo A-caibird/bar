@@ -30,11 +30,13 @@
 				show:false,
 				id:-1,
 				commentList:[],
+				initInfo: {},
 			};
 		},
 		methods:{
 			init(params){
 				this.id = params.id
+				this.initInfo = params;
 				this.getCommentList()
 			},
 			open(params={}){
@@ -74,7 +76,7 @@
 				if (code == 0) {
 					let {commentNum} = data
 					// let commentNum = 123
-					this.$emit('sendComment',{id:this.id,commentNum:commentNum})
+					this.$emit('sendComment',{id:this.id,commentNum:commentNum, mode: this.initInfo.mode})
 					this.close()
 					this.$u.toast('评论成功');
 					

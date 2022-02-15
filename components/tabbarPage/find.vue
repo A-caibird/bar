@@ -12,14 +12,14 @@
 					<swiper-item class="swiper-item">
 						<dynamic-list2 @shareTap="$emit('shareTap')" ref="follow-dynamic-list" :index="swiperCurrent" 
 							@showYaoyue="handleShowYaoyue" @showPing="handleShowPing" :showPercent="!isAppleAudit"
-							@oepnComment="$emit('openDynamicComment',$event)" @oepnGift="$emit('oepnGift',$event)">
+							@oepnComment="openDynamicComment('follow',$event)" @oepnGift="oepnGift('follow',$event)">
 						</dynamic-list2>
 					</swiper-item>
 					<swiper-item class="swiper-item">
 						<view style="height: 100%;">
 							<dynamic-list @shareTap="$emit('shareTap')" ref="nearby-dynamic-list" :index="swiperCurrent"
 								@showYaoyue="handleShowYaoyue" @showPing="handleShowPing" :showPercent="!isAppleAudit"
-								@oepnComment="$emit('openDynamicComment',$event)" @oepnGift="$emit('oepnGift',$event)">
+								@oepnComment="openDynamicComment('nearby',$event)" @oepnGift="oepnGift('nearby',$event)">
 							</dynamic-list>
 						</view>
 					</swiper-item>
@@ -145,6 +145,14 @@
 			})
 		},
 		methods: {
+			openDynamicComment(mode, e){
+				let info = Object.assign(e, {mode});
+				this.$emit('openDynamicComment', info);
+			},
+			oepnGift(mode, e){
+				let info = Object.assign(e, {mode});
+				this.$emit('oepnGift', info);
+			},
 			show(){
 				this.authorized = getApp().globalData.authorized;
 				console.log(this.authorized);
@@ -162,11 +170,16 @@
 				if (e.gifUrl) {
 					this.$refs.giftAnimation.show(e.gifUrl)
 				}
-
 			},
 			handleSendComment(e) {
-				this.$refs['follow-dynamic-list'].setCommentNum(e)
-				this.$refs['nearby-dynamic-list'].setCommentNum(e)
+				if(e.mode == 'follow'){
+					this.$refs['follow-dynamic-list'].setCommentNum(e)
+				} else if(e.mode == 'nearby'){
+					this.$refs['nearby-dynamic-list'].setCommentNum(e)
+				}else{
+					this.$refs['follow-dynamic-list'].setCommentNum(e)
+					this.$refs['nearby-dynamic-list'].setCommentNum(e)
+				}
 			},
 			goClub() {
 				this.$emit('goClub')

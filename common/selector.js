@@ -36,9 +36,13 @@ const orderStatus = [{
 		'value': 'noShop',
 	},
 	{
-		"name": '待评价',
-		'value': 'comment',
+		"name": '未消费',
+		'value': 'expired',
 	},
+	// {
+	// 	"name": '待评价',
+	// 	'value': 'comment',
+	// },
 	{
 		"name": '已完成',
 		'value': 'complete',

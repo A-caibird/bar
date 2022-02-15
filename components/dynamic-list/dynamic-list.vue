@@ -113,17 +113,24 @@
 			},
 			setGifttNum(data){
 				let {id,giftNum} = data
-				this.setList('id',id,{giftNum:giftNum},this.pageList)
-				this.refresh({msg:this.mode});
-				uni.$emit('dynamic-refresh-follow',{msg:this.mode})
+				this.setList('id',id,{giftNum:giftNum},this.pageList).then(res => {
+					// this.refresh({msg:this.mode});
+					uni.$emit('dynamic-refresh-follow',{msg:this.mode})	
+				}).catch(e => {
+					console.log(e);
+				})
 			},
 			setCommentNum(data){
 				let {id,commentNum} = data
-				this.setList('id',id,{commentNum:commentNum},this.pageList)
-				this.refresh({msg:this.mode});
-				uni.$emit('dynamic-refresh-follow',{msg:this.mode})
+				this.setList('id',id,{commentNum:commentNum},this.pageList).then(res => {
+					// this.refresh({msg:this.mode});
+					uni.$emit('dynamic-refresh-follow',{msg:this.mode})
+				}).catch(e => {
+					console.log(e);
+				})
 			},
 			refresh(e){
+				console.log(e);
 				if(e.msg!=this.mode) {
 					console.log('刷新附近动态列表')
 					this.mescroll.resetUpScroll()

@@ -110,19 +110,25 @@
 			},
 			setGifttNum(data){
 				let {id,giftNum} = data
-				this.setList('id',id,{giftNum:giftNum},this.pageList)
-				uni.$emit('dynamic-refresh',{msg:this.mode})
-				this.refresh({msg:this.mode});
+				this.setList('id',id,{giftNum:giftNum},this.pageList).then(res => {
+					uni.$emit('dynamic-refresh',{msg:this.mode})
+					this.refresh({msg:this.mode});
+				}).catch(e => {
+					console.log(e);
+				})
 			},
 			setCommentNum(data){
 				let {id,commentNum} = data
-				this.setList('id',id,{commentNum:commentNum},this.pageList)
-				uni.$emit('dynamic-refresh',{msg:this.mode})
-				this.refresh({msg:this.mode});
+				this.setList('id',id,{commentNum:commentNum},this.pageList).then(res => {
+					uni.$emit('dynamic-refresh',{msg:this.mode})
+					// this.refresh({msg:this.mode});
+				}).catch(e => {
+					console.log(e);
+				})
 			},
 			refresh(e){
 				if(e.msg!=this.mode) {
-					console.log('刷新视频列表')
+					console.log('刷新关注动态页面');
 					this.mescroll.resetUpScroll()
 				}
 			},
