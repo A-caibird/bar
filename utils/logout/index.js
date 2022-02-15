@@ -10,15 +10,16 @@ const logout = function (out = true) {
 	$storage.removeUserInfo()
 	$storage.removeLocation()
 	$storage.removePayPassword()
-	getApp().globalData.token = ""
-	getApp().globalData.passwordInputTimes = 0;
-	getApp().globalData.authorized = false
-	getApp().globalData.userInfo = {}
-	getApp().globalData.location = {cityName: '宁波',lng: 121.557239,lat: 29.809815}
-	getApp().globalData.payPassword = ''
+	var app = getApp();
 	$store.commit('disconnectGoEasy',{callback: null});
+	app.globalData.token = ""
+	app.globalData.passwordInputTimes = 0;
+	app.globalData.authorized = false
+	app.globalData.userInfo = {}
+	app.globalData.location = {cityName: '宁波',lng: 121.557239,lat: 29.809815}
+	app.globalData.payPassword = ''
 	uni.navigateTo({
-		url: '/pages/login/login'
+		url: '/pages/login/login?register=1'
 	})
 }
 module.exports = logout

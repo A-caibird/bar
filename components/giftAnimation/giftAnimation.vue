@@ -21,6 +21,7 @@
 				clearTimeout(timeout)
 			},
 			show(gifUrl){
+				console.log("启动礼物动画");
 				// this.gifUrl = gifUrl
 				// this.isShow = true
 				// timeout = setTimeout(()=>{

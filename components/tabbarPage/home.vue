@@ -33,6 +33,12 @@
 			<scroll-view scroll-y="true" :lower-threshold="100" :scroll-into-view="scrollBottom" style="height: 100%;" @scrolltolower="reachBottomLoad">
 				<view class="swiper_box" v-if="bannerList.length>1">
 					<u-swiper bgColor="#191C3F" name="file" :list="bannerList" mode="rect" height="400" @click="bannerTap"></u-swiper>
+					<!-- <swiper class="banner_swiper">
+						<swiper-item v-for="(item, index) in bannerList">
+							<u-image src="" height="400"></u-image>
+							<
+						</swiper-item>
+					</swiper> -->
 				</view>
 				<view class="swiper_box" v-if="bannerList.length == 1">
 					<image :src="bannerList[0].file"></image>
