@@ -989,8 +989,10 @@
 						display: flex;
 
 						.content {
-							background-color: #191C3F;
-							color: #FFFFFF;
+							// background-color: #191C3F;
+							// color: #FFFFFF;
+							background-color: #FFFFFF;
+							color: #000000;
 							padding: 15upx 10upx;
 							border-radius: 6upx;
 							font-size: 30upx;
