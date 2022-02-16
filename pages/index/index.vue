@@ -1,8 +1,6 @@
 <template>
 	<view class="container">
-		<!-- <u-mask :show="maskShow" :custom-style="{background: '#FFFFFF'}">
-			
-		</u-mask> -->
+		<!-- <u-mask :show="maskShow" :custom-style="{background: '#FFFFFF'}"></u-mask> -->
 		<view class="middle_box">
 			<swiper v-if="contentShow" style="height: 100%;" :duration="0" :disable-touch="true" :current="current">
 				<swiper-item>
