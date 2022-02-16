@@ -16,9 +16,9 @@
 				<text class="text-right">(最多提交9张图片)</text>
 			</view>
 			<view class="photo-area">
-				<view class="photo-area-item" v-for="(item, index) in imgList" :key="index" @tap="previewTap(index)">
+				<view class="photo-area-item" v-for="(item, index) in imgList" :key="index">
 					<image @tap="deletePhoto(index)" class="delete_icon" src="/static/imgs/common/cancel.png" mode=""></image>
-					<image :src="item.avatar" mode=""></image>
+					<image :src="item.avatar" mode="" @tap="previewTap(index)"></image>
 				</view>
 				<view class="photo-area-select" @tap="$u.throttle(select_photo)" v-if="imgList.length<9">
 					<image src="/static/imgs/discovery/photo_select.png" mode=""></image>

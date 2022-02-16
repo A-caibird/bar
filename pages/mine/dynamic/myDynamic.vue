@@ -340,11 +340,11 @@
 				}
 			}
 			.attention-btn {
-				width: 180rpx;
+				// width: 180rpx;
 				position: relative;
 				z-index: 10;
 				padding-top: 50rpx;
-				padding-right: 30rpx;
+				justify-self: flex-end;
 				.btn-attench0{
 					width: 150rpx;
 					height: 50rpx;
@@ -430,11 +430,11 @@
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					height: 60rpx;
-					width: 170rpx;
+					height: 56rpx;
+					width: 156rpx;
 					background: $uni-button-color;
 					border-radius: 30rpx;
-					margin-right: 30rpx;
+					margin-right: 24rpx;
 					&>image{
 						height: 28rpx;
 						width: 22rpx;

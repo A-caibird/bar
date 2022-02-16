@@ -13,7 +13,6 @@
 					token: $storage.getLoginToken(),
 				})
 			}
-			// console.log('clientid', plus.push.getClientInfo().clientid);
 		},
 		onShow: function() {
 			console.log('App Show')
