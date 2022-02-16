@@ -124,8 +124,8 @@ const install = (Vue, vm) => {
 		yaoyueInviteApi: (params) => vm.$u.post('/api/order/inviteForOrderPaySuccess', params), //邀约别人
 		refuseYaoyueApi: (params) => vm.$u.post('/api/order/refuseInvite', params), //拒绝邀约邀请
 		agreeYaoyueApi: (params) => vm.$u.post('/api/order/agreeInvite', params), //同意邀约邀请
-		quitInviteOrderApi: (params) => vm.$u.post('/api/order/orderRefund', params), //退款
-		refundInviteOrderApi: (params) => vm.$u.post('/api/order/quitInviteOrder', params), //退出邀约
+		refundInviteOrderApi: (params) => vm.$u.post('/api/order/orderRefund', params), //退款
+		quitInviteOrderApi: (params) => vm.$u.post('/api/order/quitInviteOrder', params), //退出邀约
 		getNotPayInviteOrderSizeApi: (params) => vm.$u.post('/api/order/getNotPayInviteOrderSize', params), //未付款邀约订单数
 		
 		//拼享订单

@@ -388,7 +388,7 @@
 			},
 			async tapRefund(){
 				await this.$toast.confirm('','确定要退款吗？')
-				let {code} = await this.$u.api.quitInviteOrderApi({
+				let {code} = await this.$u.api.refundInviteOrderApi({
 					id:this.orderInfo.id
 				})
 				if(code==0) {
