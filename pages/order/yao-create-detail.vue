@@ -120,33 +120,32 @@
 						<text style="color: #FFFFFF;">{{orderInfo.cardTableName}} 卡台</text>
 					</view>
 				</view>
-				<view class="textarea-info-item">
-					<view class="left">
-						<text >备注要求：</text>
+				<block>
+					<view class="textarea-info-item" v-if="orderInfo.isCreator">
+						<view class="left">
+							<text >备注要求：</text>
+						</view>
+						<view class="right">
+							<text>{{orderInfo.demo}}</text>
+						</view>
 					</view>
-					<view class="right">
-						<text>{{orderInfo.demo}}</text>
+					<view class="common_info_item" style="margin-top: 20rpx;">
+						<view class="item_left"> 
+							<text style="color: #9292BA;">订单总价:</text> 
+						</view>
+						<view class="item_right">
+							<text style="color: #FFFFFF;">{{orderInfo.totalAmount}}元</text>
+						</view>
 					</view>
-				</view>
-				
-				<u-gap height="1" bgColor="#20234B" style="margin-top: 20rpx;"></u-gap>
-				
-				<view class="common_info_item" style="margin-top: 20rpx;">
-					<view class="item_left"> 
-						<text style="color: #9292BA;">订单总价:</text> 
+					<view class="common_info_item">
+						<view class="item_left"> 
+							<text style="color: #9292BA;">实际付款：</text> 
+						</view>
+						<view class="item_right">
+							<text style="color: #FF59C9; font-size: 36rpx;"> <text style="font-weight: 500;">{{orderInfo.amount}}</text>元 </text>
+						</view>
 					</view>
-					<view class="item_right">
-						<text style="color: #FFFFFF;">{{orderInfo.totalAmount}}元</text>
-					</view>
-				</view>
-				<view class="common_info_item">
-					<view class="item_left"> 
-						<text style="color: #9292BA;">实际付款：</text> 
-					</view>
-					<view class="item_right">
-						<text style="color: #FF59C9; font-size: 36rpx;"> <text style="font-weight: 500;">{{orderInfo.amount}}</text>元 </text>
-					</view>
-				</view>
+				</block>
 			</view>
 			<u-gap height="20" bgColor="#20234B"></u-gap>
 			<block v-if="orderInfo.isCreator">

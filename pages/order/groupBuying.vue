@@ -112,10 +112,9 @@
 								</view>
 							</view>
 						</view>
-						
-						<view class="detail_item">
+					<!-- 	<view class="detail_item">
 							<text class="left">备注：</text><text class="right">{{pingOrderInfo.demo}}</text>
-						</view>
+						</view> -->
 					</view>
 					<view class="apply_detail">
 						<view class="apply_title">
