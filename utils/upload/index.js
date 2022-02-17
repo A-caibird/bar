@@ -44,14 +44,6 @@ const uploadFileAPI = function(filePath, dir, successc, failc, aliyunSign) {
 	const accessid = aliyunSign.accessId;
 	const policyBase64 = aliyunSign.encodedPolicy;
 	const signature = aliyunSign.postSignature; //获取签名
-
-	console.log({
-			'key': aliyunFileKey,
-			'policy': policyBase64,
-			'OSSAccessKeyId': accessid,
-			'signature': signature,
-			'success_action_status': '200',
-		})
 	uni.uploadFile({
 		url: aliyunServerURL, //开发者服务器 url
 		filePath: filePath, //要上传文件资源的路径

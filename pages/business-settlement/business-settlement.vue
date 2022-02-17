@@ -97,9 +97,13 @@
 </template>
 
 <script>
+	import {businessIdentifyHandle} from '@/utils/identifyJS.js'
+	import { pathToBase64, base64ToPath } from 'image-tools'
+	import { compress } from '@/common/compress.js'
     import location from '@/mixins/location.js';
+	import photo from '@/mixins/photo.js'
     export default {
-        mixins: [location], // 使用mixin (在main.js注册全局组件)
+        mixins: [location, photo], // 使用mixin (在main.js注册全局组件)
         data() {
             return {
                 clubName: '',
@@ -210,12 +214,39 @@
                         uni.showLoading({
                             title: '上传中'
                         })
-
-                        vm.upBusinessLicense(res)
-
+                        // vm.upBusinessLicense(res)
+						let tempFilePath = res.tempFilePaths[0];
+						let tempFiles = res.tempFiles[0];
+						vm.sCompressImg(tempFilePath).then(rs => {
+							let path = rs.tempFilePath;
+							vm.identifyHandle(res, path);
+						}).catch(e => {
+							console.log(e);
+							vm.identifyHandle(res, tempFilePath)
+						})
+						
                     }
                 });
             },
+			identifyHandle(res, path){
+				pathToBase64(path).then(baseRes => {
+					businessIdentifyHandle(baseRes).then(result => {
+						console.log(result);
+						if(result){
+							vm.upBusinessLicense(res)
+						}else{
+							uni.hideLoading();
+						}
+					}).catch(e => {
+						console.log(e)
+						uni.hideLoading();
+					});
+				}).catch(e => {
+					this.$u.toast('图片异常');
+					console.log(e);
+					uni.hideLoading();
+				})
+			},
             async upBusinessLicense(res) {
                 await this.uploadBusinessLicense(res);
                 uni.hideLoading()
@@ -224,7 +255,7 @@
                 let vm = this
                 return new Promise((resolve, reject) => {
                     vm.$u.api.uploadFile(res.tempFilePaths[0]).then(url => {
-                        vm.businessLicense = url;
+						vm.businessLicense = url;
                         resolve()
                     }).catch(e => {
                         console.log(e);

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "grapheme-splitter": "^1.0.4",
+    "image-tools": "^1.4.0",
     "js-md5": "^0.7.3"
   }
 }
