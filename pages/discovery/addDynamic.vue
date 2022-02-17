@@ -10,7 +10,7 @@
 			<u-input v-model="textarea" type="textarea" placeholder="请输入你要发表的内容" height="250" :clearable="false" :auto-height="false"
 			 :custom-style="{'font-size':'30rpx','color':'#FFFFFF'}"></u-input>
 		</view>
-		<view class="photo-box borderBottom">
+		<view class="photo-box borderBottom" :class="{'hidden': videoList.length > 0 }">
 			<view class="photo-text">
 				<text class="text-left">上传照片</text>
 				<text class="text-right">(最多提交9张图片)</text>
@@ -25,7 +25,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="photo-box">
+		<view class="photo-box borderBottom" :class="{'hidden': imgList.length > 0 }">
 			<view class="photo-text">
 				<text class="text-left">动态视频</text>
 				<text class="text-right"></text>
@@ -370,6 +370,12 @@
 		.photo-box {
 			display: flex;
 			flex-direction: column;
+			opacity: 1;
+			transition: all 0.5s;
+			&.hidden{
+				opacity: 0;
+				height: 0rpx;
+			}
 			&.borderBottom{
 				border-bottom: 1px solid #31345b;
 			}
