@@ -143,11 +143,11 @@
 			<view style="height: 250rpx;" v-if="addFLag||emojiFLag"></view>
 		</scroll-view>
 
-		<template v-if="chatType=='all'">
+		<view class="fun_box" :class="{'safe': !focus}" v-if="chatType=='all'">
 			<view class="chat-input-content" :style="`bottom:${(addFLag||emojiFLag?'250rpx':'0')};`">
 				<view class="input-content">
 					<view class="input">
-						<input type="text" v-model="message" :focus="focus" />
+						<input type="text" v-model="message" :focus="focus" @focus="inputFocusHandle" @blur="focus = false" />
 					</view>
 				</view>
 				<view class="emoticon" @tap="showEmoji">
@@ -206,7 +206,7 @@
 				</view>
 
 			</view>
-		</template>
+		</view>
 
 		<template v-if="chatType=='wait'">、
 			<view class="wait-reply-tips" @tap='$u.route("/pages/club/list?mode=list")'>
@@ -884,8 +884,12 @@
 				if (this.message == '') return
 				this.sendMessage()
 			},
-
-
+			inputFocusHandle(e){
+				this.addFLag = false;
+				this.emojiFLag = false;
+				this.focus = true;
+				this.pageScrollToBottom()
+			},
 			showAdd() {
 				this.addFLag = !this.addFLag
 				this.emojiFLag = false
@@ -893,7 +897,7 @@
 				this.pageScrollToBottom()
 			},
 			showEmoji() {
-				this.emojiFLag = true
+				this.emojiFLag = !this.emojiFLag
 				this.addFLag = false
 				this.scrollBottom = ''
 				this.pageScrollToBottom()
@@ -1094,29 +1098,31 @@
 			}
 
 		}
-
-		.chat-input-content {
+		.fun_box{
 			position: fixed;
-			height: 100upx;
-			width: 100%;
-			@include height-center();
 			left: 0;
 			right: 0;
+			bottom: 0rpx;
+			&.safe{
+				@include saveDistanceBottom();
+			}
+		}
+		.chat-input-content {
+			padding: 30rpx 0rpx;
+			width: 100%;
+			@include height-center();
 			border-top: 2rpx solid #E6E6E6;
-			background-color: #FFFFFF;
-
+			background-color: #F5F5F5;
 			.input-content {
 				flex: 1;
 				height: 100%;
 				@include height-center();
 				padding-left: 20upx;
-
 				.input {
 					height: 65upx;
 					width: 100%;
-
 					input {
-						background-color: #F0F0F0;
+						background-color: #FFFFFF;
 						border-radius: 10upx;
 						padding-left: 24rpx;
 						padding-right: 5rpx;
@@ -1273,13 +1279,9 @@
 		}
 
 		.add-content {
-			position: fixed;
 			height: 250upx;
 			width: 100%;
 			display: flex;
-			left: 0;
-			right: 0;
-			bottom: 0;
 			padding-left: 30upx;
 			@include height-center();
 
@@ -1316,16 +1318,9 @@
 		}
 
 		.emoji-content {
-			position: fixed;
-			left: 0;
-			right: 0;
-			bottom: 0;
-
 			width: 100%;
 			height: 250upx;
-
 			padding: 30upx;
-
 			background-color: #F5F5F5;
 			border-top: 2rpx solid #E6E6E6;
 
