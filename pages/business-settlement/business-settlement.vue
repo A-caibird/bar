@@ -99,7 +99,6 @@
 <script>
 	import {businessIdentifyHandle} from '@/utils/identifyJS.js'
 	import { pathToBase64, base64ToPath } from 'image-tools'
-	import { compress } from '@/common/compress.js'
     import location from '@/mixins/location.js';
 	import photo from '@/mixins/photo.js'
     export default {
