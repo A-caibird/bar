@@ -222,8 +222,7 @@
 						}).catch(e => {
 							console.log(e);
 							vm.identifyHandle(res, tempFilePath)
-						})
-						
+						})	
                     }
                 });
             },
