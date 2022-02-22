@@ -15,7 +15,7 @@
 							</view>
 							<view class="second_line">
 								<view class="class_panel" v-if="userData.membershipLevel">
-									<image src="/static/imgs/mine/class_icon.png"></image>
+									<image src="/static/imgs/mine/class_icon2.png"></image>
 									<text>{{userData.membershipLevel}}</text>
 								</view>
 							<!-- 	<view class="credit_panel">
@@ -528,7 +528,7 @@
 								justify-content: center;
 								border-radius: 18rpx;
 								margin-right: 20rpx;
-								background: linear-gradient(147deg, #5e5a4e -14%, #8a805c 89%);
+								background: linear-gradient(148deg, #7341B9 0%, #333EC2 100%);
 
 								&>image {
 									height: 16rpx;
@@ -538,7 +538,9 @@
 								&>text {
 									font-size: 20rpx;
 									color: #FFFFFF;
-									margin-left: 12rpx;
+									font-weight: bold;
+									height: 30rpx;
+									line-height: 36rpx;
 								}
 							}
 
