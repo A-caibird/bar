@@ -231,7 +231,7 @@
 					businessIdentifyHandle(baseRes).then(result => {
 						console.log(result);
 						if(result){
-							vm.upBusinessLicense(res)
+							this.upBusinessLicense(res)
 						}else{
 							uni.hideLoading();
 						}
