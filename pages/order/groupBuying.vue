@@ -87,19 +87,19 @@
 							</view>
 							<view class="item_right" style="flex-direction: column; align-items: flex-start;"  v-if="pingOrderInfo.type=='AA'">
 								<view v-if="pingOrderInfo.shareWay.menNumber>0">
-									<text style="color: #FFFFFF; margin-right: 14rpx;">男：{{pingOrderInfo.shareWay.menNumber}}人 {{pingOrderInfo.shareWay.avgWineCoin}}酒币</text>
+									<text style="color: #FFFFFF; margin-right: 14rpx;">男：{{pingOrderInfo.shareWay.menNumber}}人 {{pingOrderInfo.shareWay.avgWineCoin}}元</text>
 								</view>
 								<view v-if="pingOrderInfo.shareWay.womenNumber>0">
-									<text style="color: #FFFFFF; ">女：{{pingOrderInfo.shareWay.womenNumber}}人 {{pingOrderInfo.shareWay.avgWineCoin}}酒币</text>			
+									<text style="color: #FFFFFF; ">女：{{pingOrderInfo.shareWay.womenNumber}}人 {{pingOrderInfo.shareWay.avgWineCoin}}元</text>			
 								</view>
 							</view>
 							<view class="item_right" style="flex-direction: column; align-items: flex-start;"  v-if="pingOrderInfo.type=='customize'">
 								<view v-if="pingOrderInfo.shareWay.menNumber>0">
-									<text style="color: #FFFFFF; margin-right: 14rpx;" v-if="pingOrderInfo.shareWay.menWineCoin">男：{{pingOrderInfo.shareWay.menNumber}}人 {{pingOrderInfo.shareWay.menWineCoin}}酒币</text>
+									<text style="color: #FFFFFF; margin-right: 14rpx;" v-if="pingOrderInfo.shareWay.menWineCoin">男：{{pingOrderInfo.shareWay.menNumber}}人 {{pingOrderInfo.shareWay.menWineCoin}}元</text>
 									<text style="color: #FFFFFF; margin-right: 14rpx;" v-else>男：{{pingOrderInfo.shareWay.menNumber}}人 免费</text>
 								</view>
 								<view v-if="pingOrderInfo.shareWay.womenNumber>0">
-									<text style="color: #FFFFFF; " v-if="pingOrderInfo.shareWay.womenWineCoin">女：{{pingOrderInfo.shareWay.womenNumber}}人 {{pingOrderInfo.shareWay.womenWineCoin}}酒币</text>
+									<text style="color: #FFFFFF; " v-if="pingOrderInfo.shareWay.womenWineCoin">女：{{pingOrderInfo.shareWay.womenNumber}}人 {{pingOrderInfo.shareWay.womenWineCoin}}元</text>
 									<text style="color: #FFFFFF; " v-else>女：{{pingOrderInfo.shareWay.womenNumber}}人 免费</text>
 								</view>
 							</view>
