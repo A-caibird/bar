@@ -1,6 +1,6 @@
 <template>
-	<view class="club_item_box" @tap="$u.route('pages/discovery/dynamic_detail?id=' + info.id)">
-		<view class="user_header">
+	<view class="club_item_box">
+		<view class="user_header" v-if="userShow">
 			<view class="header_left"  @tap.stop="$u.throttle(goPersonalHomepageHandle(info.userId,info.myself))">
 				<image :src="info.avatar"></image>
 			</view>
@@ -30,7 +30,29 @@
 				</view>
 			</view>
 		</view>
-		<view class="club_img" @tap.stop="" v-if=" (info.videoUrl && info.imgList.length >= 1) || info.imgList.length > 1">
+		<view class="media_box">
+			<view class="media_text">
+				<text>{{info.content}}</text>
+			</view>
+			<view class="media_content">
+				<view class="single_video_box" v-if="info.videoUrl">
+					<commonVideo @videoPlayTap="videoPlayTap" :src="info.videoUrl"></commonVideo>
+				</view>
+				<block v-else>
+					<view class="multi_img_box" v-if="info.imgList.length > 1">
+						<block v-for="(item, index) in info.imgList" :key="index">
+							<view class="multi_img_panel marginBottom" :class="{'marginRight': (index + 1) % 4 != 0 }" v-if="index < 9">
+								<u-image mode="aspectFill" width="100%" height="100%" :src="item" @click="previewTap(item)"></u-image>
+							</view>
+						</block>
+					</view>
+					<view class="single_img_box" v-if="info.imgList.length == 1">
+						<image mode="heightFix":src="info.imgList[0]" @tap="previewTap(info.imgList[0])"></image>
+					</view>
+				</block>
+			</view>
+		</view>
+		<!-- <view class="club_img" @tap.stop="" v-if=" (info.videoUrl && info.imgList.length >= 1) || info.imgList.length > 1">
 			<swiper class="swiper_box" :indicator-dots="true" indicator-color="#CCCCCC" indicator-active-color="#FFFFFF">
 				<swiper-item v-if="info.videoUrl">
 					<u-image width="100%" height="100%" class="dy_img" :src="info.videoCover" @click="$u.route('/pages/discovery/dynamic_detail?id=' + info.id)"></u-image>
@@ -42,7 +64,6 @@
 					</swiper-item>
 				</block>
 			</swiper>
-			<!-- <u-swiper height="468.75" :list="info.imgList" bgColor="#191C3F" :autoplay="false" @click="$u.route('/pages/discovery/dynamic_detail?id=' + info.id)"></u-swiper> -->
 		</view>
 		<view class="club_img" @tap.stop="" v-if="info.imgList.length == 1 && !info.videoUrl">
 			<u-image width="100%" height="100%" :src="info.imgList[0]" @click="$u.route('/pages/discovery/dynamic_detail?id=' + info.id)"></u-image>
@@ -50,12 +71,9 @@
 		<view class="club_img" @tap.stop="$u.route('/pages/discovery/dynamic_detail?id=' + info.id)" v-if="info.videoUrl && info.imgList.length <= 0">
 			<u-image class="dy_img" width="100%" height="100%" :src="info.videoCover"></u-image>
 			<image class="play_icon" src="/static/imgs/common/play_icon.png"></image>
-		</view>
+		</view> -->
 		<view class="club_footer">
-			<view class="club_intro">
-				<text>{{info.content}}</text>
-			</view>
-			<view class="club_labels">
+			<view class="club_labels" v-if="info.labelList.length > 0">
 				<block v-for="(item, index) in info.labelList" :key="index">
 					<view class="commom_label"> <text>{{item}}</text> </view>
 				</block>	
@@ -102,7 +120,11 @@
 
 <script>
 	import loginMixins from '@/mixins/loginConfirm.js'
-	export default{
+	import commonVideo from '@/components/common-video/common-video.vue'
+	export default {
+		components:{
+			commonVideo
+		},
 		mixins:[loginMixins],
 		props:{
 			info: {
@@ -117,17 +139,28 @@
 				type:Boolean,
 				default:false,
 			},
+			userShow:{
+				type: Boolean,
+				default: true
+			}
 		},
 		data() {
 			return {
 				praise: false,
-				playUrl: '',
 			}
 		},
 		mounted() {
-			this.playUrl = this.info.videoUrl;
 		},
 		methods:{
+			videoPlayTap(e){
+				this.$emit('videoPlayTap', e);
+			},
+			previewTap(img){
+				uni.previewImage({
+					urls: this.info.imgList,
+					current: img
+				})
+			},
 			goPage(url){
 				this.$nav.navigateTo({url});
 			},
@@ -143,8 +176,6 @@
 					console.log('shareToWeChatHandle')
 					return ;
 				}
-				// this.shareToWeChat();
-				// this.shareSystem();
 				this.$emit('shareTap');
 			},
 			tapOpenGift(){
@@ -194,7 +225,6 @@
 			},
 			tapAwkwardWine(){
 				if(!this.loginConfirmHandle(false)){
-					// console.log('clickEvent')
 					return ;
 				}
 				this.$u.route('/pages/ping-yao-list/ping-yao-list',{
@@ -217,9 +247,8 @@
 		width: 100%;
 		.user_header{
 			width: 100%;
-			padding: 0 30rpx;
+			padding: 30rpx 30rpx 0rpx 30rpx;
 			box-sizing: border-box;
-			height: 160rpx;
 			display: flex;
 			align-items: center;
 			.class_panel {
@@ -338,14 +367,52 @@
 				}
 			}
 		}
-		.videoBox{
-			position: fixed;
-			left: 0rpx;
-			top: 0rpx;
-			z-index: -1;
-			height: 100%;
+		.media_box{
 			width: 100%;
-			opacity: 0;
+			box-sizing: border-box;
+			padding: 0 30rpx;
+			.media_text{
+				width: 100%;
+				line-height: 40rpx;
+				max-height: 80rpx;
+				font-size: 30rpx;
+				color: #FFFFFF;
+				@include ellipsis(2);
+				margin-bottom: 20rpx;
+			}
+			.media_content{
+				width: 100%;
+				.multi_img_box{
+					width: 100%;
+					display: flex;
+					align-items: center;
+					flex-wrap: wrap;
+					.multi_img_panel{
+						height: 132rpx;
+						width: 132rpx;
+						&.marginBottom{
+							margin-bottom: 20rpx;
+						}
+						&.marginRight{
+							margin-right: 20rpx;
+						}
+					}
+				}
+				.single_img_box{
+					height: 340rpx;
+					width: 100%;
+					&>image{
+						height: 100%;
+						width: 100%;
+					}
+				}
+				.single_video_box{
+					height: 360rpx;
+					width: 100%;
+					border-radius: 10rpx;
+					overflow: hidden;
+				}
+			}
 		}
 		.club_img{
 			width: 100%;
@@ -380,20 +447,13 @@
 			width: 100%;
 			padding: 30rpx;
 			box-sizing: border-box;
-			.club_intro{
-				width: 100%;
-				line-height: 40rpx;
-				max-height: 80rpx;
-				font-size: 30rpx;
-				color: #FFFFFF;
-				@include ellipsis(2);
-			}
 			.club_labels{
 				width: 100%;
 				display: flex;
 				align-items: center;
 				flex-wrap: wrap;
 				margin-top: 26rpx;
+				margin-bottom: 20rpx;
 				.commom_label{
 					height: 40rpx;
 					@include flex-center();
@@ -413,7 +473,6 @@
 				justify-content: space-between;
 				align-items: center;
 				position: relative;
-				margin-top: 20rpx;
 				.common_item{
 					display: flex;
 					align-items: center;

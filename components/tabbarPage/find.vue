@@ -17,7 +17,7 @@
 					</swiper-item>
 					<swiper-item class="swiper-item">
 						<view style="height: 100%;">
-							<dynamic-list @shareTap="$emit('shareTap')" ref="nearby-dynamic-list" :index="swiperCurrent"
+							<dynamic-list @videoPlayTap="videoPlayHandle" @shareTap="$emit('shareTap')" ref="nearby-dynamic-list" :index="swiperCurrent"
 								@showYaoyue="handleShowYaoyue" @showPing="handleShowPing" :showPercent="!isAppleAudit"
 								@oepnComment="openDynamicComment('nearby',$event)" @oepnGift="oepnGift('nearby',$event)">
 							</dynamic-list>
@@ -31,6 +31,7 @@
 						<gift-board ref="gift-board" :i="3" :index="swiperCurrent"></gift-board>
 					</swiper-item>
 				</swiper>
+				
 			</view>
 		</block>
 		<block v-else>
@@ -38,6 +39,7 @@
 				<image src="/static/imgs/common/home-loading.gif"></image>
 			</view>
 		</block>
+		<videoBox ref="videoBox"></videoBox>
 		<invite mode="awkward" ref="yaoyuePop" @openOrderList="handleOpenYaoOrderList"></invite>
 		<invite mode="share" ref="pingPop" @openOrderList="handleOpenPingOrderList"></invite>
 		<askward ref="askward" mode="invite" @goClub="goClub"></askward>
@@ -63,6 +65,7 @@
 	import loginConfirm from '@/mixins/loginConfirm.js'
 	import $chat from '@/utils/chat/index.js'
 	import giftAnimation from '@/components/giftAnimation/giftAnimation.vue'
+	import videoBox from '@/components/common-video/video.vue'
 	var app = getApp();
 	export default {
 		mixins: [appleAudit,loginConfirm],
@@ -76,6 +79,7 @@
 			findShareList,
 			giftBoard,
 			giftAnimation,
+			videoBox,
 		},
 		data() {
 			return {
@@ -145,6 +149,9 @@
 			})
 		},
 		methods: {
+			videoPlayHandle(e){
+				this.$refs.videoBox.videoPlayTap(e.src);
+			},
 			openDynamicComment(mode, e){
 				let info = Object.assign(e, {mode});
 				this.$emit('openDynamicComment', info);
