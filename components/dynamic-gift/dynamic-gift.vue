@@ -16,7 +16,7 @@
 							<block>
 								<view class="select_box" :class="{ active: giftId == item.id }" v-for="(item, index) in info" :key="index" @tap="tapSelectGift(item.id)">
 									<view class="select_info">
-										<image :src="item.imgUrl"></image>
+										<image :src="item.imgUrl" @tap.stop="previewTap(item.imgUrl)"></image>
 										<view class="info_name">{{ item.name }}</view>
 										<view class="info_price">{{ item.wineCoin }}酒币</view>
 									</view>
@@ -109,6 +109,12 @@
 		watch:{
 		},
 		methods:{
+			previewTap(url){
+				uni.previewImage({
+					urls:[url],
+					current:0
+				})
+			},
 			init(params) {
 				let {dynamicId} = params
 				this.dynamicId = dynamicId
