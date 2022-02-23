@@ -72,14 +72,17 @@
 					id: this.id, 
 					idList: JSON.stringify(idList).replace(/\[|]/g, ''),
 				}
+				uni.showLoading({
+					title: '评论中'
+				})
 				let {code,data} = await this.$u.api.sendCommentApi(params)
+				uni.hideLoading();
 				if (code == 0) {
 					let {commentNum} = data
 					// let commentNum = 123
 					this.$emit('sendComment',{id:this.id,commentNum:commentNum, mode: this.initInfo.mode})
 					this.close()
 					this.$u.toast('评论成功');
-					
 				}
 			},
 			//选择短评词

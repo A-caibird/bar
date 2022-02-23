@@ -30,7 +30,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="media_box">
+		<view class="media_box" :class="{'personType': personType}">
 			<view class="media_text">
 				<text>{{info.content}}</text>
 			</view>
@@ -41,7 +41,7 @@
 				<block v-else>
 					<view class="multi_img_box" v-if="info.imgList.length > 1">
 						<block v-for="(item, index) in info.imgList" :key="index">
-							<view class="multi_img_panel marginBottom" :class="{'marginRight': (index + 1) % 4 != 0 }" v-if="index < 9">
+							<view class="multi_img_panel" :class="{'marginTop': index > 2, 'marginRight': (index + 1) % 3 != 0 }" v-if="index < 9">
 								<u-image mode="aspectFill" width="100%" height="100%" :src="item" @click="previewTap(item)"></u-image>
 							</view>
 						</block>
@@ -72,13 +72,13 @@
 			<u-image class="dy_img" width="100%" height="100%" :src="info.videoCover"></u-image>
 			<image class="play_icon" src="/static/imgs/common/play_icon.png"></image>
 		</view> -->
-		<view class="club_footer">
+		<view class="club_footer" :class="{'personType': personType}">
 			<view class="club_labels" v-if="info.labelList.length > 0">
 				<block v-for="(item, index) in info.labelList" :key="index">
 					<view class="commom_label"> <text>{{item}}</text> </view>
 				</block>	
 			</view>
-			<view class="feature_box">
+			<view class="feature_box" :class="{'right': personType}">
 				<view style="display: flex;">
 					<view class="common_item" @tap.stop="$u.throttle(toggleLike)"> <!-- @tap.stop="toggleLike" -->
 						<image src="/static/imgs/mine/like-active.png" v-if="info.isLike"></image>
@@ -93,7 +93,7 @@
 						<image src="/static/imgs/mine/comment.png"></image>
 						<text>{{info.commentNum}}</text>
 					</view>
-					<view class="common_item" @tap.stop="$u.throttle(shareToWeChatHandle)"><image src="/static/imgs/mine/forward.png" mode=""></image></view>
+					<view class="common_item hideMarginRight" @tap.stop="$u.throttle(shareToWeChatHandle)"><image src="/static/imgs/mine/forward.png" mode=""></image></view>
 				</view>
 				
 				<!-- <view style="display: flex;" v-if="!info.myself&&showPercent">
@@ -106,7 +106,7 @@
 						<text>拼享</text>
 					</view>
 				</view> -->
-				<view style="display: flex;" v-if="!info.myself&&showPercent">
+				<view style="display: flex;" v-if="!info.myself && showPercent && !personType">
 					<view class="feature_btn" @tap.stop="$u.throttle(tapAwkwardWine)">
 						<image src="/static/imgs/common/club-white.png"></image>
 						<text>尬酒</text>
@@ -135,13 +135,17 @@
 				type:String,
 				default:'follow',
 			},
-			showPercent:{//follow 关注的动态 nearby 附件动态
+			showPercent:{
 				type:Boolean,
 				default:false,
 			},
 			userShow:{
 				type: Boolean,
 				default: true
+			},
+			personType: {
+				type: Boolean,
+				default: false
 			}
 		},
 		data() {
@@ -197,7 +201,6 @@
 					console.log('toggleLike')
 					return ;
 				}
-				console.log(this.info)
 				if(this.info.isLike){
 					let {code} = await this.$u.api.dynamicCancelLike(this.info.id)
 					if(code==0) {
@@ -371,6 +374,9 @@
 			width: 100%;
 			box-sizing: border-box;
 			padding: 0 30rpx;
+			&.personType{
+				padding-top: 20rpx;
+			}
 			.media_text{
 				width: 100%;
 				line-height: 40rpx;
@@ -388,10 +394,10 @@
 					align-items: center;
 					flex-wrap: wrap;
 					.multi_img_panel{
-						height: 132rpx;
-						width: 132rpx;
-						&.marginBottom{
-							margin-bottom: 20rpx;
+						height: 216rpx;
+						width: 216rpx;
+						&.marginTop{
+							margin-top: 20rpx;
 						}
 						&.marginRight{
 							margin-right: 20rpx;
@@ -447,6 +453,9 @@
 			width: 100%;
 			padding: 30rpx;
 			box-sizing: border-box;
+			&.personType{
+				padding: 30rpx 30rpx 20rpx 30rpx;
+			}
 			.club_labels{
 				width: 100%;
 				display: flex;
@@ -473,6 +482,9 @@
 				justify-content: space-between;
 				align-items: center;
 				position: relative;
+				&.right{
+					justify-content: flex-end;
+				}
 				.common_item{
 					display: flex;
 					align-items: center;
@@ -485,6 +497,9 @@
 						font-size: 22rpx;
 						color: #FFFFFF;
 						margin-left: 10rpx;
+					}
+					&.hideMarginRight{
+						margin-right: 0rpx;
 					}
 				}
 				.feature_btn{

@@ -53,39 +53,54 @@
 					<text>尬酒</text>
 				</view>
 			</view>
-			<swiper @change="change" class="swiper-tab" :current="currentIndex" :style="{'height': swiperHeight + 'px'}">
-				<swiper-item>
-					<scroll-view class="dynamic-details" :style="{'height': swiperHeight + 'px'}" :scroll-y="false" @scrolltolower="reachBottom">
-						<view class="dynamic-details-item" v-for="(item,index) in pageList" :key="index">
-							<image @tap="$u.route('pages/discovery/dynamic_detail?id=' + item.id)" :src="item.imgList[0]" mode="aspectFill"></image>
-						</view>
-					</scroll-view>
-				</swiper-item>
-				<swiper-item>
-					<view class="info-details">
-						<view class="info-details-item" v-for="(item,index) in list" :key="index">
-							<text class="item-name">{{item.name}}</text>
-							<text class="item-info">{{item.info}}</text>
-						</view>
+			<view class="">
+				<view v-if="currentIndex == 0" class="dynamic-details" >
+					<view class="dynamic-details-item" v-for="(item,index) in pageList" :key="index">
+						<!-- <image @tap="$u.route('pages/discovery/dynamic_detail?id=' + item.id)" :src="item.imgList[0]" mode="aspectFill"></image> -->
+						<find-item 
+							@shareTap="popShareShow = true"
+							@oepnComment="openDynamicComment"
+							@oepnGift="openGift"
+							:showPercent="true" 
+							:personType="true" 
+							:userShow="false" :info="item"></find-item>
+						<view class="divider"></view>
 					</view>
-				</swiper-item>
-			</swiper>
-		
+				</view>
+				<view class="info-details" v-if="currentIndex == 1">
+					<view class="info-details-item" v-for="(item,index) in list" :key="index">
+						<text class="item-name">{{item.name}}</text>
+						<text class="item-info">{{item.info}}</text>
+					</view>
+				</view>
+			</view>
 		</view>
+		
+		<dynamic-comment ref="dynamicComment" @sendComment="handleSendComment"></dynamic-comment>
+		<dynamic-gift ref="dynamicGift" @refreshInputTimes="refreshInputTimes" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @openPay="openPayhandle" @sendGiftSuccess="$refs.find.handleSendGiftSuccess($event)"></dynamic-gift>
+		<dynamic-gift-edit ref="dynamicGiftEdit" @confirm="$refs.dynamicGift.setSendNum($event)"></dynamic-gift-edit>
+		<pay ref="payDynamicGift" @pay="$refs.dynamicGift.pay($event)"></pay>
+		<pop-share v-model="popShareShow"></pop-share>
 	</view>
 </template>
 
 <script>
 	import pageable from '@/mixins/pageable.js';
+	import giftAnimation from '@/components/giftAnimation/giftAnimation.vue'
 	var app = getApp();
 	var {windowHeight, statusBarHeight} = uni.getSystemInfoSync();
 	var proportion = uni.getSystemInfoSync().windowWidth / 750;
 	export default {
 		mixins: [pageable],
+		components:{
+			giftAnimation
+		},
 		data() {
 			return {
+				popShareShow: false,
 				statusBarHeight: statusBarHeight,
 				navShow: false,
+				navOriginTop: 0,
 				currentIndex: '0',
 				otherList:{},
 				flag:'',
@@ -118,6 +133,7 @@
 				maxHeight: 0, // swiper 最大高度
 				minHeight: 0, // swiper 最小高度
 				swiperHeight: 0, // swiper 当前高度
+				mode: 'personType'
 			}
 		},
 		onLoad(option) {
@@ -127,65 +143,73 @@
 			this.pullRefresh()
 			this.maxHeight = windowHeight - statusBarHeight - ( 150 * proportion);
 			this.minHeight = windowHeight - statusBarHeight - (402 + 164 + 150 + 110) * proportion;
-		},
-		onPageScroll:function(){
-			var vm = this;
-			this.$u.getRect('.content-title').then(res => {
-				let top = res.top;
-				if(top <= 20){
-					if(!vm.navShow){
-						
-						vm.navShow = true
-					}
-				}else{
-					if(vm.navShow){
-						vm.navShow = false
-					}
-				}
+			this.$nextTick(() => {
+				setTimeout(() => {
+					this.$u.getRect('.content-title').then(res => {
+						this.navOriginTop = res.top;
+					})
+				},200)
 			})
+		},
+		onPageScroll:function(e){
+			var vm = this;
+			let scrollTop = e.scrollTop;
+			let subDistance = this.navOriginTop - scrollTop;
+			if(subDistance <= 20){
+				if(!vm.navShow){
+					vm.navShow = true
+				}
+			}else{
+				if(vm.navShow){
+					vm.navShow = false
+				}
+			}
 		},
 		onReachBottom:function(){
 			this.reachBottom();
 		},
 		watch: {
-			pageList(newValue) {
-				this.swiperHeight =  this.getSwiperHeight(newValue)
-			},
-			currentIndex(index){
-				if(index == 1){
-					this.swiperHeight = this.minHeight;
-				}else{
-					this.swiperHeight = this.getSwiperHeight(this.pageList);
-				}
-			}
 			
 		},
 		methods: {
+			handleSendComment(e) {
+				this.setCommentNum(e)
+			},
+			setCommentNum(data){
+				let {id,commentNum} = data
+				this.setList('id',id,{commentNum:commentNum},this.pageList).then(res => {
+					uni.$emit('dynamic-refresh',{msg: this.mode})
+					uni.$emit('dynamic-refresh-follow',{msg: this.mode})
+				}).catch(e => {
+					console.log(e);
+				})
+			},
+			openDynamicComment:function(e){
+				console.log(e);
+				let info = Object.assign(e, {mode: this.mode});
+				this.$refs.dynamicComment.open(info)
+			},
+			openPayhandle(e){
+				let password = getApp().globalData.payPassword ;
+				if(password){
+					this.$refs.dynamicGift.pay({password});
+				}else{
+					this.$refs.payDynamicGift.open(e);
+				}
+			},
+			openGift:function(e){
+				let info = Object.assign(e, {mode: this.mode});
+				this.$refs.dynamicGift.open(info)
+			},
+			refreshInputTimes(){
+				if(this.$refs.payDynamicGift){
+					this.$refs.payDynamicGift.subInputTimes()
+				}
+			},
 			tapAwkwardWine:function(){
 				this.$u.route('/pages/ping-yao-list/ping-yao-list',{
 					dynamicInfo:encodeURIComponent(JSON.stringify(this.pageList[0]))
 				})
-			},
-			getSwiperHeight:function(pageList){
-				let pageLength = pageList.length;
-				let maxHeight = this.maxHeight;
-				let minHeight = this.minHeight;
-				let sumLine = parseInt(pageLength / 3);
-				if((pageLength % 3) > 0){
-					sumLine + 1
-				}
-				let currentHeight = sumLine * 250 * proportion;
-				console.log(maxHeight, minHeight, currentHeight);
-				if(currentHeight > minHeight){
-					// if(currentHeight < maxHeight){
-					// 	return currentHeight; // 单位px
-					// }else{
-					// 	return maxHeight; // 单位px
-					// }
-					return currentHeight; // 单位px
-				}else{
-					return currentHeight; // 单位px
-				}	 
 			},
 			previewTap:function(){
 				let urls = [this.otherList.avatar];
@@ -286,6 +310,11 @@
 </script>
 
 <style lang="scss" scoped>
+	.divider{
+		height: 20rpx;
+		width: 100%;
+		background: #2C3158;
+	}
 	.container {
 		.header_img{
 			width: 100%;
@@ -420,7 +449,7 @@
 				position: sticky;
 				top: 0rpx;
 				left: 0rpx;
-				z-index: 10;
+				z-index: 120;
 				background: #191C3F;
 				.content-title-box{
 					display: flex;
@@ -476,28 +505,12 @@
 
 				}
 			}
-			.swiper-tab{
-				width: 100%;
-				overflow: hidden;
-			}
 			.dynamic-details {
-				display: flex;
 				width: 100%;
-				font-size: 0rpx;
 				.dynamic-details-item {
-					display: inline-block;
-					vertical-align: top;
-					width: 250rpx;
-					height: 250rpx;
-					font-size: 0rpx;
-					margin: 0rpx;
-					image {
-						width: 250rpx;
-						height: 250rpx;
-					}
+					width: 100%;
 				}
 			}
-			
 			.info-details {
 				padding: 0 30rpx;
 			

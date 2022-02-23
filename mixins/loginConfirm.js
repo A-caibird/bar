@@ -10,6 +10,7 @@ export default{
 	methods: {
 		loginConfirmHandle:function(onlyShow = true){
 			let app = getApp();
+			console.log(app);
 			if(!app.globalData.authorized){
 				console.log("请先登录");
 				uni.showToast({
