@@ -23,7 +23,7 @@
 		</view>
 		<view class="pay-title">
 			<view class="title-line"></view>
-			<text>支付宝</text>
+			<text>支付方式</text>
 		</view>
 		<view class="line"><u-gap height="1" bg-color="#31345B"></u-gap></view>
 		<view class="pay-kind">
@@ -47,6 +47,16 @@
 					<image src="/static/imgs/mine/no-select.png" mode="" v-else></image>
 				</view>
 			</view>
+			<!-- <view class="weixin-cost" @tap="payType='Apple'" v-if="os == 'ios'">
+				<view class="cost-left">
+					<image src="/static/imgs/mine/apple_pay.png" mode=""></image>
+					<text>苹果</text>
+				</view>
+				<view class="cost-right">
+					<image src="/static/imgs/common/select.png" mode="" v-if="payType=='Apple'"></image>
+					<image src="/static/imgs/mine/no-select.png" mode="" v-else></image>
+				</view>
+			</view> -->
 		</view>
 		<view class="recharge-btn">
 			<button type="default" @tap="$u.throttle(tapSubmit)"><text>确认充值</text></button>
@@ -63,9 +73,12 @@ export default {
 			payType:'AliPay',
 			// payType:'WeChat',
 			wineCoin:'',
+			os: '',
 		};
 	},
 	onLoad() {
+		this.os = this.$u.os();
+		console.log(this.os)
 		this.load();
 		uni.$on('update-wineCoin',this.getBalance)
 	},
@@ -108,11 +121,17 @@ export default {
 					case 'WeChat':
 						this.getWineCoinWeChatPayment(id,this.coinRechargeList[this.selectIndex].wineCoin)
 						break;
+					case 'Apple':
+						this.applePayment(id,this.coinRechargeList[this.selectIndex].wineCoin);
+						break;
 					default:
 						break;
 				}
 				
 			}
+		},
+		async applePayment(id, wineCoin){
+			
 		},
 		async getWineCoinWeChatPayment(id,wineCoin){
 			let vm = this
