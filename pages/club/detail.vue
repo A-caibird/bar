@@ -56,8 +56,8 @@
 				</view>
 				<view class="classify_panel">
 					<block v-for="(info, index) in infoType" :key="index">
-						<view class="common_classify" :class="{'select': selectIndex == index}" @tap="selectType(index)">
-							<text>{{info}}</text>
+						<view class="common_classify" v-if="info.show" :class="{'select': selectIndex == index}" @tap="selectType(index)">
+							<text>{{info.title}}</text>
 							<view class="select_icon" v-if="selectIndex == index"></view>
 						</view>
 					</block>
@@ -77,22 +77,21 @@
 							</view>
 						</view>
 					</view>
-					<view v-show="selectIndex == 0">
+					<view v-show="infoType[0].show && selectIndex == 0">
 						<view class="parse_box">
 							<u-parse :html="clubContent"></u-parse>
 						</view>
 					</view>
-					<view v-show="selectIndex == 1">
+					<view v-show="infoType[1].show && selectIndex == 1">
 						<ping-dynamic-list :i="1" :index="selectIndex" :clubId="clubId"  :canScroll="false" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-dynamic-list>
 					</view>
-					<view v-show="selectIndex == 2">
-					
+					<view v-show="infoType[2].show && selectIndex == 2">
 						<ping-activity-list :i="2" :index="selectIndex" :clubId="clubId" :canScroll="false" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-activity-list>
 					</view>
-					<view v-show="selectIndex == 3">
+					<view v-show="infoType[3].show && selectIndex == 3">
 						<ping-recruitment-list :i="3" :index="selectIndex" :clubId="clubId" :canScroll="false" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-recruitment-list>
 					</view>
-					<view v-show="selectIndex == 4">
+					<view v-show="infoType[4].show && selectIndex == 4">
 						<view class="evaluate_box">
 							<view class="complex_rate">
 								<view class="complex_left">
@@ -177,14 +176,40 @@
 		data() {
 			return {
 				shareShow: false,
-				infoType: ['简介', '动态', '活动', '招聘', '评价'],
-				urls:[
-					'',
-					'/api/club/dynamicList',
-					'/api/clubActivity/activityList',
-					'/api/recruitment/list',
-					'/api/club/evaluationList'
-				],
+				// '简介', '动态', '活动', '招聘', '评价'
+				infoType: [{
+					label: '',
+					title: '简介',
+					show: true,
+					url:'',
+				},{
+					label: '动态',
+					title: '动态',
+					show: true,
+					path:'/pages/club/dynamic/list',
+				},{
+					label: '活动',
+					title: '活动',
+					show: true,
+					path:'/pages/club/activity/list',
+				},{
+					label: '招聘',
+					title: '招聘',
+					show: true,
+					path:'/pages/club/job/list',
+				},{
+					label: '评论',
+					title: '评论',
+					show: true,
+					path:'/pages/evaluate/list',
+				}],
+				// urls:[
+				// 	'',
+				// 	'/api/club/dynamicList',
+				// 	'/api/clubActivity/activityList',
+				// 	'/api/recruitment/list',
+				// 	'/api/club/evaluationList'
+				// ],
 				scoreList:[
 					{
 						text:'服务',
@@ -230,27 +255,7 @@
 			},
 			labelName(){
 				let index = this.selectIndex;
-				let label = ""
-				switch(index){
-					case 0:{
-						label = "";
-					};break;
-					case 1:{
-						label = "动态";
-					};break;
-					case 2:{
-						label = "活动";
-					};break;
-					case 3:{
-						label = "招聘";
-					};break;
-					case 4:{
-						label = "评价";
-					};break;
-					default:{
-						label = "";
-					};break;
-				}
+				let label = this.infoType[index].label;
 				return label
 			}
 		},
@@ -309,26 +314,9 @@
 			},
 			navigateAll(){
 				let index = this.selectIndex;
-				let url = "";
-				switch(index){
-					case 1:{
-						url = "/pages/club/dynamic/list";
-					};break;
-					case 2:{
-						url = "/pages/club/activity/list";
-					};break;
-					case 3:{
-						url = "/pages/club/job/list";
-					};break;
-					case 4:{
-						url = "/pages/evaluate/list";
-					};break;
-					default:{
-						url = "";
-					};break;
-				}
-				if(url){
-					this.$u.route(url,{clubId: this.clubId})
+				let path = this.infoType[index].path;
+				if(path){
+					this.$u.route(path,{clubId: this.clubId})
 				}
 			},
 			scrolltoupper(e){
@@ -474,6 +462,9 @@
 					this.scoreList[2].score = info.surroundingsAvgScore
 					this.scoreList[3].score = info.genreAvgScore
 					this.scoreList[4].score = info.happyAvgScore
+					if(!data.info.showActivity) this.infoType[2].show = false
+					if(!data.info.showDynamic) this.infoType[1].show = false
+					if(!data.info.showRecruitment) this.infoType[3].show = false
 				}
 				this.$nextTick(() => {
 					setTimeout(() => {
@@ -485,6 +476,7 @@
 				// this.getCommentList();
 				this.selectIndex = 0;
 			},
+			
 			goBack:function(){
 				uni.navigateBack({
 					delta:1,
