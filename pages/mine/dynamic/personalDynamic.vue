@@ -12,13 +12,14 @@
 			<mescroll-uni :fixed="false" ref="mescrollRef" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" @up="upCallback">
 				<block v-if="hasLocation">
 				<!-- kind值为personal时 个人动态组件 -->
-					<personalDynamic :pageList="pageList" @shareTap="popShareShow = true" @oepnComment="$refs.dynamicComment.open($event)" @oepnGift="$refs.dynamicGift.open($event)" :showPercent="!isAppleAudit"></personalDynamic>
+					<personalDynamic @deleteTap="deleteHandle" :pageList="pageList" @videoPlayTap="videoPlayHandle" @shareTap="popShareShow = true" @oepnComment="$refs.dynamicComment.open($event)" @oepnGift="$refs.dynamicGift.open($event)" :showPercent="!isAppleAudit"></personalDynamic>
 				</block>
 				<block v-else>
 					<location-btn></location-btn>
 				</block>
 			</mescroll-uni>
 		</view>
+		<videoBox ref="videoBox"></videoBox>
 		<dynamic-comment ref="dynamicComment" @sendComment="setCommentNum($event)"></dynamic-comment>
 		<dynamic-gift ref="dynamicGift" @refreshInputTimes="refreshInputTimes" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @openPay="$refs.payDynamicGift.open($event)" @sendGiftSuccess="handleSendGiftSuccess($event)"></dynamic-gift>
 		<dynamic-gift-edit ref="dynamicGiftEdit" @confirm="$refs.dynamicGift.setSendNum($event)"></dynamic-gift-edit>
@@ -36,11 +37,13 @@
 	import location from '@/mixins/location.js';
 	import giftAnimation from '@/components/giftAnimation/giftAnimation.vue'
 	import appleAudit from '@/mixins/apple-audit.js'
+	import videoBox from '@/components/common-video/video.vue'
 	export default {
 		mixins: [MescrollMixin,location,appleAudit], // 使用mixin (在main.js注册全局组件)
 		components: {
 			personalDynamic,
 			giftAnimation,
+			videoBox
 		},
 		data() {
 			return {
@@ -72,12 +75,36 @@
 			uni.$off('dynamic-refresh',this.handleDynamicRefresh)
 		},
 		methods: {
+			deleteHandle(e){
+				let id = e.dynamicId
+				var vm = this;
+				uni.showModal({
+					title: '提示',
+					content: '是否删除该动态',
+					success(res){
+						if(res.confirm){
+							vm.$u.api.dynamicDeleteApi(id).then(res => {
+								if(parseInt(res.code) == 0){
+									vm.$u.toast('成功删除');
+									uni.$emit('dynamic-refresh',{msg:'dynamic-detail'})
+									uni.$emit('dynamic-refresh-follow',{msg:'dynamic-detail'})
+								}
+							}).catch(e => {
+								console.log(e);
+							})
+						}
+					}
+				})
+			},
+			videoPlayHandle(e){
+				this.$refs.videoBox.videoPlayTap(e.src);
+			},
 			refreshInputTimes(){
 				this.$refs.payDynamicGift.subInputTimes();
 			},
 			handleDynamicRefresh(e){
 				if(e.msg!='myDynamic') {
-					console.log('刷新视频列表')
+					console.log('刷新我的动态列表')
 					this.mescroll.resetUpScroll()
 				}
 			},

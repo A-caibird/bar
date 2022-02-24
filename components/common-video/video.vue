@@ -23,6 +23,7 @@
 				}
 			},
 			videoPlayTap(url){
+				console.log(url);
 				this.videoPlayUrl = url;
 				setTimeout(() => {
 					var vm = this;
@@ -54,22 +55,22 @@
 		top: 0rpx;
 		left: 0rpx;
 		z-index: -1;
-		&.show{
-			z-index: 100;
-		}
+	}
+	.video_box.show{
+		z-index: 300;
 	}
 	.videoBox{
 		position: fixed;
 		left: 0rpx;
 		top: 0rpx;
-		z-index: -1;
+		z-index: 300;
 		height: 100vh;
 		width: 750rpx;
-		opacity: 0;
+		opacity: 1;
 	}
 	.screen_panel{
 		height: 100vh;
 		width: 750rpx;
-		z-index: 10;
+		z-index: 300;
 	}
 </style>
