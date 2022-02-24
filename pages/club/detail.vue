@@ -462,6 +462,7 @@
 					this.scoreList[2].score = info.surroundingsAvgScore
 					this.scoreList[3].score = info.genreAvgScore
 					this.scoreList[4].score = info.happyAvgScore
+					if(!data.info.canEvaluationContent) this.infoType[4].show = false
 					if(!data.info.showActivity) this.infoType[2].show = false
 					if(!data.info.showDynamic) this.infoType[1].show = false
 					if(!data.info.showRecruitment) this.infoType[3].show = false
