@@ -24,7 +24,6 @@
 							</block>
 						</view>
 					</swiper-item>
-					
 				</swiper>
 				<block v-if="quantityShow">
 					<view class="choose_quantity_box" >

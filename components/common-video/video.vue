@@ -1,6 +1,8 @@
 <template>
-	<view>
-		<video :src="videoPlayUrl" v-if="videoPlayUrl" :direction="0" @fullscreenchange.stop="fullScreenChange" class="videoBox" id="videoId"></video>
+	<view class="video_box" :class="{'show': videoPlayUrl}">
+		<video :controls="false" :src="src" :enable-progress-gesture="false" v-if="videoPlayUrl" :direction="0" @fullscreenchange="fullScreenChange" class="videoBox" id="videoId">
+			<cover-view class="screen_panel" @tap="stopVideoTap"></cover-view>
+		</video>
 	</view>
 </template>
 
@@ -9,6 +11,7 @@
 		data(){
 			return{
 				videoPlayUrl: '',
+				src: ''
 			}
 		},
 		methods:{
@@ -21,19 +24,21 @@
 			},
 			videoPlayTap(url){
 				this.videoPlayUrl = url;
-				var vm = this;
-				this.$nextTick(function(){
-					var videoContext = uni.createVideoContext("videoId", vm);
-					videoContext.requestFullScreen({
-						direction: 0
-					});
-					videoContext.play()
-				})
+				setTimeout(() => {
+					var vm = this;
+					this.src = url;
+					this.$nextTick(function(){
+						var videoContext = uni.createVideoContext("videoId", vm);
+						// 	videoContext.requestFullScreen({
+						// 		direction: 0
+						// 	});
+						videoContext.play()
+					})
+				},300)
+				
 			},
 			stopVideoTap(){
-				console.log('stopVideoTap');
-				var videoContext = uni.createVideoContext("videoId", vm);
-				videoContext.exitFullScreen();
+				var videoContext = uni.createVideoContext("videoId", this);
 				videoContext.stop()
 				this.videoPlayUrl = "";
 			}
@@ -42,13 +47,29 @@
 </script>
 
 <style scoped>
+	.video_box{
+		position: fixed;
+		height: 100vh;
+		width: 100%;
+		top: 0rpx;
+		left: 0rpx;
+		z-index: -1;
+		&.show{
+			z-index: 100;
+		}
+	}
 	.videoBox{
 		position: fixed;
 		left: 0rpx;
 		top: 0rpx;
 		z-index: -1;
 		height: 100vh;
-		width: 100%;
+		width: 750rpx;
 		opacity: 0;
+	}
+	.screen_panel{
+		height: 100vh;
+		width: 750rpx;
+		z-index: 10;
 	}
 </style>

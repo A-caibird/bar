@@ -58,6 +58,7 @@
 					<view class="dynamic-details-item" v-for="(item,index) in pageList" :key="index">
 						<!-- <image @tap="$u.route('pages/discovery/dynamic_detail?id=' + item.id)" :src="item.imgList[0]" mode="aspectFill"></image> -->
 						<find-item 
+							@videoPlayTap="videoPlayHandle"
 							@shareTap="popShareShow = true"
 							@oepnComment="openDynamicComment"
 							@oepnGift="openGift"
@@ -75,7 +76,7 @@
 				</view>
 			</view>
 		</view>
-		
+		<videoBox ref="videoBox"></videoBox>
 		<dynamic-comment ref="dynamicComment" @sendComment="handleSendComment"></dynamic-comment>
 		<dynamic-gift ref="dynamicGift" @refreshInputTimes="refreshInputTimes" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @openPay="openPayhandle" @sendGiftSuccess="$refs.find.handleSendGiftSuccess($event)"></dynamic-gift>
 		<dynamic-gift-edit ref="dynamicGiftEdit" @confirm="$refs.dynamicGift.setSendNum($event)"></dynamic-gift-edit>
@@ -90,10 +91,12 @@
 	var app = getApp();
 	var {windowHeight, statusBarHeight} = uni.getSystemInfoSync();
 	var proportion = uni.getSystemInfoSync().windowWidth / 750;
+	import videoBox from '@/components/common-video/video.vue'
 	export default {
 		mixins: [pageable],
 		components:{
-			giftAnimation
+			giftAnimation,
+			videoBox
 		},
 		data() {
 			return {
@@ -172,6 +175,9 @@
 			
 		},
 		methods: {
+			videoPlayHandle(e){
+				this.$refs.videoBox.videoPlayTap(e.src);
+			},
 			handleSendComment(e) {
 				this.setCommentNum(e)
 			},

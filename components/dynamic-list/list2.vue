@@ -7,7 +7,7 @@
 						<dynamic-item :info="info" :btnShow="true&&showPercent" swiperHeight=468.75 ></dynamic-item>
 					</block>
 					<block v-else>
-						<find-item mode="follow" :info="info" :showPercent="showPercent" @shareTap="$emit('shareTap')" @showYaoyue="handleShowYaoyue" @showPing="handleShowPing" @oepnComment="$emit('oepnComment',$event)" @oepnGift="$emit('oepnGift',$event)"></find-item>
+						<find-item @videoPlayTap="videoPlayTap" mode="follow" :info="info" :showPercent="showPercent" @shareTap="$emit('shareTap')" @showYaoyue="handleShowYaoyue" @showPing="handleShowPing" @oepnComment="$emit('oepnComment',$event)" @oepnGift="$emit('oepnGift',$event)"></find-item>
 					</block>
 					<block v-if="index != pageList.length - 1"><u-gap :height="30" bgColor="#20234B"></u-gap></block>
 				</view>
@@ -86,6 +86,9 @@
 		
 		},
 		methods:{
+			videoPlayTap(e){
+				this.$emit('videoPlayTap', e);
+			},
 			toTopClick(){
 				return this.$refs.mescrollRef ? this.$refs.mescrollRef.toTopClick() : "" 
 			},
