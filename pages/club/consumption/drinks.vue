@@ -2,12 +2,6 @@
 	<view class="container">
 		<u-navbar :border-bottom="false" :is-fixed="true" :background="{'background': '#191C3F'}" :title="data.clubName" title-color="#FFFFFF" back-icon-color="#FFFFFF"></u-navbar>
 		<view class="middle_box">
-			<!-- <view class="club_img" v-if="bannerList.length > 1">
-				<u-swiper :list="bannerList" height="435" bgColor="#191C3F" @click="$u.throttle(previewImgList(bannerList,$event,key=''))"></u-swiper>
-			</view>
-			<view class="club_img" v-if="bannerList.length == 1">
-				<image :src="bannerList[0]" mode="aspectFill"  @click="$u.throttle(previewImg(bannerList[0]))"></image>
-			</view> -->
 			<view class="classify_box">
 				<classify height="100" fontSize="28" bgColor="#191C3F" ref="tabs" :list="list" :current="current" @change="change" :is-scroll="false"
 			 swiperWidth="750" inactiveColor="#B7B9D6" activeColor="#ffffff" :activeItemStyle="{'font-size': '34rpx'}"></classify>
@@ -237,18 +231,10 @@
 					this.cartShow = true
 					this.getShoppingCardView()
 				}
-				
 			},
 			load(){
-				this.getClubDetail()
 				this.getCommodityCategoriesList()
 				this.getShoppingCardView()
-			},
-			async getClubDetail(){
-				let {code,data} = await this.$u.api.getClubDetail(this.data.clubId)
-				if(code==0) {
-					this.bannerList = data.info.bannerList
-				}
 			},
 			async getShoppingCardView(){
 				let {code,data} = await this.$u.api.getShoppingCardViewApi({

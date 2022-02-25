@@ -137,7 +137,7 @@
 							<text style="color: #FFFFFF;">{{orderInfo.totalAmount}}元</text>
 						</view>
 					</view>
-					<view class="common_info_item">
+					<view class="common_info_item" v-if="orderInfo.isCreator">
 						<view class="item_left"> 
 							<text style="color: #9292BA;">实际付款：</text> 
 						</view>
@@ -217,6 +217,9 @@
 				<!-- <view class="common_btn" @tap="$u.throttle(tapRefund)" v-if="canRefund"> <text>退款</text> </view> -->
 				<view class="common_btn" @tap="$u.throttle(tapGoYaoyue)"> <text>去邀约</text> </view>
 				<view class="common_btn color" @tap="tapArrive"> <text>确认到店</text> </view>
+			</view>
+			<view class="foot_box" v-if="orderInfo.status=='expired'">
+				<view class="common_btn" @tap="$u.throttle(tapGoYaoyue)"> <text>去邀约</text> </view>
 			</view>
 			<view class="foot_box" v-if="orderInfo.status=='arrived'">
 				<!-- <view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view> -->

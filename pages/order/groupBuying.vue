@@ -21,12 +21,7 @@
 		</block>
 		<view class="middle_box">
 			<view class="club_info">
-				<view class="swiper_box" v-if="clubInfo.bannerList.length > 1">
-					<u-swiper :list="clubInfo.bannerList" height="435" bgColor="#191C3F" @click="$u.throttle(previewImgList(clubInfo.bannerList,$event))"></u-swiper>
-				</view>
-				<view class="swiper_box" v-if="clubInfo.bannerList.length == 1">
-					<image :src="clubInfo.bannerList[0]"  mode="aspectFill" @click="$u.throttle(previewImg(clubInfo.bannerList[0]))"></image>
-				</view>
+				<bannerList :height="435" :bannerList="clubInfo.bannerObjList" imgKey="file" :showVideo="true" videoKey="videoUrl"></bannerList>
 				<view class="club_info_second">
 					<view class="info_name"> <text>{{clubInfo.name}}</text> </view>
 					<view class="info_address">
@@ -298,6 +293,7 @@
 	import pingActivityList from '@/components/ping-activity-list/ping-activity-list.vue'
 	import pingRecruitmentList from '@/components/ping-recruitment-list/ping-recruitment-list.vue'
 	import $chat from '@/utils/chat/index.js'
+	import bannerList from '@/components/common-banner/common-banner.vue'
 	const app = getApp()
 	export default {
 		components: {
@@ -307,7 +303,8 @@
 			certPop,
 			pingDynamicList,
 			pingActivityList,
-			pingRecruitmentList
+			pingRecruitmentList,
+			bannerList
 		},
 		data() {
 			return {
@@ -342,7 +339,7 @@
 				],
 				clubId:'',
 				clubInfo:{
-					bannerList:[],
+					bannerObjList:[],
 				},
 				pingOrderInfo:{
 					isJoin:false,

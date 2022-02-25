@@ -109,6 +109,9 @@ function iphonePay(goodsArray) {
 						title: "获取支付通道失败：" + errormsg.message,
 						icon: 'none'
 					})
+					reject({
+						msg: errormsg.message
+					})
 				})
 				
 			}else{
@@ -147,5 +150,6 @@ function getPayMethod(balanceHide) {
 
 module.exports = {
 	initPay,
-	getPayMethod
+	getPayMethod,
+	iphonePay
 }
