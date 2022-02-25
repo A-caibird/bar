@@ -85,6 +85,9 @@
 							id: 'avgScore'
 						}
 					]
+				},{
+					header: '酒吧类型',
+					contents:[{name: '全类型', id: ''}]
 				}],
 				mode: 'list',
 			}
@@ -121,11 +124,28 @@
 			},
 			load() {
 				this.getCitys()
+				this.getClubType();
 				if(this.mode=='list') {
 					this.$nextTick(function(){
 						this.downCallback()
 					})
 				}
+			},
+			async getClubType(){
+				let {code ,data} = await this.$u.api.getClubTypeAPI();
+				let typeList = [{
+					name: '全类型',
+					id: ''
+				}];
+				let clubTypeList = data.clubTypeList;
+				clubTypeList.forEach((item, index) => {
+					let info = {
+						name: item.name,
+						id: item.id
+					}
+					typeList.push(info);
+				})
+				this.dropDownOptions[2].contents = typeList;
 			},
 			searchKeyChange(e) {
 				let params = this.$u.deepClone(this.params)
@@ -145,6 +165,8 @@
 					}
 				} else if (e.headerIndex == 1) {
 					params.sortCondition = e.content.id
+				}else if(e.headerIndex == 2){
+					params.clubTypeId = e.content.id
 				}
 				this.params = params
 				this.downCallback()
