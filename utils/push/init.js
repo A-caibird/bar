@@ -43,7 +43,6 @@ function handlePushReceive(msg) {
 					url:'/pages/gift-animation/gift-animation'+`?sendInfo=${sendInfo}`+ `&gifUrl=${gifUrl}`
 				})
 			}
-			
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
 		}
 		
@@ -167,6 +166,7 @@ function handlePushClick(msg) {
 			} 
 		}
 		if(type=='gift') {
+			console.log("礼物消息");
 			if(route=='/pages/index/index') {
 				console.log(1)
 				vm.goInfoGift()
@@ -314,12 +314,12 @@ function openAPPMsg(payload){ //APP 处于关闭状态下 点击消息跳转页�
 function pageJump(payload){
 	let type = payload.type
 	if(type=='gift') {
-		console.log('礼物')
+		let giftUrl = payload.gifUrl || "";
 		slientHandle(() => {
 			uni.navigateTo({
-				url: '/pages/info/gift'
+				url: '/pages/info/gift?url=' + giftUrl
 			});
-		})	
+		}, 1200)
 	}
 	/*
 	 存酒过期提醒、优惠券过期提醒、订单到店提醒

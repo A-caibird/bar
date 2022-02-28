@@ -34,13 +34,15 @@
 				</view>
 			</mescroll-uni>
 		</view>
-		
+		<giftAnimation ref="giftAnimation"></giftAnimation>
 	</view>
 </template>
 
 <script>
+	import giftAnimation from '@/components/giftAnimation/giftAnimation.vue'
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
 	export default {
+		components:{giftAnimation},
 		mixins: [MescrollMixin], // 使用mixin (在main.js注册全局组件)
 		data() {
 			return {
@@ -63,11 +65,20 @@
 				todayReceiveGiftNum:0,
 			}
 		},
+		onLoad:function(opt){
+			if(opt.url){
+				this.$nextTick(() => {
+					this.showGift(opt.url)
+				})
+			}
+		},
 		methods:{
 			reLoad(){
 				this.mescroll.resetUpScroll()
 			},
-			
+			showGift(giftUrl){
+				this.$refs.giftAnimation.show(giftUrl);
+			},
 			handleData(pageNumber,data){
 				this.todayReceiveGiftNum = data.todayReceiveGiftNum
 				this.receiveGiftNum = data.receiveGiftNum

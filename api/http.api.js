@@ -57,6 +57,7 @@ const install = (Vue, vm) => {
 		getIsAppleAuditApi: (params) => vm.$u.get('/api/information/isAppleAudit', params), //获取苹果审核状态
 	
 		//酒吧列表
+		getClubTypeAPI: () => vm.$u.get('/api/club/clubTypeList'), //酒吧类型
 		getCitys: () => vm.$u.post('/api/club/getOpenedCities'), //所有开通城市
 		getClubDetail: (clubId) => vm.$u.post('/api/club/basicInformation', {
 			clubId

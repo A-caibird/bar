@@ -1,7 +1,7 @@
 <template>
 	<view class="video_box">
 		<u-image width="100%" height="100%" class="dy_img" :src="videoCover" @click="$u.throttle(videoPlayTap)"></u-image>
-		<image class="play_icon" src="/static/imgs/common/play_icon.png" :style="{'height': (iconHeight + 'rpx'), 'width': (iconHeight + 'rpx')}"></image>
+		<image @tap.stop="$u.throttle(videoPlayTap)" class="play_icon" src="/static/imgs/common/play_icon.png" :style="{'height': (iconHeight + 'rpx'), 'width': (iconHeight + 'rpx')}"></image>
 	</view>
 </template>
 

@@ -48,6 +48,9 @@ function orderStatus(status) {
 		case 'noShop':
 			return '待到店'
 			break;
+		case 'expired':
+			return '未消费'
+			break;
 		case 'arrived':
 			return '已到店'
 			break;
@@ -447,6 +450,17 @@ let utils = ({
 		timeChange(timeValue) {
 			return timeChange(timeValue)
 		},
+		getClubFrontImg(bannerList){
+			var footerImgUrl = '?x-oss-process=video/snapshot,t_0,f_jpg,w_0,h_0,m_fast';
+			let clubImg = "";
+			if(bannerList.length <= 0){
+				clubImg = "";
+			}else{
+				let firstBanner = this.clubInfo.bannerObjList[0]
+				clubImg = firstBanner.videoUrl ? (firstBanner.videoUrl + footerImgUrl) : firstBanner.file;
+			}
+			return clubImg;
+		}
 	},
 
 })

@@ -9,7 +9,7 @@
 		<view class="middle_box">
 			<view class="club_info">
 				<view class="club_info_box" style="background: #1A1D29;">
-					<image class="club_img" :src="clubInfo.bannerList[0]"></image>
+					<image class="club_img" :src="clubImg"></image>
 					<view class="club_info">
 						<view class="club_name">{{clubInfo.name}}</view>
 						<view class="club_subTitle">营业时间:{{clubInfo.businessHours}}</view>
@@ -218,7 +218,7 @@
 				clubInfo:{
 					bannerList:[],
 				},
-				
+				clubImg: '',
 				seatInterval:'',
 				seatIntervalStop:false,
 				
@@ -555,7 +555,11 @@
 			},
 			getClubDetail: async function(){
 				let {code,data} = await this.$u.api.getClubDetail(this.data.clubId)
-				if(code==0) this.clubInfo = data.info;
+				if(code==0) {
+					this.clubInfo = data.info;
+					let bannerList = data.info.bannerObjList;
+					this.clubImg = this.getClubFrontImg(bannerList);
+				}
 			},
 			async getCanOrderTime(){
 				let {code,data} = await this.$u.api.getCanOrderTimeApi({

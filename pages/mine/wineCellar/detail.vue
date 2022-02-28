@@ -13,12 +13,7 @@
 		></u-navbar>
 		<view class="middle_box">
 			<view class="club_info">
-				<view class="swiper_box" v-if="clubInfo.bannerList.length>1">
-					<u-swiper :list="clubInfo.bannerList" height="435" bgColor="#191C3F" @click="$u.throttle(previewImgList(clubInfo.bannerList,$event))"></u-swiper>
-				</view>
-				<view class="swiper_box" v-if="clubInfo.bannerList.length==1">
-					<image :src="clubInfo.bannerList[0]" mode="aspectFill"></image>
-				</view>
+				<bannerList :height="435" :bannerList="clubInfo.bannerObjList" imgKey="file" :showVideo="true" videoKey="videoUrl"></bannerList>
 				<view class="club_info_second">
 					<view class="info_name"> <text>{{clubInfo.name}}</text> </view>
 					<view class="info_intro"> <text>{{clubInfo.subtitle}}</text> </view>
@@ -140,10 +135,11 @@
 
 <script>
 	import selfRate from '@/components/self-rate/self-rate.vue'
+	import bannerList from '@/components/common-banner/common-banner.vue'
 	export default {
 		components: {
-			selfRate
-
+			selfRate,
+			bannerList
 		},
 		data() {
 			return {
@@ -151,7 +147,7 @@
 				id:'',
 				stickyStatus: false,
 				clubInfo:{
-					bannerList:[],
+					bannerObjList:[],
 				},
 				navOpacity:0,
 				wineInfo:{
@@ -190,7 +186,6 @@
 				if(code==0) {
 					console.log(data)
 					this.clubInfo = data.info;
-					
 				}
 			},
 			async getSaveWineView(){

@@ -15,12 +15,7 @@
 		</block>
 		<view class="middle_box">
 			<view class="club_info">
-				<view class="swiper_box">
-					<u-swiper :list="clubInfo.bannerList" height="435" bgColor="#191C3F" @click="$u.throttle(previewImgList(clubInfo.bannerList,$event))"></u-swiper>
-				</view>
-				<view class="swiper_box" v-if="clubInfo.bannerList.length==1">
-					<image :src="clubInfo.bannerList[0]" mode="aspectFill"></image>
-				</view>
+				<bannerList :height="435" :bannerList="clubInfo.bannerObjList" imgKey="file" :showVideo="true" videoKey="videoUrl"></bannerList>
 				<view class="club_info_second">
 					<view class="info_name"> <text>{{clubInfo.name}}</text> </view>
 					<view class="info_intro"> <text>{{clubInfo.subtitle}}</text> </view>
@@ -161,6 +156,7 @@
 	import pingRecruitmentList from '@/components/ping-recruitment-list/ping-recruitment-list.vue'
 	import appleAudit from '@/mixins/apple-audit.js'
 	import loginMixins from '@/mixins/loginConfirm.js'
+	import bannerList from '@/components/common-banner/common-banner.vue'
 	var app = getApp();
 	export default {
 		mixins:[appleAudit,loginMixins],
@@ -171,7 +167,8 @@
 			certPop,
 			pingDynamicList,
 			pingActivityList,
-			pingRecruitmentList
+			pingRecruitmentList,
+			bannerList
 		},
 		data() {
 			return {
@@ -237,7 +234,7 @@
 				selectIndex: 4,
 				stickyStatus: false,
 				clubInfo:{
-					bannerList:[],
+					bannerObjList:[],
 				},
 				clubContent:'',
 				lat:39.9091591069,
@@ -361,10 +358,11 @@
 					// console.log('clickEvent')
 					return ;
 				}
+				var clubImg = this.getClubFrontImg(this.clubInfo.bannerObjList)
 				switch(type){
 					case 'collect': this.toggleCollect(); break; 
 					case 'book': { // 预定事件
-						this.$storage.setStorageSync('clubImg',this.clubInfo.bannerList[0]);
+						this.$storage.setStorageSync('clubImg',clubImg);
 						await this.judgeVerify()
 						this.$u.route('/pages/club/consumption/seat',{
 							clubId:this.clubId,
@@ -374,7 +372,7 @@
 						});
 					};break;
 					case 'fight': {
-						this.$storage.setStorageSync('clubImg', this.clubInfo.bannerList[0]);
+						this.$storage.setStorageSync('clubImg', clubImg);
 						await this.judgeVerify()
 						this.$u.route('/pages/club/consumption/seat',{
 							clubId:this.clubId,
@@ -530,16 +528,6 @@
 
 		.middle_box {
 			.club_info {
-				.swiper_box {
-					width: 100%;
-					height: 435rpx;
-					background: #191C3F;
-					image {
-						width: 100%;
-						height: 100%;
-					}
-				}
-
 				.club_info_second {
 					width: 100%;
 					padding: 30rpx;

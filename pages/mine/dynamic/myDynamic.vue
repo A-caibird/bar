@@ -78,10 +78,11 @@
 		</view>
 		<videoBox ref="videoBox"></videoBox>
 		<dynamic-comment ref="dynamicComment" @sendComment="handleSendComment"></dynamic-comment>
-		<dynamic-gift ref="dynamicGift" @refreshInputTimes="refreshInputTimes" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @openPay="openPayhandle" @sendGiftSuccess="$refs.find.handleSendGiftSuccess($event)"></dynamic-gift>
+		<dynamic-gift ref="dynamicGift" @refreshInputTimes="refreshInputTimes" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @openPay="openPayhandle" @sendGiftSuccess="handleSendGiftSuccess($event)"></dynamic-gift>
 		<dynamic-gift-edit ref="dynamicGiftEdit" @confirm="$refs.dynamicGift.setSendNum($event)"></dynamic-gift-edit>
 		<pay ref="payDynamicGift" @pay="$refs.dynamicGift.pay($event)"></pay>
 		<pop-share v-model="popShareShow"></pop-share>
+		<giftAnimation ref="giftAnimation"></giftAnimation>
 	</view>
 </template>
 
@@ -175,11 +176,27 @@
 			
 		},
 		methods: {
+			
 			videoPlayHandle(e){
 				this.$refs.videoBox.videoPlayTap(e.src);
 			},
 			handleSendComment(e) {
 				this.setCommentNum(e)
+			},
+			handleSendGiftSuccess(e){
+				if (e.gifUrl) {
+					this.$refs.giftAnimation.show(e.gifUrl)
+				}
+				this.setGifttNum(e);
+			},
+			setGifttNum(data){
+				let {id,giftNum} = data
+				this.setList('id',id,{giftNum:giftNum},this.pageList).then(res => {
+					uni.$emit('dynamic-refresh',{msg: this.mode})
+					uni.$emit('dynamic-refresh-follow',{msg:this.mode})	
+				}).catch(e => {
+					console.log(e);
+				})
 			},
 			setCommentNum(data){
 				let {id,commentNum} = data

@@ -47,7 +47,7 @@
 					<image src="/static/imgs/mine/no-select.png" mode="" v-else></image>
 				</view>
 			</view>
-			<!-- <view class="weixin-cost" @tap="payType='Apple'" v-if="os == 'ios'">
+			<view class="weixin-cost" @tap="payType='Apple'" v-if="os == 'ios'">
 				<view class="cost-left">
 					<image src="/static/imgs/mine/apple_pay.png" mode=""></image>
 					<text>苹果</text>
@@ -56,7 +56,7 @@
 					<image src="/static/imgs/common/select.png" mode="" v-if="payType=='Apple'"></image>
 					<image src="/static/imgs/mine/no-select.png" mode="" v-else></image>
 				</view>
-			</view> -->
+			</view>
 		</view>
 		<view class="recharge-btn">
 			<button type="default" @tap="$u.throttle(tapSubmit)"><text>确认充值</text></button>
@@ -65,6 +65,7 @@
 </template>
 
 <script>
+	import payment from '@/common/payment.js'
 export default {
 	data() {
 		return {
@@ -131,7 +132,11 @@ export default {
 			}
 		},
 		async applePayment(id, wineCoin){
-			
+			payment.iphonePay(['jiubi6']).then(res => {
+				console.log(res);
+			}).catch(e => {
+				console.log(e);
+			})
 		},
 		async getWineCoinWeChatPayment(id,wineCoin){
 			let vm = this
