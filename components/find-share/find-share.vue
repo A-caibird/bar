@@ -41,17 +41,17 @@
 					<view class="first_line" v-if="info.type=='AA'">
 						<view class="info_item">
 							<text class="item_label">拼单方式：</text>
-							<text class="item_text">AA 每人 {{info.shareWay.avgWineCoin}}酒币</text>
+							<text class="item_text">AA 每人 {{info.shareWay.avgWineCoin}}元</text>
 						</view>
 					</view>
 					<view class="first_line" v-if="info.type=='customize'">
 						<view class="info_item">
 							<text class="item_label">男：</text>
-							<text class="item_text">{{info.shareWay.menWineCoin>0?`${info.shareWay.menWineCoin}酒币/人`:'免费'}}</text>
+							<text class="item_text">{{info.shareWay.menWineCoin>0?`${info.shareWay.menWineCoin}元/人`:'免费'}}</text>
 						</view>
 						<view class="info_item" style="margin-left: 40rpx;">
 							<text class="item_label">女：</text>
-							<text class="item_text">{{info.shareWay.womenWineCoin>0?`${info.shareWay.womenWineCoin}酒币/人`:'免费'}}</text>
+							<text class="item_text">{{info.shareWay.womenWineCoin>0?`${info.shareWay.womenWineCoin}元/人`:'免费'}}</text>
 						</view>
 					</view>
 					<view class="first_line" v-if="info.type=='treat'">
