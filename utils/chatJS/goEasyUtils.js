@@ -126,7 +126,7 @@ function creatMessage(im, chatInfo, sendMsg) { // 生成 Message 对象
 				} //好友扩展数据, 任意格式的字符串或者对象，用于更新会话列表conversation.data
 			}
 		});
-	};
+	};break;
 	case 2: {
 		message = im.createCustomMessage({ // 自定义类型类型
 			type: 'chat',
@@ -140,8 +140,7 @@ function creatMessage(im, chatInfo, sendMsg) { // 生成 Message 对象
 				} //好友扩展数据, 任意格式的字符串或者对象，用于更新会话列表conversation.data
 			}
 		});
-	};
-	break;
+	};break;
 	default:
 		break;
 	}
