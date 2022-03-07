@@ -334,7 +334,7 @@
 
 <style lang="scss" scoped>
 	.divider{
-		height: 20rpx;
+		height: 10rpx;
 		width: 100%;
 		background: #2C3158;
 	}
