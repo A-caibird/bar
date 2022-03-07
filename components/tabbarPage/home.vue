@@ -21,27 +21,8 @@
 		<view class="middle-box">
 			<scroll-view scroll-y="true" :lower-threshold="100" :scroll-into-view="scrollBottom" style="height: 100%;"
 				@scrolltolower="reachBottomLoad">
-				<view class="swiper_box" v-if="bannerList.length>1">
-					<!-- <u-swiper bgColor="#191C3F" name="file" :list="bannerList" mode="rect" height="400" @click="bannerTap"></u-swiper> -->
-					<swiper class="banner_swiper" style="height: 400rpx;" duration="500" interval="3000" :autoplay="true" :circular="true" indicator-dots indicator-active-color="#eaedf0" indicator-color="#7b597e">
-						<swiper-item v-for="(item, index) in bannerList">
-							<block v-if="item.videoUrl">
-								<view class="video_replace_item" @tap="videoPlayTap(index)">
-									<image class="video_img" :src="item.videoUrl + videoImgFooter"></image>
-									<image class="play_icon" src="../../static/imgs/common/play_icon.png"></image>
-								</view>
-							</block>
-							<block v-else>
-								<u-image :src="item.file" height="400"></u-image>
-							</block>
-						</swiper-item>
-					</swiper>
-					<video :direction="0" @fullscreenchange="fullScreenChange" class="videoBox" id="videoId"
-						v-if="playUrl" :src="playUrl"></video>
-				</view>
-				<view class="swiper_box" v-if="bannerList.length == 1">
-					<image :src="bannerList[0].file"></image>
-				</view>
+				<commonBanner :bannerList="bannerList" imgKey="file" height="400" :showVideo="true" videoKey="videoUrl" mode="normal" :customEvent="true" @click="bannerTap"></commonBanner>
+		
 				<view class="feature_box" v-if="!isAppleAudit">
 					<u-grid col="4" :border="false" hover-class="none">
 						<u-grid-item bgColor="#191C3F">
@@ -110,11 +91,13 @@
 	import location from '@/mixins/location.js';
 	import appleAudit from '@/mixins/apple-audit.js'
 	import loginConfirm from '@/mixins/loginConfirm.js'
+	import commonBanner from '@/components/common-banner/common-banner.vue'
 	var app = getApp();
 	export default {
 		mixins: [pageable, location, appleAudit, loginConfirm],
 		components: {
-			club
+			club,
+			commonBanner
 		},
 		data() {
 			return {
@@ -163,35 +146,16 @@
 			}
 		},
 		methods: {
-			fullScreenChange(e) {
-				if (!e.detail.fullScreen) {
-					var videoContext = uni.createVideoContext("videoId", this);
-					videoContext.stop()
-					this.playUrl = "";
-				}
-			},
-			videoPlayTap(index) {
-				this.playUrl = this.bannerList[index].videoUrl;
-				var vm = this;
-				this.$nextTick(function() {
-					var videoContext = uni.createVideoContext("videoId", vm);
-					videoContext.requestFullScreen({
-						direction: 0
-					});
-					videoContext.play()
-				})
-			},
 			goWheel() {
 				if (!this.loginConfirmHandle(false)) return;
 				this.$u.route('/pages/snatch/snatch')
 			},
 			bannerTap(e) {
-				let index = e;
+				let index = e.detail.index;
 				let info = this.bannerList[index];
 				this.$nav.bannberNav(info);
 			},
 			tapGoSelectCity() {
-				// if(this.cityName=='未定位')return
 				this.$u.route('/pages/select/city')
 			},
 			handleUpdateLocation() {
@@ -287,15 +251,6 @@
 </script>
 
 <style lang="scss" scoped>
-	.videoBox {
-		position: fixed;
-		left: 0rpx;
-		top: 0rpx;
-		z-index: -1;
-		height: 100%;
-		width: 100%;
-		opacity: 0;
-	}
 	.home_box {
 		height: 100%;
 		display: flex;
@@ -321,47 +276,6 @@
 			flex: 1;
 			min-height: 0;
 			min-width: 0;
-
-			.swiper_box {
-				width: 100%;
-				height: 400rpx;
-
-				image {
-					width: 100%;
-					height: 100%;
-				}
-
-				.banner_swiper {
-					width: 100%;
-					overflow: hidden;
-
-					.swiper_item {
-						height: 100%;
-						width: 100%;
-					}
-
-					.video_replace_item {
-						height: 100%;
-						width: 100%;
-						position: relative;
-
-						.video_img {
-							height: 100%;
-							width: 100%;
-						}
-
-						.play_icon {
-							height: 100rpx;
-							width: 100rpx;
-							position: absolute;
-							top: 50%;
-							left: 50%;
-							transform: translate(-50%, -50%);
-							z-index: 10;
-						}
-					}
-				}
-			}
 
 			.feature_box {
 				width: 100%;

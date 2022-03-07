@@ -1,6 +1,6 @@
 <template>
 	<view class="swiper_box" :style="{'height': height + 'rpx'}" v-if="bannerList.length>1">
-		<swiper class="banner_swiper"  duration="500" interval="3000" :autoplay="true" :circular="true" indicator-dots indicator-active-color="#eaedf0" indicator-color="#7b597e">
+		<swiper class="banner_swiper"  duration="500" interval="3000" :autoplay="autoplay" :circular="true" indicator-dots indicator-active-color="#eaedf0" indicator-color="#7b597e">
 			<swiper-item v-for="(item, index) in bannerList">
 				<block v-if="showVideo && item[videoKey]">
 					<view class="video_replace_item">
@@ -8,20 +8,22 @@
 					</view>
 				</block>
 				<block v-else>
-					<u-image :src="item[imgKey]" :height="height" @click="previewTap(item[imgKey])"></u-image>
+					<u-image :src="item[imgKey]" :height="height" @click="imgTap(index)"></u-image>
 				</block>
 			</swiper-item>
 		</swiper>
 		<videoBox ref="videoBox"></videoBox>
+		<video class="video_play_box" :autoplay="true" @pause="colseVideo" @ended="colseVideo" v-if="playVideoUrl" :src="playVideoUrl" ></video>
 	</view>
 	<view class="swiper_box":style="{'height': height + 'rpx'}" v-else-if="bannerList.length == 1">
 		<block v-if="showVideo && item[videoKey]">
 			<common-video :src="item[videoKey]" @videoPlayTap="videoPlayHandle"></common-video>
 		</block>
-		<image v-else :src="bannerList[0][imgKey]" @tap="previewTap(bannerList[0][imgKey])"></image>
-		
+		<image v-else :src="bannerList[0][imgKey]" @tap="imgTap(0)"></image>
+		<video class="video_play_box" v-if="playVideoUrl" :src="playVideoUrl"></video>
 	</view>
 	<view v-else class="swiper_box" :style="{'height': height + 'rpx'}"></view>
+	
 </template>
 
 <script>
@@ -43,11 +45,51 @@
 			showVideo: {
 				type: Boolean,
 				default: false 
+			},
+			mode: {
+				type: String,
+				default: 'enlarge',  // enlarge: 放大模式，// normal:正常模式
+			},
+			customEvent: {
+				type: Boolean,
+				default: false 
+			}
+			
+		},
+		data() {
+			return {
+				autoplay: true,
+				playVideoUrl: '',
 			}
 		},
 		methods:{
+			//图片点击
+			imgTap(index){
+				if(this.customEvent){
+					this.$emit('click', {
+						mode: 'img',
+						detail: {
+							index: index
+						}
+					})
+				}else{
+					var banner = this.bannerList[index];
+					this.previewTap(banner[this.imgKey])
+				}
+			},
+			// 关闭视频
+			colseVideo(){
+				this.playVideoUrl = "";
+				this.autoplay = true;
+			},
 			videoPlayHandle(e){
-				this.$refs.videoBox.videoPlayTap(e.src);
+				if(this.mode == 'enlarge'){
+					this.$refs.videoBox.videoPlayTap(e.src);
+				}
+				if(this.mode == 'normal'){
+					this.playVideoUrl = e.src;
+					this.autoplay = false;
+				}
 			},
 			previewTap(url){
 				let imgs = [];
@@ -69,6 +111,15 @@
 <style lang="scss">
 	.swiper_box {
 		width: 100%;
+		position: relative;
+		.video_play_box{
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			z-index: 100;
+			left: 0rpx;
+			top: 0rpx;
+		}
 		.banner_swiper {
 			width: 100%;
 			height: 100%;
