@@ -239,13 +239,13 @@
 						display: flex;
 						justify-content: center;
 						align-items: center;
-						width: 200rpx;
 						height: 36rpx;
 						background: linear-gradient(306deg, #4997ff 5%, #006dff 88%);
 						border-radius: 21rpx;
 						font-size: 20rpx;
 						color: #FFFFFF;
-
+						box-sizing: border-box;
+						padding: 0 10rpx;
 						&>image {
 							width: 20rpx;
 							height: 20rpx;
