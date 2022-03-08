@@ -278,9 +278,6 @@
 			</view>
 		</view>
 		<pop-share v-model="shareShow"></pop-share>
-		<!-- <view class="footer_box">
-			<club-footer @clickTap="clickEvent" :collect="collect" :isPing="true" :isJoin="pingOrderInfo.isJoin"></club-footer>
-		</view> -->
 	</view>
 </template>
 
@@ -548,6 +545,10 @@
 			async joinPing(){
 				await this.$toast.confirm('','确定要发起加入请求吗？')
 				console.log(13)
+				this.sendPingMsg();
+				this.$toast.text('已发送拼享加入请求')
+			},
+			sendPingMsg:function(){
 				let {sponsorId,sponsorChatId,sponsorChatToken,name,sponsorAvatar,} = this.pingOrderInfo
 				let {id,clubSimpleInfoVo,arriveTime,cardTableName} = this.pingOrderInfo
 				let userInfo = this.$u.deepClone(this.userInfo)
@@ -559,8 +560,6 @@
 					avatar:sponsorAvatar,
 					hasSave:false,
 				}
-				console.log(userInfo)
-				console.log(friendUserInfo)
 				let msgInfo = {
 					orderId: id,
 					clubCover: clubSimpleInfoVo.clubCover,
@@ -569,9 +568,7 @@
 					cardTableName: cardTableName,
 					agreeStatus: 'none',
 				}
-				console.log(msgInfo)
 				$chat.sendMsg(userInfo, friendUserInfo, 'single', 'pingJoin', msgInfo)
-				this.$toast.text('已发送拼享加入请求')
 			},
 			// 点击事件
 			clickEvent: function(e){
