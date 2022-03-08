@@ -41,7 +41,7 @@
 									<view class="label_text"> <text>拼享方式</text> </view>
 									<view class="way_list">
 										<block v-for="(info, index) in shareWay"  :key="index">
-											<view class="common_way" @tap="tapSwitchShareWay(info.value)">
+											<view class="common_way" :class="{'pink-active':info.value==data.type}" @tap="tapSwitchShareWay(info.value)">
 												<view class="circular-select" :class="{'pink-active':info.value==data.type}"></view>
 												<text>{{info.label}}</text>
 											</view>
@@ -582,32 +582,6 @@
 <style lang="scss" scoped>
 	.container{
 		width: 100%;
-		.circular-select {
-			width: 24rpx;
-			height: 24rpx;
-			border-radius: 50%;
-			border: 2rpx solid #FFFFFF;
-			@include flex-center();
-			&.active:after {
-				content: '';
-				width: 10rpx;
-				height: 10rpx;
-				border-radius: 50%;
-				background-color: #FFFFFF;
-			}
-			
-			&.pink-active {
-				border: 2rpx solid #ff59c9;
-				&:after {
-					content: '';
-					width: 10rpx;
-					height: 10rpx;
-					border-radius: 50%;
-					background-color: #ff59c9;
-				}
-				
-			}
-		}
 		.club_info_box{
 			width: 100%;
 			display: flex;
@@ -656,6 +630,12 @@
 							width: 100%;
 							.share_info{
 								width: 100%;
+								background: #272D41;
+								border-radius: 20rpx;
+								box-shadow: 0px 2rpx 10rpx 0px #191D4D;
+								box-sizing: border-box;
+								padding: 0rpx 30rpx;
+								overflow: hidden;
 								.share_way{
 									height: 100rpx;
 									width: 100%;
@@ -663,8 +643,8 @@
 									align-items: center;
 									justify-content: space-between;
 									.label_text{
-										font-size: 26rpx;
-										color: #959AAA;
+										font-size: 28rpx;
+										color: #FFFFFF;
 									}
 									.way_list{
 										display: flex;
@@ -672,16 +652,19 @@
 										.common_way{
 											display: flex;
 											align-items: center;
-											margin-left: 50rpx;
-											&>image{
-												height: 40rpx;
-												width: 40rpx;
-												background: #FFFFFF;
+											justify-content: center;
+											margin-left: 16rpx;
+											height: 40rpx;
+											width: 106rpx;
+											background: #414168;
+											border-radius: 8rpx;
+											overflow: hidden;
+											&.pink-active{
+												background: linear-gradient(270deg, #BB0CF9 0%, #F92FAF 100%);
 											}
 											&>text{
 												font-size: 26rpx;
-												margin-left: 12rpx;
-												color: #959AAA;
+												color: #FFFFFF;
 											}
 										}
 									}
@@ -691,8 +674,8 @@
 									display: flex;
 									justify-content: space-between;
 									.label_text{
-										font-size: 26rpx;
-										color: #959AAA;
+										font-size: 28rpx;
+										color: #FFFFFF;
 										line-height: 60rpx;
 									}
 									.people_list{
@@ -702,8 +685,8 @@
 											align-items: center;
 											margin-bottom: 20rpx;
 											&>text{
-												color: #959AAA;
-												font-size: 26rpx;
+												color: #FFFFFF;
+												font-size: 28rpx;
 											}
 											.selfNum{
 												margin-left: 30rpx;
@@ -713,14 +696,14 @@
 												width: 210rpx;
 												border-radius: 4rpx;
 												border: 1px solid #9292BA;
-												font-size: 26rpx;
+												font-size: 28rpx;
 												margin-left: 50rpx;
 												text-align: center;
 												color: #FFFFFF;
 											}
 											.avgAmount {
 												color: #FFFFFF;
-												font-size: 32rpx;
+												font-size: 30rpx;
 												padding-left: 15rpx;
 												padding-right: 10rpx;
 											}
