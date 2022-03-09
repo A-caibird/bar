@@ -48,9 +48,9 @@
 				<view class="dynamic_intro">
 					<text>{{info.title}}</text>
 				</view>
-				<view class="dynamic_intro2">
+				<!-- <view class="dynamic_intro2">
 					<text>{{info.content}}</text>
-				</view>
+				</view> -->
 				<!-- <view class="dynamic_date"> <text>{{info.time}}</text> </view> -->
 			</view>
 			<view class="right" v-if="btnShow">
@@ -205,14 +205,15 @@
 			box-sizing: border-box;
 			background: #2C3158;
 			display: flex;
+			align-items: center;
+			justify-content: space-between;
 			.left {
-				min-width: 0;
-				flex: 1;
 				.dynamic_intro {
 					min-width: 0;
 					@include ellipsis();
 					font-size: 30rpx;
 					color: #FFFFFF;
+					max-width: 500rpx;
 				}
 				
 				.dynamic_intro2 {

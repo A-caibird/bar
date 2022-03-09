@@ -34,7 +34,8 @@
 				</view>
 			</view>
 			<view class="act_detail">
-				<text>{{info.content}}</text>
+				<!-- <text>{{info.content}}</text> -->
+				<u-parse :html="info.content"></u-parse>
 			</view>
 		</view>
 		<view class="footer_box">
@@ -51,6 +52,7 @@
 				<text>进入酒吧</text>
 			</view>
 		</view>
+		<pop-share v-model="shareShow"></pop-share>
 	</view>
 </template>
 
@@ -65,6 +67,7 @@
 				},
 				btnShow:false,
 				playUrl:'',
+				shareShow: false,
 			}
 		},
 		mixins:[loginMixins],
@@ -105,7 +108,7 @@
 					console.log('shareToWeChatHandle')
 					return
 				}
-				this.shareSystem()
+				this.shareShow = !this.shareShow;
 			},
 			async toggleLike(){
 				if(!this.loginConfirmHandle(false)){
@@ -187,11 +190,11 @@
 			}
 		}
 		.middle_box{
-			width: calc(100% - 60rpx);
-			margin-left: 30rpx;
+			width: 100%;
 			padding: 30rpx 0rpx;
 			.activity_info{
-				width: 100%;
+				width: calc(100% - 60rpx);
+				margin-left: 30rpx;
 				.activity_name{
 					font-size: 40rpx;
 					color: #FFFFFF;
@@ -213,7 +216,9 @@
 				}
 			}
 			.act_detail {
-				// background-color: red;
+				color: #FFFFFF;
+				width: 100%;
+				padding: 0 30rpx;
 				text {
 					color: #FFFFFF;
 					font-size: 28rpx;
