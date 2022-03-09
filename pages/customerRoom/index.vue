@@ -422,10 +422,6 @@
 			},
 			sendMsg: function(message, type=0) {
 				chatUtils.sendMsg(message, (chatInfo, msg) => {
-					// uni.showToast({
-					// 	icon: 'none',
-					// 	title: '发送成功'
-					// })
 					let pageList = this.pageList;
 					pageList.push(msg);
 					this.pageList = pageList;

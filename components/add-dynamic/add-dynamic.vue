@@ -23,6 +23,7 @@
 			:isMask="true"
 			@cancel="popCancelTap"
 			@confirm="popConfirmTap"
+			@maskTap="popShow = false"
 		></pop>
 	</view>
 </template>

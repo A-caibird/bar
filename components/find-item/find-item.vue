@@ -405,7 +405,7 @@
 					}
 				}
 				.single_img_box{
-					height: 340rpx;
+					height: 600rpx;
 					width: 100%;
 					&>image{
 						height: 100%;
@@ -413,7 +413,7 @@
 					}
 				}
 				.single_video_box{
-					height: 360rpx;
+					height: 600rpx;
 					width: 100%;
 					border-radius: 10rpx;
 					overflow: hidden;

@@ -9,7 +9,6 @@
 						<view class="intro_info">
 							<view class="first_line">
 								<view class="info_name"> <text>{{userData.nickName}}</text> </view>
-			
 								<image v-if="userData.sex == '男'" class="sex_img" src="/static/imgs/register/male_icon.png"></image>
 								<image v-else class="sex_img" src="/static/imgs/register/female_icon.png"></image>
 							</view>
@@ -18,10 +17,6 @@
 									<image src="/static/imgs/mine/class_icon2.png"></image>
 									<text>{{userData.membershipLevel}}</text>
 								</view>
-							<!-- 	<view class="credit_panel">
-									<image src="/static/imgs/mine/credit_icon.png"></image>
-									<text>信用分 {{userData.memberPoints}}</text>
-								</view> -->
 							</view>
 						</view>
 						<image class="go_icon" src="/static/imgs/mine/common_right.png"></image>
@@ -44,6 +39,10 @@
 						<view class="display_item" @tap="$u.throttle(navigateHandle('/pages/info/fans'))">
 							<view> <text>{{userData.fanNumber || 0}}</text> </view>
 							<view>粉丝</view>
+						</view>
+						<view class="display_item">
+							<view> <text>{{userData.creditScore || 0}}</text> </view>
+							<view>信用分</view>
 						</view>
 					</view>
 					<view class="feature_box">
@@ -301,7 +300,6 @@
 					data
 				} = await this.$u.api.getNotPayInviteOrderSizeApi({})
 				if (code == 0) {
-					console.log(data)
 					let {size} = data
 					this.yaoOrderWaitPayNum = size
 					this.$forceUpdate()
@@ -330,8 +328,6 @@
 					// console.log(data)
 					this.userData = data.info
 					this.upadteUserInfo(data.info.nickName, data.info.avatar)
-					// this.userData = data.info.avatar
-					// this.userData = data.info.nickName
 				}
 			},
 			upadteUserInfo(name, avatar) {

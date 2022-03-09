@@ -35,7 +35,7 @@
 							<view class="content" v-else-if="item.type==3">
 								我想和你拼单可以么？
 							</view>
-							<view class="content" v-else-if="item.type==4">
+							<view class="content" v-else-if="item.type==4"> 
 								我想加入你的拼单可以么？
 							</view>
 							<view class="content" v-else-if="item.type==5">
@@ -251,6 +251,11 @@
 </template>
 
 <script>
+	/* 
+	 消息类型区分
+	 type = 4: 表示是用户加入我的拼享订单 发送消息
+	 type = 3; 表示是邀请别人加入我的拼享订单 发送消息
+	 */
 	import $chat from '@/utils/chat/index.js'
 	import GraphemeSplitter from 'grapheme-splitter'
 	import refuseInvite from '@/components/pop/refuse-invite.vue'
@@ -329,6 +334,7 @@
 					content: msg,
 				})
 			},
+			// 同意别人加入拼享订单
 			async tapAgreeJoinPing(item) {
 				let userInfo = this.$u.deepClone(this.userInfo)
 				let friendUserInfo = this.$u.deepClone(this.friendUserInfo)
@@ -350,11 +356,9 @@
 					code,
 					data
 				} = await this.$u.api.agreePingJoinApi({
-					orderId: item.orderId,
-					userId: friendUserInfo.userId
+					joinTogetherId: item.joinTogetherId,
 				})
 				if (code == 0) {
-					console.log(data)
 					item.agreeStatus = 'agree'
 					this.updateChatListByTimeType(item.time, item.type, item)
 					$chat.upadteChatByTimeType(userInfo.chatToken, friendUserInfo.chatToken, item.time, item.type,
@@ -362,21 +366,29 @@
 					$chat.sendMsg(userInfo, friendUserInfo, 'single', 'text', {
 						content: '同意加入',
 					})
-
 				}
 			},
+			// 拒绝别人加人拼享订单
 			async tapRefuseJoinPing(item) {
+				console.log(item);
 				let userInfo = this.$u.deepClone(this.userInfo)
 				let friendUserInfo = this.$u.deepClone(this.friendUserInfo)
 				await this.$toast.confirm('', '确定要拒绝邀请吗？')
-				item.agreeStatus = 'refuse'
-				console.log(item)
-				this.updateChatListByTimeType(item.time, item.type, item)
-				$chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken, item.time, item
-					.type, item)
-				$chat.sendMsg(userInfo, friendUserInfo, 'single', 'text', {
-					content: '拒绝加入',
+				let {
+					code,
+					data
+				} = await this.$u.api.refusePingJoinAPI({
+					joinTogetherId: item.joinTogetherId,
 				})
+				if (code == 0) {
+					item.agreeStatus = 'refuse'
+					this.updateChatListByTimeType(item.time, item.type, item)
+					$chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken, item.time, item
+						.type, item)
+					$chat.sendMsg(userInfo, friendUserInfo, 'single', 'text', {
+						content: '拒绝加入',
+					})
+				}
 			},
 			chatTimeStamp(arr, ele) {
 				let lastTime = '';
@@ -542,6 +554,7 @@
 					orderId
 				})
 			},
+			// 同意我邀请别人加入我的邀请订单
 			async tapAgreePing(item) {
 				let userInfo = this.$u.deepClone(this.userInfo)
 				let friendUserInfo = this.$u.deepClone(this.friendUserInfo)
@@ -559,36 +572,28 @@
 					return
 				}
 				await this.$toast.confirm('', '确定要同意邀请吗？')
-
-				let {
-					code,
-					data
-				} = await this.$u.api.joinPingOrderApi({
-					orderId: item.orderId,
+				uni.$on('agreePingSuccess', () => {
+					this.agreePingSuccess(userInfo, friendUserInfo, item);
+					uni.$off('agreePingSuccess');
 				})
-				if (code == 0) {
-					console.log(data)
-					item.agreeStatus = 'agree'
-					$chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken, item.time, item
-						.type, item)
-					$chat.sendMsg(userInfo, friendUserInfo, 'single', 'text', {
-						content: '同意邀请',
-					})
-					this.$forceUpdate()
-					let {
-						hasPay,
-						allAmount,
-						joinTogetherId
-					} = data
-					if (!hasPay) {
-						this.$u.route('/pages/club/consumption/payPage', {
-							allAmount: allAmount,
-							joinTogetherId: joinTogetherId,
-							type: 'ping-join-order'
-						})
-					}
-				}
+				this.$u.route('/pages/club/consumption/payPage', {
+					allAmount: item.amount,
+					orderId: item.orderId,
+					type: 'ping-join-order-invite'
+				})
+				
 			},
+			// 同意加入接口
+			agreePingSuccess(userInfo, friendUserInfo, item){
+				item.agreeStatus = 'agree'
+				$chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken, item.time, item
+					.type, item)
+				$chat.sendMsg(userInfo, friendUserInfo, 'single', 'text', {
+					content: '同意邀请',
+				})
+				this.$forceUpdate()
+			},
+			// 拒绝我邀请别人加入我的邀请订单
 			async tapRefusePing(item) {
 				let userInfo = this.$u.deepClone(this.userInfo)
 				let friendUserInfo = this.$u.deepClone(this.friendUserInfo)
@@ -688,9 +693,9 @@
 				$chat.getChatList(chatToken, friendChatToken).then(res => {
 
 					let chatList = this.chatListTimeStamp(res)
-					// console.log(chatList)
+	
 					this.chatList = chatList
-					// console.log(this.chatList)
+					
 					setTimeout(() => {
 						this.pageScrollToBottom()
 					}, 100)
@@ -719,7 +724,6 @@
 					this.canChat = canChat
 				}
 				let chatType = 'wait'
-				console.log(this.chatList)
 				if (this.canChat) {
 					chatType = 'all'
 				} else {
@@ -792,8 +796,6 @@
 					setTimeout(() => {
 						// 时间戳计算
 						this.pageNumber++
-						console.log(list)
-						console.log(this.chatList)
 						list = this.chatListTimeStamp(list)
 						this.chatList = list.concat(this.chatList)
 						this.loadPage = false
@@ -838,16 +840,12 @@
 				});
 			},
 			msgPush(e) {
-				console.log(e)
-				console.log(this.userInfo.chatToken)
-				console.log(this.friendUserInfo.chatToken)
 				let chatToken = this.userInfo.chatToken
 				let friendChatToken = this.friendUserInfo.chatToken
 				if ((chatToken == e.toId && e.fromId == friendChatToken) || (e.toId == friendChatToken && e.fromId ==
 						chatToken)) {
 					let chatItem = this.chatTimeStamp(this.chatList, e)
 					this.chatList.push(chatItem)
-					// console.log(this.chatList)
 					uni.$emit('read-chat', {
 						chatToken: chatToken,
 						friendChatToken: friendChatToken

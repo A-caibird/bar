@@ -15,6 +15,9 @@
 		},
 		methods: {
 			show(gifUrl){
+				if(timeout){
+					clearTimeout(timeout);
+				}
 				this.gifUrl = gifUrl;
 				this.showImg = true;
 				this.$nextTick(() => {
@@ -41,7 +44,7 @@
 <style lang="scss">
 	.animation_img {
 		position: fixed;
-		z-index: 200;
+		z-index: 1001;
 		top: 50%;
 		left: 0rpx;
 		width: 100%;

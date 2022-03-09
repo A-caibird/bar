@@ -58,7 +58,9 @@
 				}
 			},
 			async getCanOrder(){
-				let {code,data} = await this.$u.api.getCanOrderApi({})
+				let {code,data} = await this.$u.api.getCanOrderApi({
+					targetUserId: this.dynamicInfo.userId
+				})
 				console.log(data)
 				if(code==0) {
 					this.list = data.list
@@ -110,9 +112,6 @@
 			},
 			async sendYaoyue(orderInfo, friendUserInfo) {
 				let userInfo = this.$u.deepClone(this.userInfo)
-				console.log(orderInfo)
-				console.log(userInfo)
-				console.log(friendUserInfo)
 				let {
 					code,
 					data
@@ -139,9 +138,6 @@
 			},
 			async sendPing(orderInfo, friendUserInfo) {
 				let userInfo = this.$u.deepClone(this.userInfo)
-				console.log(orderInfo)
-				console.log(userInfo)
-				console.log(friendUserInfo)
 				let {
 					code,
 					data
@@ -156,6 +152,7 @@
 						clubName: orderInfo.clubName,
 						date: orderInfo.date,
 						cardTableName: orderInfo.cardTableName,
+						amount: orderInfo.amount,
 						agreeStatus: 'none',
 					})
 					this.$toast.text('已发送拼享请求')

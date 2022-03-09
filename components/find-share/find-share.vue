@@ -41,17 +41,17 @@
 					<view class="first_line" v-if="info.type=='AA'">
 						<view class="info_item">
 							<text class="item_label">拼单方式：</text>
-							<text class="item_text">AA 每人 {{info.shareWay.avgWineCoin}}酒币</text>
+							<text class="item_text">AA 每人 {{info.shareWay.avgWineCoin}}元</text>
 						</view>
 					</view>
 					<view class="first_line" v-if="info.type=='customize'">
 						<view class="info_item">
 							<text class="item_label">男：</text>
-							<text class="item_text">{{info.shareWay.menWineCoin>0?`${info.shareWay.menWineCoin}酒币/人`:'免费'}}</text>
+							<text class="item_text">{{info.shareWay.menWineCoin>0?`${info.shareWay.menWineCoin}元/人`:'免费'}}</text>
 						</view>
 						<view class="info_item" style="margin-left: 40rpx;">
 							<text class="item_label">女：</text>
-							<text class="item_text">{{info.shareWay.womenWineCoin>0?`${info.shareWay.womenWineCoin}酒币/人`:'免费'}}</text>
+							<text class="item_text">{{info.shareWay.womenWineCoin>0?`${info.shareWay.womenWineCoin}元/人`:'免费'}}</text>
 						</view>
 					</view>
 					<view class="first_line" v-if="info.type=='treat'">
@@ -68,12 +68,10 @@
 					</view>
 				</view>
 				<block v-if="info.pingStatus=='canPing'">
-					<view class="feature_btn" @tap.stop="tapPingTap(info)">
+					<view class="feature_btn" @tap.stop="pingTap">
 						<image src="/static/imgs/common/club_share.png"></image>
 						<text>拼享</text>
 					</view>
-					
-					
 				</block>
 				<block v-if="info.pingStatus=='hasJoin'">
 					<view class="feature_btn end">
@@ -85,16 +83,30 @@
 						<text>拼享结束</text>
 					</view>
 				</block>
-				
+				<block v-if="info.pingStatus=='waitAgree'">
+					<view class="feature_btn end">
+						<text>申请中</text>
+					</view>
+				</block>
 				
 			</view>
 		</view>
-
+		<pop
+			v-if="popShow"
+			title="加入拼享"
+			:content="popContent" 
+			cancelText="再看看" confirmText="加入拼享"
+			:isMask="true"
+			@cancel="popShow = false"
+			@confirm="tapPingTap"
+			@maskTap="popShow = false"
+		></pop>
 	</view>
 </template>
 
 <script>
 	const app = getApp()
+	import pop from '@/components/commonPop/pop.vue'
 	import $chat from '@/utils/chat/index.js'
 	export default {
 		props:{
@@ -105,13 +117,23 @@
 				}
 			}
 		},
+		components:{
+			pop
+		},
 		data(){
 			return {
+				popContent: '',
+				popShow: false,
 				userInfo: app.globalData.userInfo,
 			}
 		},
 		methods:{
-			async tapPingTap(info){
+			pingTap(){
+				this.popContent = `加入拼单金额为：${this.info.amount}元，若对方未同意或未到店拼单，费用会自动退回。拼单成功后请准时到达。`
+				this.popShow = true;
+			},
+			async tapPingTap(){
+				var info = this.info;
 				this.judgeVerify().then(res => {
 					console.log(res);
 					if(res.hasAdult){
@@ -124,10 +146,22 @@
 				})
 			},
 			async tapPing(info){
-				console.log(info)
-				console.log(this.$storage.getUserInfo())
-				console.log(this.userInfo)
-				await this.$toast.confirm('','确定要发起加入请求吗？')
+				// await this.$toast.confirm('','确定要发起加入请求吗？')
+				this.popShow = false
+				uni.$on('sendInviteMsg2', (joinTogetherId) => {
+					console.log('joinTogetherId', joinTogetherId);
+					this.sendPingMsg(info, joinTogetherId);
+					uni.$emit('find-share-list-refresh');// 刷新拼享快乐
+					uni.$off('sendInviteMsg2');
+				})
+				this.$u.route('/pages/club/consumption/payPage',{
+					allAmount: info.amount,
+					orderId:info.id,
+					method: 'sendInviteMsg2',
+					type:'ping-join-order'})
+				
+			},
+			sendPingMsg: function(info, joinTogetherId = ""){
 				let userInfo = this.$u.deepClone(this.userInfo)
 				let friendUserInfo = {
 					userId:info.userId,
@@ -137,37 +171,21 @@
 					avatar:info.userAvatar,
 					hasSave:false,
 				}
-				console.log(userInfo)
-				console.log(friendUserInfo)
 				$chat.sendMsg(userInfo, friendUserInfo, 'single', 'pingJoin', {
 					orderId: info.id,
 					clubCover: info.clubCover,
 					clubName: info.clubName,
 					date: info.date,
+					joinTogetherId: joinTogetherId,
 					cardTableName: info.cardTableSn,
 					agreeStatus: 'none',
 				})
-				this.$toast.text('已发送拼享加入请求')
-				
-				// await this.$toast.confirm('','确定要加入拼享？')
-				// let {code,data} = await this.$u.api.joinPingOrderApi({
-				// 		orderId:orderId,
-				// 	})
-				// if(code==0) {
-				// 	this.info.hasJoin = true
-				// 	this.$forceUpdate()
-				// 	let {hasPay,allAmount,joinTogetherId} = data
-				// 	if(!hasPay) {
-				// 		this.$u.route('/pages/club/consumption/payPage',{allAmount:allAmount,joinTogetherId:joinTogetherId,type:'ping-join-order'})
-				// 	}
-				// }
-				
 			},
 			
-			goGroupBuying:function(info){
-				console.log(info)				
+			goGroupBuying:function(info){				
 				let clubId = info.clubId
 				let orderId = info.id
+				uni.$off('sendInviteMsg');
 				this.$u.route('/pages/order/groupBuying', {
 					id: clubId,
 					orderId : orderId,

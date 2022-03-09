@@ -396,7 +396,7 @@ async function delChatList(account,friendId){
  */
 function sendMsg(userInfo,friendUserInfo,chat_type,type, data, success, fail) {
 	let params = JSON.parse(JSON.stringify(data))
-	console.log(params)
+	// console.log(params)
 	params.time = (new Date()).getTime();
 	params.chat_type = chat_type === 'single'?0:1;
 	params.account = userInfo.chatToken
@@ -413,7 +413,6 @@ function sendMsg(userInfo,friendUserInfo,chat_type,type, data, success, fail) {
 	params.status = 0 
 	params.read = 0
 	// console.log(params.chatUserId)
-	console.log(params)
 	// 文本消息
 	if(type === 'text') {
 		// 文本保存完之后直接发送

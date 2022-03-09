@@ -1,11 +1,5 @@
 <template>
-	<view class="container">
-<!-- 		<view class="header_box">
-			<view class="startBar_box"></view>
-			<view class="custom_nav" v-if="!stickyStatus" @tap="goBack">
-				<u-icon name="arrow-left" color="#FFFFFF" size="44"></u-icon>
-			</view>
-		</view> -->
+	<view class="container" :class="{'noScroll': popShow}">
 		<block v-if="!stickyStatus">
 			<u-navbar
 				:border-bottom="false"
@@ -21,7 +15,7 @@
 		</block>
 		<view class="middle_box">
 			<view class="club_info">
-				<bannerList :height="435" :bannerList="clubInfo.bannerObjList" imgKey="file" :showVideo="true" videoKey="videoUrl"></bannerList>
+				<bannerList :height="435" :bannerList="clubInfo.bannerObjList" mode="normal" imgKey="file" :showVideo="true" videoKey="videoUrl"></bannerList>
 				<view class="club_info_second">
 					<view class="info_name"> <text>{{clubInfo.name}}</text> </view>
 					<view class="info_address">
@@ -57,6 +51,9 @@
 						<view class="activity_title">
 							<view class="line"></view>
 							<text>拼享详情</text>
+						</view>
+						<view class="detail_item" v-if="pingStatus == 'waitAgree' || pingStatus == 'hasJoin'">
+							<text class="left">台位:</text><text class="right">{{pingOrderInfo.cardTableName}}</text>
 						</view>
 						<view class="detail_item">
 							<text class="left">到店时间:</text><text class="right">{{pingOrderInfo.orderTime}}</text>
@@ -134,6 +131,29 @@
 							</view>
 							<view class="warm_tip_content">
 								<text>{{pingOrderInfo.shareRequirements}}</text>
+							</view>
+						</view>
+						<view class="order_goods">
+							<view class="apply_title">
+								<view class="title_left">
+									<view class="line">	</view>
+									<text>酒水套餐</text>
+								</view>
+							</view>
+							<view class="goods_box">
+								<view class="common_goods_box" v-for="(info, index) in pingOrderInfo.orderItemList" :key="index">
+									<view class="goods_img">
+										<image :src="info.cover"></image>
+									</view>
+									<view class="goods_name"> <text>{{info.commodityName}}</text> </view>
+									<view class="price_number_box">
+										<view class="price_info">
+											<text style="font-size: 26rpx; color: #FF59C9;">{{info.commodityPrice}}元</text>
+											<!-- <text style="font-size: 24rpx; color: #9292BA; text-decoration: line-through;">200元</text> -->
+										</view>
+										<view class="num_box"> <text>x{{info.buyNum}}</text> </view>
+									</view>
+								</view>
 							</view>
 						</view>
 					</view>
@@ -259,7 +279,7 @@
 					</view>
 					<text>分享</text>
 				</view>
-				<view class="btn_text" @tap="$u.throttle(clickEvent('ping'), 800)" v-if="pingStatus=='canPing'">
+				<view class="btn_text" @tap="pingTapEvent" v-if="pingStatus=='canPing'">
 					<block>
 						<image src="/static/imgs/common/seat_icon.png"></image>
 						<text>拼享</text>
@@ -275,12 +295,24 @@
 						<text>拼享结束</text>
 					</block>
 				</view>
+				<view class="btn_text end" v-if="pingStatus=='waitAgree'">
+					<block>
+						<text>申请中</text>
+					</block>
+				</view>
 			</view>
 		</view>
 		<pop-share v-model="shareShow"></pop-share>
-		<!-- <view class="footer_box">
-			<club-footer @clickTap="clickEvent" :collect="collect" :isPing="true" :isJoin="pingOrderInfo.isJoin"></club-footer>
-		</view> -->
+		<pop
+			v-if="popShow"
+			title="加入拼享"
+			:content="popContent" 
+			cancelText="再看看" confirmText="加入拼享"
+			:isMask="true"
+			@cancel="popShow = false"
+			@confirm="clickEvent('ping')"
+			@maskTap="popShow = false"
+		></pop>
 	</view>
 </template>
 
@@ -294,6 +326,7 @@
 	import pingRecruitmentList from '@/components/ping-recruitment-list/ping-recruitment-list.vue'
 	import $chat from '@/utils/chat/index.js'
 	import bannerList from '@/components/common-banner/common-banner.vue'
+	import pop from '@/components/commonPop/pop.vue'
 	const app = getApp()
 	export default {
 		components: {
@@ -304,10 +337,13 @@
 			pingDynamicList,
 			pingActivityList,
 			pingRecruitmentList,
-			bannerList
+			bannerList,
+			pop
 		},
 		data() {
 			return {
+				popContent: '',
+				popShow: false,
 				infoType: ['简介', '动态', '活动', '招聘', '评价'],
 				urls:[
 					'',
@@ -386,10 +422,20 @@
 			this.pingStatus = options.pingStatus
 			this.getClubDetail();
 			this.getClubIntro();
-			// this.getCommentList();
 			this.getPingOderInfo()
 			this.getPingUserList()
 			this.selectIndex = 0;
+			uni.$on('sendInviteMsg', (joinTogetherId) => {
+				console.log('joinTogetherId', joinTogetherId);
+				this.sendPingMsg(joinTogetherId);
+				this.getPingOderInfo()
+				uni.$emit('find-share-list-refresh');// 刷新拼享快乐
+				this.pingStatus = "waitAgree"; // 支付成功后 状态改为申请中
+				uni.$off('sendInviteMsg');
+			})
+		},
+		onUnload() {
+			uni.$off('sendInviteMsg');
 		},
 		onPageScroll: function() {
 			let vm = this;
@@ -416,6 +462,10 @@
 			this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight
 		},
 		methods: {
+			pingTapEvent(){
+				this.popContent = `加入拼单金额为：${this.pingOrderInfo.amount}元，若对方未同意或未到店拼单，费用会自动退回。拼单成功后请准时到达。`
+				this.popShow = true;
+			},
 			scrolltoupper(e){
 				let platform = uni.getSystemInfoSync().platform
 				if(platform=='ios') {
@@ -455,7 +505,6 @@
 					if(parseInt(res.code) == 0){
 						this.pingOrderInfo = res.data.pingOrderViewVo
 						this.hasAttention = res.data.pingOrderViewVo.hasAttentionSponsor
-						console.log(res)
 					}else {
 						console.log("获取品享订单失败")
 					}
@@ -470,7 +519,6 @@
 					if(parseInt(res.code) == 0){
 						this.pingUserData = res.data
 						this.pingUserList = this.getList(res.data.list,5)
-						console.log(res)
 					}else {
 						console.log("获取拼团人员失败")
 					}
@@ -546,8 +594,15 @@
 				}
 			},
 			async joinPing(){
-				await this.$toast.confirm('','确定要发起加入请求吗？')
-				console.log(13)
+				// await this.$toast.confirm('','确定要发起加入请求吗？')
+				this.popShow = false
+				this.$u.route('/pages/club/consumption/payPage',{
+					allAmount: this.pingOrderInfo.amount,
+					orderId:this.orderId,
+					method: 'sendInviteMsg',
+					type:'ping-join-order'})
+			},
+			sendPingMsg:function(joinTogetherId =""){
 				let {sponsorId,sponsorChatId,sponsorChatToken,name,sponsorAvatar,} = this.pingOrderInfo
 				let {id,clubSimpleInfoVo,arriveTime,cardTableName} = this.pingOrderInfo
 				let userInfo = this.$u.deepClone(this.userInfo)
@@ -559,8 +614,6 @@
 					avatar:sponsorAvatar,
 					hasSave:false,
 				}
-				console.log(userInfo)
-				console.log(friendUserInfo)
 				let msgInfo = {
 					orderId: id,
 					clubCover: clubSimpleInfoVo.clubCover,
@@ -568,10 +621,9 @@
 					date: arriveTime,
 					cardTableName: cardTableName,
 					agreeStatus: 'none',
+					joinTogetherId: joinTogetherId,
 				}
-				console.log(msgInfo)
 				$chat.sendMsg(userInfo, friendUserInfo, 'single', 'pingJoin', msgInfo)
-				this.$toast.text('已发送拼享加入请求')
 			},
 			// 点击事件
 			clickEvent: function(e){
@@ -706,7 +758,10 @@
 	.container {
 		width: 100%;
 		padding-bottom: 120rpx;
-
+		&.noScroll{
+			height: 100%;
+			overflow: hidden;
+		}
 		.header_box {
 			width: 100%;
 			position: fixed;
@@ -1031,6 +1086,75 @@
 							}
 						}
 						
+					}
+					.order_goods{
+						width: 100%;
+						padding-bottom: 130rpx;
+						.apply_title {
+							margin-bottom: 20rpx;
+							display: flex;
+							justify-content: space-between;
+							.title_left{
+								display: flex;
+								align-items: center;
+								font-size: 34rpx;
+								color: #FFFFFF;
+								.line{
+									width: 6rpx;
+									height: 32rpx;
+									background: #ff59c9;
+									margin-right: 10rpx;
+								}
+							}
+						}
+						.goods_box{
+							width: 100%;
+							display: flex;
+							align-items: center;
+							flex-wrap: wrap;
+							justify-content: space-between;
+							.common_goods_box{
+								width: 334rpx;
+								padding-bottom: 20rpx;
+								.goods_img{
+									width: 100%;
+									height: 250rpx;
+									&>image{
+										height: 100%;
+										width: 100%;
+										border-radius: 10rpx;
+									}
+								}
+								.goods_name{
+									font-size: 30rpx;
+									line-height: 40rpx;
+									color: #FFFFFF;
+									width: 100%;
+									overflow: hidden;
+									text-overflow: ellipsis;
+									white-space: nowrap;
+									margin-top: 16rpx;
+								}
+								.price_number_box{
+									width: 100%;
+									display: flex;
+									align-items: center;
+									justify-content: space-between;
+									margin-top: 20rpx;
+									.price_info{
+										font-size: 28rpx;
+										color: #FFFFFF;
+										display: flex;
+										flex-direction: column;
+										align-items: center;
+									}
+									.num_box{
+										font-size: 20rpx;
+										color: #FFFFFF;
+									}
+								}
+							}
+						}
 					}
 				}
 			}

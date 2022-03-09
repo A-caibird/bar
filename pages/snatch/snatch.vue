@@ -333,7 +333,6 @@
         },
         methods: {
 			tapGoRecord(){
-				console.log(123)
 				this.$u.route('/pages/snatch-record-before/snatch-record-before')
 			},
             //初始化礼物数量以及酒币个数

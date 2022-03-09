@@ -27,8 +27,7 @@
 					<text style="font-weight: 500;margin-left: 16rpx;">已完成</text>
 					<text style="font-size: 26rpx;">(欢迎下次继续光临本店)</text>
 				</view>
-			</block>
-			
+			</block>	
 			<view class="club_info" @tap="$u.throttle(goClub)">
 				<view class="club_img" v-if="clubInfo.bannerList.length > 1">
 					<u-swiper :list="clubInfo.bannerList" height="435" bgColor="#191C3F" @click="$u.throttle(goClub)"></u-swiper>
@@ -145,25 +144,7 @@
 					
 				</block>
 				
-				<!-- <view class="common_info_item">
-					<view class="item_left"> 
-						<text style="color: #9292BA;">发起人：</text> 
-					</view>
-					<view class="item_right">
-						<text style="color: #FFFFFF;">{{orderInfo.name}}</text>
-					</view>
-				</view>
-				<view class="common_info_item" style="padding: 20rpx 0;">
-					<view class="item_left"> 
-						<text style="color: #9292BA;">接待人：</text> 
-					</view>
-					<view class="item_right">
-						<view style="display: flex;align-items: center;">
-							<text style="color: #FFFFFF;margin-right: 20rpx;">{{orderInfo.receptionistName}}</text>
-							<image @tap="$u.throttle(previewImg(orderInfo.receptionistAvatar))" style="width: 80rpx;height: 80rpx;border-radius: 50%;" :src="orderInfo.receptionistAvatar"></image>
-						</view>
-					</view>
-				</view> -->
+				
 				<view class="textarea-info-item">
 					<view class="left">
 						<text >备注要求：</text>
@@ -267,9 +248,12 @@
 			</view>
 		</block>
 		<block v-else>
-			<view class="foot_box">
+			<view class="foot_box" v-if="orderInfo.status == 'paying'">
 				<view class="common_btn color"> <text>报名费{{orderInfo.amount}}元</text> </view>
 				<view class="common_btn" @tap="$u.throttle(tapJoin)"> <text>加入拼享</text> </view>
+			</view>
+			<view class="foot_box" v-else>
+				<view class="common_btn" @tap="$u.throttle(tapQuitPing)"> <text>退出拼享</text> </view>
 			</view>
 		</block>
 	</view>
@@ -301,9 +285,15 @@
 			this.load()
 			
 			uni.$on('ping-order-detail-refresh',this.load)
+			uni.$on('sendInviteMsg', (joinTogetherId) => {
+				console.log('joinTogetherId', joinTogetherId);
+				this.sendPingMsg(joinTogetherId);
+				uni.$off('sendInviteMsg');
+			})
 		},
 		onUnload() {
 			uni.$off('ping-order-detail-refresh',this.load)
+			uni.$off('sendInviteMsg');
 		},
 		methods:{
 			goInfo(){
@@ -317,9 +307,14 @@
 				})
 			},
 			async tapJoin(){
-				console.log(this.clubInfo)
-				console.log(this.orderInfo)
 				await this.$toast.confirm('','确定要发起加入请求吗？')
+				this.$u.route('/pages/club/consumption/payPage',{
+					allAmount: this.orderInfo.amount,
+					orderId:this.orderId,
+					method: 'sendInviteMsg',
+					type:'ping-join-order'})
+			},
+			sendPingMsg(joinTogetherId = ""){
 				let {sponsorId,sponsorChatId,sponsorChatToken,name,sponsorAvatar,} = this.orderInfo
 				let {id,clubSimpleInfoVo,arriveTime,cardTableName} = this.orderInfo
 				let userInfo = this.$u.deepClone(this.userInfo)
@@ -331,8 +326,6 @@
 					avatar:sponsorAvatar,
 					hasSave:false,
 				}
-				console.log(userInfo)
-				console.log(friendUserInfo)
 				let msgInfo = {
 					orderId: id,
 					clubCover: clubSimpleInfoVo.clubCover,
@@ -340,24 +333,10 @@
 					date: arriveTime,
 					cardTableName: cardTableName,
 					agreeStatus: 'none',
+					joinTogetherId: joinTogetherId,
 				}
 				console.log(msgInfo)
 				$chat.sendMsg(userInfo, friendUserInfo, 'single', 'pingJoin', msgInfo)
-				this.$toast.text('已发送拼享加入请求')
-				
-			
-				// await this.$toast.confirm('','确定要加入该拼单吗？')
-				// let {code,data} = await this.$u.api.joinPingOrderApi({
-				// 		orderId:this.orderId,
-				// 	})
-				// if(code==0) {
-				// 	console.log(data)
-				// 	this.load()
-				// 	let {hasPay,allAmount,joinTogetherId} = data
-				// 	if(!hasPay) {
-				// 		this.$u.route('/pages/club/consumption/payPage',{allAmount:allAmount,joinTogetherId:joinTogetherId,type:'ping-join-order'})
-				// 	}
-				// }
 			},
 			async tapQuitPing(){
 				await this.$toast.confirm('','确定退出拼享？')
@@ -367,6 +346,7 @@
 				if(code==0) {
 					this.$toast.text('退出成功！')
 					uni.$emit('order-list-refresh')
+					uni.$emit('find-share-list-refresh')
 					setTimeout(()=>{
 						this.$u.route({type:'back'})
 					},500)
@@ -454,6 +434,10 @@
 				this.orderInfo = data.pingOrderViewVo
 				if(this.orderInfo.isJoin) {
 					this.joinTogetherId = this.orderInfo.joinTogetherId
+				}else{
+					if(this.orderInfo.status == 'waitAgree'){
+						this.joinTogetherId = this.orderInfo.joinTogetherId
+					}
 				}
 			},
 		},

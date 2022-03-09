@@ -13,7 +13,7 @@
 		></u-navbar>
 		<view class="middle_box">
 			<view class="club_info">
-				<bannerList :height="435" :bannerList="clubInfo.bannerObjList" imgKey="file" :showVideo="true" videoKey="videoUrl"></bannerList>
+				<bannerList :height="435" :bannerList="clubInfo.bannerObjList" imgKey="file" mode="normal" :showVideo="true" videoKey="videoUrl"></bannerList>
 				<view class="club_info_second">
 					<view class="info_name"> <text>{{clubInfo.name}}</text> </view>
 					<view class="info_intro"> <text>{{clubInfo.subtitle}}</text> </view>

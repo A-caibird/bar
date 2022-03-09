@@ -62,8 +62,13 @@
 				}
 			}
 		},
-		computed:{
-		
+		mounted() {
+			uni.$on('find-share-list-refresh', () => {
+				this.mescroll.resetUpScroll()
+			})
+		},
+		beforeDestroy() {
+			uni.$off('find-share-list-refresh');
 		},
 		methods:{
 			toTopClick(){

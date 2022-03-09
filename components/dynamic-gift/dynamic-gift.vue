@@ -14,9 +14,9 @@
 					<swiper-item v-for="(info, index) in nextList" :key="index">
 						<view class="gift_select_list">
 							<block>
-								<view class="select_box" :class="{ active: giftId == item.id }" v-for="(item, index) in info" :key="index" @tap="tapSelectGift(item.id)">
+								<view class="select_box" :class="{ active: giftId == item.id }" v-for="(item, index) in info" :key="index" @tap="tapSelectGift(item)">
 									<view class="select_info">
-										<image :src="item.imgUrl" @tap.stop="previewTap(item.imgUrl)"></image>
+										<image :src="item.imgUrl"></image>
 										<view class="info_name">{{ item.name }}</view>
 										<view class="info_price">{{ item.wineCoin }}酒币</view>
 									</view>
@@ -54,18 +54,21 @@
 			</view>
 				
 		</u-popup>
-		
-		
+		<block>
+			<giftAnimation ref="giftAnimation"></giftAnimation>
+		</block>
 	</view>
 </template>
 
 <script>
 	import $calc from '@/utils/calc/index.js'
 	import dynamicGiftEdit from '@/components/dynamic-gift-edit/dynamic-gift-edit.vue';
+	import giftAnimation from '@/components/giftAnimation/giftAnimation.vue'
 	const app = getApp()
 	export default {
 		components: {
 			dynamicGiftEdit,
+			giftAnimation
 		},
 		data() {
 			return {
@@ -108,12 +111,6 @@
 		watch:{
 		},
 		methods:{
-			previewTap(url){
-				uni.previewImage({
-					urls:[url],
-					current:0
-				})
-			},
 			init(params) {
 				let {dynamicId} = params
 				this.dynamicId = dynamicId
@@ -169,11 +166,15 @@
 			
 			
 			//选择礼物类型
-			async tapSelectGift(id) {
+			async tapSelectGift(gift) {
+				let id = gift.id;
 				if(this.giftId==id) {
 					this.giftId = ''
 				} else {
 					this.giftId = id
+					if(gift.gifUrl){
+						this.$refs.giftAnimation.show(gift.gifUrl)
+					}
 				}
 			},
 			

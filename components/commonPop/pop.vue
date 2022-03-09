@@ -9,8 +9,8 @@
 					<view class="text_box">{{content}}</view>
 				</view>
 				<view class="btn_box">
-					<view class="common_box line" @tap="$u.throttle(cancelTap)">{{cancelText}}</view>
-					<view class="common_box fill" @tap="$u.throttle(confirmTap)">{{confirmText}}</view>
+					<view class="common_box line" @tap.stop="$u.throttle(cancelTap)">{{cancelText}}</view>
+					<view class="common_box fill" @tap.stop="$u.throttle(confirmTap)">{{confirmText}}</view>
 				</view>
 			</view>
 		</view>
