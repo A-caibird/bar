@@ -300,7 +300,6 @@
 					data
 				} = await this.$u.api.getNotPayInviteOrderSizeApi({})
 				if (code == 0) {
-					console.log(data)
 					let {size} = data
 					this.yaoOrderWaitPayNum = size
 					this.$forceUpdate()

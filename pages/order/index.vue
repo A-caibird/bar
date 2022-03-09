@@ -139,8 +139,7 @@
 			},
 			refresh(e){
 				let curMescroll = this.getMescroll(this.swiperCurrent)
-				if(curMescroll) console.log(123)
-				curMescroll && curMescroll.resetUpScroll()
+				if(curMescroll) curMescroll && curMescroll.resetUpScroll()
 			},
 			// 查看详情
 			detailTap: function(id) {

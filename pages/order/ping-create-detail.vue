@@ -232,7 +232,7 @@
 				</view>
 				<u-gap height="20" bgColor="#20234B"></u-gap>
 			</block>
-			<view class="oerder_goods">
+			<view class="order_goods">
 				<common-label leftText="酒水套餐" :showRight="false"></common-label>
 				<view class="goods_box">
 					<view class="common_goods_box" v-for="(info, index) in orderInfo.orderItemList" :key="index">
@@ -790,7 +790,7 @@
 				margin-left: 30rpx;
 			}
 		}
-		.oerder_goods{
+		.order_goods{
 			width: 100%;
 			padding-bottom: 130rpx;
 			.goods_box{

@@ -136,12 +136,13 @@ const install = (Vue, vm) => {
 		deletePingOrderApi: (params) => vm.$u.post('/api/order/deleteJoinOrder', params), //删除拼享订单
 		endPingJoinApi: (params) => vm.$u.post('/api/order/endJoin', params), //结束拼享
 		getPingUserListApi: (params) => vm.$u.get('/api/order/joinUserList', params), //查看拼团人员
-		joinPingOrderApi: (params) => vm.$u.post('/api/order/joinOrder', params), //加入拼享订单
 		refundPingOrderApi: (params) => vm.$u.post('/api/order/refundJoinOrder', params), //加入者退款
-		payPingJoinApi: (params) => vm.$u.post('/api/order/payJoinOrder', params), //加入的拼享订单付款
+		payPingInviteApi: (params) => vm.$u.post('/api/order/agreeInviteJoinOrder', params), //邀请的拼享订单付款 新增
+		payPingJoinApi: (params) => vm.$u.post('/api/order/applyJoinOrder', params), //加入的拼享订单付款 新增
 		pingJoinCancelApi: (params) => vm.$u.post('/api/order/joinerCancel', params), //取消拼享订单加入者未付款订单
 		pingKickOutApi: (params) => vm.$u.post('/api/order/kickOut', params), //踢人
-		agreePingJoinApi: (params) => vm.$u.post('/api/order/joinOrder2', params), //同意加入拼享订单
+		agreePingJoinApi: (params) => vm.$u.post('/api/order/agreeApplyJoinOrder', params), //同意他人加入拼享订单
+		refusePingJoinAPI: (params) => vm.$u.post('/api/order/disagreeApplyJoinOrder', params), //拒绝他人加入拼享订单
 		getNotPayJoinOrderSizeApi: (params) => vm.$u.post('/api/order/getNotPayJoinOrderSize', params), //未付款拼享订单数
 		
 		//加单酒水

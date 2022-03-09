@@ -49,7 +49,6 @@ const store = new Vuex.Store({
 		// goEasy 初始化
 		initGoEasy(state, info) {
 			info = JSON.parse(info);
-			console.log(info);
 			var chatId = info.chatToken;
 			let callback = info.callback || null
 			state.userInfo = {

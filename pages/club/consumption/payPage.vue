@@ -131,8 +131,6 @@
 			paymentHandle: function(data, callback){
 				let payParams = {};
 				let payType = this.payType;
-				console.log(payType);
-				console.log(data);
 				if(payType == 'Balance'){
 					callback();
 					return
@@ -157,9 +155,7 @@
 						}
 					}
 				}
-				console.log(payParams);
 				paymentUtils.initPay(payParams).then(res => {
-					console.log(res);
 					callback();
 				}).catch(e => {
 					console.log(e)
@@ -178,11 +174,11 @@
 					let password = e.password || "";
 					data['payPassword'] = password;
 				}
-				if(this.type=='ping-order') {
+				if(this.type=='ping-order') { //拼享订单支付
 					data = this.$u.deepMerge(data,{orderId:this.params.orderId})
 					this.payOrder(data)
 				} 
-				if(this.type=='yao-order') {
+				if(this.type=='yao-order') { // 邀约订单支付
 					data = this.$u.deepMerge(data,{orderId:this.params.orderId})
 					this.payOrder(data)
 				}
@@ -190,9 +186,63 @@
 					data = this.$u.deepMerge(data,{orderId:this.params.orderId})
 					this.addWinePay(data)
 				}
-				if(this.type=='ping-join-order') {
-					data = this.$u.deepMerge(data,{joinTogetherId:this.params.joinTogetherId})
+				if(this.type=='ping-join-order') { //别人加入我的支付
+					data['orderId'] = this.params.orderId;
 					this.payPingJoin(data)
+				}
+				if(this.type == 'ping-join-order-invite'){// 我邀请别人支付
+					data['orderId'] = this.params.orderId;
+					this.payPingJoinInvite(data)
+				} 
+			},
+			async payPingJoinInvite(params){
+				uni.showLoading({
+					title: '加载中'
+				})
+				let {code,data} = await this.$u.api.payPingInviteApi(params)
+				uni.hideLoading()
+				if(code==0) {
+					this.paymentHandle(data, () => {
+						this.btnAvaliable = true;
+						uni.$emit('order-list-refresh')
+						uni.$emit('ping-order-detail-refresh')
+						uni.$emit('agreePingSuccess')
+						this.$u.route({
+							type:'redirect',
+							url:'/pages/club/consumption/paySuccess',
+							params:{allAmount:this.allAmount,type:'ping-join-order',distance:this.distance},
+						})
+						this.setPayPasswordToStorage(params.payPassword)
+					})
+				} else if(code==1) {//订单不存在
+					setTimeout(()=>{
+						uni.reLaunch({
+							url: '/pages/index/index?type=share', 
+						})
+					},500)
+				} else if(code==2) {//已经付款
+					setTimeout(()=>{
+						uni.reLaunch({
+							url: '/pages/index/index?type=share',
+						})
+					},500)
+				} else if(code==3) {//该订单已经超出付款时间被取消了
+					this.$u.route({
+						type:'back'
+					})
+				} else if(code==4) {//支付密码未设置
+					setTimeout(()=>{
+						this.$u.route({
+							url:'/pages/mine/setting/pay_password',
+						})
+					},500)
+				} else if(code==5) {//余额不足
+				this.btnAvaliable = true;
+					this.$u.toast('余额不足,请更换支付方式');
+				} else {
+					this.$refs.pay.subInputTimes();
+					this.btnAvaliable = true;
+					this.removePayPasswordToStorage()
 				}
 			},
 			async payPingJoin(params){
@@ -204,7 +254,9 @@
 				if(code==0) {
 					this.paymentHandle(data, () => {
 						this.btnAvaliable = true;
-						this.refreshPage();
+						uni.$emit('order-list-refresh')
+						uni.$emit('ping-order-detail-refresh')
+						uni.$emit(this.params.method, data.joinTogetherId);
 						this.$u.route({
 							type:'redirect',
 							url:'/pages/club/consumption/paySuccess',
@@ -237,17 +289,11 @@
 				} else if(code==5) {//余额不足
 				this.btnAvaliable = true;
 					this.$u.toast('余额不足,请更换支付方式');
-					// setTimeout(()=>{
-					// 	this.$u.route({
-					// 		url:'/pages/mine/balance/recharge',
-					// 	})
-					// },500)
 				} else {
 					this.$refs.pay.subInputTimes();
 					this.btnAvaliable = true;
 					this.removePayPasswordToStorage()
 				}
-				
 			},
 			async addWinePay(params){
 				uni.showLoading({

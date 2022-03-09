@@ -72,8 +72,6 @@
 						<image src="/static/imgs/common/club_share.png"></image>
 						<text>拼享</text>
 					</view>
-					
-					
 				</block>
 				<block v-if="info.pingStatus=='hasJoin'">
 					<view class="feature_btn end">
@@ -85,7 +83,11 @@
 						<text>拼享结束</text>
 					</view>
 				</block>
-				
+				<block v-if="info.pingStatus=='waitAgree'">
+					<view class="feature_btn end">
+						<text>申请中</text>
+					</view>
+				</block>
 				
 			</view>
 		</view>
@@ -124,10 +126,21 @@
 				})
 			},
 			async tapPing(info){
-				console.log(info)
-				console.log(this.$storage.getUserInfo())
-				console.log(this.userInfo)
 				await this.$toast.confirm('','确定要发起加入请求吗？')
+				uni.$on('sendInviteMsg2', (joinTogetherId) => {
+					console.log('joinTogetherId', joinTogetherId);
+					this.sendPingMsg(info, joinTogetherId);
+					uni.$emit('find-share-list-refresh');// 刷新拼享快乐
+					uni.$off('sendInviteMsg2');
+				})
+				this.$u.route('/pages/club/consumption/payPage',{
+					allAmount: info.amount,
+					orderId:info.id,
+					method: 'sendInviteMsg2',
+					type:'ping-join-order'})
+				
+			},
+			sendPingMsg: function(info, joinTogetherId = ""){
 				let userInfo = this.$u.deepClone(this.userInfo)
 				let friendUserInfo = {
 					userId:info.userId,
@@ -137,37 +150,21 @@
 					avatar:info.userAvatar,
 					hasSave:false,
 				}
-				console.log(userInfo)
-				console.log(friendUserInfo)
 				$chat.sendMsg(userInfo, friendUserInfo, 'single', 'pingJoin', {
 					orderId: info.id,
 					clubCover: info.clubCover,
 					clubName: info.clubName,
 					date: info.date,
+					joinTogetherId: joinTogetherId,
 					cardTableName: info.cardTableSn,
 					agreeStatus: 'none',
 				})
-				this.$toast.text('已发送拼享加入请求')
-				
-				// await this.$toast.confirm('','确定要加入拼享？')
-				// let {code,data} = await this.$u.api.joinPingOrderApi({
-				// 		orderId:orderId,
-				// 	})
-				// if(code==0) {
-				// 	this.info.hasJoin = true
-				// 	this.$forceUpdate()
-				// 	let {hasPay,allAmount,joinTogetherId} = data
-				// 	if(!hasPay) {
-				// 		this.$u.route('/pages/club/consumption/payPage',{allAmount:allAmount,joinTogetherId:joinTogetherId,type:'ping-join-order'})
-				// 	}
-				// }
-				
 			},
 			
-			goGroupBuying:function(info){
-				console.log(info)				
+			goGroupBuying:function(info){				
 				let clubId = info.clubId
 				let orderId = info.id
+				uni.$off('sendInviteMsg');
 				this.$u.route('/pages/order/groupBuying', {
 					id: clubId,
 					orderId : orderId,

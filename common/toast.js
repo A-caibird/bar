@@ -1,3 +1,4 @@
+
 export default {
     //纯文字提示
     text:(title='') => uni.showToast({title,icon:'none'}),
@@ -6,20 +7,22 @@ export default {
     //加载提示
     loading:(title='') => uni.showToast({title,icon:'loading'}),
     //确认提示框
-    confirm:(title='',content='',showCancel=true) =>{
-        return new Promise((resolve,reject)=>{
-            uni.showModal({
-                title,
-                content,
+	confirm: (title='',content='',showCancel=true) =>{
+		return new Promise((resolve,reject)=>{
+		    uni.showModal({
+		        title,
+		        content,
 				showCancel,
-                success: (res)=> {
-                    if (res.confirm){
-                        resolve(res)
-                    } else {
-                        reject(res)
-                    }
-                }
-            })
-        })
-    },
+		        success: (res)=> {
+		            if (res.confirm){
+		                resolve(res)
+		            }
+		        },
+				fail: (e) => {
+					reject(e)
+				}
+		    })
+		})
+	}
+    
 }

@@ -483,7 +483,6 @@
 				data['couponId'] = this.coupon.id || "";
 				let res =  await this.$u.api.createOrderApi(data)
 				uni.hideLoading();
-				console.log(res)
 				if(res.code==0) {
 					this.$u.route({
 						url:'pages/club/consumption/payPage',

@@ -48,6 +48,9 @@ function orderStatus(status) {
 		case 'noShop':
 			return '待到店'
 			break;
+		case 'waitAgree':
+			return '申请中'
+			break;
 		case 'expired':
 			return '未消费'
 			break;
@@ -107,7 +110,6 @@ let utils = ({
 	methods: {
 		//项目相关
 		setPayPasswordToStorage(password) {
-			console.log(password)
 			getApp().globalData.payPassword = password
 			$storage.setPayPassword(password)
 		},
