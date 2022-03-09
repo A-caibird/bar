@@ -1,11 +1,5 @@
 <template>
-	<view class="container">
-<!-- 		<view class="header_box">
-			<view class="startBar_box"></view>
-			<view class="custom_nav" v-if="!stickyStatus" @tap="goBack">
-				<u-icon name="arrow-left" color="#FFFFFF" size="44"></u-icon>
-			</view>
-		</view> -->
+	<view class="container" :class="{'noScroll': popShow}">
 		<block v-if="!stickyStatus">
 			<u-navbar
 				:border-bottom="false"
@@ -285,7 +279,7 @@
 					</view>
 					<text>分享</text>
 				</view>
-				<view class="btn_text" @tap="$u.throttle(clickEvent('ping'), 800)" v-if="pingStatus=='canPing'">
+				<view class="btn_text" @tap="pingTapEvent" v-if="pingStatus=='canPing'">
 					<block>
 						<image src="/static/imgs/common/seat_icon.png"></image>
 						<text>拼享</text>
@@ -309,6 +303,16 @@
 			</view>
 		</view>
 		<pop-share v-model="shareShow"></pop-share>
+		<pop
+			v-if="popShow"
+			title="加入拼享"
+			:content="popContent" 
+			cancelText="再看看" confirmText="加入拼享"
+			:isMask="true"
+			@cancel="popShow = false"
+			@confirm="clickEvent('ping')"
+			@maskTap="popShow = false"
+		></pop>
 	</view>
 </template>
 
@@ -322,6 +326,7 @@
 	import pingRecruitmentList from '@/components/ping-recruitment-list/ping-recruitment-list.vue'
 	import $chat from '@/utils/chat/index.js'
 	import bannerList from '@/components/common-banner/common-banner.vue'
+	import pop from '@/components/commonPop/pop.vue'
 	const app = getApp()
 	export default {
 		components: {
@@ -332,10 +337,13 @@
 			pingDynamicList,
 			pingActivityList,
 			pingRecruitmentList,
-			bannerList
+			bannerList,
+			pop
 		},
 		data() {
 			return {
+				popContent: '',
+				popShow: false,
 				infoType: ['简介', '动态', '活动', '招聘', '评价'],
 				urls:[
 					'',
@@ -454,6 +462,10 @@
 			this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight
 		},
 		methods: {
+			pingTapEvent(){
+				this.popContent = `加入拼单金额为：${this.pingOrderInfo.amount}元，若对方未同意或未到店拼单，费用会自动退回。拼单成功后请准时到达。`
+				this.popShow = true;
+			},
 			scrolltoupper(e){
 				let platform = uni.getSystemInfoSync().platform
 				if(platform=='ios') {
@@ -582,7 +594,8 @@
 				}
 			},
 			async joinPing(){
-				await this.$toast.confirm('','确定要发起加入请求吗？')
+				// await this.$toast.confirm('','确定要发起加入请求吗？')
+				this.popShow = false
 				this.$u.route('/pages/club/consumption/payPage',{
 					allAmount: this.pingOrderInfo.amount,
 					orderId:this.orderId,
@@ -745,7 +758,10 @@
 	.container {
 		width: 100%;
 		padding-bottom: 120rpx;
-
+		&.noScroll{
+			height: 100%;
+			overflow: hidden;
+		}
 		.header_box {
 			width: 100%;
 			position: fixed;

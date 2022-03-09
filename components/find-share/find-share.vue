@@ -68,7 +68,7 @@
 					</view>
 				</view>
 				<block v-if="info.pingStatus=='canPing'">
-					<view class="feature_btn" @tap.stop="tapPingTap(info)">
+					<view class="feature_btn" @tap.stop="pingTap">
 						<image src="/static/imgs/common/club_share.png"></image>
 						<text>拼享</text>
 					</view>
@@ -91,12 +91,22 @@
 				
 			</view>
 		</view>
-
+		<pop
+			v-if="popShow"
+			title="加入拼享"
+			:content="popContent" 
+			cancelText="再看看" confirmText="加入拼享"
+			:isMask="true"
+			@cancel="popShow = false"
+			@confirm="tapPingTap"
+			@maskTap="popShow = false"
+		></pop>
 	</view>
 </template>
 
 <script>
 	const app = getApp()
+	import pop from '@/components/commonPop/pop.vue'
 	import $chat from '@/utils/chat/index.js'
 	export default {
 		props:{
@@ -107,13 +117,23 @@
 				}
 			}
 		},
+		components:{
+			pop
+		},
 		data(){
 			return {
+				popContent: '',
+				popShow: false,
 				userInfo: app.globalData.userInfo,
 			}
 		},
 		methods:{
-			async tapPingTap(info){
+			pingTap(){
+				this.popContent = `加入拼单金额为：${this.info.amount}元，若对方未同意或未到店拼单，费用会自动退回。拼单成功后请准时到达。`
+				this.popShow = true;
+			},
+			async tapPingTap(){
+				var info = this.info;
 				this.judgeVerify().then(res => {
 					console.log(res);
 					if(res.hasAdult){
@@ -126,7 +146,8 @@
 				})
 			},
 			async tapPing(info){
-				await this.$toast.confirm('','确定要发起加入请求吗？')
+				// await this.$toast.confirm('','确定要发起加入请求吗？')
+				this.popShow = false
 				uni.$on('sendInviteMsg2', (joinTogetherId) => {
 					console.log('joinTogetherId', joinTogetherId);
 					this.sendPingMsg(info, joinTogetherId);
