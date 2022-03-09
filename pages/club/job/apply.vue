@@ -197,23 +197,30 @@
 					return
 				}
 				uni.chooseVideo({
-					compressed: true,
+					compressed: false,
+					maxDuration: 20,
 					success(res) {
 						let tempPath = res.tempFilePath;
 						videoBtnAvaliabe = false;
-						vm.$u.api.uploadVideo(tempPath).then(res => {
-							console.log(res);
-							var footerImgUrl = '?x-oss-process=video/snapshot,t_0,f_jpg,w_0,h_0,m_fast';
-							let info = {
-								videoUrl: res,
-								imgUrl: res + footerImgUrl
-							}
-							vm.videoList.push(info);
-							videoBtnAvaliabe = true;
-						}).catch(e => {
-							console.log(e);
-							videoBtnAvaliabe = true;
+						uni.showLoading({
+							title: '上传中'
 						})
+						vm.compressVideo(tempPath).then(compressRes => {
+							vm.$u.api.uploadVideo(compressRes.tempFilePath).then(res => {
+								console.log(res);
+								var footerImgUrl = '?x-oss-process=video/snapshot,t_0,f_jpg,w_0,h_0,m_fast';
+								let info = {
+									videoUrl: res,
+									imgUrl: res + footerImgUrl
+								}
+								vm.videoList.push(info);
+								videoBtnAvaliabe = true;
+							}).catch(e => {
+								console.log(e);
+								videoBtnAvaliabe = true;
+							})
+						})
+						
 					},
 					fail(e){
 						console.log(e);

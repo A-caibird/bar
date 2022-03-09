@@ -78,20 +78,6 @@ export default{
 								reject()
 							})
 						})
-						
-				// 		vm.$u.api.uploadFile(filePath).then(url => {
-				// 			let obj={};
-				// 			obj.avatar = url;
-				// 			vm.imgList.push(obj);
-				// 			console.log(vm.imgList)
-				// 			resolve()
-				// 		}).catch(e => {
-				// 			console.log(e);
-				// 			uni.hideLoading();
-				// 			reject()
-				// 		})
-				
-				
 					}
 				}
 		
@@ -127,17 +113,32 @@ export default{
 				})
 			})
 		},
-		sCompressVideo(path){
+		compressVideo(path){
 			return new Promise((resolve, reject) => {
-				uni.compressImage({
+				uni.getVideoInfo({
 					src: path,
-					success(res){
-						resolve(res)
+					success(info) {
+						let {fps, bitrate} = info;
+						console.log(info);
+						uni.compressVideo({
+							src: path,
+							quality: '',
+							fps,
+							bitrate: (bitrate * 0.7),
+							resolution: 1,
+							success(res){
+								resolve(res)
+							},
+							fail(e) {
+								reject(e);
+							}
+						})
 					},
 					fail(e) {
 						reject(e);
 					}
 				})
+				
 			})
 		},
 		
