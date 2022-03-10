@@ -361,7 +361,7 @@
 				var clubImg = this.getClubFrontImg(this.clubInfo.bannerObjList)
 				switch(type){
 					case 'collect': this.toggleCollect(); break; 
-					case 'book': { // 预定事件
+					case 'book': { // 订座
 						this.$storage.setStorageSync('clubImg',clubImg);
 						await this.judgeVerify()
 						this.$u.route('/pages/club/consumption/seat',{
@@ -371,15 +371,19 @@
 							orderType: 'book'
 						});
 					};break;
-					case 'fight': {
+					case 'fight': { //拼享
 						this.$storage.setStorageSync('clubImg', clubImg);
-						await this.judgeVerify()
-						this.$u.route('/pages/club/consumption/seat',{
-							clubId:this.clubId,
-							clubName: this.clubInfo.name,
-							clubSubTitle: this.clubInfo.subtitle,
-							orderType: 'fight'
-						});
+						let {creditScore} = await this.judgeVerify();
+						if(!creditScore){
+							this.$u.route('/pages/club/consumption/seat',{
+								clubId:this.clubId,
+								clubName: this.clubInfo.name,
+								clubSubTitle: this.clubInfo.subtitle,
+								orderType: 'fight'
+							});
+						}else{
+							this.$u.toast('当前信用分较低，无法拼享');
+						}
 					};break;
 					case 'service':{
 						uni.showLoading({

@@ -303,7 +303,7 @@
 				</view>
 			</block>
 			<block v-else>
-				<view class="foot_box">
+				<view class="foot_box" v-if="orderInfo.status=='noShop'">
 					<view class="common_btn color"> <text>报名费{{orderInfo.amount}}元</text> </view>
 					<view class="common_btn" @tap="$u.throttle(tapJoin)"> <text>加入拼享</text> </view>
 				</view>
@@ -336,10 +336,15 @@
 			this.load()
 			uni.$on('ping-order-detail-refresh',this.load)
 			uni.$on('fetch-wine',this.load)
+			uni.$on('sendInviteMsg', (joinTogetherId) => {
+				this.sendPingMsg(joinTogetherId);
+				uni.$off('sendInviteMsg');
+			})
 		},
 		onUnload() {
 			uni.$off('ping-order-detail-refresh',this.load)
 			uni.$off('fetch-wine',this.load)
+			uni.$off('sendInviteMsg');
 		},
 		methods:{
 			goInfo(){
@@ -423,9 +428,16 @@
 					}
 				})
 			},
-			// 加入拼享
 			async tapJoin(){
 				await this.$toast.confirm('','确定要发起加入请求吗？')
+				this.$u.route('/pages/club/consumption/payPage',{
+					allAmount: this.orderInfo.amount,
+					orderId:this.orderId,
+					method: 'sendInviteMsg',
+					type:'ping-join-order'})
+			},
+			// 发送邀请消息
+			sendPingMsg(joinTogetherId = ""){
 				let {sponsorId,sponsorChatId,sponsorChatToken,name,sponsorAvatar,} = this.orderInfo
 				let {id,clubSimpleInfoVo,arriveTime,cardTableName} = this.orderInfo
 				let userInfo = this.$u.deepClone(this.userInfo)
@@ -444,10 +456,10 @@
 					date: arriveTime,
 					cardTableName: cardTableName,
 					agreeStatus: 'none',
+					joinTogetherId: joinTogetherId,
 				}
 				console.log(msgInfo)
 				$chat.sendMsg(userInfo, friendUserInfo, 'single', 'pingJoin', msgInfo)
-				this.$toast.text('已发送拼享加入请求')
 			},
 			// 退出拼享
 			async tapQuitPing(){
@@ -458,6 +470,7 @@
 				if(code==0) {
 					this.$toast.text('退出成功！')
 					uni.$emit('order-list-refresh')
+					uni.$emit('find-share-list-refresh')
 					setTimeout(()=>{
 						this.$u.route({type:'back'})
 					},500)
