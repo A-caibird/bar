@@ -255,7 +255,6 @@ const install = (Vue, vm) => {
 		//酒库详情
 		getSaveWineViewApi: (params) => vm.$u.get('/api/saveWine/view', params), //酒库详情
 		
-		//没用到的接口
 		getAboutUs: () => vm.$u.post('/api/information/aboutUs'), //关于我们
 		getCredit: () => vm.$u.post('/api/information/creditRules'), //信用规则
 

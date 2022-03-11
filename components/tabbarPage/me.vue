@@ -88,6 +88,10 @@
 						<text>常见问题</text>
 						<image src="/static/imgs/mine/common_right.png" mode=""></image>
 					</view>
+					<view class="items" @tap="navigateHandle('/pages/article/article?type=credit')">
+						<text>信用规则</text>
+						<image src="/static/imgs/mine/common_right.png" mode=""></image>
+					</view>
 					<view  v-if="!isAppleAudit" class="items" @tap="$u.throttle(goArticle('protocol'))">
 						<text>用户协议</text>
 						<image src="/static/imgs/mine/common_right.png" mode=""></image>
