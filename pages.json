@@ -309,6 +309,12 @@
 			"path":"pages/order/evaluation" //我要评价
 		},
 		{
+			"path": "pages/info/activity/detail"  //消息模块 活动详情
+		},
+		{
+			"path": "pages/info/activity/index"  //消息模块 活动列表
+		},
+		{
 			"path": "pages/info/comment"  //消息模块 评论
 		},
 		{

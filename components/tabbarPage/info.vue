@@ -15,6 +15,9 @@
 						<view class="badge" v-if="info.name == '通知'">
 							<u-badge :absolute="false" type="error" :count="noticeNum"></u-badge>
 						</view>
+						<view class="badge" v-if="info.name == '活动'">
+							<u-badge :absolute="false" type="error" :count="activityNum"></u-badge>
+						</view>
 					</view>
 				</block>
 			</view>
@@ -66,6 +69,7 @@
 				chatToken:app.globalData.userInfo.chatToken,
 				chatUserList:[],
 				noticeNum: 0,
+				activityNum: 0,
 				rightOptions: [
 					{
 						text: '标记为已读',
@@ -87,32 +91,22 @@
 			// console.log(this.chatUserList)
 			uni.$on('chat-user-list-refresh',this.chatUserListRefresh)
 			uni.$on('read-chat',this.readChat)
-			uni.$on('refreshInfo', () => {
+			uni.$on('refresh_push', () => {
 				this.getNoticeCount();
 			})
 			uni.$on('refresh_chat', () => {
 				this.chatToken = app.globalData.userInfo?.chatToken
 				this.chatUserList = $chat.getChatUserListFromStorage(this.chatToken)
+				uni.$emit('information_listener')
 			});
-			if(getApp().globalData.authorized){
-				this.getNoticeCount();
-			}
 		},
 		beforeDestroy() {
 			uni.$off('chat-user-list-refresh',this.chatUserListRefresh)
 			uni.$off('read-chat',this.readChat)
-			uni.$off('refreshInfo')
+			uni.$off('refresh_push')
 			uni.$off('refresh_chat')
 		},
 		computed:{
-			allNoRead(){
-				let noRead = 0;
-				this.chatUserList.forEach((item, index) => {
-					noRead = item.notReadNum + noRead;
-				})
-				uni.$emit('information_listenr')
-				return (noRead + this.noticeNum);
-			},
 			classifyList(){
 				return this.isAppleAudit?[
 					{
@@ -140,6 +134,12 @@
 						value: '',
 						name: '通知',
 						url:'/pages/info/systemNotification'
+					},
+					{
+						icon: '/static/imgs/information/activity.png',
+						value: '',
+						name: '活动',
+						url:'/pages/info/activity/index'
 					},
 					{
 						icon: '/static/imgs/information/fans.png',
@@ -171,7 +171,12 @@
 			},
 			getNoticeCount(){
 				this.$u.api.getNoticeCountAPI().then(res => {
-					this.noticeNum = res.data.num;
+					this.noticeNum = res.data.num || 0;
+					this.activityNum = res.data.activityUnReadNum || 0
+					uni.$emit('push_listener', {
+						num: (this.noticeNum + this.activityNum),
+						refresh: false
+					})
 				}).catch(e => {
 					console.log(e);
 				})
@@ -229,7 +234,9 @@
 					this.chatUserList[index].notReadNum = 0
 					$chat.setChatUserListFromStorage(chatToken,this.chatUserList)
 				}
-				uni.$emit('information_listenr')
+				this.$nextTick(() => {
+					uni.$emit('information_listener')
+				})
 			},
 		}
 	}

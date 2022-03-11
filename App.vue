@@ -52,6 +52,7 @@
 		},
 		
 		globalData: {
+			msgPath: '', // 推送消息路径；
 			passwordInputTimes: 0,
 			baseUrl: 'https://erp.patixiu.com',
 			authorized:  $storage.getLoginToken() ? true : false, //是否登录

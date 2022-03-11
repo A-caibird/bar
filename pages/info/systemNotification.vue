@@ -52,7 +52,7 @@
 		methods:{
 			readSysNotice(){
 				this.$u.api.readSysNoticeAPI().then(res => {
-					uni.$emit('refreshInfo');
+					uni.$emit('refresh_push');
 				});
 			}
 		}

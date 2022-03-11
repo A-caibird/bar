@@ -96,14 +96,7 @@ export default {
 		...mapState(['list'])
 	},
 	watch: {
-		noRead(newValue) {
-			console.log('修改noRead: ' + newValue);
-			this.setInfoCount(newValue + this.noticeNum);
-		},
-		noticeNum(newValue) {
-			console.log('修改noticeNum: ' + newValue);
-			this.setInfoCount(newValue + this.noRead);
-		}
+		
 	},
 	beforeCreate() {
 		// #ifdef APP-PLUS
@@ -158,20 +151,38 @@ export default {
 		this.$nextTick(() => {
 			this.changeHandle(this.current);
 		});
-		uni.$on('information_listenr', this.infoListenerEvent);
-		this.infoListenerEvent();
+		uni.$on('information_listener', this.infoListenerEvent);
+		uni.$on('push_listener', (e)=>{
+			if(e && !e.refresh){
+				this.pushListenerEvent(e.num, e.refresh);
+			}else{
+				this.pushListenerEvent();
+			}
+		});
+		if(app.globalData.msgPath){
+			if(app.globalData.authorized){
+				uni.navigateTo({
+					url: app.globalData.msgPath,
+					success() {
+						app.globalData.msgPath = "";
+					}
+				})
+			}
+		}
+		
 	},
 	onUnload() {
-		uni.$off('information_listenr');
+		uni.$off('information_listener');
+		uni.$off('push_listener');
 	},
 	onShow: function() {
-		if(getApp().globalData.authorized){
-			this.getNoticeCount();
-		}
 		// #ifdef APP-PLUS
 		plus.screen.lockOrientation('portrait-primary');
 		// #endif
 		let vm = this;
+		if(getApp().globalData.authorized){
+			this.pushListenerEvent();
+		}
 		if(this.$refs.find) {
 			this.$nextTick(function(){
 				vm.$refs.find.show()
@@ -189,28 +200,40 @@ export default {
 		}
 	},
 	methods: {
-		...mapMutations(['setInfoCount']),
+		...mapMutations(['setInfoCount', 'setPushCount']),
 		refreshInputTimes(){
 			if(this.$refs.payDynamicGift){
 				this.$refs.payDynamicGift.subInputTimes()
 			}
 		},
-		getNoticeCount(){
-			this.$u.api.getNoticeCountAPI().then(res => {
-				this.noticeNum = res.data.num;
-			}).catch(e => {
-				console.log(e);
-			})
-		},
-		infoListenerEvent(){
+		// 消息监听
+		infoListenerEvent(ignoreNotice = true){
 			var chatToken = getApp().globalData.userInfo.chatToken;
 			var chatUserList = $chat.getChatUserListFromStorage(chatToken) || [];
 			let noRead = 0;
 			chatUserList.forEach((item, index) => {
 				noRead = item.notReadNum + noRead;
 			})
-			// this.noReadNum = noRead;
 			this.noRead = noRead;
+			this.setInfoCount(noRead)
+		},
+		// 推送监听
+		pushListenerEvent(exitNoRead = 0, refresh = true){
+			if(isNaN(exitNoRead)){
+				return
+			}else if(!refresh){
+				this.setPushCount(exitNoRead)
+			}else{
+				if(getApp().globalData.authorized){
+					var noRead = 0;
+					this.$u.api.getNoticeCountAPI().then(res => {
+						noRead = noRead + (res.data.activityUnReadNum || 0) + (res.data.num || 0);
+						this.setPushCount(noRead);
+					}).catch(e => {
+						this.setPushCount(noRead)
+					})
+				}
+			}
 		},
 		goAtten(){
 			this.current = 1;
@@ -329,7 +352,7 @@ export default {
 			this.current = e;
 			if(e==0) {
 				if(getApp().globalData.authorized){
-					this.getNoticeCount();
+					this.infoListenerEvent(false);
 				}
 			}
 			if(e==1) {

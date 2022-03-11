@@ -39,12 +39,22 @@ const store = new Vuex.Store({
 		goEasy: '',
 		// 发送者消息
 		userInfo: {},
+		pushCount: 0,// 推送未读数量
+		infoCount: 0,// 消息未读数量
+		
 	},
 	mutations: {
+		// 设置通知消息
+		setPushCount(state, count){
+			// console.log('更新push', count, state.infoCount)
+			state.pushCount = count;
+			state.list[3].count = count + state.infoCount;
+		},
 		// 设置消息已读未读
 		setInfoCount(state, count){
-			// console.log('setInfoCount2', count);
-			state.list[3].count = count
+			// console.log('更新info', count, state.pushCount)
+			state.infoCount = count;
+			state.list[3].count = count + state.pushCount;
 		},
 		// goEasy 初始化
 		initGoEasy(state, info) {

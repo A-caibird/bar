@@ -62,9 +62,9 @@ function handlePushReceive(msg) {
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
 		}
 		/*
-		 存酒过期提醒， 优惠券过期提醒、订单到店提醒、订单过期
+		  平台活动推送，存酒过期提醒， 优惠券过期提醒、订单到店提醒、订单过期
 		 */
-		if (type == 'saveWineEnd' || type == 'couponEnd' || type == 'outTime' || type == 'notShop') {
+		if (type == 'platformActivity' || type == 'saveWineEnd' || type == 'couponEnd' || type == 'outTime' || type == 'notShop') {
 			option.title = payload.title
 			content = payload.content
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
@@ -188,6 +188,13 @@ function handlePushClick(msg) {
 			}
 			
 		}
+		/* 平台活动推送 */
+		if(type == 'platformActivity'){
+			let {id} = payload
+			uni.navigateTo({
+				url:'/pages/info/activity/detail?id=' + id
+			})
+		}
 		/*
 		存酒过期提醒、优惠券过期提醒、订单到店提醒 订单过期提醒
 		 */
@@ -298,13 +305,10 @@ function openAPPMsg(payload){ //APP 处于关闭状态下 点击消息跳转页�
 				hasSave:false,
 			}
 		let infoStr = JSON.stringify(info)
+		getApp().globalData.msgPath = '/pages/chat/chat'+`?userInfo=${infoStr}`
 		slientHandle(() => {
 			console.log('聊天')
-			slientHandle(() => {
-				uni.navigateTo({
-					url:'/pages/chat/chat'+`?userInfo=${infoStr}`
-				})
-			})
+			getApp().globalData.msgPath = '/pages/chat/chat'+`?userInfo=${infoStr}`;
 		})
 	}else{
 		pageJump(payload)
@@ -316,10 +320,15 @@ function pageJump(payload){
 	if(type=='gift') {
 		let giftUrl = payload.gifUrl || "";
 		slientHandle(() => {
-			uni.navigateTo({
-				url: '/pages/info/gift?url=' + giftUrl
-			});
-		}, 1200)
+			getApp().globalData.msgPath = '/pages/info/gift?url=' + giftUrl;
+		})
+	}
+	// 平台活动推送
+	if(type == 'platformActivity'){
+		let {id} = payload
+		slientHandle(() => {
+			getApp().globalData.msgPath = '/pages/info/activity/detail?id=' + id
+		})
 	}
 	/*
 	 存酒过期提醒、优惠券过期提醒、订单到店提醒
@@ -327,18 +336,17 @@ function pageJump(payload){
 	if (type == 'saveWineEnd' || type == 'couponEnd' || type == 'notShop' || type == 'outTime') {
 		console.log(type);
 		slientHandle(() => {
-			uni.navigateTo({
-				url:'/pages/info/systemNotification'
-			})
+			getApp().globalData.msgPath = '/pages/info/systemNotification'
 		})
 	}
 	if(type=='attention') {
 		console.log('关注')
 		let {userId} =  payload
 		slientHandle(() => {
-			uni.navigateTo({
-				url: '/pages/mine/dynamic/myDynamic' + `?id=${userId}`
-			})
+			// uni.navigateTo({
+			// 	url: '/pages/mine/dynamic/myDynamic' + `?id=${userId}`
+			// })
+			getApp().globalData.msgPath = '/pages/mine/dynamic/myDynamic' + `?id=${userId}`;
 		})	
 	}
 	if(type=='orderInviteSuccess') {
@@ -346,9 +354,10 @@ function pageJump(payload){
 		console.log("同意邀请")
 		let {orderId,inviteOrder} =  payload
 		slientHandle(() => {
-			uni.navigateTo({
-				url:'/pages/order/yao-create-detail'+`?orderId=${orderId}`
-			})
+			// uni.navigateTo({
+			// 	url:'/pages/order/yao-create-detail'+`?orderId=${orderId}`
+			// })
+			getApp().globalData.msgPath = '/pages/order/yao-create-detail'+`?orderId=${orderId}`;
 		})	
 	}
 	if(type=='quitInviteOrder') {
@@ -356,9 +365,10 @@ function pageJump(payload){
 		let {orderId} =  payload
 		console.log("退出邀约")
 		slientHandle(() => {
-			uni.navigateTo({
-				url:'/pages/order/yao-create-detail'+`?orderId=${orderId}`
-			})
+			// uni.navigateTo({
+			// 	url:'/pages/order/yao-create-detail'+`?orderId=${orderId}`
+			// })
+			getApp().globalData.msgPath = '/pages/order/yao-create-detail'+`?orderId=${orderId}`;
 		})
 	}
 	if(type=='quitJoinOrder') {
@@ -366,9 +376,7 @@ function pageJump(payload){
 		let {orderId} =  payload
 		console.log("退出拼享")
 		slientHandle(() => {
-			uni.navigateTo({
-				url:'/pages/order/ping-create-detail'+`?orderId=${orderId}`
-			})
+			getApp().globalData.msgPath = '/pages/order/ping-create-detail'+`?orderId=${orderId}`;
 		})
 	}
 	if(type=='kickOut') {
@@ -380,15 +388,14 @@ function pageJump(payload){
 		console.log('结束订单')
 		if(inviteOrder) {
 			slientHandle(() => {
-				uni.navigateTo({
-					url:'/pages/order/yao-create-detail'+`?orderId=${orderId}`
-				})
+				getApp().globalData.msgPath = '/pages/order/yao-create-detail'+`?orderId=${orderId}`;
 			})
 		} else {
 			slientHandle(() => {
-				uni.navigateTo({
-					url:'/pages/order/ping-create-detail'+`?orderId=${orderId}`
-				})
+				// uni.navigateTo({
+				// 	url:'/pages/order/ping-create-detail'+`?orderId=${orderId}`
+				// })
+				getApp().globalData.msgPath = '/pages/order/ping-create-detail'+`?orderId=${orderId}`;
 			})
 		}
 		
@@ -398,18 +405,20 @@ function pageJump(payload){
 		let {id} =  payload
 		console.log('评论');
 		slientHandle(() => {
-			uni.navigateTo({
-				url:'/pages/info/comment'+`?mode=jump`+`&commentId=${id}`
-			})
+			// uni.navigateTo({
+			// 	url:'/pages/info/comment'+`?mode=jump`+`&commentId=${id}`
+			// })
+			getApp().globalData.msgPath = '/pages/info/comment'+`?mode=jump`+`&commentId=${id}`;
 		})
 	}
 	if(type=='like') {
 		console.log('点赞')
 		let {id} =  payload
 		slientHandle(() => {
-			uni.navigateTo({
-				url: `/pages/discovery/dynamic_detail?id=${id}`
-			})
+			// uni.navigateTo({
+			// 	url: `/pages/discovery/dynamic_detail?id=${id}`
+			// })
+			getApp().globalData.msgPath = `/pages/discovery/dynamic_detail?id=${id}`;
 		})
 	}
 	if(type=='pushDynamic'){
@@ -427,28 +436,27 @@ function pageJump(payload){
 					url: '/pages/index/index?goAtten=true'
 				})
 			}
-		})
+		}, 1200)
 	}
 	if(type == 'joinOrder'){
 		let {id} =  payload
 		slientHandle(() => {
-			uni.navigateTo({
-				url: `pages/order/spellBill?orderId=${id}&type=creater`
-			})
+			getApp().globalData.msgPath = `pages/order/spellBill?orderId=${id}&type=creater`;
 		})
 	}
 	if(type == 'customerChat'){
 		console.log('客服click')
 		let{senderId, avatar, nickname} = payload;
 		slientHandle(() => {
-			uni.navigateTo({
-				url: `/pages/customerRoom/index?id=${senderId}&avatar=${avatar}&nickname=${nickname}`
-			})
+			// uni.navigateTo({
+			// 	url: `/pages/customerRoom/index?id=${senderId}&avatar=${avatar}&nickname=${nickname}`
+			// })
+			getApp().globalData.msgPath = `/pages/customerRoom/index?id=${senderId}&avatar=${avatar}&nickname=${nickname}`;
 		})
 	}
 }
 
-function slientHandle(callback,time = 1000){
+function slientHandle(callback,time = 300){
 	setTimeout(() => {
 		callback();
 	}, time)

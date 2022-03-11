@@ -257,6 +257,7 @@ const install = (Vue, vm) => {
 		
 		getAboutUs: () => vm.$u.post('/api/information/aboutUs'), //关于我们
 		getCredit: () => vm.$u.post('/api/information/creditRules'), //信用规则
+		platformActivityDetailApi: (id) => vm.$u.post('/api/platformActivity/view', {id}), //平台活动详情
 
 	};
 }

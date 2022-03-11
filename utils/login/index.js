@@ -24,7 +24,8 @@ const login = function (data, register = false) {
 		// #ifdef APP-PLUS
 		// $store.commit('initMQTT',info.chatToken)
 		// #endif
-		uni.$emit('refresh_chat');
+		uni.$emit('information_listener')
+		uni.$emit('push_listener')
 		$store.commit('initGoEasy', JSON.stringify(info))
 		if(register){
 			uni.reLaunch({
