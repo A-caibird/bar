@@ -82,6 +82,12 @@ export default {
 						title = '图文详情'
 					}
 					break;
+				case 'BlindBox':
+					{
+						requestApi = this.$u.api.getBlindBoxRuleApi()
+						title = '拆盲盒攻略'
+					}
+					break;
 				default:
 					break;
 			}

@@ -29,9 +29,6 @@
 			"path": "pages/blindBox/record"
 		},
 		{
-			"path": "pages/blindBox/rule"
-		},
-		{
 			"path": "pages/coupon/coupon-center"
 		},{
 			"path": "pages/coupon/coupon"

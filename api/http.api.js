@@ -26,6 +26,8 @@ const install = (Vue, vm) => {
 		uploadFile:(filePath)=> upload(filePath,'file/'),
 		uploadImg:(filePath)=> upload(filePath,'image/'),
 		uploadVideo:(filePath)=> upload(filePath,'video/'),
+		// 盲盒
+		getBlindBoxRuleApi: () => vm.$u.get('/api/lottery/helpInfo'), //拆盲盒攻略
 		// 优惠券
 		giveCouponApi: (id) => vm.$u.get('/api/coupon/take', {id}), //领取优惠券
 		getCouponPurviewApi: (params) => vm.$u.get('/api/coupon/canOrderUseCouponCount', params),
