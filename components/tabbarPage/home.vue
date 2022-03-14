@@ -5,12 +5,12 @@
 					background: '#191C3F'
 				}">
 				<view style="width: calc(100% - 60rpx);margin-left: 30rpx; display: flex; align-items: center;">
-					<view class="city_box" style="width: 160rpx; " @tap="$u.throttle(tapGoSelectCity)">
+					<view class="city_box" style="width: 160rpx; " @tap.stop="$u.throttle(tapGoSelectCity)">
 						<view class="city_text">{{ cityName }}</view>
 						<u-icon name="arrow-down" size="20" style="margin-left: 10rpx;"></u-icon>
 					</view>
 					<view class="search_box" style="width: calc(100% - 160rpx);"
-						@tap="$u.throttle(tapGoClubList('search'))">
+						@tap.stop="$u.throttle(tapGoClubList('search'))">
 						<u-search :input-style="{ 'font-size': '28rpx', color: '#FFFFFF' }" placeholder-color="#9497B5"
 							:clearabled="false" color="#9497B5" bgColor="#33365B" shape="round" :show-action="false"
 							:disabled="true"></u-search>
@@ -22,7 +22,7 @@
 			<scroll-view scroll-y="true" :lower-threshold="100" :scroll-into-view="scrollBottom" style="height: 100%;"
 				@scrolltolower="reachBottomLoad">
 				<commonBanner :bannerList="bannerList" imgKey="file" height="400" :showVideo="true" videoKey="videoUrl" mode="normal" :customEvent="true" @click="bannerTap"></commonBanner>
-		
+
 				<view class="feature_box" v-if="!isAppleAudit">
 					<u-grid col="4" :border="false" hover-class="none">
 						<u-grid-item bgColor="#191C3F">
@@ -182,6 +182,7 @@
 			},
 
 			tapGoClubList(mode = 'list') {
+				console.log(mode);
 				if (mode == 'list') {
 					this.$u.route('/pages/club/list' + `?mode=${mode}`)
 				}
@@ -276,7 +277,7 @@
 			flex: 1;
 			min-height: 0;
 			min-width: 0;
-
+			overflow: hidden;
 			.feature_box {
 				width: 100%;
 

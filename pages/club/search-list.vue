@@ -53,7 +53,8 @@
 				},
 				url: '/api/club/list',
 				params: {
-					areaName: app.globalData.location.cityName,
+					cityName: app.globalData.location.cityName,
+					areaName: '',
 					lng: app.globalData.location.lng,
 					lat: app.globalData.location.lat,
 					sortCondition: '',
@@ -117,7 +118,8 @@
 						lng,
 						lat
 					} = app.globalData.location
-					this.params.areaName = cityName
+					this.params.cityName = cityName
+					this.params.areaName  = "";
 					this.params.lng = lng
 					this.params.lat = lat
 					this.getCitys()
@@ -125,7 +127,7 @@
 				})
 			},
 			load() {
-				this.getCitys()
+				// this.getCitys()
 				if(this.mode=='list') {
 					this.$nextTick(function(){
 						this.downCallback()
@@ -162,7 +164,7 @@
 					let {
 						code,
 						data
-					} = await this.$u.api.getLowerCitys(this.params.areaName)
+					} = await this.$u.api.getLowerCitys(this.params.cityName)
 					if (code == 0) {
 						let {
 							areaList

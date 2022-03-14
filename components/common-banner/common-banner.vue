@@ -12,15 +12,16 @@
 				</block>
 			</swiper-item>
 		</swiper>
-		<videoBox ref="videoBox"></videoBox>
-		<video class="video_play_box" :autoplay="true" @pause="colseVideo" @ended="colseVideo" v-if="playVideoUrl" :src="playVideoUrl" ></video>
+		<videoBox ref="videoBox" v-if="mode == 'enlarge'"></videoBox>
+		<video id="swiperVideo" class="video_play_box" :autoplay="true" @pause="colseVideo" @ended="colseVideo" v-if="playVideoUrl" :src="playVideoUrl" ></video>
 	</view>
 	<view class="swiper_box":style="{'height': height + 'rpx'}" v-else-if="bannerList.length == 1">
 		<block v-if="showVideo && item[videoKey]">
 			<common-video :src="item[videoKey]" @videoPlayTap="videoPlayHandle"></common-video>
 		</block>
 		<image v-else :src="bannerList[0][imgKey]" @tap="imgTap(0)"></image>
-		<video class="video_play_box" v-if="playVideoUrl" :src="playVideoUrl"></video>
+		<videoBox ref="videoBox" v-if="mode == 'enlarge'"></videoBox>
+		<video id="swiperVideo" class="video_play_box" :autoplay="true" @pause="colseVideo" @ended="colseVideo" v-if="playVideoUrl" :src="playVideoUrl"></video>
 	</view>
 	<view v-else class="swiper_box" :style="{'height': height + 'rpx'}"></view>
 	
@@ -79,6 +80,9 @@
 			},
 			// 关闭视频
 			colseVideo(){
+				var videoContext = uni.createVideoContext("swiperVideo", this);
+				videoContext.exitFullScreen();
+				videoContext.stop()
 				this.playVideoUrl = "";
 				this.autoplay = true;
 			},
@@ -116,7 +120,7 @@
 			position: absolute;
 			height: 100%;
 			width: 100%;
-			z-index: 100;
+			z-index: 10;
 			left: 0rpx;
 			top: 0rpx;
 		}
