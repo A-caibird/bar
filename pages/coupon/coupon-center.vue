@@ -40,7 +40,6 @@
 <script>
 	const app = getApp();
 	const pageable = require('@/common/pageable.js')
-	import commonList from '@/components/common-list/list'
 	import couponPop from '@/components/coupon-pop/coupon-pop.vue'
 	export default {
 		data() {
@@ -73,7 +72,6 @@
 			this.returnCoupon();
 		},
 		components: {
-			commonList,
 			couponPop
 		},
 		props: {},
