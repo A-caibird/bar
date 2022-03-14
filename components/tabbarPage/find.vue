@@ -86,42 +86,6 @@
 				pageLoading: true,
 				giftList: '',
 				awkwardShow: false,
-				giftFilter: {
-					gift: {
-						array: [{
-								value: '',
-								name: '魅力榜'
-							},
-							{
-								value: '',
-								name: '土豪榜'
-							}
-						],
-						valArray: [{
-								value: '',
-								name: '魅力值'
-							},
-							{
-								value: '',
-								name: '豪气值'
-							}
-						],
-
-						selectIndex: 0
-					},
-					time: {
-						array: [{
-								value: '',
-								name: '周榜'
-							},
-							{
-								value: '',
-								name: '月榜'
-							}
-						],
-						selectIndex: 0
-					}
-				},
 				boxHeight: '',
 				current: 1,
 				swiperCurrent: 1,
