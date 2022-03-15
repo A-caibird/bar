@@ -148,7 +148,8 @@
 		methods: {
 			goWheel() {
 				if (!this.loginConfirmHandle(false)) return;
-				this.$u.route('/pages/snatch/snatch')
+				this.$u.route('/pages/blindBox/index')
+				// this.$u.route('/pages/snatch/snatch')
 			},
 			bannerTap(e) {
 				let index = e.detail.index;

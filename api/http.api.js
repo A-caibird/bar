@@ -249,6 +249,7 @@ const install = (Vue, vm) => {
 		awarddrawApi: (params) => vm.$u.post('/api/lottery/draw', params), //抽奖（十连或者单抽）
 		awardListApi: (params) => vm.$u.post('/api/lottery/allLog', params), //近期中奖记录
 		awardNumberApi: (params) => vm.$u.post('/api/lottery/myPrize', params), //大转盘礼物个数
+		getFreeCountApi: (params) => vm.$u.post('/api/lottery/freetimes', params), //免费抽奖次数
 
 		//会员中心
 		getMemberLevelListApi: (params) => vm.$u.get('/api/memberLevel/list', params), //会员等级列表

@@ -10,18 +10,20 @@
 			<mescroll-uni :ref="'mescrollRef'+i" :fixed="false" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption"
 			 @up="upCallback">
 			 <view style="padding: 30rpx 0rpx;">
-				 <block v-for="(info, index) in pageList" :key="index">
+				 <block v-for="(info, index) in pageList" :key="info.id">
 					<view style="margin-bottom: 20rpx;">
 						<view class="price_info">
 							<view class="price_info_left">
-								<image class="price_icon" src="/static/imgs/common/price_icon.png"></image>
+								<image v-if="info.typeEnum == 'wineCoin'" class="price_icon" src="/static/imgs/blindBox/price_coin.png"></image>
+								<image v-if="info.typeEnum == 'coupon'" class="price_icon" src="/static/imgs/blindBox/price_coupon.png"></image>
 							</view>
 							<view class="price_info_middle">
-								<view class="price_name">酒币*50</view>
-								<view class="price_date">2022-03-03 12:00:00</view>
+								<view class="price_name" v-if="info.typeEnum == 'wineCoin'">酒币*{{info.prize}}</view>
+								<view class="price_name" v-if="info.typeEnum == 'coupon'">{{info.lotteryPrize}}</view>
+								<view class="price_date">{{info.modifyDate}}</view>
 							</view>
 							<view class="price_info_right">
-								<view class="price_btn">去查看</view>
+								<view class="price_btn" @tap="$u.throttle(goPage(info))">去查看</view>
 							</view>
 						</view>
 					</view>
@@ -48,6 +50,7 @@
 		},
 		data() {
 			return {
+				poolId: '',
 				downOption: {
 					auto: false // 不自动加载 (mixin已处理第一个tab触发downCallback)
 				},
@@ -61,19 +64,41 @@
 
 				},
 
-				url: '/api/recruitment/list',
+				url: '/api/lottery/myLog',
 				params: {
-					clubId: this.clubId,
+					id: "",
 				}
 			}
 		},
 		onLoad(opt) {
+			this.poolId = opt.id;
+			this.params.id = opt.id;
 			this.$nextTick(function() {
-				// this.downCallback()
+				this.downCallback()
 			})
 		},
 		methods: {
-
+			handleData(pageNumber,data){
+				console.log(data)
+				let pageList = this.pageList
+				if (pageNumber <= 1) {
+					pageList = []
+				} 
+				pageList = pageList.concat(data.page.content);
+				console.log(pageList)
+				this.pageList = pageList;
+				this.totalPages = data.page.totalPages;
+				uni.hideLoading();
+				this.mescroll.endByPage(data.page.content.length, this.totalPages);
+			},
+			goPage(info){
+				if(info.typeEnum == 'wineCoin'){
+					this.$u.route('/pages/mine/myWallet/incomeRecord');
+				}
+				if(info.typeEnum == 'coupon'){
+					this.$u.route('/pages/coupon/coupon');
+				}
+			}
 		}
 
 	}

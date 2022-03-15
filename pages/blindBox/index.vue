@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="container" :class="{'noScroll': lotteryShow}">
 		<u-navbar
 			:border-bottom="false"
 			:is-fixed="true"
@@ -17,9 +17,9 @@
 				<image class="title_img" src="/static/imgs/blindBox/title_img.png"></image>
 			</view>
 			<view class="blindBox_area_middle">
-				<blindBox ref="blindBoxRef"></blindBox>
+				<blindBox ref="blindBoxRef" :poolId="prizePoolId" @refreshTime="refreshTime" @lotteryChange="lotteryChange"></blindBox>
 			</view>
-			<view class="blindBox_area_footer">
+			<view class="blindBox_area_footer" :style="{'zIndex': lotteryShow ? 4 : 5}">
 				<view class="price_record" @tap="$u.throttle(goRecord)">
 					<image class="record_img" src="/static/imgs/blindBox/record_icon.png"></image>
 					<text class="record_label">中奖记录</text>
@@ -30,7 +30,7 @@
 						<countTips text="每天0点来送3次"></countTips>
 					</view>
 					<view class="count_box">
-						<view class="count_text">3</view>
+						<view class="count_text">{{freetimes}}</view>
 						<view class="count_bg_view">
 							<image src="/static/imgs/blindBox/bottom_icon.png"></image>
 						</view>
@@ -44,29 +44,26 @@
 				<view class="price_pool_title">目标奖池</view>
 				<scroll-view class="price_pool_coin" :scroll-x="true">
 					<view class="price_list">
-						<block v-for="(item, index) in 10" :key="index">
+						<block v-for="(item, index) in prizeCoinList" :key="index">
 							<view class="coin_price">
 								<image class="coin_icon" src="/static/imgs/common/price_icon.png"></image>
-								<text>{{index}}</text>
+								<text>{{item.prize}}</text>
 							</view>
 						</block>
 					</view>
 				</scroll-view>
-				<scroll-view class="price_pool_coupon">
+				<scroll-view class="price_pool_coupon" :scroll-x="true" v-if="prizeCouponList.length > 0">
 					<view class="price_list">
-						<view class="coupon_price">
+						<view class="coupon_price" v-for="(item, index) in prizeCouponList" :key="index">
 							<image class="coupon_icon" src="/static/imgs/blindBox/price_coupon.png"></image>
-							<text>50元优惠券</text>
-						</view>
-						<view class="coupon_price">
-							<image class="coupon_icon" src="/static/imgs/blindBox/price_coupon.png"></image>
-							<text>20元优惠券</text>
+							<text>{{item.name}}</text>
 						</view>
 					</view>
 				</scroll-view>
 			</view>
-			<view class="price_btn">
-				<text>还剩3次免费拆盲盒</text>
+			<view class="price_btn" @tap="randomTap">
+				<text v-if="freetimes > 0">还剩{{freetimes}}次免费拆盲盒</text>
+				<text v-else>花费{{unitPrice}}酒吧拆盲盒</text>
 			</view>
 		</view>
 	</view>
@@ -80,17 +77,84 @@
 			countTips,
 			blindBox
 		},
+		data() {
+			return {
+				prizePoolId: '',
+				prizeCoinList:[],
+				prizeCouponList:[],
+				freetimes: 0,
+				unitPrice: 20,
+				lotteryShow: false,
+			}
+		},
 		onLoad() {
-			this.$nextTick(() => {
-				setTimeout(() => {
-					this.$refs.blindBoxRef.showEvent();
-				}, 1200)
-			})
+			this.getPrizeList();
+			
 		},
 		methods:{
-			goRecord(){
-				this.$u.route('/pages/blindBox/record')
+			// 抽奖弹窗的改变
+			lotteryChange(e){
+				this.lotteryShow = e;
 			},
+			// 随机抽取盲盒
+			randomTap(){
+				let index = Math.floor(Math.random()*10); // 随机获取0~9整数
+				this.$refs.blindBoxRef.setSelectAnimation(index);
+			},
+			// 刷新免费次数
+			refreshTime(){
+				this.$u.api.getFreeCountApi({id: this.prizePoolId}).then(res => {
+					this.freetimes = res.data.freetimes;
+					this.unitPrice = res.data.unitPrice;
+				}).catch(e => {
+					console.log('getFreeCountApi', e);
+				})
+			},
+			// 获取奖池列表
+			getPrizeList(){
+				this.$u.api.awardApi().then(res => {
+					let list = res.data.lottery.lotteryItemList || [];
+					let prizeCouponList = [];
+					let prizeCoinList = [];
+					let prizePoolId = res.data.lottery.id;
+					list.forEach((item, index) => {
+						if(item.typeEnum == 'wineCoin'){
+							prizeCoinList.push(item)
+						}else if(item.typeEnum == 'coupon'){
+							prizeCouponList.push(item);
+						}
+					})
+					this.prizeCouponList = prizeCouponList;
+					this.prizeCoinList = prizeCoinList;
+					this.prizePoolId = prizePoolId;
+					this.getFreeCount(prizePoolId);
+				}).catch(e => {
+					console.log(e);
+					this.$nextTick(function(){
+						setTimeout(() => {
+							this.$refs.blindBoxRef.showEvent();
+						}, 1200)
+					}.bind(this))
+				})
+			},
+			getFreeCount(poolId){
+				this.$u.api.getFreeCountApi({id: poolId}).then(res => {
+					this.freetimes = res.data.freetimes;
+					this.unitPrice = res.data.unitPrice;
+					this.$nextTick(function(){
+						setTimeout(() => {
+							this.$refs.blindBoxRef.showEvent();
+						}, 1200)
+					}.bind(this))
+				}).catch(e => {
+					console.log('getFreeCountApi', e);
+				})
+			},
+			// 跳转记录页面
+			goRecord(){
+				this.$u.route('/pages/blindBox/record', {id: this.prizePoolId})
+			},
+			// 跳转规则页面
 			goRule(){
 				this.$u.route('/pages/article/article', {type:'BlindBox'})
 			}
@@ -99,10 +163,24 @@
 </script>
 
 <style lang="scss">
+	page{
+		min-height: 100%;
+	}
+	.container{
+		width: 100%;
+		min-height: 100%;
+		box-sizing: border-box;
+		padding-bottom: 120rpx;
+		&.noScroll{
+			height: 100%;
+			overflow: hidden;
+		}
+	}
 	.blindBox_area{
 		height: 900rpx;
 		width: 100%;
 		position: relative;
+		z-index: 1;
 		.area_img{
 			position: absolute;
 			top: 0rpx;
@@ -116,7 +194,7 @@
 			box-sizing: border-box;
 			padding-top: 55rpx;
 			position: relative;
-			z-index: 5;
+			z-index: 4;
 			.rule_icon{
 				position: absolute;
 				right: 30rpx;
@@ -131,6 +209,10 @@
 				height: 146rpx;
 			}
 		}
+		&_middle{
+			position: relative;
+			z-index: 5;
+		}
 		&_footer{
 			width: calc(100% - 60rpx);
 			margin-left: 30rpx;
@@ -138,7 +220,7 @@
 			align-items: center;
 			justify-content: space-between;
 			position: relative;
-			z-index: 5;
+			z-index: 4;
 			.price_record{
 				position: relative;
 				width: 120rpx;
@@ -184,7 +266,7 @@
 					position: absolute;
 					top: -80rpx;
 					right: 0rpx;
-					z-index: 5;
+					z-index: 10;
 				}
 				.count_box{
 					width: 150rpx;
