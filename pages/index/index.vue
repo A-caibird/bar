@@ -159,16 +159,7 @@ export default {
 				this.pushListenerEvent();
 			}
 		});
-		if(app.globalData.msgPath){
-			if(app.globalData.authorized){
-				uni.navigateTo({
-					url: app.globalData.msgPath,
-					success() {
-						app.globalData.msgPath = "";
-					}
-				})
-			}
-		}
+		
 		
 	},
 	onUnload() {
@@ -204,6 +195,20 @@ export default {
 		refreshInputTimes(){
 			if(this.$refs.payDynamicGift){
 				this.$refs.payDynamicGift.subInputTimes()
+			}
+		},
+		// 消息页面跳转
+		infoPageNavigate(){
+			let globalData = getApp().globalData;
+			if(globalData.msgPath){
+				if(globalData.authorized){
+					uni.navigateTo({
+						url: globalData.msgPath,
+						success() {
+							app.globalData.msgPath = "";
+						}
+					})
+				}
 			}
 		},
 		// 消息监听
@@ -261,7 +266,8 @@ export default {
 			this.contentShow = true;
 			this.$nextTick(() =>{
 				setTimeout(() => {
-					this.pageloading = false
+					this.pageloading = false;
+					this.infoPageNavigate();
 				}, 2000)
 			})
 		},
