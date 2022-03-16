@@ -94,12 +94,13 @@
 		<pop
 			v-if="popShow"
 			title="加入拼享"
-			:content="popContent" 
 			cancelText="再看看" confirmText="加入拼享"
 			:isMask="true"
 			@cancel="popShow = false"
 			@confirm="tapPingTap"
 			@maskTap="popShow = false"
+			mode="price"
+			:price="popPrice"
 		></pop>
 	</view>
 </template>
@@ -122,14 +123,14 @@
 		},
 		data(){
 			return {
-				popContent: '',
+				popPrice: '',
 				popShow: false,
 				userInfo: app.globalData.userInfo,
 			}
 		},
 		methods:{
 			pingTap(){
-				this.popContent = `加入拼单金额为：${this.info.amount}元，若对方未同意或未到店拼单，费用会自动退回。拼单成功后请准时到达。`
+				this.popPrice = this.info.amount;
 				this.popShow = true;
 			},
 			async tapPingTap(){

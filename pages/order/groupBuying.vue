@@ -306,12 +306,13 @@
 		<pop
 			v-if="popShow"
 			title="加入拼享"
-			:content="popContent" 
 			cancelText="再看看" confirmText="加入拼享"
 			:isMask="true"
 			@cancel="popShow = false"
 			@confirm="clickEvent('ping')"
 			@maskTap="popShow = false"
+			mode="price"
+			:price="popPrice"
 		></pop>
 	</view>
 </template>
@@ -342,7 +343,7 @@
 		},
 		data() {
 			return {
-				popContent: '',
+				popPrice: '',
 				popShow: false,
 				infoType: ['简介', '动态', '活动', '招聘', '评价'],
 				urls:[
@@ -463,7 +464,7 @@
 		},
 		methods: {
 			pingTapEvent(){
-				this.popContent = `加入拼单金额为：${this.pingOrderInfo.amount}元，若对方未同意或未到店拼单，费用会自动退回。拼单成功后请准时到达。`
+				this.popPrice = this.pingOrderInfo.amount
 				this.popShow = true;
 			},
 			scrolltoupper(e){
