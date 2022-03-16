@@ -173,6 +173,9 @@ export default {
 		let vm = this;
 		if(getApp().globalData.authorized){
 			this.pushListenerEvent();
+			setTimeout(() => {
+				this.infoPageNavigate();
+			}, 1000);
 		}
 		if(this.$refs.find) {
 			this.$nextTick(function(){
@@ -267,7 +270,6 @@ export default {
 			this.$nextTick(() =>{
 				setTimeout(() => {
 					this.pageloading = false;
-					this.infoPageNavigate();
 				}, 2000)
 			})
 		},
