@@ -1,7 +1,7 @@
 <template>
 	<mescroll-uni :ref="'mescrollRef'+i" :canShowTop="false" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" @up="upCallback">
 		<view class="page_box">
-			<view class="top_rank">
+			<view class="top_rank" :class="{'introState': giftFilter.gift.selectIndex == 0 && resultInfo.award.introduce}">
 				<view class="list_classify">
 					<block v-for="(info, index) in giftFilter.gift.array" :key="index">
 						<view class="list_classify_item" @tap="giftFilterHandle(index)" :class="{ selectStatus: giftFilter.gift.selectIndex == index }">
@@ -254,6 +254,9 @@
 			background-repeat: no-repeat;
 			background-size: 100% 100%;
 			background-origin: content-box;
+			&.introState{
+				height: 950rpx;
+			}
 			.award_intro{
 				width: calc(100% - 60rpx);
 				margin-left: 30rpx;
