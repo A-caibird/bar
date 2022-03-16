@@ -601,7 +601,7 @@
 				let {
 					code
 				} = await this.$u.api.refusePingInviteApi({
-					joinTogetherId: item.orderId,
+					orderId: item.orderId,
 				})
 				if(code == 0){
 					item.agreeStatus = 'refuse'
@@ -929,6 +929,8 @@
 		}
 
 		.chat-content {
+			box-sizing: border-box;
+			@include saveDistanceBottom();
 			.chat-item {
 				padding-top: 20rpx;
 
