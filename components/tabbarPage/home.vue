@@ -46,7 +46,7 @@
 						<u-grid-item bgColor="#191C3F">
 							<view class="feature_item" @tap="$u.throttle(goWheel, 1200)">
 								<image src="/static/imgs/index/treasure.png"></image>
-								<text>夺宝</text>
+								<text>拆盲盒</text>
 							</view>
 						</u-grid-item>
 					</u-grid>
