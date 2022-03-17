@@ -89,7 +89,6 @@
 		},
 		onLoad() {
 			this.getPrizeList();
-			
 		},
 		methods:{
 			// 抽奖弹窗的改变
@@ -139,8 +138,8 @@
 			},
 			getFreeCount(poolId){
 				this.$u.api.getFreeCountApi({id: poolId}).then(res => {
-					this.freetimes = res.data.freetimes;
-					this.unitPrice = res.data.unitPrice;
+					this.freetimes = parseInt(res.data.freetimes);
+					this.unitPrice = parseInt(res.data.unitPrice);
 					this.$nextTick(function(){
 						setTimeout(() => {
 							this.$refs.blindBoxRef.showEvent();
@@ -148,6 +147,11 @@
 					}.bind(this))
 				}).catch(e => {
 					console.log('getFreeCountApi', e);
+					this.$nextTick(function(){
+						setTimeout(() => {
+							this.$refs.blindBoxRef.showEvent();
+						}, 1200)
+					}.bind(this))
 				})
 			},
 			// 跳转记录页面
