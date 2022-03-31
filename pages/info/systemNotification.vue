@@ -7,7 +7,7 @@
 		<view class="follow-person">
 			<mescroll-uni :fixed="false" ref="mescrollRef" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" @up="upCallback">
 				<block v-for="item in pageList" :key="item.id">
-					<view class="message-item" >
+					<view class="message-item" @tap="$u.throttle(goPersonPage(item))">
 						<view class="message-title">
 							<text>{{item.title}} </text>
 							<!-- <view class="point"></view> -->
@@ -54,6 +54,13 @@
 				this.$u.api.readSysNoticeAPI().then(res => {
 					uni.$emit('refresh_push');
 				});
+			},
+			goPersonPage(info){
+				if(info.title == '关注提醒'){
+					if(info.fansId){
+						this.goPersonalHomepage(info.fansId);
+					}
+				}
 			}
 		}
 	}
