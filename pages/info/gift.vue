@@ -16,7 +16,7 @@
 			<mescroll-uni :fixed="false" ref="mescrollRef" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" @up="upCallback">
 				<view class="gift-box">
 					<view class="gift-item" v-for="item,index in pageList" :key="index">
-						<view class="gift-item-info">
+						<view class="gift-item-info" @tap="$u.throttle(goPersonPage(item.sendUserId))">
 							<view class="gift-img">
 								<image :src="item.giftImgUrl"></image>
 							</view>
@@ -73,6 +73,11 @@
 			}
 		},
 		methods:{
+			goPersonPage(id){
+				uni.navigateTo({
+					url: '/pages/mine/dynamic/myDynamic?id=' + id, 
+				})
+			},
 			reLoad(){
 				this.mescroll.resetUpScroll()
 			},
