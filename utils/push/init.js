@@ -70,7 +70,6 @@ function handlePushReceive(msg) {
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
 		}
 		if (type == 'attention') {//某人关注我
-			console.log('关注我')
 			option.title = payload.title
 			content = payload.content
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
@@ -204,9 +203,11 @@ function handlePushClick(msg) {
 				url:'/pages/info/systemNotification'
 			})
 		}
-		if(type=='attention') {
+		if(type=='attention') { //关注通知
 			let {userId} =  payload
-			vm.goPersonalHomepage(userId)
+			uni.navigateTo({
+				url:'/pages/info/fans'
+			})
 		}
 		if(type=='orderInviteSuccess') {
 			console.log(payload)
@@ -339,14 +340,10 @@ function pageJump(payload){
 			getApp().globalData.msgPath = '/pages/info/systemNotification'
 		})
 	}
-	if(type=='attention') {
-		console.log('关注')
+	if(type=='attention') { // 关注通知
 		let {userId} =  payload
 		slientHandle(() => {
-			// uni.navigateTo({
-			// 	url: '/pages/mine/dynamic/myDynamic' + `?id=${userId}`
-			// })
-			getApp().globalData.msgPath = '/pages/mine/dynamic/myDynamic' + `?id=${userId}`;
+			getApp().globalData.msgPath = '/pages/info/fans';
 		})	
 	}
 	if(type=='orderInviteSuccess') {

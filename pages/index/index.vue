@@ -83,7 +83,7 @@ export default {
 			popShareShow: false,
 			current: 0,
 			scrollTop:0,
-			bottomHeight:50,
+			bottomHeight:0,
 			maskShow:true,
 			pageloading: true,
 			contentShow: false,
@@ -108,7 +108,6 @@ export default {
 			this.maskShow = false
 		}
 		this.loadingAnimalHandle();
-		this.getSInfo()
 		
 		if(app.globalData.token) {
 			this.getPasswordInputTimes();
@@ -275,11 +274,6 @@ export default {
 		},
 		handleHomeLoad(){
 			this.maskShow = false
-		},
-		async getSInfo(){
-			let res = await uni.getSystemInfoSync()
-			// console.log(res)
-			this.bottomHeight = res.safeAreaInsets.bottom + 50
 		},
 		goClubList(){
 			this.current = 0
