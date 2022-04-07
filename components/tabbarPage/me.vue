@@ -134,7 +134,7 @@
 				authorized:false,
 				yaoOrderWaitPayNum:0,
 				pingOrderWaitPayNum:0,
-
+				wineCellarNum: 0,
 			}
 		},
 		computed:{
@@ -154,7 +154,8 @@
 				]:[{
 						icon: '/static/imgs/mine/wine_icon.png',
 						text: '酒库',
-						url: '/pages/mine/wineCellar/wineCellar'
+						url: '/pages/mine/wineCellar/wineCellar',
+						num: this.wineCellarNum
 					},
 					{
 						icon: '/static/imgs/mine/wallet_icon.png',
@@ -330,6 +331,7 @@
 				} = await this.$u.api.getMyInfo({})
 				if (code == 0) {
 					// console.log(data)
+					this.wineCellarNum = data.info.saveWineNoticeUnreadNum;
 					this.userData = data.info
 					this.upadteUserInfo(data.info.nickName, data.info.avatar)
 				}

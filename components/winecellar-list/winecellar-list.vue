@@ -4,7 +4,8 @@
 			<block v-for="(item,index) in pageList" :key="index">
 				<view class="order-info-item" @tap="$u.throttle($u.route('/pages/mine/wineCellar/detail',{clubId:item.clubId,id:item.id}))">
 					<view class="item-top">
-						<view class="order-num">订单号:<text style="font-size: 26rpx; color: #FFFFFF; padding-left: 4rpx;">{{item.sn}}</text>
+						<view class="order-num" >
+							<text class="red_point" v-if="item.noticeUnRead"></text> 订单号:<text style="font-size: 26rpx; color: #FFFFFF; padding-left: 4rpx;">{{item.sn}}</text>
 						</view>
 						<view class="remain-num">剩余:<text style="font-size: 26rpx; color: #FFFFFF;padding-left: 4rpx;">{{item.surplusNum}}瓶</text>
 						</view>
@@ -25,6 +26,11 @@
 					<template v-if="!item.canTake">
 						<view class="expired-label">
 							<text>已过期</text>
+						</view>
+					</template>
+					<template v-if="item.expiringSoon">
+						<view class="expired-label">
+							<text>即将过期</text>
 						</view>
 					</template>
 					
@@ -61,7 +67,14 @@
 			}
 		},
 		methods: {
-			
+			readWineCellPage(id){
+				this.pageList.forEach((item, index) => {
+					if(item.id == id){
+						item.noticeUnRead = false;
+					}
+				})
+				this.$forceUpdate();
+			}
 		}
 	}
 </script>
@@ -83,6 +96,16 @@
 				.order-num {
 					font-size: 26rpx;
 					color: #B4B2CF;
+					display: flex;
+					align-items: center;
+					.red_point{
+						display: inline-block;
+						height: 10rpx;
+						width: 10rpx;
+						background: red;
+						border-radius: 50%;
+						margin-right: 4rpx;
+					}
 				}
 		
 				.remain-num {

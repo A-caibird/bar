@@ -192,7 +192,8 @@
 				let {code,data} = await this.$u.api.getSaveWineViewApi({id:this.id})
 				if(code==0) {
 					console.log(data)
-					
+					uni.$emit('personal-info-refresh');
+					uni.$emit('refreshWineCellList', this.id);
 					this.wineInfo = data
 					
 				}

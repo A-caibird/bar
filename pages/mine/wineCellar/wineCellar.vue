@@ -8,7 +8,7 @@
 		</u-navbar>
 		<view class="tip">提示：订单确认到店后才可以取酒</view>
 		<view class="order-info-box">
-			<wine-cellar></wine-cellar>
+			<wine-cellar ref="wineCellRef"></wine-cellar>
 		</view>
 	</view>
 </template>
@@ -25,7 +25,12 @@
 			}
 		},
 		onLoad() {
-			
+			uni.$on('refreshWineCellList',(id) => {
+				this.$refs.wineCellRef.readWineCellPage(id)
+			})
+		},
+		onUnload() {
+			uni.$off('refreshWineCellList')
 		},
 		methods: {
 			
