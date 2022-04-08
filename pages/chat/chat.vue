@@ -30,7 +30,7 @@
 									:src="`file://${item.src}`"></image>
 							</view>
 							<view class="content" v-else-if="item.type==2">
-								我想和你喝杯酒可以么？
+								{{ item.statement ? item.statement : '我想和你喝杯酒可以么？'}}
 							</view>
 							<view class="content" v-else-if="item.type==3">
 								我想和你拼单可以么？
@@ -253,6 +253,7 @@
 <script>
 	/* 
 	 消息类型区分
+	 type = 2: 表示用户邀请别人加入邀约订单 发送消息
 	 type = 4: 表示是用户加入我的拼享订单 发送消息
 	 type = 3; 表示是邀请别人加入我的拼享订单 发送消息
 	 */
