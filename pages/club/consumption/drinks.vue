@@ -102,7 +102,6 @@
 		},
 		onLoad(opt) {
 			this.data = this.$u.deepMerge(this.data,JSON.parse(opt.data))
-			console.log(this.data)
 			this.load()
 			
 			this.clearInterval = setInterval(this.jusgeEndExtend,60*1000)
@@ -169,7 +168,6 @@
 				})
 				clearInterval(this.seatInterval)
 				let params = {data:JSON.stringify(this.$u.deepMerge(this.data,{allAmount:this.allAmount}))}
-				console.log(params)
 				this.$u.route('pages/club/consumption/create_order',params)
 			},
 			async tapShoppingCardEmptyApi(data){

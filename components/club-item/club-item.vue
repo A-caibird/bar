@@ -1,5 +1,5 @@
 <template>
-	<view class="club_item_box" @tap="$u.throttle(goClubDetail(info.id))">
+	<view class="club_item_box" @tap="$u.throttle(navigateTap(info.id))">
 		<view class="club_header">
 			<view class="header_left">
 				<view class="club_name">{{info.name}}</view>
@@ -30,7 +30,20 @@
 <script>
 	export default{
 		props:{
-			info: [Object]
+			info: [Object],
+			customEvent: {
+				type: Boolean,
+				default: false
+			}
+		},
+		methods:{
+			navigateTap(id){
+				if(this.customEvent){
+					this.$emit('click', id)
+				}else{
+					this.goClubDetail(id);
+				}
+			}
 		}
 	}
 </script>

@@ -122,8 +122,9 @@
 				clubName:'',
 				orderType:'',
 				clubSubTitle: '',
+				chatTag: false,
 				seat:{},
-				
+				chatFriendInfo:"",
 				boxWidth:325,
 				
 				startDate:'00:01',
@@ -143,7 +144,8 @@
 		},
 		onLoad(opt) {
 			let vm = this
-			console.log(opt)
+			this.chatFriendInfo = opt.chatFriendInfo
+			this.chatTag = opt.chatTag 
 			this.clubId = opt.clubId
 			this.clubName = opt.clubName
 			this.orderType = opt.orderType
@@ -224,6 +226,8 @@
 			},
 			goDrinkSelect(){
 				let data = {
+					chatTag: this.chatTag,
+					chatFriendInfo: this.chatFriendInfo,
 					seat:this.seat,
 					clubId:this.clubId,
 					clubName:this.clubName,

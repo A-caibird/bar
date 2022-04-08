@@ -18,23 +18,7 @@
 			@cancel="cancelEvent"
 			@maskTap="maskEvent"
 		></pop-common>
-		<u-popup v-model="statementShow" mode="bottom">
-			<view class="statement">
-				<view class="statement_title">常用语</view>
-				<scroll-view class="statement_box" :scroll-y="true">
-					<block v-for="(item, index) in statementList" :key="index">
-						<view class="statement_item" @tap="statementIndex = index">
-							<view class="statement_item_text">{{item}}</view>
-							<view class="statement_item_select">
-								<image class="select_icon" src="/static/imgs/common/select.png" v-if="statementIndex == index"></image>
-								<image src="/static/imgs/common/no-select.png" v-else></image>
-							</view>
-						</view>
-					</block>
-				</scroll-view>
-				<view class="statement_btn" @tap="$u.throttle(sendYaoyueStatement)">发送</view>
-			</view>
-		</u-popup>
+		<statementPop ref="statementPopRef" @btnTap="sendYaoyueStatement"></statementPop>
 		<view class="btn" @tap="$u.throttle(tapSubmit)" :class="{'active': selectIndex!=-1}" type="default">确认邀请</view>
 	</view>
 		
@@ -42,19 +26,18 @@
 </template>
 
 <script>
-	import $chat from '@/utils/chat/index.js'
+	import $chatUtils from '@/common/chat.js'
 	import popCommon from '@/components/commonPop/pop.vue'
-	import { yaoyueStatement } from '@/common/select.js'
+	import statementPop from '@/components/chatStatement/chatStatement.vue'
 	const app = getApp()
 	export default{
 		components:{
-			popCommon
+			popCommon,
+			statementPop
 		},
 		data(){
 			return {
-				statementList: yaoyueStatement,
-				statementIndex: -1,
-				statementShow: false,
+				statement: '',
 				popShow: false,
 				list:[],
 				dynamicInfo:{},
@@ -74,7 +57,7 @@
 				let orderInfo = this.list[this.selectIndex]
 				if(orderInfo.type=='yao') {
 					// this.sendYaoyue(orderInfo,friendUserInfo)
-					this.statementShow = true;
+					this.$refs.statementPopRef.show();
 				} else {
 					this.sendPing(orderInfo,friendUserInfo)
 				}
@@ -109,9 +92,17 @@
 			cancelEvent(){
 				let vm = this
 				this.popShow = false;
+				let dynamicInfo = this.dynamicInfo;
+				let userInfo = {
+					chatToken: dynamicInfo.chatToken,
+					name: dynamicInfo.nickName,
+					avatar: dynamicInfo.avatar,
+					userId: dynamicInfo.userId,
+					chatUserId: dynamicInfo.chatUserId,
+				}
 				vm.$u.route({
 					type:'redirect',
-					url:'pages/club/list?mode=list'
+					url:'pages/club/list?mode=list&chatFriendInfo=' + encodeURIComponent(JSON.stringify(userInfo))
 				})
 			},
 			maskEvent(){
@@ -132,67 +123,29 @@
 					}
 				}
 			},
-			sendYaoyueStatement(){
-				if(this.statementIndex==-1) return this.$toast.text('请选择常用句！')
+			sendYaoyueStatement(statement){
 				if(this.selectIndex==-1) return this.$toast.text('请选择订单！')
 				let friendUserInfo = this.$u.deepClone(this.dynamicInfo)
 				friendUserInfo.name = friendUserInfo.nickName
 				friendUserInfo.hasSave = false
 				let orderInfo = this.list[this.selectIndex]
-				this.sendYaoyue(orderInfo,friendUserInfo)
+				this.sendYaoyue(orderInfo,friendUserInfo, statement);
 			},
-			async sendYaoyue(orderInfo, friendUserInfo) {
-				let userInfo = this.$u.deepClone(this.userInfo)
-				let {
-					code,
-					data
-				} = await this.$u.api.yaoyueInviteApi({
-					orderId: orderInfo.id,
-					userId: friendUserInfo.userId
-				})
-				if (code == 0) {
-					console.log(data)
-					$chat.sendMsg(userInfo, friendUserInfo, 'single', 'yaoyue', {
-						orderId: orderInfo.id,
-						clubCover: orderInfo.clubCover,
-						clubName: orderInfo.clubName,
-						date: orderInfo.date,
-						cardTableName: orderInfo.cardTableName,
-						awkwardWineId: data.awkwardWineId,
-						agreeStatus: 'none',
-						statement: this.statementList[this.statementIndex]
-					})
+			async sendYaoyue(orderInfo, friendUserInfo, statement) {
+				$chatUtils.sendYaoyueInfo(this, orderInfo,friendUserInfo, statement, () => {
 					this.$toast.text('已发送邀约请求')
-					this.statementShow = false;
 					setTimeout(()=>{
 						this.$u.route({type:'back'})
 					},500)
-				}
+				})
 			},
 			async sendPing(orderInfo, friendUserInfo) {
-				let userInfo = this.$u.deepClone(this.userInfo)
-				let {
-					code,
-					data
-				} = await this.$u.api.pingInviteApi({
-					orderId: orderInfo.id,
-					userId: friendUserInfo.userId
-				})
-				if(code == 0){
-					$chat.sendMsg(userInfo, friendUserInfo, 'single', 'ping', {
-						orderId: orderInfo.id,
-						clubCover: orderInfo.clubCover,
-						clubName: orderInfo.clubName,
-						date: orderInfo.date,
-						cardTableName: orderInfo.cardTableName,
-						amount: orderInfo.amount,
-						agreeStatus: 'none',
-					})
-					this.$toast.text('已发送拼享请求')
+				$chatUtils.sendPingInfo(this, orderInfo,friendUserInfo, () => {
+					this.$toast.text('已发送邀约请求')
 					setTimeout(()=>{
 						this.$u.route({type:'back'})
 					},500)
-				}
+				})
 			},
 		},
 		onLoad(opt) {
@@ -228,59 +181,7 @@
 			}
 			
 		}
-		.statement{
-			width: 100%;
-			background: #2c3158;
-			// @include saveDistanceBottom();
-			padding-bottom: 60rpx;
-			box-sizing: border-box;
-			&_title{
-				line-height: 100rpx;
-				width: 100%;
-				text-align: center;
-				font-size: 30rpx;
-				color: #FFFFFF;
-			}
-			&_box{
-				box-sizing: border-box;
-				padding: 0 20rpx;
-				width: 100%;
-				height: 400rpx;
-				overflow: hidden;
-				white-space: nowrap;
-				margin-bottom: 20rpx;
-				.statement_item{
-					width: 100%;
-					height: 100rpx;
-					line-height: 100rpx;
-					display: flex;
-					align-items: center;
-					justify-content: space-between;
-					&_text{
-						font-size: 28rpx;
-						color: #FFFFFF;
-					}
-					&_select{
-						height: 40rpx;
-						width: 40rpx;
-						&>image{
-							height: 100%;
-							width: 100%;
-							vertical-align: top;
-						}
-					}
-				}
-			}
-			&_btn{
-				width: calc(100% - 40rpx);
-				margin-left: 20rpx;
-				line-height: 80rpx;
-				text-align: center;
-				border-radius: 50rpx;
-				background: linear-gradient(270deg, #BB0CF9, #F92FAF);
-				color: #FFFFFF;
-			}
-		}
+		
 	}
 	
 </style>

@@ -159,11 +159,15 @@
 				<view class="btn_text buy" @tap="tapGoDrinks">
 					<text>继续选购</text>
 				</view>
-				<view class="btn_text active" @tap="$u.throttle(tapGoPayPage, 2000)">
+				<view class="btn_text active" v-if="chatTag" @tap="$u.throttle(statementShowTap, 2000)">
+					<text>去付款</text>
+				</view>
+				<view class="btn_text active" v-else @tap="$u.throttle(tapGoPayPage, 2000)">
 					<text>去付款</text>
 				</view>
 			</view>
 		</view>
+		<statementPop ref="statementPopRef" btnText="去付款" @btnTap="sendStatement"></statementPop>
 		<u-picker v-model="arrivalTimeShow" mode="time" :params="{hour:true,minute:true}" @confirm="arrivalTimeConfirm"></u-picker>
 		<!-- <u-picker mode="selector" v-model="staffListShow" :range="staffList" range-key="name" @confirm="receptionistConfirm"></u-picker> -->
 	</view>
@@ -174,15 +178,18 @@
 	import commonInput from '@/components/common-input/common-input.vue'
 	import drinksItem from '@/components/drinks-item/drinks-item.vue'
 	import $calc from '@/utils/calc/index.js'
+	import statementPop from '@/components/chatStatement/chatStatement'
 	var app = getApp()
 	export default{
 		components:{
+			statementPop,
 			selfRate,
 			commonInput,
 			drinksItem
 		},
 		data() {
 			return {
+				statement:'',
 				coupon:"",
 				couponPurview:{},
 				arrivalTimeShow:false,
@@ -251,7 +258,8 @@
 					instantArrival: false,
 					instantArrivalTime: 0,
 					instantTime: {},
-				}
+				},
+				chatTag: false,
 			}
 		},
 		computed:{
@@ -272,7 +280,11 @@
 		},
 		onLoad(opt) {
 			this.data = this.$u.deepMerge(this.data,JSON.parse(opt.data))
-			console.log(this.data)
+			if(this.data.chatTag == 'true'){
+				this.chatTag = true;
+			}else{
+				this.chatTag = false;
+			}
 			this.load()
 			this.initType(this.data.orderType);
 			
@@ -359,16 +371,6 @@
 				}
 				
 			},
-			// getMyInfo: async function() {
-			// 	let {
-			// 		code,
-			// 		data
-			// 	} = await this.$u.api.getMyInfo({})
-			// 	if (code == 0) {
-			// 		// console.log(data)
-			// 		this.
-			// 	}
-			// },
 			jusgeEndExtend(){
 				console.log(this.closeTime)
 				if(this.seatIntervalStop) {
@@ -418,6 +420,30 @@
 				else if(time1.getTime()==time2.getTime()) return 0
 				else return -1
 			},
+			// 显示常用句
+			statementShowTap(){
+				if(this.data.name=='') return uni.showToast({title:'请输入姓名！',icon:'none'})
+				// if(this.data.phone=='') return uni.showToast({title:'请输入手机号！',icon:'none'})
+				if(!this.$u.test.mobile(this.data.phone)) return uni.showToast({title:'请输入正确的手机号！',icon:'none'})
+				if(this.data.arrivalTime=='') return uni.showToast({title:'请选择到店时间！',icon:'none'})
+				if(this.compareTime(new Date(this.data.arrivalTime.replace(/-/g, '/')),new Date())==-1) return this.$toast.text('预约时间必须晚于当前时间！')
+				if(this.data.type=='customize') {
+					if(this.data.shareWay.menNumber>0&&(this.data.shareWay.menWineCoin==''||parseFloat(this.data.shareWay.menWineCoin)<0)) {
+						return uni.showToast({title:'必须输入男生的收费金额并且大于等于0！',icon:'none'})
+					}
+					if(this.data.shareWay.womenNumber>0&&(this.data.shareWay.womenWineCoin==''||parseFloat(this.data.shareWay.womenWineCoin)<0)) {
+						return uni.showToast({title:'必须输入女生的收费金额并且大于等于0！',icon:'none'})
+					}
+				}
+				if(this.data.receptionistId=='') return uni.showToast({title:'请选择接待人！',icon:'none'})
+				this.$refs.statementPopRef.show();
+			},
+			// 确定常用语句
+			sendStatement(e){
+				this.statement = e;
+				this.tapGoPayPage();
+			},
+			// 支付
 			tapGoPayPage(){
 				if(this.data.name=='') return uni.showToast({title:'请输入姓名！',icon:'none'})
 				// if(this.data.phone=='') return uni.showToast({title:'请输入手机号！',icon:'none'})
@@ -442,15 +468,6 @@
 			confirmCreateOrder(){
 				let vm = this
 				vm.createOrder()
-				// uni.showModal({
-				//     title:'',
-				//     content:'确定要创建并支付订单吗？',
-				//     success: (res)=> {
-				//         if (res.confirm){
-				//             vm.createOrder()
-				//         } 
-				//     }
-				// })
 			},
 			confirmZeroPartner(){
 				let vm = this
@@ -473,20 +490,44 @@
 					title: '加载中'
 				})
 				let vm = this
-				let data = this.$u.deepClone (this.data)
+				let data = this.$u.deepClone(this.data)
 				let type = data.type=='fullAmount'?'yao-order':'ping-order'
+				let chatFriendInfo = "";
+				if(this.chatTag && data.chatFriendInfo){
+					chatFriendInfo = JSON.parse(data.chatFriendInfo);
+				}
+				data['saveInviteUserId'] = chatFriendInfo.userId || ""; 
 				data.shareWay.menNumber = data.shareWay.menNumber.toString()
 				data.shareWay.menWineCoin = data.shareWay.menWineCoin==''?'0':data.shareWay.menWineCoin
 				data.shareWay.womenNumber = data.shareWay.womenNumber.toString()
 				data.shareWay.womenWineCoin = data.shareWay.womenWineCoin==''?'0':data.shareWay.womenWineCoin
 				data = this.$u.deepMerge(data,{cardTableId:data.seat.id,shareWay:JSON.stringify(data.shareWay)})
 				data['couponId'] = this.coupon.id || "";
+				
 				let res =  await this.$u.api.createOrderApi(data)
 				uni.hideLoading();
 				if(res.code==0) {
+					let sendChatParams = "";
+					if(this.chatTag){
+						sendChatParams = {
+							friendInfo: chatFriendInfo,
+							type: type == 'yao-order' ? 'yaoyue' : 'ping',
+							orderInfo: {
+								id: res.data.orderId,
+								clubCover: this.clubImg,
+								clubName: this.clubInfo.name,
+								date: data.arrivalTime,
+								cardTableName: data.seat.sn,
+							},
+							statement: this.statement,
+						}
+					}
+					
 					this.$u.route({
 						url:'pages/club/consumption/payPage',
 						params:{
+							chatTag: this.chatTag,
+							chatParams: encodeURIComponent(JSON.stringify(sendChatParams)),
 							allAmount:this.orderAmount,
 							orderId:res.data.orderId,
 							type:type,
@@ -571,7 +612,6 @@
 					this.instantInfo.instantArrival = instantArrival;
 					this.instantInfo.instantArrivalTime = instantArrivalTime;
 					this.instantInfo.instantTime = singleTimePeriod;
-					
 				}
 			},
 		}

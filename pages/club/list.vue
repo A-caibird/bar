@@ -12,7 +12,7 @@
 				:up="upOption" @up="upCallback">
 				<block v-if="hasLocation">
 					<block v-for="(info, index) in pageList" :key="index">
-						<club :info="info"></club>
+						<club :info="info" :customEvent="true" @click="clubTap"></club>
 						<block v-if="index != (pageList.length - 1)">
 							<u-gap :height="20" bgColor="#20234B"></u-gap>
 						</block>
@@ -90,6 +90,7 @@
 					contents:[{name: '全类型', id: ''}]
 				}],
 				mode: 'list',
+				chatFriendInfo: ""
 			}
 		},
 		onReady() {
@@ -97,6 +98,7 @@
 		},
 		onLoad: function(options) {
 			this.mode = options.mode
+			this.chatFriendInfo = options.chatFriendInfo || ""
 			this.load()
 
 		},
@@ -105,6 +107,17 @@
 			webView.setTitleNViewSearchInputFocus(false)
 		},
 		methods: {
+			clubTap(id){
+				let url = "/pages/club/detail?id=" + id;
+				let chatFriendInfo = this.chatFriendInfo;
+				if(chatFriendInfo){
+					url = url + `&chatFriendInfo=${chatFriendInfo}`
+				}
+				uni.navigateTo({
+					url: url,
+					animationType: "slide-in-right",
+				})
+			},
 			judgeLoad() {
 				return this.hasLocation
 			},

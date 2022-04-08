@@ -244,6 +244,7 @@
 				upperThreshold:10,
 				statusBarHeight: 0,
 				classifyShow: false,
+				chatFriendInfo: '',
 			}
 		},
 		computed:{
@@ -293,6 +294,10 @@
 		onLoad:function(options){
 			let id = options.id;
 			this.clubId = id;
+			let chatFriendInfo = options.chatFriendInfo || ""
+			if(chatFriendInfo){
+				this.chatFriendInfo = chatFriendInfo;
+			}
 			this.$nextTick(() => {
 				uni.showLoading({
 					title: '加载中'
@@ -304,6 +309,9 @@
 		},
 		onShow:function(){
 			
+		},
+		onUnload() {
+		
 		},
 		methods: {
 			refreshPage(){
@@ -368,7 +376,10 @@
 							clubId:this.clubId,
 							clubName: this.clubInfo.name,
 							clubSubTitle: this.clubInfo.subtitle,
-							orderType: 'book'
+							orderType: 'book',
+							chatTag: this.chatFriendInfo ? true : false,
+							chatFriendInfo: this.chatFriendInfo || ""
+							
 						});
 					};break;
 					case 'fight': { //拼享
@@ -379,7 +390,9 @@
 								clubId:this.clubId,
 								clubName: this.clubInfo.name,
 								clubSubTitle: this.clubInfo.subtitle,
-								orderType: 'fight'
+								orderType: 'fight',
+								chatTag: this.chatFriendInfo ? true : false,
+								chatFriendInfo: this.chatFriendInfo || "",
 							});
 						}else{
 							this.$u.toast('当前信用分较低，无法拼享');

@@ -70,6 +70,7 @@
 
 <script>
 	import paymentUtils from '@/common/payment.js'
+	import $chatUtils from '@/common/chat.js'
 	const app = getApp()
 	export default{
 		components:{
@@ -108,10 +109,8 @@
 			let {allAmount,type} = opt
 			if(opt.distance) {
 				this.distance = opt.distance
-				console.log(this.distance)
 			}
 			this.allAmount = allAmount
-			console.log('type', type);
 			this.type = type;
 		},
 		onBackPress(options) {  
@@ -122,6 +121,16 @@
 			return true;  
 		},  
 		methods:{
+			// 邀约发信息
+			sendInfo(){
+				let chatParams = JSON.parse(this.params.chatParams);
+				let chatTag = this.params.chatTag;
+				if(chatParams.type == 'yaoyue'){
+					$chatUtils.sendYaoyueInfo(this, chatParams.orderInfo, chatParams.friendInfo, chatParams.statement)
+				}else{
+					$chatUtils.sendPingInfo(this, chatParams.orderInfo, chatParams.friendInfo);
+				}
+			},
 			back(delta){
 				this.$u.route({
 					type:'back',
@@ -305,6 +314,7 @@
 					this.paymentHandle(data, () => {
 						this.btnAvaliable = true;
 						this.refreshPage();
+						this.sendInfo();
 						this.$u.route({
 							type:'redirect',
 							url:'/pages/club/consumption/paySuccess',
@@ -361,6 +371,7 @@
 					this.paymentHandle(data, () => {
 						this.btnAvaliable = true;
 						this.refreshPage();
+						this.sendInfo();
 						this.$u.route({
 							type:'redirect',
 							url:'/pages/club/consumption/paySuccess',

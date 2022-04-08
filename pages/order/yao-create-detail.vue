@@ -210,7 +210,8 @@
 		<block v-if="orderInfo.isCreator">
 			<view class="foot_box" v-if="orderInfo.status=='paying'">
 				<view class="common_btn" @tap="tapCancel"> <text>取消订单</text> </view>
-				<view class="common_btn color" @tap="$u.throttle($u.route('/pages/club/consumption/payPage',{allAmount:orderInfo.totalAmount,orderId:orderId,type:'yao-order'}))"> <text>去付款</text> </view>
+				<view class="common_btn color" @tap="$u.throttle(statementShowTap)" v-if="chatTag"> <text>去付款</text> </view>
+				<view class="common_btn color" @tap="$u.throttle(goPay)" v-else> <text>去付款</text> </view>
 			</view>
 			<view class="foot_box" v-if="orderInfo.status=='noShop'">
 				<!-- <view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view> -->
@@ -256,14 +257,17 @@
 				</view>
 			</block>
 		</block>
+		<statementPop ref="statementPopRef" btnText="去付款" @btnTap="statementSelectTap"></statementPop>
 	</view>
 </template>
 
 <script>
 	import selfRate from '@/components/self-rate/self-rate.vue'
+	import statementPop from '@/components/chatStatement/chatStatement.vue'
 	export default {
 		components:{
-			selfRate
+			selfRate,
+			statementPop
 		},
 		data() {
 			return {
@@ -275,6 +279,9 @@
 				orderInfo:{},
 				canRefund: false,
 				canBill: false,
+				chatTag: false,
+				chatParams:"",
+				statement: '',
 			}
 		},
 		onLoad: function(opt) {
@@ -291,6 +298,28 @@
 			uni.$off('fetch-wine',this.load)
 		},
 		methods:{
+			statementShowTap(){
+				this.$refs.statementPopRef.show();
+			},
+			statementSelectTap(e){
+				this.statement = e;
+				this.goPay();
+			},
+			goPay(){
+				let params = {
+					allAmount:this.orderInfo.totalAmount,
+					orderId:this.orderId,
+					type:'yao-order',
+					chatTag: false,
+				}
+				if(this.chatTag){
+					let chatParams = this.chatParams;
+					chatParams['statement'] = this.statement;
+					params.chatTag = true;
+					params['chatParams'] = chatParams;
+				}
+				this.$u.route('/pages/club/consumption/payPage',params);
+			},
 			goInfo(){
 				if(this.orderInfo.isCreator){
 					this.$u.route('/pages/mine/personalSetting/personalSetting');
@@ -449,6 +478,28 @@
 				this.canRefund = data.canRefund;
 				this.canBill = data.pingOrderViewVo.canBill;
 				this.orderInfo = data.pingOrderViewVo
+				let orderInfo = data.pingOrderViewVo;
+				if(orderInfo.saveInviteUser && orderInfo.isCreator){
+					this.chatTag = true;
+					let chatParams = {
+						type: 'yaoyue',
+						friendInfo: {
+							chatToken: orderInfo.saveInviteUser.chatToken,
+							name: orderInfo.saveInviteUser.nickName,
+							avatar: orderInfo.saveInviteUser.avatar,
+							userId: orderInfo.saveInviteUser.id,
+							chatUserId: orderInfo.saveInviteUser.chatUserId
+						},
+						orderInfo: {
+							id: this.orderId,
+							clubCover: orderInfo.clubSimpleInfoVo.clubCover,
+							clubName: orderInfo.clubSimpleInfoVo.name,
+							date: orderInfo.arriveTime,
+							cardTableName: orderInfo.cardTableName
+						}
+					}
+					this.chatParams = chatParams;
+				}
 				if(this.orderInfo.isJoin) {
 					this.inviteId = this.orderInfo.inviteId
 				}
