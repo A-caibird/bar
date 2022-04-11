@@ -14,6 +14,19 @@
 						<text>{{item}}</text>
 					</view>
 				</view>
+				<view class="purchase_select_box" @tap="noteAgree = !noteAgree">
+					<image src="/static/imgs/common/select2.png" v-if="noteAgree"></image>
+					<image src="/static/imgs/common/no-select.png" v-else></image>
+					<text>确认已读购买须知</text>
+				</view>
+			</view>
+			<view class="common_tips" v-if="type == 'ping-join-order'">
+				<view class="common_tips_item">支持提前1小时退</view>
+				<view class="common_tips_item">过时不可改期</view>
+			</view>
+			<view class="common_tips" v-else>
+				<view class="common_tips_item">不支持退</view>
+				<view class="common_tips_item">可以改期</view>
 			</view>
 			<view class="pay-kind">
 				<view class="alipay-cost" @tap="payType='AliPay'">
@@ -71,6 +84,7 @@
 <script>
 	import paymentUtils from '@/common/payment.js'
 	import $chatUtils from '@/common/chat.js'
+	import noteUtils from './purchaseNotes.js'
 	const app = getApp()
 	export default{
 		components:{
@@ -78,7 +92,7 @@
 		data() {
 			return {
 				tipsAgree: true,
-				
+				noteAgree: false,
 				params:{},
 				allAmount:0,
 				type:'',
@@ -89,19 +103,15 @@
 		},
 		computed:{
 			buyMustKnowList(){
-				// if(this.type=='ping-order') {//拼享订单购买须知
-				// 	return ['感谢您的光临，请在规定时间内到达场所否则将取消您的本次预约，过时将不予退还','待有空余台位或改日进行消费','未成年禁止娱乐后果自负']
-				// }
-				// if(this.type=='yao-order') {//邀约订单购买须知
-				// 	return ['感谢您的光临，请在规定时间内到达场所否则将取消您的本次预约，过时将不予退还','待有空余台位或改日进行消费','未成年禁止娱乐后果自负']
-				// }
-				// if(this.type=='add-wine') {//邀约订单购买须知
-				// 	return ['感谢您的光临，请在规定时间内到达场所否则将取消您的本次预约，过时将不予退还','待有空余台位或改日进行消费','未成年禁止娱乐后果自负']
-				// }
-				// if(this.type=='ping-join-order') {//加入拼享订单付款
-				// 	return ['感谢您的光临，请在规定时间内到达场所否则将取消您的本次预约，过时将不予退还','待有空余台位或改日进行消费','未成年禁止娱乐后果自负']
-				// }
-				return ['感谢您的光临，请在预订时间内到达场所否则将自动取消，您的本次预约不能退还，可以改天消费或者存酒', '若超过预约时间，您有一次改期机会，可在酒吧重新选位下单，第二次将不予改期，只能存酒', '改期所选台位的最低消费不得高于逾期订单的支付金额', '请在有效期内按规定重新下单或取酒，如有疑问，请及时联系客服', '未成年人禁止娱乐后果自负']
+				if(this.type=='ping-order') {//拼享订单购买须知
+					return noteUtils.pingNotes;
+				}else if(this.type=='yao-order'){ //邀约订单购买须知
+					return noteUtils.yaoyueNotes;
+				}else if(this.type=='ping-join-order'){//加入拼享订单付款
+					return noteUtils.joinPingNotes;
+				}else{ // 默认
+					return noteUtils.defaultNotes;
+				}
 			},
 		},
 		onLoad(opt) {
@@ -422,6 +432,7 @@
 				this.tipsAgree = !this.tipsAgree;
 			},
 			tapPay: function(){
+				if(!this.noteAgree)  return uni.showToast({title:'请勾选购买须知！',icon:'none'})
 				if(!this.tipsAgree)  return uni.showToast({title:'请勾选用户安全须知！',icon:'none'})
 				// this.$refs.pay.open(this.allAmount)
 				if(!this.btnAvaliable){
@@ -444,6 +455,23 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding-top: 30rpx;
+		padding-bottom: 230rpx;
+		.common_tips{
+			width: calc(100% - 60rpx);
+			margin-left: 30rpx;
+			margin-top: 20rpx;
+			display: flex;
+			align-items: center;
+			&_item{
+				line-height: 30rpx;
+				border: 1px solid #F92FAF;
+				color: #F92FAF;
+				margin-right: 20rpx;
+				box-sizing: border-box;
+				padding: 0 10rpx;
+				font-size: 24rpx;
+			}
+		}
 		.pay_description{
 			width: calc(100% - 60rpx);
 			margin-left: 30rpx;
@@ -451,6 +479,21 @@
 			background: #2C3158;
 			box-sizing: border-box;
 			padding: 30rpx;
+			.purchase_select_box{
+				width: 100%;
+				display: flex;
+				align-items: center;
+				height: 60rpx;
+				&>image{
+					height: 30rpx;
+					width: 30rpx;
+					margin-right: 20rpx;
+				}
+				&>text{
+					font-size: 26rpx;
+					color: #FFFFFF;
+				}
+			}
 			.desc_item{
 				width: 100%;
 				line-height: 40rpx;
