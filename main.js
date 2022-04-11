@@ -23,7 +23,7 @@ Vue.prototype.$toast = toast;
 Vue.prototype.$map = new amapFile.AMapWX({key: '4637fe30d42c25fd130d33912b63df70'});
 Vue.prototype.goeasy = GoEasy.getInstance({
     host:"hangzhou.goeasy.io",  //若是新加坡区域：singapore.goeasy.io
-    appkey:"BC-025546bc12d04071b9113d33a63bbaca",
+    appkey:"BC-1df93636844c48db9e5b7fe0a9a718b4",
     modules:['pubsub', 'im']//根据需要，传入‘pubsub’或'im’，或数组方式同时传入
 });
 
