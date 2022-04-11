@@ -59,7 +59,6 @@
 						id : this.info.id,
 					})
 				}
-				
 			}
 		}
 	}

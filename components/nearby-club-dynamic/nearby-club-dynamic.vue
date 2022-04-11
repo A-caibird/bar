@@ -88,14 +88,20 @@
 				
 			},
 			tapGoDetail() {
-				if(this.btnShow) {
-					this.$u.route( 'pages/club/dynamic/detail',{
-						id : this.info.id,
-						btnShow:true
-					})
-				} else {
-					this.$u.route( 'pages/club/dynamic/detail',{
-						id : this.info.id,
+				if(this.type == 'club'){
+					if(this.btnShow) {
+						this.$u.route( 'pages/club/dynamic/detail',{
+							id : this.info.id,
+							btnShow:true
+						})
+					} else {
+						this.$u.route( 'pages/club/dynamic/detail',{
+							id : this.info.id,
+						})
+					}
+				}else{
+					this.$u.route( 'pages/club/activity/detail',{
+						id : this.info.activityId,
 					})
 				}
 				

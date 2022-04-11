@@ -6,8 +6,8 @@
 					<u-search :value="params.searchKey" height="64" placeholder="请输入昵称" :showAction="false" @change="searchChange"></u-search>
 				</view>
 				<view  v-for="(info, index) in pageList" :key="index">
-					<block v-if="info.type=='club'">
-						<dynamic-item :info="info" :btnShow="true&&showPercent" swiperHeight=468.75 ></dynamic-item>
+					<block v-if="info.type=='club' || info.type == 'clubActivity'">
+						<dynamic-item :info="info" :btnShow="true&&showPercent" swiperHeight="468.75" ></dynamic-item>
 					</block>
 					<block v-else>
 						<find-item @videoPlayTap="videoPlayTap" :mode="mode" :info="info" :showPercent="showPercent" @shareTap="$emit('shareTap')" @showYaoyue="handleShowYaoyue" @showPing="handleShowPing" @oepnComment="$emit('oepnComment',$event)" @oepnGift="$emit('oepnGift',$event)"></find-item>
