@@ -15,7 +15,7 @@
 			<view class="order_status_text" v-if="orderInfo.status=='paying'">
 				<image src="@/static/imgs/common/five-clock.png"></image>
 				<text style="font-weight: 500;margin-left: 16rpx;">待付款</text>
-				<text style="font-size: 26rpx;">（5分钟后自动关闭）</text>
+				<text style="font-size: 26rpx;">（{{minutes}}分钟{{seconds}}秒后自动关闭）</text>
 			</view>
 			<view class="order_status_text" v-if="orderInfo.status=='comment'">
 				<image src="/static/imgs/common/white-hook.png"></image>
@@ -317,11 +317,14 @@
 <script>
 	import selfRate from '@/components/self-rate/self-rate.vue'
 	import statementPop from '@/components/chatStatement/chatStatement.vue'
+	var timeInterval = null;
+	import countdownMixins from '@/mixins/limit.js'
 	export default {
 		components:{
 			selfRate,
 			statementPop
 		},
+		mixins:[countdownMixins],
 		data() {
 			return {
 				orderId:-1,
@@ -334,6 +337,8 @@
 				chatTag: false,
 				chatParams:"",
 				statement: '',
+				minutes: '00',
+				seconds: '00'
 			}
 		},
 		onLoad: function(opt) {
@@ -352,8 +357,18 @@
 			uni.$off('ping-order-detail-refresh',this.load)
 			uni.$off('fetch-wine',this.load)
 			uni.$off('sendInviteMsg');
+			if(timeInterval){
+				clearInterval(timeInterval);
+			}
 		},
 		methods:{
+			timeIntervalEnd(){
+				console.log('timeIntervalEnd');
+				if(timeInterval){
+					clearInterval(timeInterval);
+				}
+				this.orderInfo.status = 'cancel';
+			},
 			statementShowTap(){
 				this.$refs.statementPopRef.show();
 			},
@@ -575,7 +590,9 @@
 				if(this.orderInfo.isJoin) {
 					this.joinTogetherId = this.orderInfo.joinTogetherId
 				}
-				
+				if(this.orderInfo.status == 'paying'){
+					this.startCoundDonw(this.orderInfo.payEndTimestamp)
+				}
 				let orderInfo = data.pingOrderViewVo;
 				if(orderInfo.saveInviteUser && orderInfo.isCreator){
 					this.chatTag = true;
@@ -598,8 +615,12 @@
 					}
 					this.chatParams = chatParams;
 				}
-			
 			},
+			startCoundDonw(endTime){
+				timeInterval = setInterval(() => {
+					this.countdown(endTime);
+				}, 1000)
+			}
 		},
 	}
 </script>

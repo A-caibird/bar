@@ -12,11 +12,13 @@
 				<image src="@/static/imgs/common/white-close.png"></image>
 				<text style="font-weight: 500;margin-left: 16rpx;">订单取消</text>
 			</view>
-			<view class="order_status_text" v-if="orderInfo.status=='paying'">
-				<image src="@/static/imgs/common/five-clock.png"></image>
-				<text style="font-weight: 500;margin-left: 16rpx;">待付款</text>
-				<text style="font-size: 26rpx;">（5分钟后自动关闭）</text>
-			</view>
+			<block v-if="orderInfo.status=='paying'">
+				<view class="order_status_text" >
+					<image src="@/static/imgs/common/five-clock.png"></image>
+					<text style="font-weight: 500;margin-left: 16rpx;">待付款</text>
+					<text style="font-size: 26rpx;">（{{minutes}}分钟{{seconds}}秒后自动关闭）</text>
+				</view>
+			</block>
 			<view class="order_status_text" v-if="orderInfo.status=='comment'">
 				<image src="/static/imgs/common/white-hook.png"></image>
 				<text style="font-weight: 500;margin-left: 16rpx;">已完成</text>
@@ -264,11 +266,14 @@
 <script>
 	import selfRate from '@/components/self-rate/self-rate.vue'
 	import statementPop from '@/components/chatStatement/chatStatement.vue'
+	import countdownMixins from '@/mixins/limit.js'
+	var timeInterval = null;
 	export default {
 		components:{
 			selfRate,
 			statementPop
 		},
+		mixins:[countdownMixins],
 		data() {
 			return {
 				orderId:-1,
@@ -282,6 +287,8 @@
 				chatTag: false,
 				chatParams:"",
 				statement: '',
+				minutes: '00',
+				seconds: '00'
 			}
 		},
 		onLoad: function(opt) {
@@ -289,15 +296,24 @@
 			let {orderId} = opt
 			this.orderId = orderId
 			this.load()
-			
 			uni.$on('yao-order-detail-refresh',this.load)
 			uni.$on('fetch-wine',this.load)
 		},
 		onUnload() {
 			uni.$off('yao-order-detail-refresh',this.load)
 			uni.$off('fetch-wine',this.load)
+			if(timeInterval){
+				clearInterval(timeInterval);
+			}
 		},
 		methods:{
+			timeIntervalEnd(){
+				console.log('timeIntervalEnd');
+				if(timeInterval){
+					clearInterval(timeInterval);
+				}
+				this.orderInfo.status = 'cancel';
+			},
 			statementShowTap(){
 				this.$refs.statementPopRef.show();
 			},
@@ -503,15 +519,22 @@
 				if(this.orderInfo.isJoin) {
 					this.inviteId = this.orderInfo.inviteId
 				}
+				if(this.orderInfo.status == 'paying'){
+					this.startCoundDonw(this.orderInfo.payEndTimestamp)
+				}
 			},
-		},
+			startCoundDonw(endTime){
+				timeInterval = setInterval(() => {
+					this.countdown(endTime);
+				}, 1000)
+			}
+		}
 	}
 </script>
 
 <style lang="scss" scoped>
 	.middle_box {
 		border-top: 1px solid #20234B;
-
 		.order_status_text {
 			width: 100%;
 			height: 112rpx;
