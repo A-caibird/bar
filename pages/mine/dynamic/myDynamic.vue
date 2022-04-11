@@ -37,7 +37,7 @@
 			<view class="intro_box" v-if="otherList.personalProfile">
 				{{otherList.personalProfile}}
 			</view>
-			<view class="content-title" :style="{'paddingTop': statusBarHeight + 'px'}">
+			<view class="content-title">
 				<view class="content-title-box">
 					<view class="nav_box" :class="{'show': navShow}" @tap="$u.throttle($u.route({type:'back'}))">
 						<u-icon name="arrow-left" color="#FFFFFF" size="44"></u-icon>
@@ -145,8 +145,8 @@
 			this.params.userId = option.id
 			this.otherMsg()
 			this.pullRefresh()
-			this.maxHeight = windowHeight - statusBarHeight - ( 150 * proportion);
-			this.minHeight = windowHeight - statusBarHeight - (402 + 164 + 150 + 110) * proportion;
+			// this.maxHeight = windowHeight - statusBarHeight - ( 150 * proportion);
+			// this.minHeight = windowHeight - statusBarHeight - (402 + 164 + 150 + 110) * proportion;
 			this.$nextTick(() => {
 				setTimeout(() => {
 					this.$u.getRect('.content-title').then(res => {
@@ -291,8 +291,6 @@
 						this.flag=true;
 					}
 				}
-				
-			
 			},
 			//获取他人动态
 			
@@ -465,9 +463,10 @@
 				align-items: center;
 				justify-content: space-between;
 				width: 100%;
-				height: 120rpx;
 				color: #B7B9D6;
 				font-size: 30rpx;
+				min-height: 140rpx;
+				padding-top: var(--status-bar-height);
 				padding-bottom: 30rpx;
 				position: sticky;
 				top: 0rpx;
