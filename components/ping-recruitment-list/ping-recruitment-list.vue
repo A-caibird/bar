@@ -1,13 +1,13 @@
 <template>
-	<mescroll-uni :ref="'mescrollRef'+i" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" :height="height" :upperThreshold="upperThreshold"  @scrolltoupper="$emit('scrolltoupper',$event)"
-	 @up="upCallback" :canScroll="canScroll">
+	<!-- <mescroll-uni :ref="'mescrollRef'+i" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" :height="height" :upperThreshold="upperThreshold"  @scrolltoupper="$emit('scrolltoupper',$event)"
+	 @up="upCallback" :canScroll="canScroll"> -->
 		 <view style="padding: 30rpx;">
 			 <view class="item" v-for="(info, index) in pageList" :key="index">
 				<recruitment :info="info"></recruitment>
 			 </view>
 		 </view>
 		
-	</mescroll-uni>
+	<!-- </mescroll-uni> -->
 
 </template>
 
@@ -45,7 +45,6 @@
 		},
 		data() {
 			return {
-				
 				downOption: {
 					use:false,
 					auto: false // 不自动加载 (mixin已处理第一个tab触发downCallback)
@@ -57,7 +56,6 @@
 						size: 10 // 每页数据的数量
 					},
 					noMoreSize: 4, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看; 默认5
-
 				},
 
 				url: '/api/recruitment/list',
@@ -67,7 +65,26 @@
 			}
 		},
 		methods:{
-			
+			refreshPage(callback = null){
+				this.getList(callback)
+			},
+			getList(callback){
+				let params = {
+					  "clubId": this.clubId,
+					  "pageNumber": 1,
+					  "pageSize": 10,
+				}
+				this.$u.api.commonRequest(this.url, params).then(res => {
+					if(parseInt(res.code) == 0){
+						this.pageList = res.data.list
+						if(callback){
+							callback();
+						}
+					}else {
+						this.pageList = [];
+					}
+				})
+			}
 		}
 
 	}

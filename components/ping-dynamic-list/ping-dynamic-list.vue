@@ -1,13 +1,13 @@
 <template>
-	<mescroll-uni :ref="'mescrollRef'+i" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" :height="height" :upperThreshold="upperThreshold"  @scrolltoupper="$emit('scrolltoupper',$event)"
-	 @up="upCallback" :canScroll="canScroll">
+	<!-- <mescroll-uni :ref="'mescrollRef'+i" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" :height="height" :upperThreshold="upperThreshold"  @scrolltoupper="$emit('scrolltoupper',$event)"
+	 @up="upCallback" :canScroll="canScroll"> -->
 	 <view style="padding: 30rpx;">
 		 <block v-for="(info, index) in pageList" :key="index">
 		 	<dynamic :info="info"></dynamic>
 		 </block>
 	 </view>
 		
-	</mescroll-uni>
+	<!-- </mescroll-uni> -->
 
 </template>
 
@@ -67,7 +67,26 @@
 			}
 		},
 		methods: {
-
+			refreshPage(callback = null){
+				this.getList(callback)
+			},
+			getList(callback){
+				let params = {
+					  "clubId": this.clubId,
+					  "pageNumber": 1,
+					  "pageSize": 10,
+				}
+				this.$u.api.commonRequest(this.url, params).then(res => {
+					if(parseInt(res.code) == 0){
+						this.pageList = res.data.list
+						if(callback){
+							callback();
+						}
+					}else {
+						this.pageList = [];
+					}
+				})
+			}
 		}
 
 	}

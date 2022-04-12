@@ -64,7 +64,7 @@
 			this.params.clubId = opt.clubId
 			this.$nextTick(function() {
 				this.downCallback()
-			})
+			}.bind(this))
 		},
 		methods: {
 

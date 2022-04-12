@@ -11,9 +11,9 @@
 				<view class="dynamic_intro">
 					<text>{{info.title}}</text>
 				</view>
-				<view class="dynamic_intro2">
+				<!-- <view class="dynamic_intro2">
 					<text>{{info.content}}</text>
-				</view>
+				</view> -->
 				<view class="dynamic_date"> <text>{{info.time}}</text> </view>
 			</view>
 			<view class="right" v-if="btnShow">

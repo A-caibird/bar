@@ -51,7 +51,7 @@
 				</view>
 				<view class="classify_panel">
 					<block v-for="(info, index) in infoType" :key="index">
-						<view class="common_classify" v-if="info.show" :class="{'select': selectIndex == index}" @tap="selectType(index)">
+						<view class="common_classify" :class="{'select': selectIndex == index}" @tap="selectType(index)">
 							<text>{{info.title}}</text>
 							<view class="select_icon" v-if="selectIndex == index"></view>
 						</view>
@@ -59,83 +59,75 @@
 				</view>
 			</view>
 			<view class="club_detail">
-				<view class="classify_info" v-if="classifyShow">
-					<view style="box-sizing: border-box; padding: 0rpx 30rpx;" v-if="labelName">
-						<view class="common_label">
-							<view class="label_left">
-								<view class="line"></view>
-								<text>{{labelName}}</text>
-							</view>
-							<view class="label_right" @tap="navigateAll">
-								<text>查看全部</text>
-								<image src="/static/imgs/common/right.png"></image>
-							</view>
-						</view>
-					</view>
-					<view v-show="infoType[0].show && selectIndex == 0">
-						<view class="parse_box">
-							<u-parse :html="clubContent"></u-parse>
-						</view>
-					</view>
-					<view v-show="infoType[1].show && selectIndex == 1">
-						<ping-dynamic-list :i="1" :index="selectIndex" :clubId="clubId"  :canScroll="false" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-dynamic-list>
-					</view>
-					<view v-show="infoType[2].show && selectIndex == 2">
-						<ping-activity-list :i="2" :index="selectIndex" :clubId="clubId" :canScroll="false" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-activity-list>
-					</view>
-					<view v-show="infoType[3].show && selectIndex == 3">
-						<ping-recruitment-list :i="3" :index="selectIndex" :clubId="clubId" :canScroll="false" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-recruitment-list>
-					</view>
-					<view v-show="infoType[4].show && selectIndex == 4">
-						<view class="evaluate_box">
-							<view class="complex_rate">
-								<view class="complex_left">
-									<view class="label"> <text>评分总数</text> </view>
-									<view class="label_rate">
-										<view class="score">{{clubInfo.avgScore}}</view>
-										<view class="score_rate">
-											<selfRate :score="clubInfo.avgScore" size="26"></selfRate>
-										</view>
+				<swiper class="classify_info" :style="{height: infoType[selectIndex].height}" v-if="classifyShow" :current="selectIndex" @change="swiperChange">
+					<swiper-item v-for="(info, index) in infoType" :key="index">
+						<view :id="('swiper_content' + index)">
+							<view style="box-sizing: border-box; padding: 0rpx 30rpx;" v-if="labelName">
+								<view class="common_label">
+									<view class="label_left">
+										<view class="line"></view>
+										<text>{{labelName}}</text>
+									</view>
+									<view class="label_right" @tap="navigateAll">
+										<text>查看全部</text>
+										<image src="/static/imgs/common/right.png"></image>
 									</view>
 								</view>
-								<view class="complex_right">
-									<block v-for="(info, index) in scoreList" :key="index">
-										<view class="common_rate">
-											<view class="score_rate">
-												<selfRate :score="info.score" size="26"></selfRate>
-											</view>
-											<view class="score_label">{{info.text}}</view>
-										</view>
-									</block>					
-								</view>
 							</view>
-							<!-- <view class="common_label">
-								<view class="label_left">
-									<view class="line"></view>
-									<text>用户评价</text>
-								</view>
-								<view class="label_right" @tap="$u.route('pages/evaluate/list',{clubId:clubId})">
-									<text>查看全部</text>
-									<image src="/static/imgs/common/right.png"></image>
-								</view>
-							</view> -->
-							<template v-if="commentList.length>0">
-								<view class="eva_list">
-									<block v-for="(info, index) in commentList" :key="index">
-										<view class="classify_item">
-											<evaluate :info="info" :isLast="index==commentList.length-1"></evaluate>
+							<view class="parse_box" v-if="info.type == 'introduction'">
+								<u-parse :html="clubContent" @ready="getSwiperHeight(0)"></u-parse>
+							</view>
+							<view v-if="info.type == 'dynamic'">
+								<ping-dynamic-list ref="dynamicRef" :i="1" :clubId="clubId"  :canScroll="false" :height="infoType[selectIndex].height" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-dynamic-list>
+							</view>
+							<view v-if="info.type == 'activity'">
+								<ping-activity-list ref="activityRef" :i="2" :clubId="clubId" :canScroll="false" :height="infoType[selectIndex].height" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-activity-list>
+							</view>
+							<view v-if="info.type == 'job'">
+								<ping-recruitment-list ref="jobRef" :i="3" :clubId="clubId" :canScroll="false" :height="infoType[selectIndex].height" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-recruitment-list>
+							</view>
+							<view v-if="info.type == 'evaluate'">
+								<view class="evaluate_box">
+									<view class="complex_rate">
+										<view class="complex_left">
+											<view class="label"> <text>评分总数</text> </view>
+											<view class="label_rate">
+												<view class="score">{{clubInfo.avgScore}}</view>
+												<view class="score_rate">
+													<selfRate :score="clubInfo.avgScore" size="26"></selfRate>
+												</view>
+											</view>
 										</view>
-									</block>
-								</view>
-							</template>
-							<template v-else>
-								<view style="height: 750rpx;">
-									<empty content="暂无评价"></empty>
-								</view>
-							</template>
+										<view class="complex_right">
+											<block v-for="(info, index) in scoreList" :key="index">
+												<view class="common_rate">
+													<view class="score_rate">
+														<selfRate :score="info.score" size="26"></selfRate>
+													</view>
+													<view class="score_label">{{info.text}}</view>
+												</view>
+											</block>					
+										</view>
+									</view>
+									<template v-if="commentList.length>0">
+										<view class="eva_list">
+											<block v-for="(info, index) in commentList" :key="index">
+												<view class="classify_item">
+													<evaluate :info="info" :isLast="index==commentList.length-1"></evaluate>
+												</view>
+											</block>
+										</view>
+									</template>
+									<template v-else>
+										<view style="height: 750rpx;">
+											<empty content="暂无评价"></empty>
+										</view>
+									</template>
+								</view>	
+							</view>	
 						</view>	
-					</view>		
-				</view>
+					</swiper-item>	
+				</swiper>
 			</view>
 		</view>
 		<view class="footer_box">
@@ -177,36 +169,35 @@
 				infoType: [{
 					label: '',
 					title: '简介',
-					show: true,
+					type: 'introduction',
 					url:'',
+					height: '0rpx',
 				},{
 					label: '动态',
 					title: '动态',
-					show: true,
+					type: 'dynamic',
 					path:'/pages/club/dynamic/list',
+					height: '600rpx',
 				},{
 					label: '活动',
 					title: '活动',
-					show: true,
+					type: 'activity',
 					path:'/pages/club/activity/list',
+					height: '600rpx',
 				},{
 					label: '招聘',
 					title: '招聘',
-					show: true,
+					type: 'job',
 					path:'/pages/club/job/list',
+					height: '600rpx',
 				},{
 					label: '评论',
 					title: '评论',
-					show: true,
+					type: 'evaluate',
 					path:'/pages/evaluate/list',
+					height: '600rpx',
 				}],
-				// urls:[
-				// 	'',
-				// 	'/api/club/dynamicList',
-				// 	'/api/clubActivity/activityList',
-				// 	'/api/recruitment/list',
-				// 	'/api/club/evaluationList'
-				// ],
+				
 				scoreList:[
 					{
 						text:'服务',
@@ -231,7 +222,7 @@
 				],
 				clubId:'',
 				collect: false,
-				selectIndex: 4,
+				selectIndex: -1,
 				stickyStatus: false,
 				clubInfo:{
 					bannerObjList:[],
@@ -248,22 +239,10 @@
 			}
 		},
 		computed:{
-			swiperHeight(){
-				return `calc(100vh - ${this.statusBarHeight}px - 110rpx - 120rpx)`
-			},
 			labelName(){
 				let index = this.selectIndex;
 				let label = this.infoType[index].label;
 				return label
-			}
-		},
-		watch: {
-			"selectIndex"(newValue) {
-				if(newValue == 4){
-					if(this.commentList.length <= 0){
-						this.getCommentList();
-					}
-				}
 			}
 		},
 		onPageScroll: function() {
@@ -298,14 +277,10 @@
 			if(chatFriendInfo){
 				this.chatFriendInfo = chatFriendInfo;
 			}
-			this.$nextTick(() => {
-				uni.showLoading({
-					title: '加载中'
-				})
-				this.getClubDetail();
-				// this.getClubIntro();
-				// this.selectIndex = 0;
+			uni.showLoading({
+				title: '加载中'
 			})
+			this.getClubDetail();
 		},
 		onShow:function(){
 			
@@ -314,6 +289,21 @@
 		
 		},
 		methods: {
+			// 选择介绍类别
+			selectType: function(index) {
+				if (index != this.selectIndex) {
+					this.selectIndex = index;
+					// let type = this.infoType[this.selectIndex].type;
+					// this.getTypeContent(type);
+				}
+			},
+			swiperChange(e){
+				if(e.detail.current != this.selectIndex){
+					this.selectIndex = e.detail.current;
+				}
+				let type = this.infoType[this.selectIndex].type;
+				this.getTypeContent(type);
+			},
 			refreshPage(){
 				this.getClubDetail();
 			},
@@ -334,7 +324,7 @@
 				this.openMap(this.lng, this.lat, this.clubInfo.address)
 			},
 			//获取评论列表
-			getCommentList:function(){
+			getCommentList:function(callback = null){
 				let params = {
 					  "clubId": this.clubId,
 					  "pageNumber": 1,
@@ -343,6 +333,9 @@
 				this.$u.api.getClubEvaluationListApi(params).then(res => {
 					if(parseInt(res.code) == 0){
 						this.commentList = res.data.list
+						if(callback){
+							callback();
+						}
 					}else {
 						this.commentList = [];
 						console.log("获取评价列表失败")
@@ -457,12 +450,15 @@
 				})
 			},
 			// 获取酒吧简介
-			getClubIntro: async function(){
+			getClubIntro: async function(callback = null){
 				let {code,data} = await this.$u.api.getClubIntro(this.clubId)
 				if(code==0) {
 					this.clubContent = data.view;
 					this.lng = data.lng
 					this.lat = data.lat
+					if(callback){
+						callback();
+					}
 				}
 			},
 			// 获取酒吧详情
@@ -477,32 +473,86 @@
 					this.scoreList[2].score = info.surroundingsAvgScore
 					this.scoreList[3].score = info.genreAvgScore
 					this.scoreList[4].score = info.happyAvgScore
-					if(!data.info.canEvaluationContent) this.infoType[4].show = false
-					if(!data.info.showActivity) this.infoType[2].show = false
-					if(!data.info.showDynamic) this.infoType[1].show = false
-					if(!data.info.showRecruitment) this.infoType[3].show = false
+					let infoType = this.infoType;
+					if(!data.info.canEvaluationContent){
+						infoType.splice(4, 1);
+					}
+					if(!data.info.showRecruitment){
+						infoType.splice(3, 1);
+					} 
+					if(!data.info.showActivity){
+						infoType.splice(2, 1);
+					}
+					if(!data.info.showDynamic){
+						infoType.splice(1, 1);
+					}
+					this.infoType = infoType;
 				}
-				this.$nextTick(() => {
-					setTimeout(() => {
-						uni.hideLoading();
-					},800);
-				})
 				this.classifyShow = true;
-				this.getClubIntro();
-				// this.getCommentList();
 				this.selectIndex = 0;
+				let type = this.infoType[0].type;
+				this.getTypeContent(type);
 			},
 			
+			// 获取分类页面内容
+			getTypeContent(type){
+				let currentIndex = this.infoType.findIndex((item) => {
+					return item.type == type
+				})
+				var vm = this;
+				switch(type){
+					case 'introduction': {
+						vm.getClubIntro(() => {
+							// vm.getSwiperHeight(currentIndex)
+						});
+					};break;
+					case 'dynamic': {
+						vm.$refs.dynamicRef[0].refreshPage(() => {
+							vm.getSwiperHeight(currentIndex)
+						});
+					};break;
+					case 'activity': {
+						vm.$refs.activityRef[0].refreshPage(() => {
+							vm.getSwiperHeight(currentIndex)
+						});
+					};break;
+					case 'job': {
+						vm.$refs.jobRef[0].refreshPage(() => {
+							vm.getSwiperHeight(currentIndex)
+						});
+					};break;
+					case 'evaluate': {
+						vm.getCommentList(() => {
+							vm.getSwiperHeight(currentIndex)
+						});
+					};break;
+					default: break;
+				}
+			},
+			
+			//获取swiperHeight 高度 
+			getSwiperHeight(currentIndex){
+				this.$nextTick(function(){
+					let id = "#swiper_content" + currentIndex;
+					setTimeout(() => {
+						uni.hideLoading();
+						this.$u.getRect(id).then(res => {
+							console.log('getSwiperHeight', res);
+							try{
+								this.infoType[currentIndex].height = res.height + 30 + 'px';
+							}catch(e){
+								console.log('getSwiperHeight Error', e);
+								this.infoType[currentIndex].height = 600 + 'rpx';
+							}
+							this.$forceUpdate();
+						})
+					}, 500)
+				}.bind(this));
+			},
 			goBack:function(){
 				uni.navigateBack({
 					delta:1,
 				})
-			},
-			// 选择介绍类别
-			selectType: function(index) {
-				if (index != this.selectIndex) {
-					this.selectIndex = index;
-				}
 			}
 		}
 	}
@@ -706,7 +756,6 @@
 				.classify_info {
 					width: 100%;
 					box-sizing: border-box;
-					// height: calc(100vh - var(--status-bar-height) - 110rpx - 120rpx);
 					.common_label{
 						height: 100rpx;
 						width: 100%;

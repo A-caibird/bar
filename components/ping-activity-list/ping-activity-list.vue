@@ -1,13 +1,13 @@
 <template>
-	<mescroll-uni :ref="'mescrollRef'+i" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" :height="height" :upperThreshold="upperThreshold"  @scrolltoupper="$emit('scrolltoupper',$event)"
-	 @up="upCallback" :canScroll="canScroll">
+	<!-- <mescroll-uni :ref="'mescrollRef'+i" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" :height="height" :upperThreshold="upperThreshold"  @scrolltoupper="$emit('scrolltoupper',$event)"
+	 @up="upCallback" :canScroll="canScroll"> -->
 		<view style="padding: 30rpx;">
 			<view class="item" v-for="(info, index) in pageList" :key="index">
 				<activity :info="info"></activity>
 			</view>
 		</view>
 		
-	</mescroll-uni>
+	<!-- </mescroll-uni> -->
 
 </template>
 
@@ -19,7 +19,6 @@
 
 	//组件
 	import MescrollUni from '@/components/mescroll-uni/mescroll-uni.vue'
-
 
 	import activity from '@/components/activity-item/activity-item.vue'
 	export default {
@@ -66,7 +65,26 @@
 			}
 		},
 		methods:{
-			
+			refreshPage(callback = null){
+				this.getList(callback)
+			},
+			getList(callback){
+				let params = {
+					  "clubId": this.clubId,
+					  "pageNumber": 1,
+					  "pageSize": 10,
+				}
+				this.$u.api.commonRequest(this.url, params).then(res => {
+					if(parseInt(res.code) == 0){
+						this.pageList = res.data.list
+						if(callback){
+							callback();
+						}
+					}else {
+						this.pageList = [];
+					}
+				})
+			}
 		}
 
 	}
