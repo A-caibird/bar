@@ -1,8 +1,9 @@
 <template>
 	<mescroll-uni :ref="'mescrollRef'+i" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" @up="upCallback">
 		<view style="margin-bottom: 30rpx;" v-for="(info, index) in pageList" :key="info.id">
-			<yao-order-item v-if="mode=='common'" :info="info"></yao-order-item>
+			<yao-order-item v-if="mode=='common'" :info="info" @statementPopShowTap="statementPopShowTap"></yao-order-item>
 			<ping-order-item v-if="mode=='share'" :info="info"></ping-order-item>
+			<statementPop ref="statementPopRef" btnText="去付款" @btnTap="statementSelectTap"></statementPop>
 		</view>
 	</mescroll-uni>
 	
@@ -17,13 +18,15 @@
 	import MescrollUni from '@/components/mescroll-uni/mescroll-uni.vue'
 	import PingOrderItem from '@/components/ping-order-item/ping-order-item.vue'
 	import YaoOrderItem from '@/components/yao-order-item/yao-order-item.vue'
-	
-	export default{
+	import statementPop from '@/components/chatStatement/chatStatement.vue'
+	import orderUtils from '@/common/orderUtils.js'
+	export default {
 		mixins: [MescrollMixin,MescrollMoreItemMixin], // 注意此处还需使用MescrollMoreItemMixin (必须写在MescrollMixin后面)
 		components:{
 			MescrollUni,
 			PingOrderItem,
 			YaoOrderItem,
+			statementPop
 		},
 		props:{
 			mode:{
@@ -55,29 +58,29 @@
 				url:this.mode=='share'?'/api/order/pingList':'/api/order/inviteOrderList',
 				params:{
 					status:this.status,
-				}
+				},
+				orderInfo: {},
 			}
 		},
 		computed:{
 		
 		},
 		watch:{
-			// mode(val){
-			// 	console.log(1352)
-			// 	if (val == 'share') {
-			// 		this.url = '/api/order/pingList'
-			// 		this.downCallback()
-			// 	} 
-			// 	if (value == 'common') {
-			// 		this.url = '/api/order/inviteOrderList'
-			// 		this.downCallback()
-			// 	}
-				
-				
-			// }
+			
 		},
 		methods:{
-			
+			statementPopShowTap(orderInfo){
+				this.orderInfo = orderInfo;
+				this.$refs.statementPopRef.show();
+			},
+			statementSelectTap(e){
+				let statement = e;
+				let info = this.$u.deepClone(this.orderInfo);
+				info = Object.assign({
+					statement,
+				}, info)
+				orderUtils.goPay(this, 'yaoyue', info);
+			}
 		}
 	}
 </script>

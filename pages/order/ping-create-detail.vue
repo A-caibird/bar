@@ -385,7 +385,7 @@
 				}
 				if(this.chatTag){
 					let chatParams = this.chatParams;
-					chatParams['statement'] = this.statement;
+					chatParams['statement'] = "";
 					params.chatTag = true;
 					params['chatParams'] = chatParams;
 				}

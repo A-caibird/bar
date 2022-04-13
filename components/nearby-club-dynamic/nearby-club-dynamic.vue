@@ -88,7 +88,7 @@
 				
 			},
 			tapGoDetail() {
-				if(this.type == 'club'){
+				if(this.info.type == 'club'){
 					if(this.btnShow) {
 						this.$u.route( 'pages/club/dynamic/detail',{
 							id : this.info.id,

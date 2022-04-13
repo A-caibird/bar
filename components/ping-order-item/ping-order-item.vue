@@ -35,7 +35,7 @@
 				<view class="common_btn" v-if="addWineShow" @tap.stop="$u.throttle(tapGoAddWine)"> <text>加单酒水</text> </view>
 			
 				
-				<view class="common_btn color" v-if="goPayShow" @tap.stop="$u.throttle($u.route('/pages/club/consumption/payPage',{allAmount:info.originalWineCoin,orderId:info.id,type:'ping-order'}))">去付款</view>
+				<view class="common_btn color" v-if="goPayShow" @tap.stop="$u.throttle(goPay)">去付款</view>
 				<view class="common_btn color" v-if="goPayShareShow" @tap.stop="$u.throttle($u.route('/pages/club/consumption/payPage',{allAmount:info.payWineCoin,joinTogetherId:info.joinTogetherId,type:'ping-join-order'}))">去付款</view>
 				<view class="common_btn" v-if="cancelOrderShow" @tap.stop="$u.throttle(tapCancel)"> <text>取消订单</text> </view>
 				<view class="common_btn" v-if="arriveShow" @tap.stop="tapArrive"> <text>确认到店</text> </view>
@@ -53,6 +53,7 @@
 </template>
 
 <script>
+	import orderUtils from '@/common/orderUtils.js'
 	export default{
 		props:{
 			info:{
@@ -102,12 +103,11 @@
 			commentShow() { //评价按钮
 				return this.info.status == 'comment'
 			},
-			
-			
-			
-			
 		},
 		methods:{
+			goPay(){
+				orderUtils.goPay(this, 'ping', this.info);
+			},
 			async tapFetchWine(){
 				this.$u.route('/pages/order/fetch-wine',{
 					orderId:this.info.id,

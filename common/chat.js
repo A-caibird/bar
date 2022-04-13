@@ -52,12 +52,13 @@ async function sendPingInfo(vm, orderInfo, friendInfo, callback = null){
 			amount: orderInfo.amount,
 			agreeStatus: 'none',
 		})
-		this.$toast.text('已发送拼享请求')
+		// vm.$toast.text('已发送拼享请求')
 		if(callback){
 			callback()
 		}
 	}
 }
+
 
 module.exports = {
 	sendYaoyueInfo,

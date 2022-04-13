@@ -32,7 +32,10 @@
 			</view>
 			<view class="order_btn" v-if="goPayShow||cancelOrderShow||commentShow||arriveShow||yaoyueShow||addWineShow||quiteOrderShow||fetchWineShow">
 				<view class="common_btn" v-if="fetchWineShow" @tap.stop="$u.throttle(tapFetchWine)"> <text>取酒</text> </view>
-				<view class="common_btn color" v-if="goPayShow" @tap.stop="$u.throttle($u.route('/pages/club/consumption/payPage',{allAmount:info.originalWineCoin,orderId:info.id,type:'yao-order'}))">去付款</view>
+				<block v-if="goPayShow">
+					<view class="common_btn color" v-if="chatTag"  @tap.stop="$u.throttle(statementPopShowTap)">去付款</view>
+					<view class="common_btn color" v-else @tap.stop="$u.throttle(goPay)">去付款</view>
+				</block>
 				<view class="common_btn" v-if="cancelOrderShow" @tap.stop="tapCancel"> <text>取消订单</text> </view>
 				<view class="common_btn" v-if="commentShow" @tap.stop="$u.throttle($u.route('/pages/order/evaluation',{orderId:info.id}))"> <text>我要评价</text> </view>
 				<view class="common_btn" v-if="arriveShow" @tap.stop="tapArrive"> <text>确认到店</text> </view>
@@ -46,16 +49,18 @@
 </template>
 
 <script>
+	import orderUtils from '@/common/orderUtils.js'
 	export default {
 		props: {
 			info: {
 				type: Object,
 				default: {},
 			},
-
-
 		},
 		computed: {
+			chatTag(){ // 是否存在聊天
+				return (this.info.saveInviteUser && this.info.isCreator)
+			},
 			canRefund(){ //退款
 				return this.info.canRefund
 			},
@@ -88,6 +93,12 @@
 			},
 		},
 		methods: {
+			statementPopShowTap(){
+				this.$emit('statementPopShowTap', this.info);
+			},
+			goPay(){
+				orderUtils.goPay(this, 'yaoyue', this.info);
+			},
 			async tapFetchWine(){
 				this.$u.route('/pages/order/fetch-wine',{
 					orderId:this.info.id,

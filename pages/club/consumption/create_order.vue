@@ -159,7 +159,7 @@
 				<view class="btn_text buy" @tap="tapGoDrinks">
 					<text>继续选购</text>
 				</view>
-				<view class="btn_text active" v-if="chatTag" @tap="$u.throttle(statementShowTap, 2000)">
+				<view class="btn_text active" v-if="chatTag && data.type=='fullAmount'" @tap="$u.throttle(statementShowTap, 2000)">
 					<text>去付款</text>
 				</view>
 				<view class="btn_text active" v-else @tap="$u.throttle(tapGoPayPage, 2000)">
@@ -519,7 +519,7 @@
 								date: data.arrivalTime,
 								cardTableName: data.seat.sn,
 							},
-							statement: this.statement,
+							statement: this.statement || "",
 						}
 					}
 					

@@ -21,7 +21,6 @@
 					<swiper-item v-for="(item,index) in status">
 						<order-list ref="order-list" :i="index" :index="swiperCurrent" :mode="mode" :status="item.value"></order-list>
 					</swiper-item>
-					
 				</swiper>
 			</view>
 		</view>
