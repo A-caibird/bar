@@ -168,7 +168,7 @@
 					<view class="classify_panel">
 						<block v-for="(info, index) in infoType" :key="index">
 							<view class="common_classify" :class="{'select': selectIndex == index}" @tap="selectType(index)">
-								<text>{{info}}</text>
+								<text>{{info.title}}</text>
 								<view class="select_icon" v-if="selectIndex == index"></view>
 							</view>
 						</block>
@@ -176,79 +176,74 @@
 				</view>
 				<view class="classify_info">
 					<swiper style="height: 100%;" :duration="0" :current="selectIndex" @change="selectIndex=$event.detail.current">
-						<swiper-item>
-							<scroll-view :scroll-y="stickyStatus" :style="{height:swiperHeight}" @scrolltoupper="scrolltoupper" :upper-threshold="upperThreshold">
-								<view style="color: #FFFFFF;padding: 30rpx;">
-									<u-parse :html="clubContent"></u-parse>
-								</view>
-							</scroll-view>
-						
-						</swiper-item>
-						<swiper-item>
-
-							<ping-dynamic-list :i="1" :index="selectIndex" :clubId="clubId"  :canScroll="stickyStatus" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-dynamic-list>
-							
-						</swiper-item>
-						<swiper-item>
-
-							<ping-activity-list :i="2" :index="selectIndex" :clubId="clubId" :canScroll="stickyStatus" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-activity-list>
-						</swiper-item>
-						<swiper-item>
-
-							<ping-recruitment-list :i="3" :index="selectIndex" :clubId="clubId" :canScroll="stickyStatus" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-recruitment-list>
-						</swiper-item>
-						<swiper-item>
-							<scroll-view :scroll-y="stickyStatus" :style="{height:swiperHeight}" @scrolltoupper="scrolltoupper" :upper-threshold="upperThreshold">
-								<view class="evaluate_box">
-									<view class="complex_rate">
-										<view class="complex_left">
-											<view class="label"> <text>评分总数</text> </view>
-											<view class="label_rate">
-												<view class="score">{{clubInfo.avgScore}}</view>
-												<view class="score_rate">
-													<selfRate :score="clubInfo.avgScore" size="26"></selfRate>
+						<block v-for="(info, index) in infoType" :key="index">
+							<swiper-item>
+								<scroll-view v-if="info.type == 'introduction'" :scroll-y="stickyStatus" :style="{height:swiperHeight}" @scrolltoupper="scrolltoupper" :upper-threshold="upperThreshold">
+									<view style="color: #FFFFFF;padding: 30rpx;">
+										<u-parse :html="clubContent"></u-parse>
+									</view>
+								</scroll-view>
+								<block v-if="info.type == 'dynamic'">
+									<ping-dynamic-list :i="1" :index="infoType[selectIndex].type == 'dynamic' ? 1 : -1" :clubId="clubId"  :canScroll="stickyStatus" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-dynamic-list>
+								</block>
+								<block v-if="info.type == 'activity'">
+									<ping-activity-list :i="2" :index="infoType[selectIndex].type == 'activity' ? 2 : -2" :clubId="clubId" :canScroll="stickyStatus" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-activity-list>
+								</block>
+								<block v-if="info.type == 'job'">
+									<ping-recruitment-list :i="3" :index="infoType[selectIndex].type == 'job' ? 3 : -3" :clubId="clubId" :canScroll="stickyStatus" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-recruitment-list>
+								</block>
+								<scroll-view v-if="info.type == 'evaluate'" :scroll-y="stickyStatus" :style="{height:swiperHeight}" @scrolltoupper="scrolltoupper" :upper-threshold="upperThreshold">
+									<view class="evaluate_box">
+										<view class="complex_rate">
+											<view class="complex_left">
+												<view class="label"> <text>评分总数</text> </view>
+												<view class="label_rate">
+													<view class="score">{{clubInfo.avgScore}}</view>
+													<view class="score_rate">
+														<selfRate :score="clubInfo.avgScore" size="26"></selfRate>
+													</view>
 												</view>
 											</view>
-										</view>
-										<view class="complex_right">
-											<block v-for="(info, index) in scoreList" :key="index">
-												<view class="common_rate">
-													<view class="score_rate">
-														<selfRate :score="info.score" size="26"></selfRate>
+											<view class="complex_right">
+												<block v-for="(info, index) in scoreList" :key="index">
+													<view class="common_rate">
+														<view class="score_rate">
+															<selfRate :score="info.score" size="26"></selfRate>
+														</view>
+														<view class="score_label">{{info.text}}</view>
 													</view>
-													<view class="score_label">{{info.text}}</view>
-												</view>
-											</block>					
+												</block>					
+											</view>
 										</view>
-									</view>
-									<view class="eva_label">
-										<view class="label_left">
-											<view class="line"></view>
-											<text>用户评价</text>
+										<view class="eva_label">
+											<view class="label_left">
+												<view class="line"></view>
+												<text>用户评价</text>
+											</view>
+											<view class="label_right" @tap="$u.route('pages/evaluate/list',{clubId:clubId})">
+												<text>查看全部</text>
+												<image src="/static/imgs/common/right.png"></image>
+											</view>
 										</view>
-										<view class="label_right" @tap="$u.route('pages/evaluate/list',{clubId:clubId})">
-											<text>查看全部</text>
-											<image src="/static/imgs/common/right.png"></image>
-										</view>
-									</view>
-									<template v-if="commentList.length>0">
-										<view class="eva_list">
-											<block v-for="(info, index) in commentList" :key="index">
-												<view class="classify_item">
-													<evaluate :info="info" :isLast="index==commentList.length-1"></evaluate>
-												</view>
-											</block>
-										</view>
-									</template>
-									<template v-else>
-										<view style="height: 750rpx;">
-											<empty content="暂无评价"></empty>
-										</view>
-									</template>
-								</view>  
+										<template v-if="commentList.length>0">
+											<view class="eva_list">
+												<block v-for="(info, index) in commentList" :key="index">
+													<view class="classify_item">
+														<evaluate :info="info" :isLast="index==commentList.length-1"></evaluate>
+													</view>
+												</block>
+											</view>
+										</template>
+										<template v-else>
+											<view style="height: 750rpx;">
+												<empty content="暂无评价"></empty>
+											</view>
+										</template>
+									</view>  				
+								</scroll-view>
+							</swiper-item>
+						</block>
 						
-							</scroll-view>
-						</swiper-item>
 						
 					</swiper>
 			
@@ -345,14 +340,32 @@
 			return {
 				popPrice: '',
 				popShow: false,
-				infoType: ['简介', '动态', '活动', '招聘', '评价'],
-				urls:[
-					'',
-					'/api/club/dynamicList',
-					'/api/clubActivity/activityList',
-					'/api/recruitment/list',
-					'/api/club/evaluationList'
-				],
+				infoType:[{
+					label: '',
+					title: '简介',
+					type: 'introduction',
+					url:'',
+				},{
+					label: '动态',
+					title: '动态',
+					type: 'dynamic',
+					path:'/pages/club/dynamic/list',
+				},{
+					label: '活动',
+					title: '活动',
+					type: 'activity',
+					path:'/pages/club/activity/list',
+				},{
+					label: '招聘',
+					title: '招聘',
+					type: 'job',
+					path:'/pages/club/job/list',
+				},{
+					label: '评论',
+					title: '评论',
+					type: 'evaluate',
+					path:'/pages/evaluate/list',
+				}],
 				scoreList: [{
 						text: '服务',
 						score: 5
@@ -581,6 +594,20 @@
 					this.scoreList[2].score = info.surroundingsAvgScore
 					this.scoreList[3].score = info.genreAvgScore
 					this.scoreList[4].score = info.happyAvgScore
+					let infoType = this.infoType;
+					if(!data.info.canEvaluationContent){
+						infoType.splice(4, 1);
+					}
+					if(!data.info.showRecruitment){
+						infoType.splice(3, 1);
+					} 
+					if(!data.info.showActivity){
+						infoType.splice(2, 1);
+					}
+					if(!data.info.showDynamic){
+						infoType.splice(1, 1);
+					}
+					this.infoType = infoType;
 				}
 
 			},

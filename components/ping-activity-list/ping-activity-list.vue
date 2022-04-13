@@ -1,13 +1,13 @@
 <template>
-	<!-- <mescroll-uni :ref="'mescrollRef'+i" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" :height="height" :upperThreshold="upperThreshold"  @scrolltoupper="$emit('scrolltoupper',$event)"
-	 @up="upCallback" :canScroll="canScroll"> -->
+	<mescroll-uni :ref="'mescrollRef'+i" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" :height="height" :upperThreshold="upperThreshold"  @scrolltoupper="$emit('scrolltoupper',$event)"
+	 @up="upCallback" :canScroll="canScroll">
 		<view style="padding: 30rpx;">
 			<view class="item" v-for="(info, index) in pageList" :key="index">
 				<activity :info="info"></activity>
 			</view>
 		</view>
 		
-	<!-- </mescroll-uni> -->
+	</mescroll-uni>
 
 </template>
 

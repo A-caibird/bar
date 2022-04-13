@@ -45,24 +45,25 @@
 					</view>
 				</view>
 			</view>
-			<view class="classify_box" :class="{'paddingTop': stickyStatus}">
-				<view class="nav_box" :class="{'animalStart': stickyStatus}" @tap="$u.throttle($u.route({type:'back'}))">
-					<u-icon name="arrow-left" color="#FFFFFF" size="44"></u-icon>
-				</view>
-				<view class="classify_panel">
-					<block v-for="(info, index) in infoType" :key="index">
-						<view class="common_classify" :class="{'select': selectIndex == index}" @tap="selectType(index)">
-							<text>{{info.title}}</text>
-							<view class="select_icon" v-if="selectIndex == index"></view>
-						</view>
-					</block>
-				</view>
-			</view>
+			
 			<view class="club_detail">
-				<swiper class="classify_info" :style="{height: infoType[selectIndex].height}" v-if="classifyShow" :current="selectIndex" @change="swiperChange">
+				<view class="classify_box" :class="{'paddingTop': stickyStatus}">
+					<view class="nav_box" :class="{'animalStart': stickyStatus}" @tap="$u.throttle($u.route({type:'back'}))">
+						<u-icon name="arrow-left" color="#FFFFFF" size="44"></u-icon>
+					</view>
+					<view class="classify_panel">
+						<block v-for="(info, index) in infoType" :key="index">
+							<view class="common_classify" :class="{'select': selectIndex == index}" @tap="selectType(index)">
+								<text>{{info.title}}</text>
+								<view class="select_icon" v-if="selectIndex == index"></view>
+							</view>
+						</block>
+					</view>
+				</view>
+				<swiper class="classify_info" :current="selectIndex" @change="swiperChange">
 					<swiper-item v-for="(info, index) in infoType" :key="index">
-						<view :id="('swiper_content' + index)">
-							<view style="box-sizing: border-box; padding: 0rpx 30rpx;" v-if="labelName">
+						<!-- <view :id="('swiper_content' + index)"> -->
+							<!-- <view style="box-sizing: border-box; padding: 0rpx 30rpx;" v-if="labelName">
 								<view class="common_label">
 									<view class="label_left">
 										<view class="line"></view>
@@ -73,20 +74,23 @@
 										<image src="/static/imgs/common/right.png"></image>
 									</view>
 								</view>
-							</view>
-							<view class="parse_box" v-if="info.type == 'introduction'">
-								<u-parse :html="clubContent" @ready="getSwiperHeight(0)"></u-parse>
-							</view>
-							<view v-if="info.type == 'dynamic'">
-								<ping-dynamic-list ref="dynamicRef" :i="1" :clubId="clubId"  :canScroll="false" :height="infoType[selectIndex].height" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-dynamic-list>
-							</view>
-							<view v-if="info.type == 'activity'">
-								<ping-activity-list ref="activityRef" :i="2" :clubId="clubId" :canScroll="false" :height="infoType[selectIndex].height" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-activity-list>
-							</view>
-							<view v-if="info.type == 'job'">
-								<ping-recruitment-list ref="jobRef" :i="3" :clubId="clubId" :canScroll="false" :height="infoType[selectIndex].height" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-recruitment-list>
-							</view>
-							<view v-if="info.type == 'evaluate'">
+							</view> -->
+							<scroll-view :scroll-y="stickyStatus" :style="{height:swiperHeight}"  v-if="info.type == 'introduction'">
+								<view style="color: #FFFFFF;padding: 30rpx;">
+									<u-parse :html="clubContent"></u-parse>
+								</view>
+							</scroll-view>
+						
+							<block v-if="info.type == 'dynamic'">
+								<ping-dynamic-list :index="infoType[selectIndex].type == 'dynamic' ? 1 : -1"  :i="1" :clubId="clubId"  :canScroll="stickyStatus" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-dynamic-list>
+							</block>
+							<block v-if="info.type == 'activity'">
+								<ping-activity-list :index="infoType[selectIndex].type == 'activity' ? 2 : -1" :i="2" :clubId="clubId" :canScroll="stickyStatus" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-activity-list>
+							</block>
+							<block v-if="info.type == 'job'">
+								<ping-recruitment-list :index="infoType[selectIndex].type == 'activity' ? 3 : -1" :i="3" :clubId="clubId" :canScroll="stickyStatus" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-recruitment-list>
+							</block>
+							<scroll-view :scroll-y="stickyStatus" :style="{height:swiperHeight}" v-if="info.type == 'evaluate'">
 								<view class="evaluate_box">
 									<view class="complex_rate">
 										<view class="complex_left">
@@ -124,8 +128,8 @@
 										</view>
 									</template>
 								</view>	
-							</view>	
-						</view>	
+							</scroll-view>	
+						<!-- </view>	 -->
 					</swiper-item>	
 				</swiper>
 			</view>
@@ -171,31 +175,26 @@
 					title: '简介',
 					type: 'introduction',
 					url:'',
-					height: '0rpx',
 				},{
 					label: '动态',
 					title: '动态',
 					type: 'dynamic',
 					path:'/pages/club/dynamic/list',
-					height: '600rpx',
 				},{
 					label: '活动',
 					title: '活动',
 					type: 'activity',
 					path:'/pages/club/activity/list',
-					height: '600rpx',
 				},{
 					label: '招聘',
 					title: '招聘',
 					type: 'job',
 					path:'/pages/club/job/list',
-					height: '600rpx',
 				},{
 					label: '评论',
 					title: '评论',
 					type: 'evaluate',
 					path:'/pages/evaluate/list',
-					height: '600rpx',
 				}],
 				
 				scoreList:[
@@ -222,7 +221,7 @@
 				],
 				clubId:'',
 				collect: false,
-				selectIndex: -1,
+				selectIndex: 0,
 				stickyStatus: false,
 				clubInfo:{
 					bannerObjList:[],
@@ -234,7 +233,6 @@
 				commentList:[],
 				upperThreshold:10,
 				statusBarHeight: 0,
-				classifyShow: false,
 				chatFriendInfo: '',
 			}
 		},
@@ -243,6 +241,9 @@
 				let index = this.selectIndex;
 				let label = this.infoType[index].label;
 				return label
+			},
+			swiperHeight(){
+				return `calc(100vh - ${this.statusBarHeight}px - ${(110 + 120)}rpx)`
 			}
 		},
 		onPageScroll: function() {
@@ -488,7 +489,6 @@
 					}
 					this.infoType = infoType;
 				}
-				this.classifyShow = true;
 				this.selectIndex = 0;
 				let type = this.infoType[0].type;
 				this.getTypeContent(type);
@@ -503,52 +503,15 @@
 				switch(type){
 					case 'introduction': {
 						vm.getClubIntro(() => {
-							// vm.getSwiperHeight(currentIndex)
-						});
-					};break;
-					case 'dynamic': {
-						vm.$refs.dynamicRef[0].refreshPage(() => {
-							vm.getSwiperHeight(currentIndex)
-						});
-					};break;
-					case 'activity': {
-						vm.$refs.activityRef[0].refreshPage(() => {
-							vm.getSwiperHeight(currentIndex)
-						});
-					};break;
-					case 'job': {
-						vm.$refs.jobRef[0].refreshPage(() => {
-							vm.getSwiperHeight(currentIndex)
 						});
 					};break;
 					case 'evaluate': {
-						vm.getCommentList(() => {
-							vm.getSwiperHeight(currentIndex)
-						});
+						vm.getCommentList();
 					};break;
 					default: break;
 				}
 			},
 			
-			//获取swiperHeight 高度 
-			getSwiperHeight(currentIndex){
-				this.$nextTick(function(){
-					let id = "#swiper_content" + currentIndex;
-					setTimeout(() => {
-						uni.hideLoading();
-						this.$u.getRect(id).then(res => {
-							console.log('getSwiperHeight', res);
-							try{
-								this.infoType[currentIndex].height = res.height + 30 + 'px';
-							}catch(e){
-								console.log('getSwiperHeight Error', e);
-								this.infoType[currentIndex].height = 600 + 'rpx';
-							}
-							this.$forceUpdate();
-						})
-					}, 500)
-				}.bind(this));
-			},
 			goBack:function(){
 				uni.navigateBack({
 					delta:1,
@@ -755,6 +718,7 @@
 		
 				.classify_info {
 					width: 100%;
+					height: calc(100vh - var(--status-bar-height) - 110rpx - 120rpx);
 					box-sizing: border-box;
 					.common_label{
 						height: 100rpx;
