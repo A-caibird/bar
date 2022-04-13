@@ -64,17 +64,17 @@
 				<view class="info_icon"> <image src="/static/imgs/common/price_icon.png"></image> </view>
 				<view class="info_price"> <text>{{allAmount}}</text> </view>
 				<view class="info_unit"></view>
+				<view class="tips">
+					<view class="tips_icon" @tap="toggleAgree">
+						<image v-if="!tipsAgree" src="/static/imgs/common/no-select.png" ></image>
+						<image v-else src="/static/imgs/common/select2.png" ></image>
+					</view>
+					
+					<text>用户安全须知 <text style="color: #FFFFFF;" @tap="$u.throttle(goArticle('protocol'))">《爬梯秀用户协议》</text> </text>
+				</view>
 			</view>
 		</view>
 		<view class="footer_box">
-			<view class="tips">
-				<view class="tips_icon" @tap="toggleAgree">
-					<image v-if="!tipsAgree" src="/static/imgs/common/no-select.png" ></image>
-					<image v-else src="/static/imgs/common/select2.png" ></image>
-				</view>
-				
-				<text>用户安全须知 <text style="color: #FFFFFF;" @tap="$u.throttle(goArticle('protocol'))">《爬梯秀用户协议》</text> </text>
-			</view>
 			<view class="pay_btn" @tap="$u.debounce(tapPay, 400, true)"> <text>支付{{allAmount}}元</text> </view>
 		</view>
 		<pay ref="pay" @pay="handlePay" :fillPassword="false" unitText="元"></pay>
@@ -134,7 +134,6 @@
 			// 邀约发信息
 			sendInfo(){
 				let chatParams = JSON.parse(this.params.chatParams);
-				let chatTag = this.params.chatTag;
 				if(chatParams.type == 'yaoyue'){
 					$chatUtils.sendYaoyueInfo(this, chatParams.orderInfo, chatParams.friendInfo, chatParams.statement)
 				}else{
@@ -324,7 +323,9 @@
 					this.paymentHandle(data, () => {
 						this.btnAvaliable = true;
 						this.refreshPage();
-						this.sendInfo();
+						if(this.params.chatTag && this.params.chatTag == 'true'){
+							this.sendInfo();
+						}
 						this.$u.route({
 							type:'redirect',
 							url:'/pages/club/consumption/paySuccess',
@@ -381,7 +382,9 @@
 					this.paymentHandle(data, () => {
 						this.btnAvaliable = true;
 						this.refreshPage();
-						this.sendInfo();
+						if(this.params.chatTag && this.params.chatTag == 'true'){
+							this.sendInfo();
+						}
 						this.$u.route({
 							type:'redirect',
 							url:'/pages/club/consumption/paySuccess',
@@ -568,6 +571,28 @@
 				}
 			}
 		}
+		.tips{
+			width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-top: 40rpx;
+			.tips_icon{
+				height: 26rpx;
+				width: 26rpx;
+				text-align: center;
+				&>image{
+					height: 100%;
+					width: 100%;
+					vertical-align: top;
+				}
+			}
+			&>text{
+				font-size: 22rpx;
+				color: #9292BA;
+				margin-left: 20rpx;
+			}
+		}
 		.pay_info{
 			display: flex;
 			align-items: center;
@@ -604,27 +629,6 @@
 		z-index: 10;
 		box-sizing: border-box;
 		padding-bottom: 30rpx;
-		.tips{
-			width: 100%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			.tips_icon{
-				height: 26rpx;
-				width: 26rpx;
-				text-align: center;
-				&>image{
-					height: 100%;
-					width: 100%;
-					vertical-align: top;
-				}
-			}
-			&>text{
-				font-size: 22rpx;
-				color: #9292BA;
-				margin-left: 20rpx;
-			}
-		}
 		.pay_btn{
 			height: 80rpx;
 			width: calc(100% - 60rpx);
