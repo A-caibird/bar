@@ -1,21 +1,15 @@
 <template style="background: #191C3F;">
 	<view class="container" style="background: #191C3F;">
 		<block v-if="!stickyStatus">
-			<u-navbar
-				:border-bottom="false"
-				:is-fixed="true"
-				:title-color="`rgba(255,255,255,${navOpacity})`"
+			<u-navbar :border-bottom="false" :is-fixed="true" :title-color="`rgba(255,255,255,${navOpacity})`"
 				:background="{
 					background: `rgba(25,28,63,${navOpacity})`
-				}"
-				:title="clubInfo.name"
-				:immersive=true
-				back-icon-color="#FFFFFF"
-			></u-navbar>
+				}" :title="clubInfo.name" :immersive=true back-icon-color="#FFFFFF"></u-navbar>
 		</block>
 		<view class="middle_box">
 			<view class="club_info">
-				<bannerList :height="435" :bannerList="clubInfo.bannerObjList" imgKey="file" mode="normal" :showVideo="true" videoKey="videoUrl"></bannerList>
+				<bannerList :height="435" :bannerList="clubInfo.bannerObjList" imgKey="file" mode="normal"
+					:showVideo="true" videoKey="videoUrl"></bannerList>
 				<view class="club_info_second">
 					<view class="info_name"> <text>{{clubInfo.name}}</text> </view>
 					<view class="info_intro"> <text>{{clubInfo.subtitle}}</text> </view>
@@ -37,7 +31,9 @@
 					</view>
 					<view class="info_loaction">
 						<view class="loca_intro1"> <text>{{clubInfo.address}}</text> </view>
-						<view class="loca_intro2" @tap="tapOpenMap"> <text>{{clubInfo.areaName}}</text> <u-icon name="map" size="32"></u-icon></view>
+						<view class="loca_intro2" @tap="tapOpenMap"> <text>{{clubInfo.areaName}}</text>
+							<u-icon name="map" size="32"></u-icon>
+						</view>
 						<view class="call_box" @tap="callPhone">
 							<u-icon size="40" name="phone" color="#FFFFFF"></u-icon>
 							<text>电话</text>
@@ -45,25 +41,26 @@
 					</view>
 				</view>
 			</view>
-			
-			<view class="club_detail">
-				<view class="classify_box" :class="{'paddingTop': stickyStatus}">
-					<view class="nav_box" :class="{'animalStart': stickyStatus}" @tap="$u.throttle($u.route({type:'back'}))">
-						<u-icon name="arrow-left" color="#FFFFFF" size="44"></u-icon>
-					</view>
-					<view class="classify_panel">
-						<block v-for="(info, index) in infoType" :key="index">
-							<view class="common_classify" :class="{'select': selectIndex == index}" @tap="selectType(index)">
-								<text>{{info.title}}</text>
-								<view class="select_icon" v-if="selectIndex == index"></view>
-							</view>
-						</block>
-					</view>
+			<view class="classify_box" :class="{'paddingTop': stickyStatus}">
+				<view class="nav_box" :class="{'animalStart': stickyStatus}"
+					@tap="$u.throttle($u.route({type:'back'}))">
+					<u-icon name="arrow-left" color="#FFFFFF" size="44"></u-icon>
 				</view>
+				<view class="classify_panel">
+					<block v-for="(info, index) in infoType" :key="index">
+						<view class="common_classify" :class="{'select': selectIndex == index}"
+							@tap="selectType(index)">
+							<text>{{info.title}}</text>
+							<view class="select_icon" v-if="selectIndex == index"></view>
+						</view>
+					</block>
+				</view>
+			</view>
+			<view class="club_detail">
 				<swiper class="classify_info" :current="selectIndex" @change="swiperChange">
 					<swiper-item v-for="(info, index) in infoType" :key="index">
 						<!-- <view :id="('swiper_content' + index)"> -->
-							<!-- <view style="box-sizing: border-box; padding: 0rpx 30rpx;" v-if="labelName">
+						<!-- <view style="box-sizing: border-box; padding: 0rpx 30rpx;" v-if="labelName">
 								<view class="common_label">
 									<view class="label_left">
 										<view class="line"></view>
@@ -75,67 +72,76 @@
 									</view>
 								</view>
 							</view> -->
-							<scroll-view :scroll-y="stickyStatus" :style="{height:swiperHeight}"  v-if="info.type == 'introduction'">
-								<view style="color: #FFFFFF;padding: 30rpx;">
-									<u-parse :html="clubContent"></u-parse>
-								</view>
-							</scroll-view>
-						
-							<block v-if="info.type == 'dynamic'">
-								<ping-dynamic-list :index="infoType[selectIndex].type == 'dynamic' ? 1 : -1"  :i="1" :clubId="clubId"  :canScroll="stickyStatus" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-dynamic-list>
-							</block>
-							<block v-if="info.type == 'activity'">
-								<ping-activity-list :index="infoType[selectIndex].type == 'activity' ? 2 : -1" :i="2" :clubId="clubId" :canScroll="stickyStatus" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-activity-list>
-							</block>
-							<block v-if="info.type == 'job'">
-								<ping-recruitment-list :index="infoType[selectIndex].type == 'activity' ? 3 : -1" :i="3" :clubId="clubId" :canScroll="stickyStatus" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-recruitment-list>
-							</block>
-							<scroll-view :scroll-y="stickyStatus" :style="{height:swiperHeight}" v-if="info.type == 'evaluate'">
-								<view class="evaluate_box">
-									<view class="complex_rate">
-										<view class="complex_left">
-											<view class="label"> <text>评分总数</text> </view>
-											<view class="label_rate">
-												<view class="score">{{clubInfo.avgScore}}</view>
-												<view class="score_rate">
-													<selfRate :score="clubInfo.avgScore" size="26"></selfRate>
-												</view>
+						<scroll-view :scroll-y="stickyStatus" :style="{height:swiperHeight}"
+							v-if="info.type == 'introduction'">
+							<view style="color: #FFFFFF;padding: 30rpx;">
+								<u-parse :html="clubContent"></u-parse>
+							</view>
+						</scroll-view>
+
+						<block v-if="info.type == 'dynamic'">
+							<ping-dynamic-list :index="infoType[selectIndex].type == 'dynamic' ? 1 : -1" :i="1"
+								:clubId="clubId" :canScroll="stickyStatus" :height="swiperHeight"
+								:upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-dynamic-list>
+						</block>
+						<block v-if="info.type == 'activity'">
+							<ping-activity-list :index="infoType[selectIndex].type == 'activity' ? 2 : -1" :i="2"
+								:clubId="clubId" :canScroll="stickyStatus" :height="swiperHeight"
+								:upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-activity-list>
+						</block>
+						<block v-if="info.type == 'job'">
+							<ping-recruitment-list :index="infoType[selectIndex].type == 'activity' ? 3 : -1" :i="3"
+								:clubId="clubId" :canScroll="stickyStatus" :height="swiperHeight"
+								:upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-recruitment-list>
+						</block>
+						<scroll-view :scroll-y="stickyStatus" :style="{height:swiperHeight}"
+							v-if="info.type == 'evaluate'">
+							<view class="evaluate_box">
+								<view class="complex_rate">
+									<view class="complex_left">
+										<view class="label"> <text>评分总数</text> </view>
+										<view class="label_rate">
+											<view class="score">{{clubInfo.avgScore}}</view>
+											<view class="score_rate">
+												<selfRate :score="clubInfo.avgScore" size="26"></selfRate>
 											</view>
 										</view>
-										<view class="complex_right">
-											<block v-for="(info, index) in scoreList" :key="index">
-												<view class="common_rate">
-													<view class="score_rate">
-														<selfRate :score="info.score" size="26"></selfRate>
-													</view>
-													<view class="score_label">{{info.text}}</view>
-												</view>
-											</block>					
-										</view>
 									</view>
-									<template v-if="commentList.length>0">
-										<view class="eva_list">
-											<block v-for="(info, index) in commentList" :key="index">
-												<view class="classify_item">
-													<evaluate :info="info" :isLast="index==commentList.length-1"></evaluate>
+									<view class="complex_right">
+										<block v-for="(info, index) in scoreList" :key="index">
+											<view class="common_rate">
+												<view class="score_rate">
+													<selfRate :score="info.score" size="26"></selfRate>
 												</view>
-											</block>
-										</view>
-									</template>
-									<template v-else>
-										<view style="height: 750rpx;">
-											<empty content="暂无评价"></empty>
-										</view>
-									</template>
-								</view>	
-							</scroll-view>	
+												<view class="score_label">{{info.text}}</view>
+											</view>
+										</block>
+									</view>
+								</view>
+								<template v-if="commentList.length>0">
+									<view class="eva_list">
+										<block v-for="(info, index) in commentList" :key="index">
+											<view class="classify_item">
+												<evaluate :info="info" :isLast="index==commentList.length-1"></evaluate>
+											</view>
+										</block>
+									</view>
+								</template>
+								<template v-else>
+									<view style="height: 750rpx;">
+										<empty content="暂无评价"></empty>
+									</view>
+								</template>
+							</view>
+						</scroll-view>
 						<!-- </view>	 -->
-					</swiper-item>	
+					</swiper-item>
 				</swiper>
 			</view>
 		</view>
 		<view class="footer_box">
-			<club-footer :isAppleAudit="isAppleAudit" @clickTap="clickEvent" :collect="collect" :showSetSeat="!isAppleAudit"></club-footer>
+			<club-footer :isAppleAudit="isAppleAudit" @clickTap="clickEvent" :collect="collect"
+				:showSetSeat="!isAppleAudit"></club-footer>
 		</view>
 		<pop-share v-model="shareShow"></pop-share>
 		<!-- <certPop></certPop> -->
@@ -155,7 +161,7 @@
 	import bannerList from '@/components/common-banner/common-banner.vue'
 	var app = getApp();
 	export default {
-		mixins:[appleAudit,loginMixins],
+		mixins: [appleAudit, loginMixins],
 		components: {
 			clubFooter,
 			evaluate,
@@ -174,108 +180,91 @@
 					label: '',
 					title: '简介',
 					type: 'introduction',
-					url:'',
-				},{
-					label: '动态',
-					title: '动态',
-					type: 'dynamic',
-					path:'/pages/club/dynamic/list',
-				},{
-					label: '活动',
-					title: '活动',
-					type: 'activity',
-					path:'/pages/club/activity/list',
-				},{
-					label: '招聘',
-					title: '招聘',
-					type: 'job',
-					path:'/pages/club/job/list',
-				},{
-					label: '评论',
-					title: '评论',
-					type: 'evaluate',
-					path:'/pages/evaluate/list',
+					url: '',
 				}],
-				
-				scoreList:[
-					{
-						text:'服务',
+
+				scoreList: [{
+						text: '服务',
 						score: 5
 					},
 					{
-						text:'氛围',
+						text: '氛围',
 						score: 5
 					},
 					{
-						text:'环境',
+						text: '环境',
 						score: 5
 					},
 					{
-						text:'曲风',
+						text: '曲风',
 						score: 5
 					},
 					{
-						text:'快乐',
+						text: '快乐',
 						score: 5
 					}
 				],
-				clubId:'',
+				clubId: '',
 				collect: false,
 				selectIndex: 0,
 				stickyStatus: false,
-				clubInfo:{
-					bannerObjList:[],
+				clubInfo: {
+					bannerObjList: [],
 				},
-				clubContent:'',
-				lat:39.9091591069,
-				lng:116.3974783161,
-				navOpacity:0,
-				commentList:[],
-				upperThreshold:10,
+				clubContent: '',
+				lat: 39.9091591069,
+				lng: 116.3974783161,
+				navOpacity: 0,
+				commentList: [],
+				upperThreshold: 10,
 				statusBarHeight: 0,
 				chatFriendInfo: '',
+				swiperHeight: '',
 			}
 		},
-		computed:{
-			labelName(){
+		computed: {
+			labelName() {
 				let index = this.selectIndex;
 				let label = this.infoType[index].label;
 				return label
-			},
-			swiperHeight(){
-				return `calc(100vh - ${this.statusBarHeight}px - ${(110 + 120)}rpx)`
 			}
 		},
 		onPageScroll: function() {
-			let vm = this;
+			let vm = this;		
 			this.$u.getRect('.classify_box').then(res => {
 				let top = res.top;
-				if(top <= this.statusBarHeight){
+				// if (top <= this.statusBarHeight) {
+				// 	vm.stickyStatus = true;
+				// } else {
+				// 	vm.stickyStatus = false;
+				// }
+				if (top <= 0) {
 					vm.stickyStatus = true;
-				}
-				else{
+				} else {
 					vm.stickyStatus = false;
 				}
 			})
 			this.$u.getRect('.club_info_second').then(res => {
 				let top = res.top;
-				if(top<=40&&top>=0) {
-					vm.navOpacity = parseFloat((50-top)/50).toFixed(1)
-				} else if(top<0) {
+				if (top <= 40 && top >= 0) {
+					vm.navOpacity = parseFloat((50 - top) / 50).toFixed(1)
+				} else if (top < 0) {
 					vm.navOpacity = 1
-				} else if(top>40) {
+				} else if (top > 40) {
 					vm.navOpacity = 0
 				}
 			})
 		},
 		created() {
-			this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight
+			let {statusBarHeight, windowHeight} = uni.getSystemInfoSync();
+			this.statusBarHeight = statusBarHeight
+			this.swiperHeight = `calc(${windowHeight - statusBarHeight}px - ${(110 + 120)}rpx)`
 		},
-		onLoad:function(options){
+		onLoad: function(options) {
 			let id = options.id;
 			this.clubId = id;
 			let chatFriendInfo = options.chatFriendInfo || ""
-			if(chatFriendInfo){
+			if (chatFriendInfo) {
 				this.chatFriendInfo = chatFriendInfo;
 			}
 			uni.showLoading({
@@ -283,11 +272,11 @@
 			})
 			this.getClubDetail();
 		},
-		onShow:function(){
-			
+		onShow: function() {
+
 		},
 		onUnload() {
-		
+
 		},
 		methods: {
 			// 选择介绍类别
@@ -298,53 +287,55 @@
 					// this.getTypeContent(type);
 				}
 			},
-			swiperChange(e){
-				if(e.detail.current != this.selectIndex){
+			swiperChange(e) {
+				if (e.detail.current != this.selectIndex) {
 					this.selectIndex = e.detail.current;
 				}
 				let type = this.infoType[this.selectIndex].type;
 				this.getTypeContent(type);
 			},
-			refreshPage(){
+			refreshPage() {
 				this.getClubDetail();
 			},
-			navigateAll(){
+			navigateAll() {
 				let index = this.selectIndex;
 				let path = this.infoType[index].path;
-				if(path){
-					this.$u.route(path,{clubId: this.clubId})
+				if (path) {
+					this.$u.route(path, {
+						clubId: this.clubId
+					})
 				}
 			},
-			scrolltoupper(e){
+			scrolltoupper(e) {
 				let platform = uni.getSystemInfoSync().platform
-				if(platform=='ios') {
+				if (platform == 'ios') {
 					this.stickyStatus = false
 				}
 			},
-			tapOpenMap(){
+			tapOpenMap() {
 				this.openMap(this.lng, this.lat, this.clubInfo.address)
 			},
 			//获取评论列表
-			getCommentList:function(callback = null){
+			getCommentList: function(callback = null) {
 				let params = {
-					  "clubId": this.clubId,
-					  "pageNumber": 1,
-					  "pageSize": 5,
+					"clubId": this.clubId,
+					"pageNumber": 1,
+					"pageSize": 5,
 				}
 				this.$u.api.getClubEvaluationListApi(params).then(res => {
-					if(parseInt(res.code) == 0){
+					if (parseInt(res.code) == 0) {
 						this.commentList = res.data.list
-						if(callback){
+						if (callback) {
 							callback();
 						}
-					}else {
+					} else {
 						this.commentList = [];
 						console.log("获取评价列表失败")
 					}
 				})
 			},
-			goActivity: function(info){
-				this.$u.route('/pages/club/activity/detail',{
+			goActivity: function(info) {
+				this.$u.route('/pages/club/activity/detail', {
 					id: info.id,
 					activityName: info.title,
 					activityTime: info.publishTime,
@@ -352,120 +343,134 @@
 				})
 			},
 			// 点击事件
-			async clickEvent(e){
+			async clickEvent(e) {
 				let vm = this
 				let type = e.type;
 				console.log(type);
-				if(!this.loginConfirmHandle(false)){
+				if (!this.loginConfirmHandle(false)) {
 					// console.log('clickEvent')
-					return ;
+					return;
 				}
 				var clubImg = this.getClubFrontImg(this.clubInfo.bannerObjList)
-				switch(type){
-					case 'collect': this.toggleCollect(); break; 
+				switch (type) {
+					case 'collect':
+						this.toggleCollect();
+						break;
 					case 'book': { // 订座
-						this.$storage.setStorageSync('clubImg',clubImg);
+						this.$storage.setStorageSync('clubImg', clubImg);
 						await this.judgeVerify()
-						this.$u.route('/pages/club/consumption/seat',{
-							clubId:this.clubId,
+						this.$u.route('/pages/club/consumption/seat', {
+							clubId: this.clubId,
 							clubName: this.clubInfo.name,
 							clubSubTitle: this.clubInfo.subtitle,
 							orderType: 'book',
 							chatTag: this.chatFriendInfo ? true : false,
 							chatFriendInfo: this.chatFriendInfo || ""
-							
+
 						});
-					};break;
-					case 'fight': { //拼享
-						this.$storage.setStorageSync('clubImg', clubImg);
-						let {creditScore} = await this.judgeVerify();
-						if(!creditScore){
-							this.$u.route('/pages/club/consumption/seat',{
-								clubId:this.clubId,
-								clubName: this.clubInfo.name,
-								clubSubTitle: this.clubInfo.subtitle,
-								orderType: 'fight',
-								chatTag: this.chatFriendInfo ? true : false,
-								chatFriendInfo: this.chatFriendInfo || "",
+					};
+					break;
+				case 'fight': { //拼享
+					this.$storage.setStorageSync('clubImg', clubImg);
+					let {
+						creditScore
+					} = await this.judgeVerify();
+					if (!creditScore) {
+						this.$u.route('/pages/club/consumption/seat', {
+							clubId: this.clubId,
+							clubName: this.clubInfo.name,
+							clubSubTitle: this.clubInfo.subtitle,
+							orderType: 'fight',
+							chatTag: this.chatFriendInfo ? true : false,
+							chatFriendInfo: this.chatFriendInfo || "",
+						});
+					} else {
+						this.$u.toast('当前信用分较低，无法拼享');
+					}
+				};
+				break;
+				case 'service': {
+					uni.showLoading({
+						title: '进入中'
+					})
+					this.$u.api.clubServiceAPI(this.clubId).then(res => {
+						console.log(res);
+						if (res.data.hasStaff) {
+							this.$u.route('/pages/customerRoom/index', {
+								id: res.data.id,
+								avatar: res.data.avatar,
+								nickname: res.data.nickname
 							});
-						}else{
-							this.$u.toast('当前信用分较低，无法拼享');
+							uni.hideLoading();
+						} else {
+							uni.showToast({
+								title: '暂无客服人员',
+								icon: 'none'
+							})
 						}
-					};break;
-					case 'service':{
-						uni.showLoading({
-							title: '进入中'
-						})
-						this.$u.api.clubServiceAPI(this.clubId).then(res => {
-							console.log(res);
-							if(res.data.hasStaff){
-								this.$u.route('/pages/customerRoom/index',{
-									id: res.data.id,
-									avatar: res.data.avatar,
-									nickname: res.data.nickname
-								});
-								uni.hideLoading();
-							}else{
-								uni.showToast({
-									title: '暂无客服人员',
-									icon: 'none'
-								})
-							}
-							
-						}).catch(e => {
-							console.log(e);
-						})
-						
-					}; break;
-					case 'share':{
-						this.shareShow = true;
-					}; break;
-					default: break;
+
+					}).catch(e => {
+						console.log(e);
+					})
+
+				};
+				break;
+				case 'share': {
+					this.shareShow = true;
+				};
+				break;
+				default:
+					break;
 				}
 			},
-			toggleCollect: function(){
+			toggleCollect: function() {
 				let collect = this.collect;
-				if(collect){
+				if (collect) {
 					this.$u.api.clubCancelCollect(this.clubId).then(res => {
-						if(parseInt(res.code) == 0){
+						if (parseInt(res.code) == 0) {
 							this.collect = !collect
-						}
-						else{
+						} else {
 							this.$u.toast('取消失败')
 						}
 					})
-				}else{
+				} else {
 					this.$u.api.clubCollect(this.clubId).then(res => {
-						if(parseInt(res.code) == 0){
+						if (parseInt(res.code) == 0) {
 							this.collect = !collect
-						}else {
+						} else {
 							this.$u.toast('收藏失败')
 						}
 					})
 				}
 			},
 			// 拨打电话
-			callPhone: function(){
+			callPhone: function() {
 				uni.makePhoneCall({
 					phoneNumber: this.clubInfo.phone
 				})
 			},
 			// 获取酒吧简介
-			getClubIntro: async function(callback = null){
-				let {code,data} = await this.$u.api.getClubIntro(this.clubId)
-				if(code==0) {
+			getClubIntro: async function(callback = null) {
+				let {
+					code,
+					data
+				} = await this.$u.api.getClubIntro(this.clubId)
+				if (code == 0) {
 					this.clubContent = data.view;
 					this.lng = data.lng
 					this.lat = data.lat
-					if(callback){
+					if (callback) {
 						callback();
 					}
 				}
 			},
 			// 获取酒吧详情
-			getClubDetail: async function(){
-				let {code,data} = await this.$u.api.getClubDetail(this.clubId)
-				if(code==0) {
+			getClubDetail: async function() {
+				let {
+					code,
+					data
+				} = await this.$u.api.getClubDetail(this.clubId)
+				if (code == 0) {
 					this.clubInfo = data.info;
 					let info = data.info;
 					this.collect = info.hasCollect;
@@ -474,47 +479,71 @@
 					this.scoreList[2].score = info.surroundingsAvgScore
 					this.scoreList[3].score = info.genreAvgScore
 					this.scoreList[4].score = info.happyAvgScore
-					let infoType = this.infoType;
-					if(!data.info.canEvaluationContent){
-						infoType.splice(4, 1);
-					}
-					if(!data.info.showRecruitment){
-						infoType.splice(3, 1);
-					} 
-					if(!data.info.showActivity){
-						infoType.splice(2, 1);
-					}
-					if(!data.info.showDynamic){
-						infoType.splice(1, 1);
-					}
-					this.infoType = infoType;
+					this.getInfoType(info);
 				}
 				this.selectIndex = 0;
 				let type = this.infoType[0].type;
 				this.getTypeContent(type);
 			},
-			
+			getInfoType(info) {
+				let infoType = this.infoType;
+				if (info.showDynamic) {
+					infoType.push({
+						label: '动态',
+						title: '动态',
+						type: 'dynamic',
+						path: '/pages/club/dynamic/list',
+					});
+				}
+				if (info.showActivity) {
+					infoType.push({
+						label: '活动',
+						title: '活动',
+						type: 'activity',
+						path: '/pages/club/activity/list',
+					});
+				}
+				if (info.showRecruitment) {
+					infoType.push({
+						label: '招聘',
+						title: '招聘',
+						type: 'job',
+						path: '/pages/club/job/list',
+					});
+				}
+				if (info.canEvaluationContent) {
+					infoType.push({
+						label: '评论',
+						title: '评论',
+						type: 'evaluate',
+						path: '/pages/evaluate/list',
+					});
+				}
+				this.infoType = infoType;
+			},
 			// 获取分类页面内容
-			getTypeContent(type){
+			getTypeContent(type) {
 				let currentIndex = this.infoType.findIndex((item) => {
 					return item.type == type
 				})
 				var vm = this;
-				switch(type){
+				switch (type) {
 					case 'introduction': {
-						vm.getClubIntro(() => {
-						});
-					};break;
-					case 'evaluate': {
-						vm.getCommentList();
-					};break;
-					default: break;
+						vm.getClubIntro(() => {});
+					};
+					break;
+				case 'evaluate': {
+					vm.getCommentList();
+				};
+				break;
+				default:
+					break;
 				}
 			},
-			
-			goBack:function(){
+
+			goBack: function() {
 				uni.navigateBack({
-					delta:1,
+					delta: 1,
 				})
 			}
 		}
@@ -522,17 +551,18 @@
 </script>
 
 <style lang="scss">
-	page{
-		
-	}
+	page {}
+
 	.container {
 		width: 100%;
 		padding-bottom: 120rpx;
-		.parse_box{
+
+		.parse_box {
 			width: 100%;
 			color: #FFFFFF;
 			padding: 30rpx;
 		}
+
 		.header_box {
 			width: 100%;
 			position: fixed;
@@ -562,7 +592,6 @@
 					width: 100%;
 					padding: 30rpx;
 					box-sizing: border-box;
-
 					.info_name {
 						width: 100%;
 						font-size: 40rpx;
@@ -607,6 +636,7 @@
 						display: flex;
 						margin: 16rpx 0rpx;
 						flex-wrap: wrap;
+
 						.common_label {
 							height: 40rpx;
 							@include flex-center();
@@ -652,19 +682,19 @@
 					}
 				}
 			}
+
 			.classify_box {
 				width: 100%;
-				padding-top: 0rpx;
 				padding-left: 30rpx;
 				display: flex;
 				align-items: center;
 				position: sticky;
-				top: 0;
+				top: 0rpx;
 				z-index: 100;
 				background: #191C3F;
 				border-bottom: 1px solid #31345B;
-				transition: all 0.3s; 
-				&.paddingTop{
+				transition: all, 0.1s;
+				&.paddingTop {
 					padding-top: var(--status-bar-height);
 				}
 				.nav_box {
@@ -674,20 +704,21 @@
 					transform: all 0.3;
 					display: none;
 					padding-top: 0rpx;
-					&.animalStart{
+
+					&.animalStart {
 						margin-right: 30rpx;
 						width: auto;
 						height: auto;
 						display: block;
 					}
 				}
-			
+
 				.classify_panel {
 					width: 100%;
 					height: 110rpx;
 					display: flex;
 					align-items: center;
-			
+
 					.common_classify {
 						position: relative;
 						color: #B7B9D6;
@@ -696,12 +727,12 @@
 						align-items: center;
 						flex-direction: column;
 						margin-right: 52rpx;
-			
+
 						&.select {
 							font-size: 34rpx;
 							color: #FFFFFF;
 						}
-			
+
 						.select_icon {
 							position: absolute;
 							bottom: -20rpx;
@@ -713,83 +744,99 @@
 					}
 				}
 			}
+
 			.club_detail {
 				width: 100%;
-		
+
 				.classify_info {
 					width: 100%;
-					height: calc(100vh - var(--status-bar-height) - 110rpx - 120rpx);
+					height: calc(100vh  - 230rpx);
 					box-sizing: border-box;
-					.common_label{
+
+					.common_label {
 						height: 100rpx;
 						width: 100%;
 						box-sizing: border-box;
 						display: flex;
 						align-items: center;
 						justify-content: space-between;
-						.label_left{
+
+						.label_left {
 							display: flex;
 							align-items: center;
 							font-size: 34rpx;
 							color: #FFFFFF;
 							font-weight: 500;
-							.line{
+
+							.line {
 								height: 32rpx;
 								width: 6rpx;
 								background: #FF59C9;
 								margin-right: 14rpx;
 							}
 						}
-						.label_right{
+
+						.label_right {
 							display: flex;
 							align-items: center;
 							font-size: 26rpx;
 							color: #BDC0DA;
-							&>image{
+
+							&>image {
 								height: 22rpx;
 								width: 14rpx;
 								margin-left: 16rpx;
 							}
 						}
 					}
+
 					.classify_item {
 						margin-bottom: 20rpx;
 					}
 				}
-				.evaluate_box{
+
+				.evaluate_box {
 					width: 100%;
 					padding: 30rpx;
-					.complex_rate{
+
+					.complex_rate {
 						padding: 30rpx 0rpx;
 						border-bottom: 1px solid #31345B;
 						display: flex;
 						align-items: center;
 						justify-content: space-between;
-						.complex_left{
+
+						.complex_left {
 							display: flex;
 							flex-direction: column;
-							.label{
+
+							.label {
 								font-size: 36rpx;
 								color: #FFFFFF;
 								font-weight: 500;
 							}
-							.label_rate{
+
+							.label_rate {
 								display: flex;
 								align-items: center;
-								.score{
+
+								.score {
 									font-size: 58rpx;
 									color: #FFFFFF;
 									margin-right: 32rpx;
 								}
 							}
 						}
-						.complex_right{
+
+						.complex_right {
 							display: flex;
 							flex-direction: column;
-							.common_rate{
+
+							.common_rate {
 								display: flex;
 								align-items: center;
-								.score_label{
+
+								.score_label {
 									font-size: 20rpx;
 									color: #FFFFFF;
 								}

@@ -345,26 +345,6 @@
 					title: '简介',
 					type: 'introduction',
 					url:'',
-				},{
-					label: '动态',
-					title: '动态',
-					type: 'dynamic',
-					path:'/pages/club/dynamic/list',
-				},{
-					label: '活动',
-					title: '活动',
-					type: 'activity',
-					path:'/pages/club/activity/list',
-				},{
-					label: '招聘',
-					title: '招聘',
-					type: 'job',
-					path:'/pages/club/job/list',
-				},{
-					label: '评论',
-					title: '评论',
-					type: 'evaluate',
-					path:'/pages/evaluate/list',
 				}],
 				scoreList: [{
 						text: '服务',
@@ -594,22 +574,45 @@
 					this.scoreList[2].score = info.surroundingsAvgScore
 					this.scoreList[3].score = info.genreAvgScore
 					this.scoreList[4].score = info.happyAvgScore
-					let infoType = this.infoType;
-					if(!data.info.canEvaluationContent){
-						infoType.splice(4, 1);
-					}
-					if(!data.info.showRecruitment){
-						infoType.splice(3, 1);
-					} 
-					if(!data.info.showActivity){
-						infoType.splice(2, 1);
-					}
-					if(!data.info.showDynamic){
-						infoType.splice(1, 1);
-					}
-					this.infoType = infoType;
+					this.getInfoType(info);
 				}
 
+			},
+			getInfoType(info) {
+				let infoType = this.infoType;
+				if (info.showDynamic) {
+					infoType.push({
+						label: '动态',
+						title: '动态',
+						type: 'dynamic',
+						path: '/pages/club/dynamic/list',
+					});
+				}
+				if (info.showActivity) {
+					infoType.push({
+						label: '活动',
+						title: '活动',
+						type: 'activity',
+						path: '/pages/club/activity/list',
+					});
+				}
+				if (info.showRecruitment) {
+					infoType.push({
+						label: '招聘',
+						title: '招聘',
+						type: 'job',
+						path: '/pages/club/job/list',
+					});
+				}
+				if (info.canEvaluationContent) {
+					infoType.push({
+						label: '评论',
+						title: '评论',
+						type: 'evaluate',
+						path: '/pages/evaluate/list',
+					});
+				}
+				this.infoType = infoType;
 			},
 			// 获取酒吧简介
 			getClubIntro: async function(){
