@@ -31,7 +31,7 @@ function goPay(vm, type, orderInfo) {
 	if(chatTag){
 		chatParams['statement'] = orderInfo.statementStr || "";
 		params.chatTag = true;
-		params['chatParams'] = chatParams;
+		params['chatParams'] = encodeURIComponent(JSON.stringify(chatParams));
 	}
 	vm.$u.route('/pages/club/consumption/payPage', params)
 }

@@ -387,7 +387,7 @@
 					let chatParams = this.chatParams;
 					chatParams['statement'] = "";
 					params.chatTag = true;
-					params['chatParams'] = chatParams;
+					params['chatParams'] = encodeURIComponent(JSON.stringify(chatParams));
 				}
 				this.$u.route('/pages/club/consumption/payPage',params);
 			},

@@ -71,13 +71,13 @@
 		methods:{
 			statementPopShowTap(orderInfo){
 				this.orderInfo = orderInfo;
-				this.$refs.statementPopRef.show();
+				this.$refs.statementPopRef[0].show();
 			},
 			statementSelectTap(e){
 				let statement = e;
 				let info = this.$u.deepClone(this.orderInfo);
 				info = Object.assign({
-					statement,
+					statementStr: statement,
 				}, info)
 				orderUtils.goPay(this, 'yaoyue', info);
 			}
