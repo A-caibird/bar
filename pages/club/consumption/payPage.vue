@@ -62,7 +62,7 @@
 					<view class="desc_item"  style="margin-top: 10rpx;" >
 						<view class="point"></view>
 						<view class="desc_text">
-							<text>如当天订单未能及时消费，可修改一次日期预定台位，第二次预定若未能到店将不予改期只能存酒改期所选台位的最低消费不得高于逾期订单的支付金额</text>
+							<text>如当天订单未能及时消费，可修改一次日期预定台位，第二次预定若未能到店将不予改期只能存酒</text>
 						</view>
 					</view>
 					<view class="desc_item"  style="margin-top: 10rpx;" >
