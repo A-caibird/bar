@@ -8,12 +8,140 @@
 						<text>购买须知</text>
 					</view>
 				</view>
-				<view class="desc_item"  style="margin-top: 10rpx;" v-for="(item,index) in buyMustKnowList" :key="index">
-					<view class="point"></view>
-					<view class="desc_text">
-						<text>{{item}}</text>
+				<block v-if="type == 'ping-order'">
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>感谢您的光临，<text style="color: red;">确认下单将不予退还，请在预订时间内到达场所</text> 否则将自动取消，您的本次预约不能退还，可以改天消费或存酒</text>
+						</view>
 					</view>
-				</view>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>如当天订单未能及时消费，可修改一次日期预定台位，第二次预定若未能到店将不予改期只能存酒</text>
+						</view>
+					</view>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>台位非普通商品，其背后承载的文化服务具有时效性，稀缺性等特征，不支持退还</text>
+						</view>
+					</view>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>改期所选台位的最低消费不得高于逾期订单的支付金额</text>
+						</view>
+					</view>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>请在有效期内按规定重新下单或取酒，如有疑问请及时联系客服</text>
+						</view>
+					</view>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>未成年人禁止娱乐后果自负</text>
+						</view>
+					</view>
+				</block>
+				<block v-else-if="type == 'yao-order'">
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>感谢您的光临，<text style="color: red;">确认下单将不予退还，请在预订时间内到达场所</text>否则将自动取消，您的本次预约不能退还，可以改天消费或存酒</text>
+						</view>
+					</view>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>台位非普通商品，其背后承载的文化服务具有时效性，稀缺性等特征，不支持退还</text>
+						</view>
+					</view>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>如当天订单未能及时消费，可修改一次日期预定台位，第二次预定若未能到店将不予改期只能存酒改期所选台位的最低消费不得高于逾期订单的支付金额</text>
+						</view>
+					</view>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>改期所选台位的最低消费不得高于逾期订单的支付金额</text>
+						</view>
+					</view>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>请在有效期内按规定重新下单或取酒，如有疑问请及时联系客服</text>
+						</view>
+					</view>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>未成年人禁止娱乐后果自负</text>
+						</view>
+					</view>
+				</block>
+				<block v-else-if="type == 'ping-join-order'">
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>感谢您的光临，<text style="color: red;">参与别人拼单，可在预约时间前1个小时退出拼单并退款，过时不予退款，且无法改期</text> </text>
+						</view>
+					</view>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text style="color: red;">若发起拼单者当天未能及时消费，参与别人拼单者会自动退款</text>
+						</view>
+					</view>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>台位非普通商品，其背后承载的文化服务具有时效性，稀缺性等特征，不支持退还</text>
+						</view>
+					</view>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>未成年人禁止娱乐后果自负</text>
+						</view>
+					</view>
+				</block>
+				<block v-else>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>感谢您的光临，请在预订时间内到达场所否则将自动取消，您的本次预约不能退还，可以改天消费或者存酒 </text>
+						</view>
+					</view>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>若超过预约时间，您有一次改期机会，可在酒吧重新选位下单，第二次将不予改期，只能存酒</text>
+						</view>
+					</view>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>改期所选台位的最低消费不得高于逾期订单的支付金额</text>
+						</view>
+					</view>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>请在有效期内按规定重新下单或取酒，如有疑问，请及时联系客服</text>
+						</view>
+					</view>
+					<view class="desc_item"  style="margin-top: 10rpx;" >
+						<view class="point"></view>
+						<view class="desc_text">
+							<text>未成年人禁止娱乐后果自负</text>
+						</view>
+					</view>
+				</block>
 				<view class="purchase_select_box" @tap="noteAgree = !noteAgree">
 					<image src="/static/imgs/common/select2.png" v-if="noteAgree"></image>
 					<image src="/static/imgs/common/no-select.png" v-else></image>
@@ -84,7 +212,7 @@
 <script>
 	import paymentUtils from '@/common/payment.js'
 	import $chatUtils from '@/common/chat.js'
-	import noteUtils from './purchaseNotes.js'
+	// import noteUtils from './purchaseNotes.js'
 	const app = getApp()
 	export default{
 		components:{
@@ -102,17 +230,17 @@
 			}
 		},
 		computed:{
-			buyMustKnowList(){
-				if(this.type=='ping-order') {//拼享订单购买须知
-					return noteUtils.pingNotes;
-				}else if(this.type=='yao-order'){ //邀约订单购买须知
-					return noteUtils.yaoyueNotes;
-				}else if(this.type=='ping-join-order'){//加入拼享订单付款
-					return noteUtils.joinPingNotes;
-				}else{ // 默认
-					return noteUtils.defaultNotes;
-				}
-			},
+			// buyMustKnowList(){
+			// 	if(this.type=='ping-order') {//拼享订单购买须知
+			// 		return noteUtils.pingNotes;
+			// 	}else if(this.type=='yao-order'){ //邀约订单购买须知
+			// 		return noteUtils.yaoyueNotes;
+			// 	}else if(this.type=='ping-join-order'){//加入拼享订单付款
+			// 		return noteUtils.joinPingNotes;
+			// 	}else{ // 默认
+			// 		return noteUtils.defaultNotes;
+			// 	}
+			// },
 		},
 		onLoad(opt) {
 			this.params = this.$u.deepClone(opt)
