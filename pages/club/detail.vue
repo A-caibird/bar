@@ -73,7 +73,7 @@
 								</view>
 							</view> -->
 						<scroll-view :scroll-y="stickyStatus" :style="{height:swiperHeight}"
-							v-if="info.type == 'introduction'">
+							v-if="info.type == 'introduction'"  @scrolltoupper="scrolltoupper" :upper-threshold="upperThreshold">
 							<view style="color: #FFFFFF;padding: 30rpx;">
 								<u-parse :html="clubContent"></u-parse>
 							</view>
@@ -95,7 +95,7 @@
 								:upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-recruitment-list>
 						</block>
 						<scroll-view :scroll-y="stickyStatus" :style="{height:swiperHeight}"
-							v-if="info.type == 'evaluate'">
+							v-if="info.type == 'evaluate'" @scrolltoupper="scrolltoupper" :upper-threshold="upperThreshold">
 							<view class="evaluate_box">
 								<view class="complex_rate">
 									<view class="complex_left">
@@ -233,12 +233,7 @@
 			let vm = this;		
 			this.$u.getRect('.classify_box').then(res => {
 				let top = res.top;
-				// if (top <= this.statusBarHeight) {
-				// 	vm.stickyStatus = true;
-				// } else {
-				// 	vm.stickyStatus = false;
-				// }
-				if (top <= 0) {
+				if (top <= this.statusBarHeight) {
 					vm.stickyStatus = true;
 				} else {
 					vm.stickyStatus = false;
@@ -246,11 +241,11 @@
 			})
 			this.$u.getRect('.club_info_second').then(res => {
 				let top = res.top;
-				if (top <= 40 && top >= 0) {
+				if (top <= 50 && top >= 0) {
 					vm.navOpacity = parseFloat((50 - top) / 50).toFixed(1)
 				} else if (top < 0) {
 					vm.navOpacity = 1
-				} else if (top > 40) {
+				} else if (top > 50) {
 					vm.navOpacity = 0
 				}
 			})
@@ -306,9 +301,9 @@
 					})
 				}
 			},
-			scrolltoupper(e) {
+			scrolltoupper(e){
 				let platform = uni.getSystemInfoSync().platform
-				if (platform == 'ios') {
+				if(platform=='ios') {
 					this.stickyStatus = false
 				}
 			},
