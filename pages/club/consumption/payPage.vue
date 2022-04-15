@@ -205,7 +205,7 @@
 		<view class="footer_box">
 			<view class="pay_btn" @tap="$u.debounce(tapPay, 400, true)"> <text>支付{{allAmount}}元</text> </view>
 		</view>
-		<pay ref="pay" @pay="handlePay" :fillPassword="false" unitText="元"></pay>
+		<pay ref="payRef" @pay="handlePay" :fillPassword="false" unitText="元"></pay>
 	</view>
 </template>
 
@@ -349,6 +349,7 @@
 				uni.hideLoading()
 				if(code==0) {
 					this.paymentHandle(data, () => {
+						this.$refs.payRef.close();
 						this.btnAvaliable = true;
 						uni.$emit('order-list-refresh')
 						uni.$emit('ping-order-detail-refresh')
@@ -386,7 +387,7 @@
 				this.btnAvaliable = true;
 					this.$u.toast('余额不足,请更换支付方式');
 				} else {
-					this.$refs.pay.subInputTimes();
+					this.$refs.payRef.subInputTimes();
 					this.btnAvaliable = true;
 					this.removePayPasswordToStorage()
 				}
@@ -399,6 +400,7 @@
 				uni.hideLoading()
 				if(code==0) {
 					this.paymentHandle(data, () => {
+						this.$refs.payRef.close();
 						this.btnAvaliable = true;
 						uni.$emit('order-list-refresh')
 						uni.$emit('ping-order-detail-refresh')
@@ -436,7 +438,7 @@
 				this.btnAvaliable = true;
 					this.$u.toast('余额不足,请更换支付方式');
 				} else {
-					this.$refs.pay.subInputTimes();
+					this.$refs.payRef.subInputTimes();
 					this.btnAvaliable = true;
 					this.removePayPasswordToStorage()
 				}
@@ -449,6 +451,7 @@
 				uni.hideLoading();
 				if(code==0) {
 					this.paymentHandle(data, () => {
+						this.$refs.payRef.close();
 						this.btnAvaliable = true;
 						this.refreshPage();
 						if(this.params.chatTag && this.params.chatTag == 'true'){
@@ -495,7 +498,7 @@
 					// 	})
 					// },500)
 				} else {
-					this.$refs.pay.subInputTimes();
+					this.$refs.payRef.subInputTimes();
 					this.removePayPasswordToStorage()
 					this.btnAvaliable = true;
 				}
@@ -508,6 +511,7 @@
 				uni.hideLoading();
 				if(code==0) {
 					this.paymentHandle(data, () => {
+						this.$refs.payRef.close();
 						this.btnAvaliable = true;
 						this.refreshPage();
 						if(this.params.chatTag && this.params.chatTag == 'true'){
@@ -548,7 +552,7 @@
 				} else {
 					this.removePayPasswordToStorage()
 					this.btnAvaliable = true;
-					this.$refs.pay.subInputTimes();
+					this.$refs.payRef.subInputTimes();
 				}
 			},
 			refreshPage(){
@@ -565,13 +569,12 @@
 			tapPay: function(){
 				if(!this.noteAgree)  return uni.showToast({title:'请勾选购买须知！',icon:'none'})
 				if(!this.tipsAgree)  return uni.showToast({title:'请勾选用户安全须知！',icon:'none'})
-				// this.$refs.pay.open(this.allAmount)
 				if(!this.btnAvaliable){
 					this.$u.toast('请勿重复点击')
 					return
 				}
 				if(this.payType == 'Balance'){
-					this.$refs.pay.open(this.allAmount);
+					this.$refs.payRef.open(this.allAmount);
 				}else{
 					this.btnAvaliable = false;
 					this.handlePay();

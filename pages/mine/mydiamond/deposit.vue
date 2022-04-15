@@ -96,6 +96,7 @@
 					setTimeout(()=>{
 						this.$u.route({type:'back'})
 					},1200)
+					this.$refs.alipayCashOut.close();
 					this.setPayPasswordToStorage(params.payPassword)
 				}  else {
 					this.removePayPasswordToStorage()

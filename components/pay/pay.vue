@@ -102,7 +102,6 @@
 				}
 			},
 			subInputTimes(){
-				console.log('减少 subInputTimes')
 				this.inputTimes = this.inputTimes - 1;
 			},
 			close(){
@@ -117,18 +116,19 @@
 				this.close()
 			},
 			handleConfirm(){
-				console.log(this.password)
 				if(this.password.length==6) {
 					this.$emit('pay',{password:this.password})
 					this.close()
 				} 
 			},
 			changeHandle: function(e){
-				console.log(e);
 				if(this.password.length<6) {
 					this.password = this.password + e;
+					if(this.password.length == 6){
+						// this.handleConfirm();
+						this.$emit('pay',{password:this.password})
+					}
 				}
-				
 			},
 			backspaceHandle:function(){
 				let password = this.password;

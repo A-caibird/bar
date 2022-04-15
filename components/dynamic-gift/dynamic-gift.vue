@@ -57,6 +57,9 @@
 		<block>
 			<giftAnimation ref="giftAnimation"></giftAnimation>
 		</block>
+		<block>
+			<pay ref="payRef" @pay="pay($event)"></pay>
+		</block>
 	</view>
 </template>
 
@@ -161,10 +164,6 @@
 				}
 			},
 			
-		
-			
-			
-			
 			//选择礼物类型
 			async tapSelectGift(gift) {
 				let id = gift.id;
@@ -189,7 +188,12 @@
 				if(index==-1) return this.$u.toast('请先选择礼物')
 				if(sendNum <=0) return this.$u.toast('请选择礼物数量');
 				let allAmount = $calc.cMul(sendNum,this.gList[index].wineCoin)
-				this.$emit('openPay',allAmount)
+				let password = getApp().globalData.payPassword ;
+				if(password){
+					this.pay(password);
+				}else{
+					this.$refs.payRef.open(allAmount);
+				}
 			},
 			async pay(payPassword) {
 				let params = {
@@ -211,8 +215,8 @@
 						this.close()
 						this.$u.toast('赠送成功');
 					})
+					this.$refs.payRef.close();
 					this.setPayPasswordToStorage(params.payPassword)
-					
 				} else if(code==1) {
 					setTimeout(()=>{
 						this.$u.route({
@@ -222,7 +226,7 @@
 				} else {
 					this.removePayPasswordToStorage()
 					if(msg.indexOf('支付密码不正确') >= 0){
-						this.$emit('refreshInputTimes');
+						this.$refs.payRef.subInputTimes();
 					}
 				}
 			},

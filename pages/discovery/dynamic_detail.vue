@@ -57,10 +57,8 @@
 			</view>
 		</view>
 		<dynamic-comment ref="dynamicComment" @sendComment="handleSendComment"></dynamic-comment>
-		<dynamic-gift ref="dynamicGift" @refreshInputTimes="refreshInputTimes" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)"
-			@openPay="openPayhandle" @sendGiftSuccess="handleSendGiftSuccess"></dynamic-gift>
+		<dynamic-gift ref="dynamicGift" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @sendGiftSuccess="handleSendGiftSuccess"></dynamic-gift>
 		<dynamic-gift-edit ref="dynamicGiftEdit" @confirm="$refs.dynamicGift.setSendNum($event)"></dynamic-gift-edit>
-		<pay ref="pay" @pay="$refs.dynamicGift.pay($event)"></pay>
 		<giftAnimation ref="giftAnimation"></giftAnimation>
 		<pop-share v-model="popShareShow"></pop-share>
 	</view>
@@ -97,17 +95,6 @@
 		onUnload() {
 		},
 		methods: {
-			refreshInputTimes(){
-				this.$refs.pay.subInputTimes()
-			},
-			openPayhandle(e){
-				let password = getApp().globalData.payPassword;
-				if(password){
-					this.$refs.dynamicGift.pay({password});
-				}else{
-					this.$refs.pay.open(e);
-				}
-			},
 			fullScreenChange(e){
 				if(!e.detail.fullScreen){
 					var videoContext = uni.createVideoContext("videoId", this);

@@ -99,9 +99,10 @@
 					setTimeout(()=>{
 						this.$u.route({type:'back'})
 					},500)
+					this.$refs.alipayCashOut.close();
 					this.setPayPasswordToStorage(params.payPassword)
 				}  else {
-					this.removePayPasswordToStorage()
+					this.removePayPasswordToStorage();
 					if(msg.indexOf('支付密码不正确') >= 0){
 						this.$refs.alipayCashOut.subInputTimes();
 					}

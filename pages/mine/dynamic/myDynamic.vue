@@ -78,9 +78,8 @@
 		</view>
 		<videoBox ref="videoBox"></videoBox>
 		<dynamic-comment ref="dynamicComment" @sendComment="handleSendComment"></dynamic-comment>
-		<dynamic-gift ref="dynamicGift" @refreshInputTimes="refreshInputTimes" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @openPay="openPayhandle" @sendGiftSuccess="handleSendGiftSuccess($event)"></dynamic-gift>
+		<dynamic-gift ref="dynamicGift" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @sendGiftSuccess="handleSendGiftSuccess($event)"></dynamic-gift>
 		<dynamic-gift-edit ref="dynamicGiftEdit" @confirm="$refs.dynamicGift.setSendNum($event)"></dynamic-gift-edit>
-		<pay ref="payDynamicGift" @pay="$refs.dynamicGift.pay($event)"></pay>
 		<pop-share v-model="popShareShow"></pop-share>
 		<giftAnimation ref="giftAnimation"></giftAnimation>
 	</view>
@@ -212,22 +211,9 @@
 				let info = Object.assign(e, {mode: this.mode});
 				this.$refs.dynamicComment.open(info)
 			},
-			openPayhandle(e){
-				let password = getApp().globalData.payPassword ;
-				if(password){
-					this.$refs.dynamicGift.pay({password});
-				}else{
-					this.$refs.payDynamicGift.open(e);
-				}
-			},
 			openGift:function(e){
 				let info = Object.assign(e, {mode: this.mode});
 				this.$refs.dynamicGift.open(info)
-			},
-			refreshInputTimes(){
-				if(this.$refs.payDynamicGift){
-					this.$refs.payDynamicGift.subInputTimes()
-				}
 			},
 			tapAwkwardWine:function(){
 				this.$u.route('/pages/ping-yao-list/ping-yao-list',{

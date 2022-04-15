@@ -50,9 +50,8 @@
 		></selfTabbar>
 		<add-dynamic ref="addDynamic" @goDynamic="goFind" @joinPingTap="goPing" @goClubList="goClubList" :bottomHeight="bottomHeight"></add-dynamic>
 		<dynamic-comment ref="dynamicComment" @sendComment="$refs.find.handleSendComment($event)"></dynamic-comment>
-		<dynamic-gift ref="dynamicGift" @refreshInputTimes="refreshInputTimes" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @openPay="openPayhandle" @sendGiftSuccess="$refs.find.handleSendGiftSuccess($event)"></dynamic-gift>
+		<dynamic-gift ref="dynamicGift" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @sendGiftSuccess="$refs.find.handleSendGiftSuccess($event)"></dynamic-gift>
 		<dynamic-gift-edit ref="dynamicGiftEdit" @confirm="$refs.dynamicGift.setSendNum($event)"></dynamic-gift-edit>
-		<pay ref="payDynamicGift" @pay="$refs.dynamicGift.pay($event)"></pay>
 		<pop-share v-model="popShareShow"></pop-share>
 	</view>
 </template>
@@ -194,11 +193,6 @@ export default {
 	},
 	methods: {
 		...mapMutations(['setInfoCount', 'setPushCount']),
-		refreshInputTimes(){
-			if(this.$refs.payDynamicGift){
-				this.$refs.payDynamicGift.subInputTimes()
-			}
-		},
 		// 消息页面跳转
 		infoPageNavigate(){
 			let globalData = getApp().globalData;
@@ -255,14 +249,6 @@ export default {
 			this.$nav.navigateTo({
 				url: '/pages/info/gift'
 			});
-		},
-		openPayhandle(e){
-			let password = getApp().globalData.payPassword ;
-			if(password){
-				this.$refs.dynamicGift.pay({password});
-			}else{
-				this.$refs.payDynamicGift.open(e);
-			}
 		},
 		loadingAnimalHandle: function(){
 			this.contentShow = true;

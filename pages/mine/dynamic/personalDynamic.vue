@@ -59,9 +59,8 @@
 		</view>
 		<videoBox ref="videoBox"></videoBox>
 		<dynamic-comment ref="dynamicComment" @sendComment="setCommentNum($event)"></dynamic-comment>
-		<dynamic-gift ref="dynamicGift" @refreshInputTimes="refreshInputTimes" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @openPay="$refs.payDynamicGift.open($event)" @sendGiftSuccess="handleSendGiftSuccess($event)"></dynamic-gift>
+		<dynamic-gift ref="dynamicGift" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @sendGiftSuccess="handleSendGiftSuccess($event)"></dynamic-gift>
 		<dynamic-gift-edit ref="dynamicGiftEdit" @confirm="$refs.dynamicGift.setSendNum($event)"></dynamic-gift-edit>
-		<pay ref="payDynamicGift" @pay="$refs.dynamicGift.pay($event)"></pay>
 		<giftAnimation ref="giftAnimation"></giftAnimation>
 		<popShare v-model="popShareShow"></popShare>
 	</view>
@@ -218,9 +217,7 @@
 			videoPlayHandle(e){
 				this.$refs.videoBox.videoPlayTap(e.src);
 			},
-			refreshInputTimes(){
-				this.$refs.payDynamicGift.subInputTimes();
-			},
+			
 			handleDynamicRefresh(e){
 				if(e.msg!='myDynamic') {
 					console.log('刷新我的动态列表')
