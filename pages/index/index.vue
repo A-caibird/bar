@@ -30,12 +30,12 @@
 		<view class="loading_page" :class="{'hidden': !pageloading}">
 			<view class="top_box">
 				<image class="top_img" src="/static/imgs/index/loading_bg.png"></image>
-				<view class="top_text">爬梯</view>
+				<view class="top_text">爬梯秀</view>
 				<view class="top_text">快乐产生的的地方</view>
 			</view>
 			<view class="footer_box">
 				<image class="footer_icon" src="/static/imgs/index/loading_icon.png"></image>
-				<view class="footer_text">爬梯</view>
+				<view class="footer_text">爬梯秀</view>
 			</view>
 		</view>
 		<selfTabbar
