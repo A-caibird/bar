@@ -105,9 +105,10 @@
 	
 	//组件
 	import MescrollUni from '@/components/mescroll-uni/mescroll-uni.vue'
+	import loginConfirmMixin from '@/mixins/loginConfirm.js'
 	
 	export default{
-		mixins: [MescrollMixin,MescrollMoreItemMixin], // 注意此处还需使用MescrollMoreItemMixin (必须写在MescrollMixin后面)
+		mixins: [MescrollMixin,MescrollMoreItemMixin,loginConfirmMixin], // 注意此处还需使用MescrollMoreItemMixin (必须写在MescrollMixin后面)
 		components:{
 			MescrollUni,
 		},
@@ -128,7 +129,6 @@
 					noMoreSize: 4, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看; 默认5
 					
 				},
-				
 				url:'/api/user/leaderBoard',
 				params:{
 					type: 'week', //默认为周榜，月榜month
@@ -198,6 +198,7 @@
 			// 动态点击
 			dynamicTap(id){
 				let isMy = false;
+				if(!this.loginConfirmHandle(false)) return;
 				if(id == getApp().globalData.userInfo.userId){
 					isMy = true;
 				}

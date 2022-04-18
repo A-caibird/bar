@@ -24,10 +24,10 @@
 						</view>
 					</swiper-item>
 			
-					<swiper-item class="swiper-item" v-if="!isAppleAudit && authorized">
+					<swiper-item class="swiper-item" v-if="!isAppleAudit">
 						<find-share-list ref="find-share-list" :i="2" :index="swiperCurrent"></find-share-list>
 					</swiper-item>
-					<swiper-item class="swiper-item" v-if="!isAppleAudit && authorized">
+					<swiper-item class="swiper-item" v-if="!isAppleAudit">
 						<gift-board ref="gift-board" :i="3" :index="swiperCurrent"></gift-board>
 					</swiper-item>
 				</swiper>
@@ -100,7 +100,7 @@
 		},
 		computed: {
 			list() {
-				return (this.isAppleAudit || !this.authorized) ? [{name: '关注动态',value: ''},{name: '附近动态',value: ''},] : [{name: '关注动态',value: ''},{name: '附近动态',value: ''},{name: '拼享快乐',value: ''},{name: '礼物排行',value: ''},]
+				return (this.isAppleAudit) ? [{name: '关注动态',value: ''},{name: '附近动态',value: ''},] : [{name: '关注动态',value: ''},{name: '附近动态',value: ''},{name: '拼享快乐',value: ''},{name: '礼物排行',value: ''},]
 			}
 		},
 		mounted() {	

@@ -2,12 +2,12 @@
 	<view class="club_item_box" @tap="$u.throttle(goGroupBuying(info))">
 	<!-- <view class="club_item_box"> -->
 		<view class="user_header">
-			<view class="header_left" @tap.stop="$u.throttle(goPersonalHomepage(info.userId))">
+			<view class="header_left" @tap.stop="$u.throttle(goPersonPage(info.userId))">
 				<image :src="info.userAvatar"></image>
 			</view>
 			<view class="header_right">
 				<view class="first_line">
-					<view class="user_name" @tap.stop="$u.throttle(goPersonalHomepage(info.userId))">
+					<view class="user_name" @tap.stop="$u.throttle(goPersonPage(info.userId))">
 						<text>{{info.userNickName}}</text>
 						<image v-if="info.sex == '女'" src="/static/imgs/register/female_icon.png" mode=""></image>
 						<image v-else src="/static/imgs/register/male_icon.png" mode=""></image>
@@ -17,7 +17,7 @@
 						<text>{{info.distance}}</text>
 					</view>
 				</view>
-				<view class="second_line" @tap.stop="$u.throttle(goPersonalHomepage(info.userId))">
+				<view class="second_line" @tap.stop="$u.throttle(goPersonPage(info.userId))">
 					<view class="time_text"> <text>{{info.payDate}}</text> </view>
 				</view>
 			</view>
@@ -109,7 +109,9 @@
 	const app = getApp()
 	import pop from '@/components/commonPop/pop.vue'
 	import $chat from '@/utils/chat/index.js'
+	import loginMixins from '@/mixins/loginConfirm.js'
 	export default {
+		mixins:[loginMixins],
 		props:{
 			info:{
 				type:Object,
@@ -129,7 +131,12 @@
 			}
 		},
 		methods:{
+			goPersonPage(userId){
+				if(!this.loginConfirmHandle(false)) return;
+				this.goPersonalHomepage(userId);
+			},
 			pingTap(){
+				if(!this.loginConfirmHandle(false)) return;
 				this.popPrice = this.info.amount;
 				this.popShow = true;
 			},
@@ -183,7 +190,8 @@
 				})
 			},
 			
-			goGroupBuying:function(info){				
+			goGroupBuying:function(info){
+				if(!this.loginConfirmHandle(false)) return;
 				let clubId = info.clubId
 				let orderId = info.id
 				uni.$off('sendInviteMsg');
