@@ -437,10 +437,12 @@
 				} else if(code==5) {//余额不足
 				this.btnAvaliable = true;
 					this.$u.toast('余额不足,请更换支付方式');
-				} else {
+				} else if(code==7){ // 密码输入错误
 					this.$refs.payRef.subInputTimes();
 					this.btnAvaliable = true;
 					this.removePayPasswordToStorage()
+				} else {
+					this.btnAvaliable = true;
 				}
 			},
 			async addWinePay(params){
@@ -492,14 +494,11 @@
 				} else if(code==6) {//余额不足
 					this.$u.toast('余额不足,请更换支付方式');
 					this.btnAvaliable = true;
-					// setTimeout(()=>{
-					// 	this.$u.route({
-					// 		url:'/pages/mine/balance/recharge',
-					// 	})
-					// },500)
-				} else {
+				} else if(code == 7){ // 支付密码错误
 					this.$refs.payRef.subInputTimes();
-					this.removePayPasswordToStorage()
+					this.removePayPasswordToStorage();
+					this.btnAvaliable = true;
+				} else {
 					this.btnAvaliable = true;
 				}
 			},
@@ -549,10 +548,12 @@
 					// 		url:'/pages/mine/myWallet/recharge',
 					// 	})
 					// },500)
-				} else {
+				} else if(code== 7) { // 密码输入错误
 					this.removePayPasswordToStorage()
-					this.btnAvaliable = true;
 					this.$refs.payRef.subInputTimes();
+					this.btnAvaliable = true;
+				} else {
+					this.btnAvaliable = true;
 				}
 			},
 			refreshPage(){
