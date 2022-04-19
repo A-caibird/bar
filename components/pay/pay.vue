@@ -21,7 +21,7 @@
 			<!-- <view class="btn" @tap="$u.throttle(tapEmitPay)"> <text>支付</text> </view> -->
 		</view>
 		<view class="input_box" v-if="canInput">
-			<keyboard-package ref="number"  @onInput="changeHandle" @onDelete="backspaceHandle" @onConfirm="handleConfirm" :disableDot="true" :showConfirm="true"/>
+			<keyboard-package  ref="number"  @onInput="changeHandle" @onDelete="backspaceHandle" @onConfirm="handleConfirm" :disableDot="true" :showConfirm="false"/>
 		</view>
 	</view>
 </template>
