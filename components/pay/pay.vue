@@ -103,6 +103,7 @@
 			},
 			subInputTimes(){
 				this.inputTimes = this.inputTimes - 1;
+				this.password = "";
 			},
 			close(){
 				this.show = false
