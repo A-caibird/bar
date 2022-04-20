@@ -391,9 +391,11 @@
 					this.removePayPasswordToStorage();
 					this.btnAvaliable = true;
 				} else if(code == 8){
-					uni.navigateBack({
-						delta:2
-					})
+					setTimeout(() => {
+						uni.navigateBack({
+							delta:2
+						})
+					}, 2000)
 				} else {
 					this.btnAvaliable = true;
 				}
@@ -448,9 +450,11 @@
 					this.btnAvaliable = true;
 					this.removePayPasswordToStorage()
 				} else if(code == 8){
-					uni.navigateBack({
-						delta:2
-					})
+					setTimeout(() => {
+						uni.navigateBack({
+							delta:2
+						})
+					}, 2000)
 				} else {
 					this.btnAvaliable = true;
 				}
@@ -509,9 +513,11 @@
 					this.removePayPasswordToStorage();
 					this.btnAvaliable = true;
 				} else if(code == 8){
-					uni.navigateBack({
-						delta:2
-					})
+					setTimeout(() => {
+						uni.navigateBack({
+							delta:2
+						})
+					}, 2000)
 				} else {
 					this.btnAvaliable = true;
 				}
@@ -567,9 +573,11 @@
 					this.$refs.payRef.subInputTimes();
 					this.btnAvaliable = true;
 				} else if(code == 8){
-					uni.navigateBack({
-						delta:2
-					})
+					setTimeout(() => {
+						uni.navigateBack({
+							delta:2
+						})
+					}, 2000)
 				} else{
 					this.btnAvaliable = true;
 				}
