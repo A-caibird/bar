@@ -386,10 +386,16 @@
 				} else if(code==5) {//余额不足
 				this.btnAvaliable = true;
 					this.$u.toast('余额不足,请更换支付方式');
-				} else {
+				} else if(code==7) {
 					this.$refs.payRef.subInputTimes();
+					this.removePayPasswordToStorage();
 					this.btnAvaliable = true;
-					this.removePayPasswordToStorage()
+				} else if(code == 8){
+					uni.navigateBack({
+						delta:2
+					})
+				} else {
+					this.btnAvaliable = true;
 				}
 			},
 			async payPingJoin(params){
@@ -441,6 +447,10 @@
 					this.$refs.payRef.subInputTimes();
 					this.btnAvaliable = true;
 					this.removePayPasswordToStorage()
+				} else if(code == 8){
+					uni.navigateBack({
+						delta:2
+					})
 				} else {
 					this.btnAvaliable = true;
 				}
@@ -498,6 +508,10 @@
 					this.$refs.payRef.subInputTimes();
 					this.removePayPasswordToStorage();
 					this.btnAvaliable = true;
+				} else if(code == 8){
+					uni.navigateBack({
+						delta:2
+					})
 				} else {
 					this.btnAvaliable = true;
 				}
@@ -552,7 +566,11 @@
 					this.removePayPasswordToStorage()
 					this.$refs.payRef.subInputTimes();
 					this.btnAvaliable = true;
-				} else {
+				} else if(code == 8){
+					uni.navigateBack({
+						delta:2
+					})
+				} else{
 					this.btnAvaliable = true;
 				}
 			},
