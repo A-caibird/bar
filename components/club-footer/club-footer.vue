@@ -29,18 +29,15 @@
 					<image src="/static/imgs/common/club_share.png"></image>
 					<text>拼享</text>
 				</block>
-				
 			</view>
-			<view class="btn_text share_btn" @tap="$u.throttle(clickTap('fight'), 1200)" v-if="showSetSeat&&!isPing">
+			<view class="btn_text share_btn" @tap="$u.throttle(clickTap('fight'), 1200)" v-if="!isAppleAudit || platform != 'android'">
 				<image src="/static/imgs/common/seat_icon.png"></image>
 				<text>拼享</text>
 			</view>
-			<view class="btn_text" @tap="$u.throttle(clickTap('book'), 1200)" v-if="showSetSeat&&!isPing">
+			<view class="btn_text" @tap="$u.throttle(clickTap('book'), 1200)" v-if="!isAppleAudit || platform != 'android'">
 				<image src="/static/imgs/common/seat_icon.png"></image>
 				<text>订座</text>
-				
 			</view>
-			
 		</view>
 	</view>
 </template>
@@ -63,15 +60,11 @@
 			isJoin:{
 				type: Boolean,
 				default: false
-			},
-			showSetSeat:{
-				type: Boolean,
-				default: false
 			}
 		},
 		data() {
 			return {
-				
+				platform: getApp().globalData.platform,
 			}
 		},
 		methods:{

@@ -242,13 +242,8 @@
 									</view>  				
 								</scroll-view>
 							</swiper-item>
-						</block>
-						
-						
-					</swiper>
-			
-				
-						
+						</block>					
+					</swiper>	
 				</view>
 			</view>
 		</view>
@@ -314,7 +309,6 @@
 
 <script>
 	import evaluate from '@/components/evaluate-item/evaluate-item.vue'
-	import clubFooter from '@/components/club-footer/club-footer.vue'
 	import selfRate from '@/components/self-rate/self-rate.vue'
 	import certPop from '@/components/pop/certification.vue'
 	import pingDynamicList from '@/components/ping-dynamic-list/ping-dynamic-list.vue'
@@ -326,7 +320,6 @@
 	const app = getApp()
 	export default {
 		components: {
-			clubFooter,
 			evaluate,
 			selfRate,
 			certPop,

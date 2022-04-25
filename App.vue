@@ -13,6 +13,15 @@
 					token: $storage.getLoginToken(),
 				})
 			}
+			uni.getSystemInfo({
+				success: (res) => {
+					if(res.platform == 'ios'){
+						this.globalData.platform = 'ios'
+					}else{
+						this.globalData.platform = 'android'
+					}
+				}
+			})
 		},
 		onShow: function() {
 			console.log('App Show')
@@ -52,6 +61,7 @@
 		},
 		
 		globalData: {
+			platform: '', // 平台
 			msgPath: '', // 推送消息路径；
 			passwordInputTimes: 0,
 			baseUrl: 'https://erp.patixiu.com',

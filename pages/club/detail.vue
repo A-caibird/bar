@@ -140,8 +140,7 @@
 			</view>
 		</view>
 		<view class="footer_box">
-			<club-footer :isAppleAudit="isAppleAudit" @clickTap="clickEvent" :collect="collect"
-				:showSetSeat="!isAppleAudit"></club-footer>
+			<club-footer :isAppleAudit="isAppleAudit" @clickTap="clickEvent" :collect="collect"></club-footer>
 		</view>
 		<pop-share v-model="shareShow"></pop-share>
 		<!-- <certPop></certPop> -->
