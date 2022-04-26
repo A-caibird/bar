@@ -60,6 +60,12 @@ export default {
 					checked: false,
 					way: 'togglePublishDynamicAPI',
 					isShow: true,
+				},
+				{
+					content: '定制通知',
+					checked: false,
+					way: 'toggleNoticeAPI',
+					isShow: true,
 				}
 			]
 		};
@@ -78,6 +84,7 @@ export default {
 				this.list[4].checked = pushInfo.giftReminder || false;
 				this.list[5].checked = pushInfo.pingNotice || false;
 				this.list[6].checked = pushInfo.pushDynamicNotice || false;
+				this.list[7].checked = pushInfo.allNotice || false;
 			}).catch(e => {
 				console.log(e);
 			})

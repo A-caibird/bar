@@ -231,8 +231,8 @@ const install = (Vue, vm) => {
 		dynamicReport: (params) => vm.$u.post('/api/dynamic/report', params), // 动态举报
 
 		//隐私设置
-		
 		getPushInfoAPI: () => vm.$u.post('/api/user/pushInfo'), //获取通知信息
+		toggleNoticeAPI: (params) => vm.$u.post('/api/user/changeAllNotice', params), // 是否打开定制通知（所有通知）
 		toggleJoinPingAPI: (params) => vm.$u.post('/api/user/changePinNotice', params), //是否打开加入拼享通知
 		togglePublishDynamicAPI: (params) => vm.$u.post('/api/user/changePushDynamicNotice', params), //是否打开发布作品通知
 		toggleOpenPraiseAPI: (params) => vm.$u.post('/api/user/changeLikeNotification', params), //是否打开点赞通知
