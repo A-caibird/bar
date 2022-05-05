@@ -16,11 +16,10 @@
 				</view>
 				<view class="second_line">
 					<view class="time_text"  @tap.stop="$u.throttle(tapGoClubDetail)"> <text>{{info.time}}</text> </view>
-					<view class="icon_box" @tap.stop="goPage('/pages/discovery/report2?id=' + info.id)">
+					<view class="icon_box" @tap.stop="reportTap(info)">
 						<u-icon name="more-dot-fill" color="#ffffff" size="40"></u-icon>
 					</view>
 				</view>
-				
 			</view>
 		</view>
 		<view class="dynamic_img" v-if="info.imgList.length>1 || (info.imgList.length >= 1 && info.videoUrl)">
@@ -80,6 +79,10 @@
 			}
 		},
 		methods: {
+			reportTap(info){
+				this.$emit('reportTap', info);
+				// this.goPage('/pages/discovery/report2?id=' + info.id)
+			},
 			goPage(url){
 				this.$nav.navigateTo({url});
 			},

@@ -10,7 +10,7 @@
 				</swiper-item>
 				<swiper-item>
 					<block v-if="tabExit[1] >= 1">
-						<findPage ref="find" @shareTap="popShareShow = true" @goClub="goClub" @goChat="goChat" @openDynamicComment="$refs.dynamicComment.open($event)" @oepnGift="$refs.dynamicGift.open($event)"></findPage>
+						<findPage ref="find" @reportTap="reportTap" @shareTap="popShareShow = true" @goClub="goClub" @goChat="goChat" @openDynamicComment="$refs.dynamicComment.open($event)" @oepnGift="$refs.dynamicGift.open($event)"></findPage>
 					</block>
 				</swiper-item>
 				<swiper-item>
@@ -48,6 +48,7 @@
 			:mid-button="true"
 			@change="changeHandle"
 		></selfTabbar>
+		<reportPop ref="reportPop"></reportPop>
 		<add-dynamic ref="addDynamic" @goDynamic="goFind" @joinPingTap="goPing" @goClubList="goClubList" :bottomHeight="bottomHeight"></add-dynamic>
 		<dynamic-comment ref="dynamicComment" @sendComment="$refs.find.handleSendComment($event)"></dynamic-comment>
 		<dynamic-gift ref="dynamicGift" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @sendGiftSuccess="$refs.find.handleSendGiftSuccess($event)"></dynamic-gift>
@@ -66,6 +67,7 @@ import infoPage from '@/components/tabbarPage/info.vue';
 import tipsPop from '@/components/pop/tips.vue';
 import loginMixin from '@/mixins/loginConfirm.js'
 import $chat from '@/utils/chat/index.js'
+import reportPop from '@/components/pop/report.vue'
 var app = getApp();
 export default {
 	components: {
@@ -75,6 +77,7 @@ export default {
 		infoPage,
 		mePage,
 		tipsPop,
+		reportPop
 	},
 	mixins:[loginMixin],
 	data() {
@@ -157,8 +160,6 @@ export default {
 				this.pushListenerEvent();
 			}
 		});
-		
-		
 	},
 	onUnload() {
 		uni.$off('information_listener');
@@ -193,6 +194,9 @@ export default {
 	},
 	methods: {
 		...mapMutations(['setInfoCount', 'setPushCount']),
+		reportTap(info){
+			this.$refs.reportPop.show(info);
+		},
 		// 消息页面跳转
 		infoPageNavigate(){
 			let globalData = getApp().globalData;

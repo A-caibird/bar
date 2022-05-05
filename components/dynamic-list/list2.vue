@@ -4,10 +4,10 @@
 			<block v-if="hasLocation">
 				<view  v-for="(info, index) in pageList" :key="index">
 					<block v-if="info.type=='club'">
-						<dynamic-item :info="info" :btnShow="true&&showPercent" swiperHeight=468.75 ></dynamic-item>
+						<dynamic-item :info="info" @reportTap="reportTap" :btnShow="true&&showPercent" swiperHeight=468.75 ></dynamic-item>
 					</block>
 					<block v-else>
-						<find-item @videoPlayTap="videoPlayTap" mode="follow" :info="info" :showPercent="showPercent" @shareTap="$emit('shareTap')" @showYaoyue="handleShowYaoyue" @showPing="handleShowPing" @oepnComment="$emit('oepnComment',$event)" @oepnGift="$emit('oepnGift',$event)"></find-item>
+						<find-item @reportTap="reportTap" @videoPlayTap="videoPlayTap" mode="follow" :info="info" :showPercent="showPercent" @shareTap="$emit('shareTap')" @showYaoyue="handleShowYaoyue" @showPing="handleShowPing" @oepnComment="$emit('oepnComment',$event)" @oepnGift="$emit('oepnGift',$event)"></find-item>
 					</block>
 					<block v-if="index != pageList.length - 1"><u-gap :height="30" bgColor="#20234B"></u-gap></block>
 				</view>
@@ -86,6 +86,9 @@
 		
 		},
 		methods:{
+			reportTap(info){
+				this.$emit('reportTap', info);
+			},
 			videoPlayTap(e){
 				this.$emit('videoPlayTap', e);
 			},

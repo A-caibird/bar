@@ -10,14 +10,19 @@
 			<view class="find_middle_box" v-if="!pageLoading">
 				<swiper class="swiper-box" :duration="250" :current="swiperCurrent" @change="animationfinish">
 					<swiper-item class="swiper-item">
-						<dynamic-list2 @shareTap="$emit('shareTap')" ref="follow-dynamic-list" :index="swiperCurrent" 
+						<dynamic-list2 
+							@reportTap="reportTap"
+							@shareTap="$emit('shareTap')" ref="follow-dynamic-list" :index="swiperCurrent" 
 							@showYaoyue="handleShowYaoyue" @showPing="handleShowPing" :showPercent="!isAppleAudit"
 							@oepnComment="openDynamicComment('follow',$event)" @oepnGift="oepnGift('follow',$event)">
 						</dynamic-list2>
 					</swiper-item>
 					<swiper-item class="swiper-item">
 						<view style="height: 100%;">
-							<dynamic-list @videoPlayTap="videoPlayHandle" @shareTap="$emit('shareTap')" ref="nearby-dynamic-list" :index="swiperCurrent"
+							<dynamic-list 
+								@reportTap="reportTap"
+								@videoPlayTap="videoPlayHandle" @shareTap="$emit('shareTap')" 
+								ref="nearby-dynamic-list" :index="swiperCurrent"
 								@showYaoyue="handleShowYaoyue" @showPing="handleShowPing" :showPercent="!isAppleAudit"
 								@oepnComment="openDynamicComment('nearby',$event)" @oepnGift="oepnGift('nearby',$event)">
 							</dynamic-list>
@@ -31,7 +36,6 @@
 						<gift-board ref="gift-board" :i="3" :index="swiperCurrent"></gift-board>
 					</swiper-item>
 				</swiper>
-				
 			</view>
 		</block>
 		<block v-else>
@@ -113,6 +117,9 @@
 			})
 		},
 		methods: {
+			reportTap(info){
+				this.$emit('reportTap', info);
+			},
 			videoPlayHandle(e){
 				this.$refs.videoBox.videoPlayTap(e.src);
 			},

@@ -79,6 +79,7 @@ const install = (Vue, vm) => {
 		getClubEvaluationListApi: (params) => vm.$u.get('/api/club/evaluationList', params), //酒吧评价列表
 
 		//个人/酒吧动态
+		notViewApi: (params) => vm.$u.get('/api/user/notView', params), //不再看某人或酒吧动态
 		dynamicDeleteApi: (id) => vm.$u.post('/api/dynamic/userDelete', {id}), //动态删除
 		dynamicDetail: (id) => vm.$u.post('/api/dynamic/view', {id}), //动态详情
 		dynamicLike: (id) => vm.$u.post('/api/dynamic/like', {id}), //动态点赞

@@ -24,7 +24,7 @@
 				</view>
 				<view class="second_line">
 					<view class="time_text" @tap.stop="$u.throttle(goPersonalHomepageHandle(info.userId,info.myself))"> <text>{{info.time}}</text> </view>
-					<view class="icon_box" @tap.stop="goPage('/pages/discovery/report?id=' + info.id)">
+					<view class="icon_box" @tap.stop="reportTap(info)">
 						<u-icon name="more-dot-fill" color="#ffffff" size="40"></u-icon>
 					</view>
 				</view>
@@ -156,6 +156,10 @@
 		mounted() {
 		},
 		methods:{
+			reportTap(info){
+				this.$emit('reportTap', info);
+				// this.goPage('/pages/discovery/report?id=' + info.id)
+			},
 			videoPlayTap(e){
 				this.$emit('videoPlayTap', e);
 			},
