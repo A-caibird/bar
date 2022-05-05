@@ -1,15 +1,17 @@
 <template>
 	<view class="me_box">
-		<scroll-view scroll-y="true" style="height: 100%;" 
-		:refresher-threshold="80" refresher-enabled="true" refresher-background="transparent" :refresher-triggered="triggered" @refresherrefresh="handlePageRefresh" >
+		<scroll-view scroll-y="true" style="height: 100%;" :refresher-threshold="80" refresher-enabled="true"
+			refresher-background="transparent" :refresher-triggered="triggered" @refresherrefresh="handlePageRefresh">
 			<view class="middle_box">
 				<view class="person_box">
-					<view class="person_intro" v-if="authorized" @tap="$u.throttle(navigateHandle('/pages/mine/personalSetting/personalSetting'))">
+					<view class="person_intro" v-if="authorized"
+						@tap="$u.throttle(navigateHandle('/pages/mine/personalSetting/personalSetting'))">
 						<image class="person_img" :src="userData.avatar" mode=""></image>
 						<view class="intro_info">
 							<view class="first_line">
 								<view class="info_name"> <text>{{userData.nickName}}</text> </view>
-								<image v-if="userData.sex == '男'" class="sex_img" src="/static/imgs/register/male_icon.png"></image>
+								<image v-if="userData.sex == '男'" class="sex_img"
+									src="/static/imgs/register/male_icon.png"></image>
 								<image v-else class="sex_img" src="/static/imgs/register/female_icon.png"></image>
 							</view>
 							<view class="second_line">
@@ -28,7 +30,8 @@
 						</view>
 					</view>
 					<view class="dispaly_box">
-						<view class="display_item" @tap="$u.throttle(navigateHandle('/pages/mine/dynamic/personalDynamic'))">
+						<view class="display_item"
+							@tap="$u.throttle(navigateHandle('/pages/mine/dynamic/personalDynamic'))">
 							<view> <text>{{userData.dynamicNumber || 0}}</text> </view>
 							<view>动态</view>
 						</view>
@@ -71,7 +74,7 @@
 			</view>
 			<view class="first_part">
 				<view class="box-content">
-					
+
 					<!-- <view class="items" @tap="$u.route('/pages/mine/notifySetting/notifySetting')">
 						<text>通知设置</text>
 						<image src="/static/imgs/mine/common_right.png"  mode=""></image>
@@ -84,7 +87,8 @@
 						<text>意见反馈</text>
 						<image src="/static/imgs/mine/common_right.png" mode=""></image>
 					</view>
-					<view v-if="!isAppleAudit" class="items" @tap="$u.throttle(navigateHandle('/pages/common-problem/common-problem'))">
+					<view v-if="!isAppleAudit" class="items"
+						@tap="$u.throttle(navigateHandle('/pages/common-problem/common-problem'))">
 						<text>常见问题</text>
 						<image src="/static/imgs/mine/common_right.png" mode=""></image>
 					</view>
@@ -92,7 +96,7 @@
 						<text>信用规则</text>
 						<image src="/static/imgs/mine/common_right.png" mode=""></image>
 					</view>
-					<view  v-if="!isAppleAudit" class="items" @tap="$u.throttle(goArticle('protocol'))">
+					<view v-if="!isAppleAudit" class="items" @tap="$u.throttle(goArticle('protocol'))">
 						<text>用户协议</text>
 						<image src="/static/imgs/mine/common_right.png" mode=""></image>
 					</view>
@@ -101,10 +105,10 @@
 						<image src="/static/imgs/mine/common_right.png" mode=""></image>
 					</view>
 				</view>
-				
+
 			</view>
 		</scroll-view>
-			
+
 	</view>
 </template>
 
@@ -120,88 +124,118 @@
 	// var plug = uni.requireNativePlugin("Html5app-Meiqia");
 	// #endif
 	export default {
-		mixins:[appleAudit],
+		mixins: [appleAudit],
 		components: {
 			commonLabel,
 			dynamic
 		},
 		data() {
 			return {
-				triggered:false,
+				triggered: false,
 				kind: 'personal',
 				userData: {},
 				dynamicNumber: '',
-				authorized:false,
-				yaoOrderWaitPayNum:0,
-				pingOrderWaitPayNum:0,
+				authorized: false,
+				yaoOrderWaitPayNum: 0,
+				pingOrderWaitPayNum: 0,
 				wineCellarNum: 0,
 			}
 		},
-		computed:{
-			featureList(){
-				return this.isAppleAudit?[
-					{
-						icon: '/static/imgs/mine/collect_icon.png',
-						text: '我的收藏',
-						url: '/pages/mine/myCollection/myCollection'
+		computed: {
+			featureList() {
+				if (this.isAppleAudit) {
+					if (app.globalData.platform == 'ios') {
+						return [{
+								icon: '/static/imgs/mine/collect_icon.png',
+								text: '我的收藏',
+								url: '/pages/mine/myCollection/myCollection'
 
-					},
-					{
-						icon: '/static/imgs/mine/setting_icon.png',
-						text: '个人设置',
-						url: '/pages/mine/setting/index'
-					},
-				]:[{
-						icon: '/static/imgs/mine/wine_icon.png',
-						text: '酒库',
-						url: '/pages/mine/wineCellar/wineCellar',
-						num: this.wineCellarNum
-					},
-					{
-						icon: '/static/imgs/mine/wallet_icon.png',
-						text: '我的钱包',
-						url: '/pages/mine/wallet/index'
-						// url: '/pages/mine/myWallet/myWallet'
-					},
-					{
-						icon: '/static/imgs/mine/order_icon.png',
-						text: '我的订单',
-						url: yaoOrderListUrl,
-						num: this.yaoOrderWaitPayNum,
-					},
-					{
-						icon: '/static/imgs/mine/share_order.png',
-						text: '拼享订单',
-						url: pingOrderListUrl,
-						num: this.pingOrderWaitPayNum,
-					},
-					{
-						icon: '/static/imgs/mine/member_icon.png',
-						text: '会员中心',
-						url: '/pages/mine/memberCenter/memberCenter'
-					},
-					{
-						icon: '/static/imgs/mine/youhuiquan_icon.png',
-						text: '优惠券',
-						url: '/pages/coupon/coupon'
-					},
-					{
-						icon: '/static/imgs/mine/collect_icon.png',
-						text: '我的收藏',
-						url: '/pages/mine/myCollection/myCollection'
-					},
-					// {
-					// 	icon: '/static/imgs/mine/service_icon.png',
-					// 	text: '在线客服',
-					// 	url: 'kefu'
-					// },
-					{
-						icon: '/static/imgs/mine/setting_icon.png',
-						text: '个人设置',
-						url: '/pages/mine/setting/index'
-					},
-				]
-			},
+							},
+							{
+								icon: '/static/imgs/mine/setting_icon.png',
+								text: '个人设置',
+								url: '/pages/mine/setting/index'
+							},
+							{
+								icon: '/static/imgs/mine/order_icon.png',
+								text: '我的订单',
+								url: yaoOrderListUrl,
+								num: this.yaoOrderWaitPayNum,
+							},
+							{
+								icon: '/static/imgs/mine/share_order.png',
+								text: '拼享订单',
+								url: pingOrderListUrl,
+								num: this.pingOrderWaitPayNum,
+							}
+						]
+					} else {
+						return [{
+								icon: '/static/imgs/mine/collect_icon.png',
+								text: '我的收藏',
+								url: '/pages/mine/myCollection/myCollection'
+
+							},
+							{
+								icon: '/static/imgs/mine/setting_icon.png',
+								text: '个人设置',
+								url: '/pages/mine/setting/index'
+							}
+						]
+					}
+				} else {
+					return [{
+							icon: '/static/imgs/mine/wine_icon.png',
+							text: '酒库',
+							url: '/pages/mine/wineCellar/wineCellar',
+							num: this.wineCellarNum
+						},
+						{
+							icon: '/static/imgs/mine/wallet_icon.png',
+							text: '我的钱包',
+							url: '/pages/mine/wallet/index'
+							// url: '/pages/mine/myWallet/myWallet'
+						},
+						{
+							icon: '/static/imgs/mine/order_icon.png',
+							text: '我的订单',
+							url: yaoOrderListUrl,
+							num: this.yaoOrderWaitPayNum,
+						},
+						{
+							icon: '/static/imgs/mine/share_order.png',
+							text: '拼享订单',
+							url: pingOrderListUrl,
+							num: this.pingOrderWaitPayNum,
+						},
+						{
+							icon: '/static/imgs/mine/member_icon.png',
+							text: '会员中心',
+							url: '/pages/mine/memberCenter/memberCenter'
+						},
+						{
+							icon: '/static/imgs/mine/youhuiquan_icon.png',
+							text: '优惠券',
+							url: '/pages/coupon/coupon'
+						},
+						{
+							icon: '/static/imgs/mine/collect_icon.png',
+							text: '我的收藏',
+							url: '/pages/mine/myCollection/myCollection'
+						},
+						// {
+						// 	icon: '/static/imgs/mine/service_icon.png',
+						// 	text: '在线客服',
+						// 	url: 'kefu'
+						// },
+						{
+							icon: '/static/imgs/mine/setting_icon.png',
+							text: '个人设置',
+							url: '/pages/mine/setting/index'
+						}
+					]
+				}
+			}
 		},
 		mounted() {
 			// this.load()
@@ -214,55 +248,55 @@
 		},
 		methods: {
 			// 页面跳转
-			navigateHandle: function(url){
+			navigateHandle: function(url) {
 				this.$nav.navigateTo({
 					url,
 				})
 			},
-			refreshOrderWaitPaySize(){
-				if(this.authorized){
+			refreshOrderWaitPaySize() {
+				if (this.authorized) {
 					this.getNotPayInviteOrderSize()
 					this.getNotPayJoinOrderSize()
-				}else{
+				} else {
 					uni.stopPullDownRefresh();
 				}
 			},
 			async handlePageRefresh() {
 				if (this.triggered) return;
 				this.triggered = true;
-				if(!this.authorized){
-					setTimeout(()=>{
+				if (!this.authorized) {
+					setTimeout(() => {
 						this.triggered = false;
-					},500)
+					}, 500)
 					return;
 				}
 				this.getNotPayInviteOrderSize()
 				this.getNotPayJoinOrderSize()
-				this.$u.api.getMyInfo({}).then((code,data)=>{
-					if(code==0) {
+				this.$u.api.getMyInfo({}).then((code, data) => {
+					if (code == 0) {
 						this.userData = data.info
 						this.upadteUserInfo(data.info.nickName, data.info.avatar)
-					} 
-					setTimeout(()=>{
+					}
+					setTimeout(() => {
 						this.triggered = false;
-					},500)
-				}).catch(err=>{
-					setTimeout(()=>{
+					}, 500)
+				}).catch(err => {
+					setTimeout(() => {
 						this.triggered = false;
-					},500) 
+					}, 500)
 				})
-				
+
 			},
-			goWallet(){
+			goWallet() {
 				this.$u.route('/pages/mine/myWallet/myWallet')
 			},
-			load(){
+			load() {
 				let authorized = false;
-				if(app.globalData.token){
+				if (app.globalData.token) {
 					authorized = true;
 				}
 				this.authorized = authorized;
-				if(authorized){
+				if (authorized) {
 					this.getMyInfo()
 					this.getNotPayInviteOrderSize()
 					this.getNotPayJoinOrderSize()
@@ -271,9 +305,9 @@
 			refreshPersonalInfo() {
 				let authorized = app.globalData.authorized;
 				console.log('refreshPersonalInfo');
-				if(authorized){
+				if (authorized) {
 					this.getMyInfo()
-				}else{
+				} else {
 					uni.showToast({
 						title: '请先登录',
 						icon: 'none'
@@ -289,14 +323,14 @@
 			},
 			// 页面跳转
 			goRoute: function(url) {
-				if(url == 'kefu'){
+				if (url == 'kefu') {
 					// plug.open({"groupId":"26b286ca4af3b84c102ced4aeb88b019"})
-				}else{
+				} else {
 					if (url) {
 						// this.$u.route(url);
 						this.navigateHandle(url);
 					}
-				}	
+				}
 			},
 			// 未付款邀约订单数
 			async getNotPayInviteOrderSize() {
@@ -305,11 +339,13 @@
 					data
 				} = await this.$u.api.getNotPayInviteOrderSizeApi({})
 				if (code == 0) {
-					let {size} = data
+					let {
+						size
+					} = data
 					this.yaoOrderWaitPayNum = size
 					this.$forceUpdate()
 				}
-				
+
 			},
 			// 未付款拼享订单数
 			async getNotPayJoinOrderSize() {
@@ -318,7 +354,9 @@
 					data
 				} = await this.$u.api.getNotPayJoinOrderSizeApi({})
 				if (code == 0) {
-					let {size} = data
+					let {
+						size
+					} = data
 					this.pingOrderWaitPayNum = size
 					this.$forceUpdate()
 				}
@@ -458,8 +496,8 @@
 					})
 				})
 			},
-		
-			
+
+
 		}
 	}
 </script>
@@ -471,11 +509,12 @@
 		background-image: url('/static/imgs/mine/backImg.png');
 		background-size: 100% 748rpx;
 		background-repeat: no-repeat;
-		
+
 
 		.middle_box {
 			width: 100%;
 			padding-top: 140rpx;
+
 			.person_box {
 				width: 100%;
 				box-sizing: border-box;
@@ -621,6 +660,7 @@
 						justify-content: center;
 						flex-direction: column;
 						position: relative;
+
 						.item_icon {
 							height: 46rpx;
 							width: 46rpx;
@@ -631,6 +671,7 @@
 								width: 46rpx;
 							}
 						}
+
 						.badge {
 							position: absolute;
 							right: 5rpx;
@@ -657,14 +698,15 @@
 				}
 			}
 		}
-		
+
 		.first_part {
 			padding: 30rpx;
+
 			.box-content {
 				border-radius: 10rpx;
 				background: #2C3158;
-				
-				
+
+
 				.items {
 					width: 100%;
 					height: 80rpx;
@@ -672,19 +714,20 @@
 					justify-content: space-between;
 					padding-left: 30rpx;
 					padding-right: 30rpx;
+
 					&>text {
 						font-size: 30rpx;
 						color: #ffffff;
 					}
-				
+
 					&>image {
 						width: 12rpx;
 						height: 20rpx;
 					}
 				}
-				
+
 			}
-			
+
 		}
 	}
 </style>

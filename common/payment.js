@@ -53,6 +53,7 @@ function initPay(obj) {
 	goodsArray: 平台申请拿到的内购商品的id数组
  */
 function iphonePay(goodsArray) {
+	return
 	uni.showLoading({
 		title: '检测支付环境...',
 		mask: true
@@ -150,6 +151,5 @@ function getPayMethod(balanceHide) {
 
 module.exports = {
 	initPay,
-	getPayMethod,
-	iphonePay
+	getPayMethod
 }
