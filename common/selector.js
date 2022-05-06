@@ -3,7 +3,7 @@ const reportList = [{
 		select: false
 	},
 	{
-		value: '违法违禁品',
+		value: '违法内容',
 		select: false
 	},
 	{

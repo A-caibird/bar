@@ -43,13 +43,17 @@
 				if(info.type == 'user'){
 					params.targetId = info.userId || "";
 					params.isClub = false;
-				}else{
+				}else if(info.type == 'people'){
+					params.targetId = info.userId || "";
+					params.isClub = false;
+				} else{
 					params.targetId = info.clubId || "";
 					params.isClub = true;
 				}
 				this.$u.api.notViewApi(params).then(res => {
 					uni.$emit('dynamic-refresh',{msg:'dynamic-detail'})
 					uni.$emit('dynamic-refresh-follow',{msg:'dynamic-detail'})
+					this.$emit('notViewTap');
 					this.hide();
 				}).catch(e => {
 					console.log('notViewApi', e);
@@ -64,6 +68,7 @@
 				}else{
 					url = `/pages/discovery/report2?id=${info.id}`
 				}
+				this.hide();
 				this.$nav.navigateTo({url});
 			},
 			show(info = ""){

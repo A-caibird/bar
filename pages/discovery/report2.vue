@@ -56,16 +56,6 @@
 				setTimeout(() => {
 					uni.navigateBack();
 				}, 1000)
-				// this.$u.api.dynamicReport(params).then(res => {
-				// 	if(parseInt(res.code) == 0){
-				// 		this.$u.toast('感谢您的举报，我们会尽快处理~');
-				// 		setTimeout(() => {
-				// 			uni.navigateBack();
-				// 		}, 1000)
-				// 	}
-				// }).catch(e => {
-					
-				// })
 			}
 		}
 	}

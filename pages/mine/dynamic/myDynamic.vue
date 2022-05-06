@@ -1,6 +1,10 @@
 <template>
 	<view class="container">
-		<u-navbar v-if="!navShow" back-icon-color="#FFFFFF" :background="{'background': 'rgba(0,0,0,0)'}" :border-bottom="false" :immersive="true"></u-navbar>
+		<u-navbar v-if="!navShow" back-icon-color="#FFFFFF" :background="{'background': 'rgba(0,0,0,0)'}" :border-bottom="false" :immersive="true">
+			<view slot="right" style="margin-right: 24rpx;" @tap="reportTap">
+				<u-icon name="more-dot-fill" color="#ffffff" size="44"></u-icon>
+			</view>
+		</u-navbar>
 		<view class="header_img">
 			<image class="bg_img" :src=" otherList.background || '/static/imgs/personalDynamic/dynamic_bgimg.png'"></image>
 		</view>
@@ -82,6 +86,7 @@
 		<dynamic-gift-edit ref="dynamicGiftEdit" @confirm="$refs.dynamicGift.setSendNum($event)"></dynamic-gift-edit>
 		<pop-share v-model="popShareShow"></pop-share>
 		<giftAnimation ref="giftAnimation"></giftAnimation>
+		<reportPop ref="reportPop" @notViewTap="notViewHandle"></reportPop>
 	</view>
 </template>
 
@@ -92,11 +97,13 @@
 	var {windowHeight, statusBarHeight} = uni.getSystemInfoSync();
 	var proportion = uni.getSystemInfoSync().windowWidth / 750;
 	import videoBox from '@/components/common-video/video.vue'
+	import reportPop from '@/components/pop/report.vue'
 	export default {
 		mixins: [pageable],
 		components:{
 			giftAnimation,
-			videoBox
+			videoBox,
+			reportPop
 		},
 		data() {
 			return {
@@ -175,7 +182,17 @@
 			
 		},
 		methods: {
-			
+			notViewHandle(){
+				uni.navigateBack({
+					delta:1
+				})
+			},
+			reportTap(){
+				this.$refs.reportPop.show({
+					type: 'people',
+					userId: this.userid
+				});
+			},
 			videoPlayHandle(e){
 				this.$refs.videoBox.videoPlayTap(e.src);
 			},
