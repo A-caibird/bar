@@ -30,14 +30,14 @@
 							<input type="text" @focus="inputFocus" class="input" confirm-type="发送" v-model="message" @confirm="judgePullback"/>
 						</template>
 					</view>
-					<!-- <view class="bottom-btn" hover-class="hover-class" hover-stay-time="300"
-						@touchend.prevent="judgePullback">发送</view> -->
 					<view class="bottom_add" @tap="emojiShow = !emojiShow; popShow = false;">
 						<image class="bottom_icon" src="/static/imgs/chat/emoji.png"></image>
 					</view>
-					<view class="bottom_add" @tap="popShow = !popShow; emojiShow = false;">
+					<view class="bottom_add" style="height: 58rpx; width: 58rpx;" @tap="popShow = !popShow; emojiShow = false;">
 						<image class="bottom_icon" src="/static/imgs/chat/add.png"></image>
 					</view>
+					<view class="bottom-btn" hover-class="hover-class" hover-stay-time="300"
+						@touchend.prevent="judgePullback">发送</view>
 				</view>
 				<view class="pop_box upload" :class="{'hidden': !popShow}" v-if="popShow">
 					<view class="upload_type_list">
@@ -182,24 +182,20 @@
 		methods: {
 			customBackEvent(){
 				if(this.chatConnect){
-					uni.showLoading({
-						title: '退出中'
-					})
 					this.disconnect(() => {
 						setTimeout(() => {
 							let userInfo = $storage.getUserInfo();
 							let info = {
 								chatId: userInfo.chatToken,
 								callback:function(){
-									uni.hideLoading();
-									uni.navigateBack({
-										delta:1
-									})
 								}
 							}
 							$store.commit('connetGoEasy',info);
 						}, 500)
 					});
+					uni.navigateBack({
+						delta:1
+					})
 				}
 			},
 			fullScreenChange(e){
@@ -613,7 +609,7 @@
 	}
 
 	.input-container {
-		width: 540rpx;
+		width: 440rpx;
 		position: relative;
 		flex-shrink: 0;
 		border-radius: 30rpx;
