@@ -190,7 +190,7 @@
 				let allAmount = $calc.cMul(sendNum,this.gList[index].wineCoin)
 				let password = getApp().globalData.payPassword ;
 				if(password){
-					this.pay(password);
+					this.pay({password});
 				}else{
 					this.$refs.payRef.open(allAmount);
 				}

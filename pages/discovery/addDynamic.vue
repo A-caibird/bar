@@ -147,7 +147,7 @@
 						})
 						vm.compressVideo(tempPath).then(compressRes => {
 							videoBtnAvaliabe = false;
-							vm.$u.api.uploadVideo(compressRes.tempFilePath).then(res => {
+							vm.$u.api.uploadVideo(compressRes.tempFilePath, 'file/', false).then(res => {
 								var footerImgUrl = '?x-oss-process=video/snapshot,t_0,f_jpg,w_0,h_0,m_fast';
 								let info = {
 									videoUrl: res,
@@ -155,9 +155,11 @@
 								}
 								vm.videoList.push(info);
 								videoBtnAvaliabe = true;
+								uni.hideLoading();
 							}).catch(e => {
 								console.log(e);
 								videoBtnAvaliabe = true;
+								uni.hideLoading();
 							})
 						}).catch(e => {
 							console.log('视频压缩失败',e);

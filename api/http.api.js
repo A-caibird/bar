@@ -1,21 +1,27 @@
 // 如果没有通过拦截器配置域名的话，可以在这里写上完整的URL(加上域名部分)
 import uploadFile from '@/utils/upload';
 const install = (Vue, vm) => {
-	let upload = (filePath, dir = 'file/') => { // dir是阿里云上的目录 不传也可以
+	let upload = (filePath, dir = 'file/', load=true) => { // dir是阿里云上的目录 不传也可以
 		return new Promise((resolve, reject) => {
-			uni.showLoading({
-				title: '上传中',
-				mask: true,
-			})
+			if(load){
+				uni.showLoading({
+					title: '上传中',
+					mask: true,
+				})
+			}
 			uploadFile(filePath, dir, function success(res) {
 				// console.log(res)
 				// console.log(filePath)
 				// console.log(dir)
 				resolve(res) //返回网络地址
-				uni.hideLoading()
+				if(load){
+					uni.hideLoading()
+				}
 			}, function fail(err) {
 				reject(err)
-				uni.hideLoading()
+				if(load){
+					uni.hideLoading()
+				}
 			})
 		})
 	}
