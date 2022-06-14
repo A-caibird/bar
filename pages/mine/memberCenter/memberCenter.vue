@@ -85,7 +85,7 @@
 			</view>
 		</template>
 		<view class="member-rule">
-			<text style=" padding-bottom: 10rpx;">1.消费：平台内每消费1酒币积1分，无上限</text>
+			<text style=" padding-bottom: 10rpx;">1.消费：平台内每消费1元积1分，无上限</text>
 			<text>2.评价：评价酒吧发布者获得1积分，无上限</text>
 		</view>
 
