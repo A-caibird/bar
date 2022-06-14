@@ -29,7 +29,7 @@
 						</view>
 					</template>
 					<template v-if="item.expiringSoon">
-						<view class="expired-label">
+						<view class="expired-label expiring">
 							<text>即将过期</text>
 						</view>
 					</template>
@@ -169,6 +169,12 @@
 				text {
 					font-size: 20rpx;
 					color: #B3BAEF;
+				}
+				&.expiring{
+					border-color: red;
+					text {
+						color: red;
+					}
 				}
 			}
 		}
