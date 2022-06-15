@@ -230,12 +230,16 @@
 			// 申请工作
 			async applyJob() {
 				let params = this.getParams();
-				if (!params.name || !params.phone || !params.sex || !params.elevated || !params.bodyWeight || !params.selfIntroduction) {
+				if (!params.name || !params.phone || !params.sex || !params.elevated || !params.bodyWeight) {
 					this.checkTips(params)
 					return
 				}
 				if(this.imgList.length <= 0){
 					this.$u.toast('请至少添加一张个人形象图片')
+					return
+				}
+				if(!params.selfIntroduction){
+					this.checkTips(params)
 					return
 				}
 				uni.showLoading({

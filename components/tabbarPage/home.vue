@@ -156,7 +156,6 @@
 			},
 			handleUpdateLocation() {
 				this.setLocation(() => {
-					console.log('setLocation pullRefresh')
 					let {
 						cityName,
 						lng,
