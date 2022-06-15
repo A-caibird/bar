@@ -43,7 +43,6 @@ const install = (Vue, vm) => {
 			if(parseInt(code) != 0){
 				// console.log(res)
 				if(res.data.msg && res.data.msg != 'success' && res.data.msg != '未知错误'){
-					console.log(res);
 					uni.showToast({
 						title: res.data.msg,
 						icon: 'none'

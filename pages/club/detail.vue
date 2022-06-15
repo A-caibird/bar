@@ -90,7 +90,7 @@
 								:upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-activity-list>
 						</block>
 						<block v-if="info.type == 'job'">
-							<ping-recruitment-list :index="infoType[selectIndex].type == 'activity' ? 3 : -1" :i="3"
+							<ping-recruitment-list :index="infoType[selectIndex].type == 'job' ? 3 : -1" :i="3"
 								:clubId="clubId" :canScroll="stickyStatus" :height="swiperHeight"
 								:upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-recruitment-list>
 						</block>
