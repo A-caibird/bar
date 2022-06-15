@@ -154,6 +154,7 @@ export default {
 		});
 		uni.$on('information_listener', this.infoListenerEvent);
 		uni.$on('push_listener', (e)=>{
+			console.log('push_listener', e);
 			if(e && !e.refresh){
 				this.pushListenerEvent(e.num, e.refresh);
 			}else{
@@ -170,26 +171,29 @@ export default {
 		plus.screen.lockOrientation('portrait-primary');
 		// #endif
 		let vm = this;
-		if(getApp().globalData.authorized){
-			this.pushListenerEvent();
-			setTimeout(() => {
-				this.infoPageNavigate();
-			}, 1000);
-		}
 		if(this.$refs.find) {
 			this.$nextTick(function(){
 				vm.$refs.find.show()
-			})
-		}
-		if(this.$refs.info) {
-			this.$nextTick(function(){
-				vm.$refs.info.show()
 			})
 		}
 		if(this.current ==4 && this.$refs.me) {
 			this.$nextTick(function(){
 				vm.$refs.me.load()
 			})
+		}
+		if(this.$refs.info) {
+			this.$nextTick(function(){
+				vm.$refs.info.show()
+			})
+		}else{
+			if(app.globalData.authorized){
+				this.pushListenerEvent();
+			}
+		}
+		if(app.globalData.authorized){
+			setTimeout(() => {
+				this.infoPageNavigate();
+			}, 1000);
 		}
 	},
 	methods: {
@@ -199,7 +203,7 @@ export default {
 		},
 		// 消息页面跳转
 		infoPageNavigate(){
-			let globalData = getApp().globalData;
+			let globalData = app.globalData;
 			if(globalData.msgPath){
 				if(globalData.authorized){
 					uni.navigateTo({

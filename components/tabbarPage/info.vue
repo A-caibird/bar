@@ -92,6 +92,7 @@
 			uni.$on('chat-user-list-refresh',this.chatUserListRefresh)
 			uni.$on('read-chat',this.readChat)
 			uni.$on('refresh_push', () => {
+				console.log('refresh_push');
 				this.getNoticeCount();
 			})
 			uni.$on('refresh_chat', () => {

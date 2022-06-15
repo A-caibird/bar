@@ -138,11 +138,6 @@
 						this.$emit('homeLoad')
 					}, 1000)
 				}
-			},
-			cityName: function(value) {
-				// console.log(value);
-				this.params.cityName = value;
-				this.pullRefresh();
 			}
 		},
 		methods: {
@@ -161,6 +156,7 @@
 			},
 			handleUpdateLocation() {
 				this.setLocation(() => {
+					console.log('setLocation pullRefresh')
 					let {
 						cityName,
 						lng,
@@ -168,11 +164,11 @@
 					} = app.globalData.location
 					this.cityName = cityName
 					this.params.areaName = ""
-					this.params.lng = lng
-					this.params.lat = lat
+					this.params.lng = lng;
+					this.params.lat = lat;
+					this.params.cityName = cityName;
 					this.pullRefresh();
 				})
-
 			},
 			handleUpdateLocationService() {
 				this.updateLocationService(() => {
