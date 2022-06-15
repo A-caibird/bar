@@ -31,8 +31,8 @@ const install = (Vue, vm) => {
 				token: vm.globalData.token || ""
 			})
 		}
-		console.log(config.url);
-		console.log(config.data);
+		// console.log(config.url);
+		// console.log(config.data);
 		return config
 	}
 	// 相应拦截

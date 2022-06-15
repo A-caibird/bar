@@ -232,7 +232,7 @@
 				closeInterval:'',
 				closeTime:0,
 				data:{
-					type:'fullAmount',
+					type:'',
 					name:app.globalData.userInfo.name,
 					phone:app.globalData.userInfo.phone,
 					arrivalTime:'',
@@ -286,8 +286,9 @@
 				this.chatTag = false;
 			}
 			this.load()
-			this.initType(this.data.orderType);
-			
+			if(!this.data.type){
+				this.initType(this.data.orderType);
+			}
 			this.clearInterval = setInterval(this.jusgeEndExtend,60*1000)
 			uni.$on('select-receptionist',this.handleReceptionist)
 		},
@@ -297,18 +298,15 @@
 			uni.$off('select-receptionist',this.handleReceptionist)
 		},
 		onShow() {
-			console.log('show')
 			this.seatIntervalStop = false
 			clearInterval(this.seatInterval)
 			this.seatInterval = setInterval(this.extendCardTableSelectTime,120*1000)
 		},
 		onHide() {
-			console.log('hide')
 			this.seatIntervalStop = true
 		},
 		methods:{
 			setCoupon(e){
-				console.log(e);
 				this.coupon = e;
 			},
 			couponTap(){
@@ -336,7 +334,6 @@
 				})
 			},
 			initType(orderType){
-				console.log('orderType', orderType);
 				switch(orderType){
 					case 'book': {
 						this.data.type='fullAmount'
@@ -355,7 +352,6 @@
 				})
 			},
 			tapGoCommodity(id){
-				console.log(id)
 				this.$u.route('/pages/club/consumption/detail-not-save',{
 					id:id
 				})
@@ -365,14 +361,12 @@
 					cardTableId : this.data.seat.id,
 					date : this.data.date,
 				})
-				console.log(data)
 				if(code==0) {
 					this.shopingCartList = data.list
 				}
 				
 			},
 			jusgeEndExtend(){
-				console.log(this.closeTime)
 				if(this.seatIntervalStop) {
 					this.closeTime++
 				} else {
@@ -384,7 +378,6 @@
 				}
 			},
 			async extendCardTableSelectTime(){
-				console.log(this.seatIntervalStop)
 				if(this.seatIntervalStop) return
 				let {code} = await this.$u.api.extendCardTableSelectTimeApi({selectId:this.data.seat.selectId})	
 				
@@ -394,6 +387,7 @@
 			},
 			goDrinks(){
 				// this.data.shopingCartList = []
+				console.log('save', this.data);
 				uni.$emit('refresh-drinks',{data:JSON.stringify(this.data)})
 				setTimeout(()=>{
 					this.$u.route({
@@ -414,8 +408,6 @@
 				
 			},
 			compareTime(time1,time2){//time1大返回1 time2大返回-1 相等返回 0
-				console.log(time1)
-				console.log(time2)
 				if(time1.getTime()>time2.getTime()) return 1
 				else if(time1.getTime()==time2.getTime()) return 0
 				else return -1
@@ -547,7 +539,6 @@
 				this.data.receptionistAvatar = e.avatar
 			},
 			arrivalTimeConfirm(e){
-				console.log(e)
 				if(this.instantInfo.instantArrival){
 					let nowTime = new Date();
 					let selectTime = new Date(this.data.date+` ${e}`);
@@ -585,7 +576,6 @@
 					this.data.shareWay.womenWineCoin = ''
 				}
 				this.data.type = type
-				console.log(this.data.type)
 			},
 			load(){
 				this.getClubDetail()

@@ -115,13 +115,11 @@
 			uni.$off('refresh-drinks-detail',this.getShoppingCardView)
 		},
 		onShow() {
-			console.log('show')
 			this.seatIntervalStop = false
 			clearInterval(this.seatInterval)
 			this.seatInterval = setInterval(this.extendCardTableSelectTime,120*1000)
 		},
 		onHide() {
-			console.log('hide')
 			this.seatIntervalStop = true
 		},
 		methods:{
@@ -133,7 +131,6 @@
 				this.current = current;
 			},
 			jusgeEndExtend(){
-				console.log(this.closeTime)
 				if(this.seatIntervalStop) {
 					this.closeTime++
 				} else {
@@ -145,7 +142,6 @@
 				}
 			},
 			async extendCardTableSelectTime(){
-				console.log(this.seatIntervalStop)
 				if(this.seatIntervalStop) return
 				let {code} = await this.$u.api.extendCardTableSelectTimeApi({selectId:this.data.seat.selectId})	
 				
@@ -158,7 +154,6 @@
 			},
 			handleRefreshDrinks(e){
 				this.data = this.$u.deepMerge(this.data,JSON.parse(e.data))
-				console.log(this.data)
 				this.load()
 			},
 			tapGoCreateOrder(){
@@ -199,7 +194,6 @@
 					date : this.data.date,
 					commodityId:info.id
 				}
-				console.log(data)
 				this.shoppingCardAdd(data)
 			},
 			handleCommodityMinus(info){
@@ -208,7 +202,6 @@
 					date : this.data.date,
 					commodityId:info.id
 				}
-				console.log(data)
 				this.shoppingCardDelete(data)
 			},
 			setSCNum(){//将购物车中的数值设置到商品列表中
@@ -239,7 +232,6 @@
 					cardTableId : this.data.seat.id,
 					date : this.data.date,
 				})
-				console.log(data)
 				if(code==0) {
 					this.allAmount = data.allAmount
 					this.shopingCartList = data.list
@@ -254,7 +246,6 @@
 					let {list} = data
 					
 					this.list = [...[{id:'',name:'全部'}],...list]
-					console.log(this.list)
 				}
 				
 			},
