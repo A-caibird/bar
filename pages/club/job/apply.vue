@@ -121,6 +121,8 @@
 	import photoMixins from '@/mixins/photo.js'
 	import commonInput from '@/components/common-input/common-input.vue'
 	var videoBtnAvaliabe = true;
+	var phoneRex = /^[1][0-9]{10}$/;
+
 	export default {
 		mixins: [photoMixins],
 		data() {
@@ -230,8 +232,16 @@
 			// 申请工作
 			async applyJob() {
 				let params = this.getParams();
-				if (!params.name || !params.phone || !params.sex || !params.elevated || !params.bodyWeight) {
-					this.checkTips(params)
+				if (!params.name) {
+					this.checkTips(params);
+					return
+				}
+				if (!params.phone || !phoneRex.test(params.phone)) {
+					this.$u.toast("请输入正确的手机号");
+					return
+				}
+				if (!params.sex || !params.elevated || !params.bodyWeight) {
+					this.checkTips(params);
 					return
 				}
 				if(this.imgList.length <= 0){
