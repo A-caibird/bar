@@ -69,17 +69,17 @@
 						<view class="icon-like" @tap.stop="$u.throttle(toggleLike(item))">
 							<image src="/static/imgs/mine/like-active.png" v-if="item.isLike"></image>
 							<image src="/static/imgs/mine/like.png" v-else></image>
-							<text>{{item.likeNum}}</text>
+							<view class="text">{{item.likeNum}}</view>
 						</view>
 
 						<view class="icon-gift" @tap.stop="$u.throttle(tapOpenGift(item))" v-if="showPercent">
 							<image src="/static/imgs/mine/gift.png" mode=""></image>
-							<text>{{item.giftNum}}</text>
+							<view class="text">{{item.giftNum}}</view>
 						</view>
 
 						<view class="icon-comment" @tap.stop="$u.throttle(tapOpenComment(item))">
 							<image src="/static/imgs/mine/comment.png" mode=""></image>
-							<text>{{item.commentNum}}</text>
+							<view class="text">{{item.commentNum}}</view>
 						</view>
 						<view class="icon-forward" style="margin-right: 40rpx;" @tap.stop="$u.throttle(deleteTap(item))">
 							<image src="/static/imgs/common/delete_icon.png" mode=""></image>
@@ -331,7 +331,6 @@
 						.icon-like {
 							display: flex;
 							align-items: center;
-							width: 60rpx;
 							height: 30rpx;
 							margin-right: 40rpx;
 							font-size: 22rpx;
@@ -347,12 +346,10 @@
 						.icon-gift {
 							display: flex;
 							align-items: center;
-							width: 60rpx;
 							height: 30rpx;
 							margin-right: 40rpx;
 							font-size: 22rpx;
 							color: #ffffff;
-
 							image {
 								width: 30rpx;
 								height: 30rpx;
@@ -363,12 +360,10 @@
 						.icon-comment {
 							display: flex;
 							align-items: center;
-							width: 60rpx;
 							height: 30rpx;
 							margin-right: 40rpx;
 							font-size: 22rpx;
 							color: #ffffff;
-
 							image {
 								width: 30rpx;
 								height: 30rpx;
