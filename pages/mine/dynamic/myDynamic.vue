@@ -233,8 +233,30 @@
 				this.$refs.dynamicGift.open(info)
 			},
 			tapAwkwardWine:function(){
+				let info = {
+					chatToken: '',
+					nickName: '',
+					avatar: '',
+					userId: '',
+					chatUserId: '',
+				}
+				if(this.pageList.length > 0){
+					let dynamicInfo = this.pageList[0];
+					info.chatToken = dynamicInfo.chatToken
+					info.nickName = dynamicInfo.nickName
+					info.avatar = dynamicInfo.avatar
+					info.userId = dynamicInfo.userId
+					info.chatUserId = dynamicInfo.chatUserId
+				}else{
+					let personInfo = this.otherList;
+					info.chatToken = personInfo.chatToken
+					info.nickName = personInfo.nickName
+					info.avatar = personInfo.avatar
+					info.userId = this.userid
+					info.chatUserId = personInfo.chatUserId
+				}
 				this.$u.route('/pages/ping-yao-list/ping-yao-list',{
-					dynamicInfo:encodeURIComponent(JSON.stringify(this.pageList[0]))
+					dynamicInfo:encodeURIComponent(JSON.stringify(info))
 				})
 			},
 			previewTap:function(){
