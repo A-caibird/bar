@@ -193,7 +193,6 @@
 				this.locInfo.city =  app.globalData.location.cityName
 			},
 			handelUpdataLocation(e){
-				console.log(e)
 				let locationStr = e.location;
 				this.locInfo.lng = locationStr.split(',')[0] || 0;
 				this.locInfo.lat = locationStr.split(',')[1] || 0;

@@ -47,7 +47,7 @@
 					<image src="/static/imgs/mine/no-select.png" mode="" v-else></image>
 				</view>
 			</view>
-			<view class="weixin-cost" @tap="payType='Apple'" v-if="os == 'ios'">
+			<!-- <view class="weixin-cost" @tap="payType='Apple'" v-if="os == 'ios'">
 				<view class="cost-left">
 					<image src="/static/imgs/mine/apple_pay.png" mode=""></image>
 					<text>苹果</text>
@@ -56,7 +56,7 @@
 					<image src="/static/imgs/common/select.png" mode="" v-if="payType=='Apple'"></image>
 					<image src="/static/imgs/mine/no-select.png" mode="" v-else></image>
 				</view>
-			</view>
+			</view> -->
 		</view>
 		<view class="recharge-btn">
 			<button type="default" @tap="$u.throttle(tapSubmit)"><text>确认充值</text></button>
@@ -173,8 +173,7 @@ export default {
 					provider: 'alipay',
 					orderInfo: data.res.body, //微信、支付宝订单数据
 					success:  (res) =>{
-						vm.payS(wineCoin)
-						
+						vm.payS(wineCoin)			
 					},
 					fail: function (err) {
 						vm.$toast.text('支付失败')

@@ -192,7 +192,7 @@
 								<block v-if="info.type == 'job'">
 									<ping-recruitment-list :i="3" :index="infoType[selectIndex].type == 'job' ? 3 : -3" :clubId="clubId" :canScroll="stickyStatus" :height="swiperHeight" :upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-recruitment-list>
 								</block>
-								<scroll-view v-if="info.type == 'evaluate'" :scroll-y="stickyStatus" :style="{height:swiperHeight}" @scrolltoupper="scrolltoupper" :upper-threshold="upperThreshold">
+								<scroll-view v-if="info.type == 'evaluate'" :scroll-y="stickyStatus" :style="{height:swiperHeight}" @scrolltoupper="scrolltoupper" :upper-threshold="upperThreshold" @scrolltolower="scrolltolower">
 									<view class="evaluate_box">
 										<view class="complex_rate">
 											<view class="complex_left">
@@ -385,6 +385,8 @@
 				userInfo:app.globalData.userInfo,
 				shareShow: false,
 				pingStatus: '',
+				pageNumber:1,
+				totalPages: 1,
 			}
 		},
 		computed:{
@@ -460,6 +462,10 @@
 				}
 				
 			},
+			scrolltolower(){
+				this.pageNumber = this.pageNumber + 1;
+				this.getCommentList(this.pageNumber);
+			},
 			tapOpenMap(){
 				this.openMap(this.lng, this.lat, this.clubInfo.address)
 			},
@@ -469,16 +475,28 @@
 				})
 			},
 			//获取评论列表
-			getCommentList:function(){
+			getCommentList:function(pageNumber = 1){
 				let params = {
-					  "clubId": this.clubId,
-					  "pageNumber": 1,
-					  "pageSize": 5,
+					"clubId": this.clubId,
+					"pageNumber": pageNumber,
+					"pageSize": 10,
+				}
+				if(params.pageNumber > this.totalPages){
+					return;
 				}
 				this.$u.api.getClubEvaluationListApi(params).then(res => {
-					if(parseInt(res.code) == 0){
-						this.commentList = res.data.list
-					}else {
+					if (parseInt(res.code) == 0) {
+						this.totalPages = res.data.totalPage;
+						let commentList = [];
+						if(pageNumber <= 1){
+							commentList = res.data.list;
+						}else{
+							commentList = this.commentList;
+							commentList = commentList.concat(res.data.list);
+						}
+						this.commentList = commentList
+					} else {
+						this.commentList = [];
 						console.log("获取评价列表失败")
 					}
 				})

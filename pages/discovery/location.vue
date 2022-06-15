@@ -67,7 +67,6 @@
 					city: app.globalData.location.cityName,
 					success: (res) =>{
 						let searchList = res.tips;
-						console.log(searchList)
 						this.searchList = searchList;
 					},
 					fail: (e) => {
@@ -81,7 +80,6 @@
 					// querykeywords: '酒吧',
 					success: (res) =>{
 						let searchList = res.poisData;
-						console.log(searchList);
 						this.searchList = searchList;
 					},
 					fail: (e) => {

@@ -95,7 +95,7 @@
 								:upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-recruitment-list>
 						</block>
 						<scroll-view :scroll-y="stickyStatus" :style="{height:swiperHeight}"
-							v-if="info.type == 'evaluate'" @scrolltoupper="scrolltoupper" :upper-threshold="upperThreshold">
+							v-if="info.type == 'evaluate'" @scrolltoupper="scrolltoupper" @scrolltolower="scrolltolower" :upper-threshold="upperThreshold">
 							<view class="evaluate_box">
 								<view class="complex_rate">
 									<view class="complex_left">
@@ -219,6 +219,8 @@
 				statusBarHeight: 0,
 				chatFriendInfo: '',
 				swiperHeight: '',
+				pageNumber:1,
+				totalPages: 1,
 			}
 		},
 		computed: {
@@ -306,19 +308,34 @@
 					this.stickyStatus = false
 				}
 			},
+			scrolltolower(){
+				this.pageNumber = this.pageNumber + 1;
+				this.getCommentList(null, this.pageNumber);
+			},
 			tapOpenMap() {
 				this.openMap(this.lng, this.lat, this.clubInfo.address)
 			},
 			//获取评论列表
-			getCommentList: function(callback = null) {
+			getCommentList: function(callback = null, pageNumber = 1) {
 				let params = {
 					"clubId": this.clubId,
-					"pageNumber": 1,
-					"pageSize": 5,
+					"pageNumber": pageNumber,
+					"pageSize": 10,
+				}
+				if(params.pageNumber > this.totalPages){
+					return;
 				}
 				this.$u.api.getClubEvaluationListApi(params).then(res => {
 					if (parseInt(res.code) == 0) {
-						this.commentList = res.data.list
+						this.totalPages = res.data.totalPage;
+						let commentList = [];
+						if(pageNumber <= 1){
+							commentList = res.data.list;
+						}else{
+							commentList = this.commentList;
+							commentList = commentList.concat(res.data.list);
+						}
+						this.commentList = commentList
 						if (callback) {
 							callback();
 						}

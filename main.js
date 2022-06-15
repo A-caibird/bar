@@ -20,7 +20,7 @@ Vue.prototype.$statusBarHeight = uni.getSystemInfoSync().statusBarHeight;
 Vue.prototype.$radio = uni.getSystemInfoSync().windowWidth / 750; // px / rpx
 Vue.prototype.$storage = storage;
 Vue.prototype.$toast = toast;
-Vue.prototype.$map = new amapFile.AMapWX({key: '4637fe30d42c25fd130d33912b63df70'});
+Vue.prototype.$map = new amapFile.AMapWX({key: '8a4e73cf664705aa278d76ffd5efd722'});
 Vue.prototype.goeasy = GoEasy.getInstance({
     host:"hangzhou.goeasy.io",  //若是新加坡区域：singapore.goeasy.io
     appkey:"BC-1df93636844c48db9e5b7fe0a9a718b4",
