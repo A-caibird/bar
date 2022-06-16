@@ -8,7 +8,6 @@
 			console.log('App Launch')
 			init(this)
 			if($storage.getLoginToken()){
-				console.log('/api/user/use')
 				this.requestAPI('/api/user/use', {
 					token: $storage.getLoginToken(),
 				})
@@ -45,16 +44,12 @@
 					method:"POST",
 					data: params,
 					success(res){
-						console.log('******')
-						console.log(url)
-						console.log(res);
-						console.log('******')
+						console.log((url + ' success'), res);
+						// console.log(params)
 					},
 					fail(e){
-						console.log('******')
-						console.log(url)
-						console.log(e);
-						console.log('******')
+						console.log((url + ' Error'),e);
+						console.log(params)
 					}
 				})
 			}

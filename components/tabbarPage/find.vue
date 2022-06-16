@@ -133,7 +133,6 @@
 			},
 			show(){
 				this.authorized = getApp().globalData.authorized;
-				console.log(this.authorized);
 				if(this.$refs['nearby-dynamic-list']){
 					let ref = this.$refs['nearby-dynamic-list'];
 					let searchValue = ref.params.searchKey;

@@ -478,7 +478,6 @@
 									tempFilePath: res.tempFilePath,
 									success: (ret) => {
 										console.log('下载成功');
-										console.log(ret.savedFilePath)
 										resolve(ret.savedFilePath)
 									},
 									fail: () => {

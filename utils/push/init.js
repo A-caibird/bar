@@ -3,11 +3,12 @@ function handlePushReceive(msg) {
 	console.log(msg)
 	//todo
 	let payload = Object.prototype.toString.call(msg.payload) === '[object Object]' ? msg.payload : JSON.parse(msg.payload)
-	console.log(payload)
+	console.log('handlePushReceive', payload)
 	if (msg.aps) { // Apple APNS message  
 		//APNS下发的消息，应用在前台  
 		console.log('APNS下发的消息，应用在前台  ')
-	} else if ('LocalMSG' == payload.msgLocal) { // 特殊payload标识本地创建的消息  
+	}
+	if ('LocalMSG' == payload.msgLocal) { // 特殊payload标识本地创建的消息  
 		//本地创建的消息，通常不需要处理  
 		//注意：不要在这种情况下再此调用plus.push.createMessage，从而引起循环创建本地消息 
 		 console.log('本地创建的消息，通常不需要处理')
@@ -58,6 +59,12 @@ function handlePushReceive(msg) {
 			}
 			option.title = payload.nickName
 			option.icon = payload.avatar
+			content = payload.content
+			plus.push.createMessage(content,  JSON.stringify(payload), option);
+		}
+		/* 反馈举报 */
+		if (type == 'reportBack') {
+			option.title = payload.title
 			content = payload.content
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
 		}
@@ -140,7 +147,7 @@ function handlePushClick(msg) {
 	//处理点击消息的业务逻辑代码  
 	console.log(msg)
 	let payload = Object.prototype.toString.call(msg.payload) === '[object Object]' ? msg.payload : JSON.parse(msg.payload)
-	console.log(payload)
+	console.log('handlePushClick', payload)
 	if (payload.msgLocal == 'LocalMSG') {
 		let pages = getCurrentPages();
 		let page = pages[pages.length - 1];
@@ -194,11 +201,16 @@ function handlePushClick(msg) {
 				url:'/pages/info/activity/detail?id=' + id
 			})
 		}
+		/* 反馈举报 */
+		if (type == 'reportBack') {
+			uni.navigateTo({
+				url:'/pages/info/systemNotification'
+			})
+		}
 		/*
 		存酒过期提醒、优惠券过期提醒、订单到店提醒 订单过期提醒
 		 */
 		if (type == 'saveWineEnd' || type == 'couponEnd' || type == 'notShop' || type == 'outTime') {
-			console.log(type);
 			uni.navigateTo({
 				url:'/pages/info/systemNotification'
 			})
@@ -268,9 +280,10 @@ function handlePushClick(msg) {
 			if(route=='/pages/index/index') {
 				vm.goAtten();
 			}else{
-				uni.reLaunch({
-					url: '/pages/index/index?goAtten=true'
-				})
+				setTimeout(() => {
+					let pageVm = page.$vm;
+					pageVm.goAtten();
+				}, 1200)
 			}
 		}
 		if(type == 'joinOrder'){
@@ -312,12 +325,20 @@ function openAPPMsg(payload){ //APP 处于关闭状态下 点击消息跳转页�
 			getApp().globalData.msgPath = '/pages/chat/chat'+`?userInfo=${infoStr}`;
 		})
 	}else{
+		// 离线消息
 		pageJump(payload)
 	}
 
 }
 function pageJump(payload){
 	let type = payload.type
+	// 反馈消息
+	if (type == 'reportBack') {
+		console.log(type);
+		slientHandle(() => {
+			getApp().globalData.msgPath = '/pages/info/systemNotification'
+		})
+	}
 	if(type=='gift') {
 		let giftUrl = payload.gifUrl || "";
 		slientHandle(() => {
