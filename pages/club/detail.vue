@@ -357,7 +357,6 @@
 			async clickEvent(e) {
 				let vm = this
 				let type = e.type;
-				console.log(type);
 				if (!this.loginConfirmHandle(false)) {
 					// console.log('clickEvent')
 					return;
@@ -440,6 +439,7 @@
 					this.$u.api.clubCancelCollect(this.clubId).then(res => {
 						if (parseInt(res.code) == 0) {
 							this.collect = !collect
+							this.$u.toast('取消收藏')
 						} else {
 							this.$u.toast('取消失败')
 						}
@@ -448,6 +448,7 @@
 					this.$u.api.clubCollect(this.clubId).then(res => {
 						if (parseInt(res.code) == 0) {
 							this.collect = !collect
+							this.$u.toast('收藏成功')
 						} else {
 							this.$u.toast('收藏失败')
 						}

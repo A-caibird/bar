@@ -209,7 +209,6 @@
 					this.$u.toast('请将信息补充完整');
 					return
 				}
-				console.log(params)
 				uni.showLoading({
 					title: '发布中'
 				})
@@ -221,9 +220,11 @@
 						uni.$emit('dynamic-refresh-follow',{msg:''})
 						this.$cross.applyPageMethod(this.$cross.beforePage(), 'goFind')
 						this.$u.toast('发布成功')
-						uni.navigateBack({
-							delta:1
-						})
+						setTimeout(() => {
+							uni.navigateBack({
+								delta:1
+							})
+						}, 500)
 						// this.$u.route({
 						// 	type:'reLaunch',
 						// 	url: '/pages/index/index',
