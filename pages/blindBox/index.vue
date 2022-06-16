@@ -17,7 +17,7 @@
 				<image class="title_img" src="/static/imgs/blindBox/title_img.png"></image>
 			</view>
 			<view class="blindBox_area_middle">
-				<blindBox ref="blindBoxRef" :poolId="prizePoolId" @refreshTime="refreshTime" @lotteryChange="lotteryChange"></blindBox>
+				<blindBox ref="blindBoxRef" :poolId="prizePoolId" :freetimes="freetimes" :unitPrice="unitPrice"  @refreshTime="refreshTime" @lotteryChange="lotteryChange"></blindBox>
 			</view>
 			<view class="blindBox_area_footer" :style="{'zIndex': lotteryShow ? 4 : 5}">
 				<view class="price_record" @tap="$u.throttle(goRecord)">
@@ -106,7 +106,7 @@
 					this.freetimes = res.data.freetimes;
 					this.unitPrice = res.data.unitPrice;
 				}).catch(e => {
-					console.log('getFreeCountApi', e);
+					console.log('getFreeCountApi Error', e);
 				})
 			},
 			// 获取奖池列表

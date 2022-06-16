@@ -28,7 +28,7 @@
 		<view class="liwu_item_nine" @tap="$u.throttle(setSelectAnimation(8), 1000)" :class="{'show': show, 'selected': selectPrize == 8}">
 			<image class="liwu_icon" src="/static/imgs/blindBox/liwu_icon.png"></image>
 		</view>
-		<winLottery ref="winLottery" :poolId="poolId" @close="closeLottery"></winLottery>
+		<winLottery ref="winLottery" :freetimes="freetimes" :unitPrice="unitPrice" :poolId="poolId" @close="closeLottery"></winLottery>
 	</view>
 </template>
 
@@ -44,6 +44,8 @@
 			}
 		},
 		props:{
+			freetimes: String | Number, //免费次数
+			unitPrice: String | Number, //单次价格
 			poolId: String | Number, //奖池id
 		},
 		components:{

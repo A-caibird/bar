@@ -29,7 +29,7 @@
 					</view>
 					<image class="prize_img" src="/static/imgs/blindBox/lottery/coin.png"></image>
 				</block>
-				<view class="win_btn" @tap="$u.throttle(lotteryTap)">{{hasLottery ? '开心收下' : '立即拆开'}}</view>
+				<view class="win_btn" @tap="$u.throttle(lotteryTap)">{{btnText}}</view>
 			</view>
 		</view>
 	</view>
@@ -39,6 +39,8 @@
 	export default {
 		props:{
 			poolId: String | Number, //奖池id
+			freetimes: String | Number, //免费次数
+			unitPrice: String | Number, //单次价格
 		},
 		data() {
 			return {
@@ -47,6 +49,19 @@
 				hasLottery: false, //是否已经抽奖
 				prizeInfo: {},
 				prizeType: '',
+			}
+		},
+		computed:{
+			'btnText': function(){
+				if(this.hasLottery){
+					return '开心收下';
+				}else{
+					if(this.freetimes <= 0){
+						return "需花费"+ this.unitPrice + '酒币拆开'
+					}else{
+						return "立即拆开"
+					}
+				}
 			}
 		},
 		methods: {
@@ -267,7 +282,9 @@
 			}
 
 			.win_btn {
-				width: 360rpx;
+				min-width: 360rpx;
+				box-sizing: border-box;
+				padding: 0rpx 30rpx;
 				text-align: center;
 				height: 90rpx;
 				line-height: 90rpx;
@@ -278,6 +295,8 @@
 				font-size: 30rpx;
 				font-family: PingFangSC-Medium, PingFang SC;
 				font-weight: 500;
+				max-width: 750rpx;
+				@include simpleOmit();
 			}
 
 		}

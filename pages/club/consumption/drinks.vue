@@ -103,7 +103,6 @@
 		onLoad(opt) {
 			this.data = this.$u.deepMerge(this.data,JSON.parse(opt.data))
 			this.load()
-			
 			this.clearInterval = setInterval(this.jusgeEndExtend,60*1000)
 			uni.$on('refresh-drinks',this.handleRefreshDrinks)
 			uni.$on('refresh-drinks-detail',this.getShoppingCardView)
@@ -154,7 +153,7 @@
 			},
 			handleRefreshDrinks(e){
 				this.data = this.$u.deepMerge(this.data,JSON.parse(e.data))
-				this.load()
+				// this.load()
 			},
 			tapGoCreateOrder(){
 				if(!this.canOrder) return uni.showToast({

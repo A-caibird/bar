@@ -34,8 +34,10 @@
 			}
 		},
 		mounted:function(){
-			let score = this.score || 0;
-			this.imgsListFactory(score);
+			this.$nextTick(() => {
+				let score = this.score || 0;
+				this.imgsListFactory(score);
+			})
 		},
 		data() {
 			return {

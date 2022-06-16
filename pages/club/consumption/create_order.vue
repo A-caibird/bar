@@ -156,7 +156,7 @@
 				<view class="price_text">
 					<text>{{orderAmount}}元</text>
 				</view>
-				<view class="btn_text buy" @tap="tapGoDrinks">
+				<view class="btn_text buy" @tap="$u.throttle(tapGoDrinks, 2000)">
 					<text>继续选购</text>
 				</view>
 				<view class="btn_text active" v-if="chatTag && data.type=='fullAmount'" @tap="$u.throttle(statementShowTap, 2000)">
@@ -383,11 +383,16 @@
 				
 			},
 			tapGoDrinks(){
-				this.goDrinks()
+				uni.$emit('refresh-drinks',{data:JSON.stringify(this.data)})
+				setTimeout(()=>{
+					this.$u.route({
+						type:'back'
+						
+					})
+				},300)
 			},
 			goDrinks(){
 				// this.data.shopingCartList = []
-				console.log('save', this.data);
 				uni.$emit('refresh-drinks',{data:JSON.stringify(this.data)})
 				setTimeout(()=>{
 					this.$u.route({
@@ -395,7 +400,6 @@
 						
 					})
 				},1000)
-				
 			},
 			goSeat(){
 				uni.$emit('refresh-seat')
