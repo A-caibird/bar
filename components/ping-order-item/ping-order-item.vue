@@ -6,9 +6,6 @@
 				<view class="info_status"> <text>{{getOrderStatus(info.status)}}</text> </view>
 			</view>
 			<view class="info_img"> <image :src="info.clubCover"></image> </view>
-			<view class="tag_text" v-if="info.status == 'expired'">
-				<text>已过期</text>
-			</view>
 			<view class="info_box">
 				<view class="name_price">
 					<view class="info_name"> <text>{{info.clubName}}</text> </view>
@@ -252,20 +249,6 @@
 				image {
 					width: 100%;
 					height: 100%;
-				}
-			}
-			.tag_text{
-				position: absolute;
-				right: 30rpx;
-				bottom: 25rpx;
-				width: 100rpx;
-				height: 40rpx;
-				@include flex-center();
-				border: 1px solid #565B86;
-				border-radius: 2rpx;
-				text {
-					font-size: 20rpx;
-					color: #B3BAEF;
 				}
 			}
 			.info_box{

@@ -24,6 +24,7 @@
 </template>
 
 <script>
+	var btnActive = true;
 	export default {
 		data() {
 			return {
@@ -59,6 +60,9 @@
 			},
 			//评论
 			async sendComment() {
+				if(!btnActive){
+					return this.$u.toast('请勿重复点击');
+				}
 				let idList = [];
 				this.commentList.forEach((e, i) => {
 					if (e.isComment) {
@@ -75,15 +79,22 @@
 				uni.showLoading({
 					title: '评论中'
 				})
-				let {code,data} = await this.$u.api.sendCommentApi(params)
-				uni.hideLoading();
+				btnActive = false;
+				let {code,data, msg} = await this.$u.api.sendCommentApi(params)
+				setTimeout(() => {
+					uni.hideLoading();
+				}, 1200)
 				if (code == 0) {
 					let {commentNum} = data
-					// let commentNum = 123
+					this.$u.toast('评论成功');
 					this.$emit('sendComment',{id:this.id,commentNum:commentNum, mode: this.initInfo.mode})
 					this.close()
-					this.$u.toast('评论成功');
+				}else{
+					if(msg){
+						this.$u.toast('msg');
+					}
 				}
+				btnActive = true;
 			},
 			//选择短评词
 			chose_comment(info) {
