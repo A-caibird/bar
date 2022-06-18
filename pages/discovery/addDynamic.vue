@@ -147,27 +147,33 @@
 						})
 						vm.compressVideo(tempPath).then(compressRes => {
 							videoBtnAvaliabe = false;
-							vm.$u.api.uploadVideo(compressRes.tempFilePath, 'file/', false).then(res => {
-								var footerImgUrl = '?x-oss-process=video/snapshot,t_0,f_jpg,w_0,h_0,m_fast';
-								let info = {
-									videoUrl: res,
-									imgUrl: res + footerImgUrl
-								}
-								vm.videoList.push(info);
-								videoBtnAvaliabe = true;
-								uni.hideLoading();
-							}).catch(e => {
-								console.log(e);
-								videoBtnAvaliabe = true;
-								uni.hideLoading();
-							})
+							vm.uploadEvent2(compressRes.tempFilePath)
+							
 						}).catch(e => {
 							console.log('视频压缩失败',e);
+							vm.uploadEvent2(tempPath);
 						})
 					},
 					fail(e){
 						console.log(e);
 					}
+				})
+			},
+			uploadEvent2(tempFilePath){
+				var vm = this;
+				vm.$u.api.uploadVideo(tempFilePath, 'file/', false).then(res => {
+					var footerImgUrl = '?x-oss-process=video/snapshot,t_0,f_jpg,w_0,h_0,m_fast';
+					let info = {
+						videoUrl: res,
+						imgUrl: res + footerImgUrl
+					}
+					vm.videoList.push(info);
+					videoBtnAvaliabe = true;
+					uni.hideLoading();
+				}).catch(e => {
+					console.log(e);
+					videoBtnAvaliabe = true;
+					uni.hideLoading();
 				})
 			},
 			handleUpdateLocationService(){

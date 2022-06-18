@@ -196,6 +196,9 @@ export default {
 			}, 1000);
 		}
 	},
+	onHide() {
+		this.$refs.home.hideEvent();
+	},
 	methods: {
 		...mapMutations(['setInfoCount', 'setPushCount']),
 		reportTap(info){
@@ -350,6 +353,9 @@ export default {
 				if(getApp().globalData.authorized){
 					this.infoListenerEvent(false);
 				}
+			}
+			if(e!=0){
+				this.$refs.home.hideEvent();
 			}
 			if(e==1) {
 				this.$nextTick(() => {

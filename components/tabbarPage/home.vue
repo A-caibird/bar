@@ -21,7 +21,7 @@
 		<view class="middle-box">
 			<scroll-view scroll-y="true" :lower-threshold="100" :scroll-into-view="scrollBottom" style="height: 100%;"
 				@scrolltolower="reachBottomLoad">
-				<commonBanner :bannerList="bannerList" imgKey="file" height="400" :showVideo="true" videoKey="videoUrl" mode="normal" :customEvent="true" @click="bannerTap"></commonBanner>
+				<commonBanner ref="commonBanner" :bannerList="bannerList" imgKey="file" height="400" :showVideo="true" videoKey="videoUrl" mode="normal" :customEvent="true" @click="bannerTap"></commonBanner>
 
 				<view class="feature_box" v-if="!isAppleAudit">
 					<u-grid col="4" :border="false" hover-class="none">
@@ -141,6 +141,12 @@
 			}
 		},
 		methods: {
+			// 页面隐藏事件
+			hideEvent(){
+				if(this.$refs.commonBanner && this.$refs.commonBanner.playVideoUrl){
+					this.$refs.commonBanner.colseVideo();
+				}
+			},
 			goWheel() {
 				if (!this.loginConfirmHandle(false)) return;
 				this.$u.route('/pages/blindBox/index')

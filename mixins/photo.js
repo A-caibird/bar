@@ -115,11 +115,18 @@ export default{
 		},
 		compressVideo(path){
 			return new Promise((resolve, reject) => {
+				// uni.showLoading({
+				// 	title: '上传中'
+				// })
+				console.log(1);
 				uni.getVideoInfo({
 					src: path,
 					success(info) {
 						let {fps, bitrate} = info;
-						console.log(info);
+						console.log(2);
+						uni.showLoading({
+							title: '上传中'
+						})
 						uni.compressVideo({
 							src: path,
 							quality: '',
@@ -127,15 +134,24 @@ export default{
 							bitrate: (bitrate * 0.7),
 							resolution: 1,
 							success(res){
+								console.log(3);
 								resolve(res)
 							},
 							fail(e) {
-								reject(e);
+								// reject(e);
+								console.log('视频压缩失败',  e)
+								resolve({
+									tempFilePath: path
+								})
 							}
 						})
 					},
 					fail(e) {
-						reject(e);
+						// reject(e);
+						console.log('视频获取失败',  e)
+						resolve({
+							tempFilePath: path
+						})
 					}
 				})
 				
