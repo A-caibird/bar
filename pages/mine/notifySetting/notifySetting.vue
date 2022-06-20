@@ -62,7 +62,7 @@ export default {
 					isShow: true,
 				},
 				{
-					content: '定制通知',
+					content: '个性化通知',
 					checked: false,
 					way: 'toggleNoticeAPI',
 					isShow: true,
@@ -72,6 +72,7 @@ export default {
 	},
 	onLoad() {
 		this.show();
+		this.list[7].checked = uni.getStorageSync('personal_notice') || false;
 	},
 	methods: {
 		getPushInfo(){
@@ -84,7 +85,7 @@ export default {
 				this.list[4].checked = pushInfo.giftReminder || false;
 				this.list[5].checked = pushInfo.pingNotice || false;
 				this.list[6].checked = pushInfo.pushDynamicNotice || false;
-				this.list[7].checked = pushInfo.allNotice || false;
+				// this.list[7].checked = pushInfo.allNotice || false;
 			}).catch(e => {
 				console.log(e);
 			})
@@ -93,6 +94,12 @@ export default {
 		// 即使不监听此事件，this.checked此时也会相应的变成true或者false
 		changeHandle: function(e, index) {
 			let key = this.list[index].way;
+			if(index == 7){
+				console.log(e);
+				uni.setStorageSync('personal_notice', !e);
+				this.list[7].checked = !e;
+				return
+			}
 			if (this.list[index].checked == true) {
 				this.$u.api[key]({
 					open: !e
