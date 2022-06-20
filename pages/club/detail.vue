@@ -8,7 +8,7 @@
 		</block>
 		<view class="middle_box">
 			<view class="club_info">
-				<bannerList :height="435" :bannerList="clubInfo.bannerObjList" imgKey="file" mode="normal"
+				<bannerList ref="commonBanner" :height="435" :bannerList="clubInfo.bannerObjList" imgKey="file" mode="normal"
 					:showVideo="true" videoKey="videoUrl"></bannerList>
 				<view class="club_info_second">
 					<view class="info_name"> <text>{{clubInfo.name}}</text> </view>
@@ -271,10 +271,19 @@
 		onShow: function() {
 
 		},
+		onHide() {
+			this.hideEvent();
+		},
 		onUnload() {
 
 		},
 		methods: {
+			// 页面隐藏事件
+			hideEvent(){
+				if(this.$refs.commonBanner && this.$refs.commonBanner.playVideoUrl){
+					this.$refs.commonBanner.colseVideo();
+				}
+			},
 			// 选择介绍类别
 			selectType: function(index) {
 				if (index != this.selectIndex) {

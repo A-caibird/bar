@@ -15,7 +15,7 @@
 		</block>
 		<view class="middle_box">
 			<view class="club_info">
-				<bannerList :height="435" :bannerList="clubInfo.bannerObjList" mode="normal" imgKey="file" :showVideo="true" videoKey="videoUrl"></bannerList>
+				<bannerList ref="commonBanner" :height="435" :bannerList="clubInfo.bannerObjList" mode="normal" imgKey="file" :showVideo="true" videoKey="videoUrl"></bannerList>
 				<view class="club_info_second">
 					<view class="info_name"> <text>{{clubInfo.name}}</text> </view>
 					<view class="info_address">
@@ -393,7 +393,6 @@
 			swiperHeight(){
 				return `calc(100vh - ${this.statusBarHeight}px - 110rpx - 120rpx)`
 			}
-			
 		},
 		watch: {
 			"selectIndex"(newValue) {
@@ -450,7 +449,16 @@
 		created() {
 			this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight
 		},
+		onHide() {
+			this.hideEvent();
+		},
 		methods: {
+			// 页面隐藏事件
+			hideEvent(){
+				if(this.$refs.commonBanner && this.$refs.commonBanner.playVideoUrl){
+					this.$refs.commonBanner.colseVideo();
+				}
+			},
 			pingTapEvent(){
 				this.popPrice = this.pingOrderInfo.amount
 				this.popShow = true;
