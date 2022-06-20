@@ -15,8 +15,8 @@
 					<view class="level-content-left">
 						<image :src="item.badgeUrl" mode=""></image>
 						<view class="level-content-text">
-							<text>{{item.name}}</text>
 							<image  src="/static/imgs/mine/class_icon.png" mode=""></image>
+							<text>{{item.name}}</text>
 						</view>
 					</view>
 					<view class="level-content-right">						
@@ -93,14 +93,27 @@
 							width: 87rpx;
 							height: 100rpx;
 						}
-						.level-content-text{
+						.level-content-text {
+							padding: 0 20rpx;
+							line-height: 36rpx;
 							display: flex;
-							flex-direction: column;
-							padding-left: 25rpx;
-							font-size: 32rpx;
-							image{
-								width: 20rpx;
-								height: 20rpx;
+							align-items: center;
+							justify-content: center;
+							border-radius: 18rpx;
+							margin-left: 20rpx;
+							background: linear-gradient(148deg, #7341B9 0%, #333EC2 100%);
+						
+							&>image {
+								height: 16rpx;
+								width: 18rpx;
+							}
+						
+							&>text {
+								font-size: 20rpx;
+								color: #FFFFFF;
+								font-weight: bold;
+								height: 30rpx;
+								line-height: 36rpx;
 							}
 						}
 					}
