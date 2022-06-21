@@ -8,7 +8,7 @@
 		<view class="middle_box">
 			<view class="club_info">
 				<view class="club_info_box" style="background: #1A1D29;">
-					<image class="club_img" :src="clubInfo.bannerList[0]"></image>
+					<image class="club_img" :src="clubInfo.clubCover"></image>
 					<view class="club_info">
 						<view class="club_name">{{clubInfo.name}}</view>
 						<view class="club_subTitle">营业时间:{{clubInfo.businessHours}}</view>
@@ -92,9 +92,9 @@
 								</view>
 							</view>
 							<view class="person_info" @tap="$u.throttle(tapGoSelectStaff)">
-								<image :src="receptorInfo.receptionistAvatar"></image>
+								<image :src="receptorInfo.receptionistAvatar || '/static/imgs/register/male.png'"></image>
 								<view class="info_name">
-									<text>{{receptorInfo.receptionistName}}</text>
+									<text>{{receptorInfo.receptionistName || '请选择接待人员'}}</text>
 									<u-icon name="arrow-right" color="#777CBF"></u-icon>
 								</view>
 							</view>
@@ -339,9 +339,9 @@
 				}).then(res => {
 					let staffIsReset = res.data.staffIsReset || false;
 					if(staffIsReset){
-						this.receptorInfo.receptionistId = "";
-						this.receptorInfo.receptionistName = "";
-						this.receptorInfo.receptionistAvatar = "";
+						// this.receptorInfo.receptionistId = "";
+						// this.receptorInfo.receptionistName = "";
+						// this.receptorInfo.receptionistAvatar = "";
 					}else{
 						this.receptorInfo.receptionistId = orderInfo.receptionistId;
 						this.receptorInfo.receptionistName = orderInfo.receptionistName;
