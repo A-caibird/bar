@@ -235,8 +235,15 @@
 				this.params.type = this.giftFilter.time.array.value
 				this.params.isCharm = this.giftFilter.gift.array.value
 				this.mescroll.resetUpScroll()
+				this.getAwardInfo();
 			},
-			
+			getAwardInfo(){
+				this.$u.api.getAwardInfoApi().then(res => {
+					this.resultInfo = res.data ? res.data : {award: ''};
+				}).catch(e => {
+					console.log('getAwardInfoApi Error', e);
+				})
+			}
 		}
 	}
 </script>

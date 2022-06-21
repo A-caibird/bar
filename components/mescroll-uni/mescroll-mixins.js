@@ -102,7 +102,7 @@ const MescrollMixin = {
 				}
 				let {code,data} = await this.$u.api.commonRequest(url, params)
 				if(code==0) {
-					this.resultInfo = data;
+					// this.resultInfo = data;
 					this.handleData(pageNumber,data)
 				} else {
 					uni.hideLoading();

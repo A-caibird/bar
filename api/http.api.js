@@ -33,6 +33,8 @@ const install = (Vue, vm) => {
 		uploadFile:(filePath)=> upload(filePath,'file/'),
 		uploadImg:(filePath)=> upload(filePath,'image/'),
 		uploadVideo:(filePath)=> upload(filePath,'video/'),
+		// 获取中奖信息
+		getAwardInfoApi: () => vm.$u.get('/api/user/award'),
 		// 判断接待人员状态
 		judgeReceptionintStatusApi: (params) => vm.$u.get('/api/order/staffIsReset', params),
 		// 盲盒
