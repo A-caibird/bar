@@ -216,6 +216,8 @@
 				this.$u.route('/pages/receptionist-list/receptionist-list',{
 					receptionistId:this.receptorInfo.receptionistId,
 					clubId:this.clubInfo.clubId,
+					date: this.orderInfo.arriveTime.split(' ')[0] || "",
+					
 				})
 			},
 			tapGoPayPage(){
@@ -307,19 +309,8 @@
 				} = await this.$u.api.getInviteOrderView({
 					orderId: this.orderId,
 				})
-				this.clubInfo = data.pingOrderViewVo.clubSimpleInfoVo
 				this.canRefund = data.canRefund;
-				this.canBill = data.pingOrderViewVo.canBill;
-				this.orderInfo = data.pingOrderViewVo
-				this.receptorInfo.receptionistId = data.pingOrderViewVo.receptionistId;
-				this.receptorInfo.receptionistName = data.pingOrderViewVo.receptionistName;
-				this.receptorInfo.receptionistAvatar = data.pingOrderViewVo.receptionistAvatar;
-				this.form.phone = data.pingOrderViewVo.phone
-				// this.data.arrivalTime = this.orderInfo.arriveTime;
-				// this.data.arrivalTimeHM = this.orderInfo.arriveTime.split(' ')[1];
-				if (this.orderInfo.isJoin) {
-					this.inviteId = this.orderInfo.inviteId
-				}
+				this.getPageInfo(data.pingOrderViewVo);
 			},
 			async getPingOrderView() {
 				let {
@@ -328,20 +319,38 @@
 				} = await this.$u.api.getPingOrderView({
 					orderId: this.orderId,
 				})
-				this.clubInfo = data.pingOrderViewVo.clubSimpleInfoVo
 				this.canRefund = data.canRefund;
-				this.canBill = data.pingOrderViewVo.canBill;
-				this.orderInfo = data.pingOrderViewVo
-				this.receptorInfo.receptionistId = data.pingOrderViewVo.receptionistId;
-				this.receptorInfo.receptionistName = data.pingOrderViewVo.receptionistName;
-				this.receptorInfo.receptionistAvatar = data.pingOrderViewVo.receptionistAvatar;
-				this.form.phone = data.pingOrderViewVo.phone
+				this.getPageInfo(data.pingOrderViewVo);
+			},
+			getPageInfo(orderInfo){
+				this.clubInfo = orderInfo.clubSimpleInfoVo
+				this.canBill = orderInfo.canBill;
+				this.orderInfo = orderInfo
+				this.form.phone = orderInfo.phone
 				// this.data.arrivalTime = this.orderInfo.arriveTime;
 				// this.data.arrivalTimeHM = this.orderInfo.arriveTime.split(' ')[1];
 				if (this.orderInfo.isJoin) {
 					this.inviteId = this.orderInfo.inviteId
 				}
-			},
+				this.$u.api.judgeReceptionintStatusApi({
+					clubId: this.clubInfo.clubId,
+					staffId: orderInfo.receptionistId,
+					date: orderInfo.arriveTime.split(' ')[0] || "",
+				}).then(res => {
+					let staffIsReset = res.data.staffIsReset || false;
+					if(staffIsReset){
+						this.receptorInfo.receptionistId = "";
+						this.receptorInfo.receptionistName = "";
+						this.receptorInfo.receptionistAvatar = "";
+					}else{
+						this.receptorInfo.receptionistId = orderInfo.receptionistId;
+						this.receptorInfo.receptionistName = orderInfo.receptionistName;
+						this.receptorInfo.receptionistAvatar = orderInfo.receptionistAvatar;
+					}
+				}).catch(e => {
+					console.log('judgeReceptionintStatusApi Error', e);
+				})
+			}
 		},
 	}
 </script>

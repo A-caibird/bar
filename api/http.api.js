@@ -28,10 +28,13 @@ const install = (Vue, vm) => {
 
 	//将各个定义的接口名称，统一放进对象挂载到vm.$u.api(因为vm就是this，也即this.$u.api)下
 	vm.$u.api = {
+
 		//上传
 		uploadFile:(filePath)=> upload(filePath,'file/'),
 		uploadImg:(filePath)=> upload(filePath,'image/'),
 		uploadVideo:(filePath)=> upload(filePath,'video/'),
+		// 判断接待人员状态
+		judgeReceptionintStatusApi: (params) => vm.$u.get('/api/order/staffIsReset', params),
 		// 盲盒
 		getBlindBoxRuleApi: () => vm.$u.get('/api/lottery/helpInfo'), //拆盲盒攻略
 		// 优惠券
