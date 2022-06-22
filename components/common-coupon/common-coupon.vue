@@ -10,6 +10,7 @@
 				<view class="info-wrapper" :class="{'fixedWidth': btnShow && status == 'unused'}">
 					<view class="coupon-type">{{coupon.type}}</view>
 					<view class="condition">{{ coupon.name }}</view>
+					<view class="condition" style="margin: 10rpx 0rpx;">{{ coupon.introduce }}</view>
 					<view class="deadline">{{coupon.canUseDate}}</view>
 				</view>
 			</view>
@@ -63,9 +64,16 @@
 		},
 		methods: {
 			goPage: function(){
-				uni.navigateTo({
-					url: '/pages/club/list?mode=list'
-				})
+				let info = this.coupon;
+				if(info.type == '酒吧券'){
+					uni.navigateTo({
+						url: '/pages/club/detail?id=' + info.clubId
+					})
+				}else{
+					uni.navigateTo({
+						url: '/pages/club/list?mode=list'
+					})
+				}
 			},
 			clickCoupon: function() {
 				if (!this.canSelect) {

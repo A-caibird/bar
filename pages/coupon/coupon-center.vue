@@ -19,11 +19,12 @@
 			<view class="couponlist">
 				<view class="coupon-type">{{item.type}}</view>
 				<view class="coupon-title">{{item.name}}</view>
+				<view class="coupon-used">{{item.introduce}}</view>
 				<block>
 					<view class="coupon-time">{{item.canUseDate}}</view>
 				</block>
 				<view class="coupon-btn" @tap="givecoupon" :data-id="item.id" v-if="!item.checked" :data-index="index">立即领取</view>
-				<view class="coupon-btn" :data-id="item.id" v-else @tap="goPage(item.id)">去使用</view>
+				<view class="coupon-btn" :data-id="item.id" v-else @tap="goPage(item)">去使用</view>
 				<!-- <view class="coupon-btn" :data-id="item.id" v-else="">已领取</view> -->
 			</view>
 		</block>
@@ -100,20 +101,17 @@
 					}
 				})
 			},
-			goPage: function(id){
-				let couponList = this.pageList;
-				let coupon = "";
-				couponList.forEach((e, index) => {
-					if(e.id == id){
-						coupon = e;
-					}
-				})
-				this.$nav.commonNav({
-					jumpPath: coupon.jumpPath,
-					jumpType: coupon.jumpType,
-					templateRankEnum: coupon.rankEnum,
-					title: coupon.jumpProductCategoryTitle
-				})
+			goPage: function(item){
+				let info = item;
+				if(info.type == '酒吧券'){
+					uni.navigateTo({
+						url: '/pages/club/detail?id=' + info.clubId
+					})
+				}else{
+					uni.navigateTo({
+						url: '/pages/club/list?mode=list'
+					})
+				}
 			},
 			// 获取优惠列表
 			getPageItem: function() {
@@ -170,7 +168,7 @@
 		watch: {}
 	};
 </script>
-<style>
+<style lang="scss">
 	/* pages/coupon-conter/coupon-conter.css */
 	page {
 		min-height: 100%;
@@ -234,23 +232,16 @@
 		overflow: hidden;
 		position: relative;
 	}
-	.couponlist.disable{
-		background-image: url("https://vverp1.oss-cn-shanghai.aliyuncs.com//upload/image/202006/a23c82c7-751a-440e-9872-6354c8881a96.png");
-	}
-	.couponlist.disable .coupon-type{
-		background-color: #EBEBEB;
-		color: #999999;
-	}
-	.couponlist.disable .coupon-title{
-		color: #b3b3b3;
-	}
-	.couponlist.disable .coupon-time{
-		color: #b3b3b3;
-	}
-	.couponlist.disable .coupon-btn{
-		background-color: #cccccc;
-		border: 2rpx solid #cccccc;
-		color: #fff;
+	.coupon-used{
+		line-height: 60rpx;
+		position: absolute;
+		right: 30rpx;
+		top: 0rpx;
+		width: 300rpx;
+		text-align: right;
+		@include ellipsis();
+		color: #FF1616;
+		font-size: 24rpx;
 	}
 	.coupon-type{
 		max-width: 180rpx;
