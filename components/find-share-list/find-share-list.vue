@@ -50,7 +50,7 @@
 						num: 0, // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
 						size: 20 // 每页数据的数量
 					},
-					noMoreSize: 4, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看; 默认5
+					noMoreSize: 1, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看; 默认5
 					
 				},
 				
@@ -85,6 +85,7 @@
 				} else {
 					this.hasLocation = fasle
 				}
+				console.log('judgeLoad', this.hasLocation);
 				return this.hasLocation
 			},
 			handleUpdateLocation(){
