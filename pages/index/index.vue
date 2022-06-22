@@ -98,7 +98,11 @@ export default {
 		...mapState(['list'])
 	},
 	watch: {
-		
+		current(newVal, oldVal){
+			if(oldVal == 0 && newVal != 0){
+				this.$refs.home.hideEvent();
+			}
+		}
 	},
 	beforeCreate() {
 		// #ifdef APP-PLUS

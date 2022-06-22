@@ -216,7 +216,7 @@
 				this.$u.route('/pages/receptionist-list/receptionist-list',{
 					receptionistId:this.receptorInfo.receptionistId,
 					clubId:this.clubInfo.clubId,
-					date: this.orderInfo.arriveTime.split(' ')[0] || "",
+					date: this.data.date,
 					
 				})
 			},
@@ -335,7 +335,7 @@
 				this.$u.api.judgeReceptionintStatusApi({
 					clubId: this.clubInfo.clubId,
 					staffId: orderInfo.receptionistId,
-					date: orderInfo.arriveTime.split(' ')[0] || "",
+					date: this.data.date || "",
 				}).then(res => {
 					let staffIsReset = res.data.staffIsReset || false;
 					if(staffIsReset){
