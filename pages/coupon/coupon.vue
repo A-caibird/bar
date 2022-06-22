@@ -92,6 +92,10 @@
 		props: {},
 		methods: {
 			clickTopTar: function(e) {
+				if(this.loading){
+					this.$u.toast('请勿频繁点击');
+					return
+				}
 				if (this.currentIndex === e) {
 					return
 				}
