@@ -56,7 +56,7 @@
 							<text class="left">台位:</text><text class="right">{{pingOrderInfo.cardTableName}}</text>
 						</view>
 						<view class="detail_item">
-							<text class="left">到店时间:</text><text class="right">{{pingOrderInfo.orderTime}}</text>
+							<text class="left">到店时间:</text><text class="right">{{pingOrderInfo.arriveTime}}</text>
 						</view>
 						<view class="common_info_item" >
 							<view class="item_left"> 

@@ -166,8 +166,18 @@
 		},
 		methods:{
 			show(){
+				console.log('info show');
 				if(getApp().globalData.authorized){
 					this.getNoticeCount();
+					uni.$emit('information_listener');
+				}else{
+					console.log('用户不存在', getApp().globalData);
+					if(this.noticeNum){
+						this.noticeNum = 0;
+					}
+					if(this.activityNum){
+						this.activityNum = 0;
+					}
 				}
 			},
 			getNoticeCount(){

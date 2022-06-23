@@ -210,7 +210,6 @@
 					uni.hideLoading();
 					var code = res.code;
 					if(parseInt(code) == 0){
-						console.log(res)
 						login(res.data, this.isHome)
 					}
 				}).catch(e => {

@@ -301,9 +301,9 @@
 			}
 		},
 		onLoad(options) {
-			console.log(options)
+			// console.log(options)
 			this.friendUserInfo = JSON.parse(options.userInfo)
-			console.log(this.friendUserInfo)
+			// console.log(this.friendUserInfo)
 
 			uni.setNavigationBarTitle({
 				title: this.friendUserInfo.name
@@ -495,7 +495,6 @@
 						lastShowTimeStamp = timeStamp
 						// 时间间隔 天
 						let interval = nowDate - infoDate
-						console.log(interval)
 						if (interval > 0 && interval < 7) {
 							if (interval === 1) {
 								lastTime = '昨天'

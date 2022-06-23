@@ -219,7 +219,7 @@ function setChatUserListNameAvatarFromStorageByUserId(account,userId,name,avatar
 						user.localAvatar = res
 						user.friendName=name
 						user.hasSave = true
-						console.log(user)
+						// console.log(user)
 						list[index] = user
 						setChatUserListFromStorage(account,list)
 						uni.$emit('chat-user-list-refresh',list)

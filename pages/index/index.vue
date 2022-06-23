@@ -158,13 +158,14 @@ export default {
 		});
 		uni.$on('information_listener', this.infoListenerEvent);
 		uni.$on('push_listener', (e)=>{
-			console.log('push_listener', e);
 			if(e && !e.refresh){
 				this.pushListenerEvent(e.num, e.refresh);
 			}else{
 				this.pushListenerEvent();
 			}
 		});
+		this.infoListenerEvent();
+		this.pushListenerEvent();
 	},
 	onUnload() {
 		uni.$off('information_listener');
@@ -190,9 +191,9 @@ export default {
 				vm.$refs.info.show()
 			})
 		}else{
-			if(app.globalData.authorized){
-				this.pushListenerEvent();
-			}
+			// if(app.globalData.authorized){
+			// 	this.pushListenerEvent();
+			// }
 		}
 		if(app.globalData.authorized){
 			setTimeout(() => {
@@ -231,21 +232,26 @@ export default {
 				noRead = item.notReadNum + noRead;
 			})
 			this.noRead = noRead;
+			console.log('infoListenerEvent 聊天消息监听', noRead)
 			this.setInfoCount(noRead)
 		},
 		// 推送监听
 		pushListenerEvent(exitNoRead = 0, refresh = true){
 			if(isNaN(exitNoRead)){
+				console.log('push_listener 系统通知 exitNoRead', exitNoRead);
 				return
 			}else if(!refresh){
+				console.log('push_listener 系统通知 exitNoRead', exitNoRead);
 				this.setPushCount(exitNoRead)
 			}else{
 				if(getApp().globalData.authorized){
 					var noRead = 0;
 					this.$u.api.getNoticeCountAPI().then(res => {
 						noRead = noRead + (res.data.activityUnReadNum || 0) + (res.data.num || 0);
+						console.log('push_listener 系统通知 noRead', noRead);
 						this.setPushCount(noRead);
 					}).catch(e => {
+						console.log('push_listener 系统通知 noRead err', noRead);
 						this.setPushCount(noRead)
 					})
 				}
@@ -291,12 +297,12 @@ export default {
 		},
 		goChat(e){
 			let vm = this
-			console.log(e)
 			this.current = 3
+			this.infoListenerEvent();
+			this.pushListenerEvent();
 			setTimeout(function(){
 				vm.$u.route('/pages/chat/chat',e)
 			},50)
-			
 		},
 		goGift(){
 			this.current = 1
@@ -354,9 +360,7 @@ export default {
 			}
 			this.current = e;
 			if(e==0) {
-				if(getApp().globalData.authorized){
-					this.infoListenerEvent(false);
-				}
+				
 			}
 			if(e!=0){
 				this.$refs.home.hideEvent();

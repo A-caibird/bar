@@ -28,38 +28,45 @@
 					</block>
 				</view> -->
 				<view class="rank_location_box">
-					<view v-if="pageList.length >= 2" class="location_item">
-						<view class="common_rank" @tap="dynamicTap(pageList[1].id)">
-							<view class="member_icon">
-								<image :src="pageList[1].avatar"></image>
-								<view class="rank_text"><text>2</text></view>
+					<view class="location_item">
+						<block v-if="pageList.length >= 2">
+							<view class="common_rank" @tap="dynamicTap(pageList[1].id)">
+								<view class="member_icon">
+									<image :src="pageList[1].avatar"></image>
+									<view class="rank_text"><text>2</text></view>
+								</view>
+								<view class="member_name">{{ pageList[1].nickName }}</view>
+								<view class="member_num">{{ pageList[1].data }}</view>
 							</view>
-							<view class="member_name">{{ pageList[1].nickName }}</view>
-							<view class="member_num">{{ pageList[1].data }}</view>
-						</view>
+						</block>
 					</view>
-					<view v-if="pageList.length >= 1" class="location_item first">
-						<view class="common_rank" @tap="dynamicTap(pageList[0].id)">
-							<view class="member_icon">
-								<image :src="pageList[0].avatar"></image>
-								<view class="rank_text"><text>1</text></view>
-								<image class="champion_icon" src="/static/imgs/discovery/champion_icon.png"></image>
+					<view  class="location_item first">
+						<block v-if="pageList.length >= 1">
+							<view class="common_rank" @tap="dynamicTap(pageList[0].id)">
+								<view class="member_icon">
+									<image :src="pageList[0].avatar"></image>
+									<view class="rank_text"><text>1</text></view>
+									<image class="champion_icon" src="/static/imgs/discovery/champion_icon.png"></image>
+								</view>
+								<view class="member_name">{{ pageList[0].nickName }}</view>
+								<view class="member_num">{{ pageList[0].data }}</view>
 							</view>
-							<view class="member_name">{{ pageList[0].nickName }}</view>
-							<view class="member_num">{{ pageList[0].data }}</view>
-						</view>
+						</block>
 					</view>
-					<view v-if="pageList.length >= 3" class="location_item">
-						<view class="common_rank" @tap="dynamicTap(pageList[2].id)">
-							<view class="member_icon">
-								<image :src="pageList[2].avatar"></image>
-								<view class="rank_text"><text>3</text></view>
+					<view class="location_item">
+						<block v-if="pageList.length >= 3">
+							<view class="common_rank" @tap="dynamicTap(pageList[2].id)">
+								<view class="member_icon">
+									<image :src="pageList[2].avatar"></image>
+									<view class="rank_text"><text>3</text></view>
+								</view>
+								<view class="member_name">{{ pageList[2].nickName }}</view>
+								<view class="member_num">{{ pageList[2].data }}</view>
 							</view>
-							<view class="member_name">{{ pageList[2].nickName }}</view>
-							<view class="member_num">{{ pageList[2].data }}</view>
-						</view>
+						</block>
 					</view>
 				</view>
+				<view class="bottom_img"></view>
 			</view>
 			
 			
@@ -253,7 +260,6 @@
 		.top_rank {
 			width: 100%;
 			height: 782rpx;
-			position: relative;
 			z-index: 5;
 			position: relative;
 			background-image: url($topRankImg);
@@ -343,7 +349,7 @@
 					display: flex;
 					align-items: center;
 					flex-direction: column;
-	
+					width: 110rpx;
 					.common_rank {
 						.member_icon {
 							height: 110rpx;
@@ -429,22 +435,27 @@
 					}
 				}
 			}
+			.bottom_img{
+				position: absolute;
+				width: 100%;
+				height: 92rpx;
+				bottom: 0rpx;
+				left: 0rpx;
+				z-index: 100;
+				background-image: url($otherRankImg);
+				background-repeat: no-repeat;
+				background-size: 100% 132rpx;
+				background-origin: content-box;
+			}
 		}
 	
 		.other_rank {
 			width: 100%;
 			position: relative;
-			top: -100rpx;
 			z-index: 10;
-			background-image: url($otherRankImg);
-			background-repeat: no-repeat;
-			background-size: 100% 132rpx;
-			background-origin: content-box;
-	
+			top: -40rpx;
 			.rank_box {
-				padding-top: 60rpx;
-				box-sizing: border-box;
-	
+				width: 100%;
 				.rank_line {
 					height: 120rpx;
 					width: 100%;

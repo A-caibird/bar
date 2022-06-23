@@ -256,8 +256,6 @@
 				}
 			},
 			compareTime(time1,time2){//time1大返回1 time2大返回-1 相等返回 0
-				console.log(time1)
-				console.log(time2)
 				if(time1.getTime()>time2.getTime()) return 1
 				else if(time1.getTime()==time2.getTime()) return 0
 				else return -1

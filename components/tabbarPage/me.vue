@@ -294,6 +294,8 @@
 				let authorized = false;
 				if (app.globalData.token) {
 					authorized = true;
+				}else{
+					authorized = false;
 				}
 				this.authorized = authorized;
 				if (authorized) {

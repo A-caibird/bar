@@ -75,7 +75,6 @@
 			if (opt.distance) {
 				this.distance = opt.distance
 			}
-			console.log('type', opt.type);
 		},
 		methods: {
 			tapGoYaoOrderList() {

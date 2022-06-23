@@ -8,9 +8,9 @@
 			console.log('App Launch')
 			init(this)
 			if($storage.getLoginToken()){
-				this.requestAPI('/api/user/use', {
-					token: $storage.getLoginToken(),
-				})
+				// this.requestAPI('/api/user/use', {
+				// 	token: $storage.getLoginToken(),
+				// })
 			}
 			uni.getSystemInfo({
 				success: (res) => {

@@ -1,9 +1,8 @@
 import logout from '@/utils/logout/index.js';
 function handlePushReceive(msg) {
-	console.log(msg)
 	//todo
 	let payload = Object.prototype.toString.call(msg.payload) === '[object Object]' ? msg.payload : JSON.parse(msg.payload)
-	console.log('handlePushReceive', payload)
+	// console.log('handlePushReceive', payload)
 	if (msg.aps) { // Apple APNS message  
 		//APNS下发的消息，应用在前台  
 		console.log('APNS下发的消息，应用在前台  ')
@@ -51,7 +50,7 @@ function handlePushReceive(msg) {
 			logout()
 		}
 		if (type == 'msg') {//聊天消息
-			console.log('聊天消息')
+			// console.log('聊天消息')
 			if(route=='/pages/chat/chat') {
 				if(vm.userInfo.chatToken==payload.identifier&&vm.friendUserInfo.chatToken==payload.sendUserId) {
 					return 
@@ -145,7 +144,6 @@ function handlePushReceive(msg) {
 }
 function handlePushClick(msg) {
 	//处理点击消息的业务逻辑代码  
-	console.log(msg)
 	let payload = Object.prototype.toString.call(msg.payload) === '[object Object]' ? msg.payload : JSON.parse(msg.payload)
 	console.log('handlePushClick', payload)
 	if (payload.msgLocal == 'LocalMSG') {

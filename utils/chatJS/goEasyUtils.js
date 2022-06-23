@@ -191,7 +191,7 @@ function receiveMessage(im, callback = null) {
 }
 
 function markPrivateMessageAsRead(im, userId) { //userId： 发送者的Id
-	console.log('userId', userId);
+	// console.log('userId', userId);
 	im.markPrivateMessageAsRead({
 		userId: userId,
 		onSuccess: function() { //标记成功

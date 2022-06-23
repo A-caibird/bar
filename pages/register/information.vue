@@ -135,9 +135,7 @@
 			console.log(opt)
 			this.token = opt.token
 			uni.$on('upload-avatar',this.uploadAvatarHandler)
-			let pages = getCurrentPages();
-			let beforePage = pages[pages.length - 1];
-			if(beforePage.route == 'pages/register/index'){
+			if(opt.register){
 				this.register = true;
 			}else{
 				this.register = false;

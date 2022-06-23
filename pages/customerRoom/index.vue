@@ -617,7 +617,14 @@
 		background-color: #fff;
 		margin-left: 8rpx;
 		.input{
+			width: calc(100% - 40rpx);
+			margin-left: 20rpx;
 			height: 64rpx;
+			font-size: 28rpx;
+			color: #4A4A4A;
+			text-indent: 0rpx;
+			white-space: pre-wrap;
+			overflow: hidden;
 		}
 	}
 	.bottom_add{
@@ -676,14 +683,6 @@
 		&.hover-class {
 			color: #d3d3d3;
 		}
-	}
-
-	.input {
-		width: 480rpx;
-		height: 64rpx;
-		font-size: 28rpx;
-		color: #4A4A4A;
-		text-indent: 30rpx;
 	}
 
 	.tabbar {

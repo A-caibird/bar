@@ -38,7 +38,7 @@ const install = (Vue, vm) => {
 	// 相应拦截
 	Vue.prototype.$u.http.interceptor.response = (res) => {
 		if(res.statusCode == 200){
-			let code = res.data.code;	
+			let code = res.data.code;
 			// console.log(res)
 			if(parseInt(code) != 0){
 				// console.log(res)

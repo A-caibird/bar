@@ -44,6 +44,19 @@ const store = new Vuex.Store({
 		
 	},
 	mutations: {
+		// 清除消息
+		clearInfoCount(state, count){
+			console.log('清除消息');
+			console.log(count);
+			try{
+				console.log(state.list[3]);
+				state.list[3].count = count;
+			}catch(e){
+				//TODO handle the exception
+				console.log(e);
+			}
+			console.log('清除消息后', state.list[3]);
+		},
 		// 设置通知消息
 		setPushCount(state, count){
 			// console.log('更新push', count, state.infoCount)
@@ -76,9 +89,9 @@ const store = new Vuex.Store({
 				nickname: state.userInfo.nickName
 			}, function(){
 				goEasyUtils.receiveMessage(state.goEasy.im, (msg) => {
-					console.log(msg);
+					// console.log(msg);
 					var msgInfo = msg.payload.payloadString;
-					console.log(msgInfo);
+					// console.log(msgInfo);
 					goEasyUtils.markPrivateMessageAsRead(state.goEasy.im, msg.senderId);
 					// 触发全局事件
 					uni.$emit('mqtt-arrived-msg', {

@@ -7,8 +7,6 @@ const ajax = (_url, data = {}, method = 'GET') => {
 	let url = BASE_URL + _url
 	let token = app.globalData.token
 	if (token && !data.token) data.token = token
-	console.log(url)
-	console.log(data)
 	return new Promise((resolve, reject) => {
 		uni.request({
 			url,

@@ -33,8 +33,8 @@
 			},
 			async cropper(e) {
 				// e.url 需要预览的图片http链接列表
-				console.log(this.imageUrl)
-				console.log(e)
+				// console.log(this.imageUrl)
+				// console.log(e)
 				let avatar = await this.$u.api.uploadImg(e.url)
 				let beforePage = this.$cross.beforePage();
 				console.log(beforePage.route);
