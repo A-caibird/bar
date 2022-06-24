@@ -181,7 +181,6 @@
 					type: 'introduction',
 					url: '',
 				}],
-
 				scoreList: [{
 						text: '服务',
 						score: 5
@@ -507,7 +506,14 @@
 				this.getTypeContent(type);
 			},
 			getInfoType(info) {
-				let infoType = this.infoType;
+				let infoType = [
+					{
+						label: '',
+						title: '简介',
+						type: 'introduction',
+						url: ''
+					}
+				]
 				if (info.showDynamic) {
 					infoType.push({
 						label: '动态',
