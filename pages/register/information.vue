@@ -154,18 +154,7 @@
 			},
 			getHeadImg: function() {
 				let vm = this
-				uni.chooseImage({
-				    count: 1, //默认9
-				    success:  (res) => {
-						const filePath=res.tempFilePaths[0]
-						vm.$u.route('/pages/cut-avatar/cut-avatar',{
-							pic:res.tempFilePaths[0]
-						})
-				    },
-					fail(e) {
-						console.log(e);
-					}
-				});
+				vm.$u.route('/pages/cut-avatar/cut-avatar')
 			},
 			chooseHe() {
 				if (this.maleChoose === true) {

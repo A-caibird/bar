@@ -163,23 +163,7 @@
 			//获取头像地址 之后 修改头像
 			getHeadImg: function() {
 				let vm = this
-				uni.chooseImage({
-					count: 1, //默认9
-					success: (res) => {
-						let filePath = res.tempFilePaths[0];
-						this.sCompressImg(filePath).then(rs => {
-							let path = rs.tempFilePath;
-							vm.$u.route('/pages/cut-avatar/cut-avatar',{
-								pic:path
-							})
-						}).catch(e => {
-							console.log(e);
-							vm.$u.route('/pages/cut-avatar/cut-avatar',{
-								pic:filePath
-							})
-						})
-					}
-				});
+				vm.$u.route('/pages/cut-avatar/cut-avatar');
 			},
 			//修改头像
 			changeAvatar: function() {

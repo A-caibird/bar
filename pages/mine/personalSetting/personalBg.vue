@@ -45,34 +45,10 @@
 			//选择图片
 			select_photo: function() {
 				let vm = this
-				uni.chooseImage({
-					count: 1, //默认9
-					success(res) {
-						// console.log(res.tempFilePaths)
-						uni.showLoading({
-							title: '上传中'
-						})
-						// vm.upImg(res)
-						var filePath = res.tempFilePaths[0];
-						vm.sCompressImg(filePath).then(rs => {
-							console.log(rs);
-							let path = rs.tempFilePath;
-							btnAvaliable = true
-							vm.$u.route('/pages/cut-avatar/cut-avatar',{
-								pic:path,
-								width: 345,
-								height: 185
-							})
-						}).catch(e => {
-							btnAvaliable = true
-							uni.hideLoading();	
-						})
-					},
-					fail(e) {
-						console.log(e);
-						btnAvaliable = true;
-					}
-				});
+				vm.$u.route('/pages/cut-avatar/cut-avatar',{
+					width: 345,
+					height: 185
+				})
 			},
 			//执行完上传，隐藏提示
 			async upImg(res) {
