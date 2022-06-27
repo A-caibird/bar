@@ -645,6 +645,7 @@
 				display: flex;
 				align-items: center;
 				height: 60rpx;
+				margin-top: 30rpx;
 				&>image{
 					height: 30rpx;
 					width: 30rpx;
