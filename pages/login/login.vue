@@ -234,7 +234,7 @@
 	$backImg: "/static/imgs/common/login_header.png";
 	.container {
 		width: 100%;
-		height: 100%;
+		height: 100vh;
 		background: $uni-title-color;
 
 		.header_box {

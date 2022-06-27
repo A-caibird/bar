@@ -1,0 +1,135 @@
+<template>
+	<div>
+		<view class="club_info_second">
+			<view class="info_name"> <text class="info_name_text">{{clubInfo.name}}</text> </view>
+			<view class="info_intro"> <text class="info_intro_text">{{clubInfo.subtitle}}</text> </view>
+			<view class="info_eva">
+				<!-- <view class="rate_box">
+					<selfRate :score="clubInfo.avgScore" size="24"></selfRate>
+				</view> -->
+				<text class="info_eva_text">{{clubInfo.avgScore}} 评分</text>
+			</view>
+			<view class="info_open_time">
+				<text class="info_open_time_text">营业时间</text>
+				<view class="line"></view>
+				<text class="info_open_time_text">{{clubInfo.businessHours?clubInfo.businessHours:'暂未填写'}}</text>
+			</view>
+			<view class="info_label">
+				<block v-for="(info, index) in clubInfo.labelList" :key="index">
+					<view class="common_label"> <text class="common_label_text">{{info}}</text> </view>
+				</block>
+			</view>
+			<view class="info_loaction">
+				<view class="loca_intro1"> <text class="loca_intro1_text">{{clubInfo.address}}</text> </view>
+				<view class="loca_intro2" @tap="tapOpenMap"> <text class="loca_intro2_text">{{clubInfo.areaName}}</text>
+					<!-- <u-icon name="map" size="32"></u-icon> -->
+				</view>
+				<view class="call_box" @tap="callPhone">
+					<text class="call_box_text">电话</text>
+				</view>
+			</view>
+		</view>
+	</div>
+</template>
+
+<script>
+	export default {
+		props: {
+			clubInfo: Object,
+		}
+	}
+</script>
+
+<style>
+	.club_info_second {
+		width: 100%;
+		padding: 30rpx;
+	}
+	.info_name {
+		width: 100%;
+		overflow: hidden;
+	}
+	.info_name_text{
+		font-size: 40rpx;
+		color: #FFFFFF;
+		font-weight: 500;
+	}
+	.info_intro_text{
+		line-height: 40rpx;
+		color: #FFFFFF;
+		font-size: 28rpx;
+	}
+	
+	.info_eva {
+		height: 110rpx;
+		display: flex;
+		align-items: center;
+	}
+	.info_eva_text {
+		color: #F72EB2;
+		font-size: 26rpx;
+		margin-left: 14rpx;
+	}
+	.info_open_time {
+		display: flex;
+		align-items: center;
+	}
+	.info_open_time{
+		font-size: 26rpx;
+		color: #FFFFFF;	
+	}
+	.line {
+		height: 20rpx;
+		width: 1px;
+		background: #575B85;
+		margin: 0 14rpx;
+	}
+	.info_label {
+		width: 100%;
+		display: flex;
+		margin: 16rpx 0rpx;
+		flex-wrap: wrap;
+	}
+	.common_label {
+		height: 40rpx;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		border: 1px solid #565B86;
+		padding: 0 10rpx;
+		border-radius: 2rpx;
+		margin-right: 12rpx;
+		margin-bottom: 12rpx;
+	}
+	.common_label_text{
+		font-size: 20rpx;
+		color: #B3BAEF;
+	}
+	.info_loaction {
+		width: 100%;
+		position: relative;	
+	}
+	
+	.loca_intro1_text {
+		font-size: 30rpx;
+		color: #FFFFFF;
+	}
+	.loca_intro2_text {
+		font-size: 26rpx;
+		color: #B4B2CF;
+		margin-top: 15rpx;
+	}
+	.call_box {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		right: 30rpx;
+	}
+	.call_box_text{
+		font-size: 22rpx;
+		color: #FFFFFF;
+	}
+</style>

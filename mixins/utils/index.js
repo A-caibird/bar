@@ -178,11 +178,22 @@ let utils = ({
 
 		},
 		goClubDetail(id) { //前往酒吧详情
+			// #ifdef APP-PLUS
+			// uni.navigateTo({
+			// 	url: '/pages/club/view/index' + `?id=${id}`,
+			// 	animationType: "slide-in-right",
+			// })
 			uni.navigateTo({
 				url: '/pages/club/detail' + `?id=${id}`,
 				animationType: "slide-in-right",
 			})
-
+			// #endif
+			// #ifdef H5
+			uni.navigateTo({
+				url: '/pages/club/detail' + `?id=${id}`,
+				animationType: "slide-in-right",
+			})
+			// #endif
 		},
 		goArticle(type) { //前往富文本页面
 			uni.navigateTo({

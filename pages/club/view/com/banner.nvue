@@ -1,0 +1,92 @@
+<template>
+	<div class="swiper_box_com">
+		<view class="swiper_box" v-if="bannerList.length > 1">
+			<swiper class="banner_swiper" interval="3000" :autoplay="autoplay" :circular="true" indicator-dots indicator-active-color="#eaedf0" indicator-color="#7b597e">
+					<swiper-item class="swiper_item" v-for="(item, index) in bannerList" :key="item.id">
+						<image class="banner_img" :src="item.file" @tap="imgTap(index)" mode="aspectFill"></image>
+					</swiper-item>
+				</block>
+			</swiper>
+		</view>
+	</div>
+</template>
+
+<script>
+	export default {
+		props:{
+			bannerList: Array,
+		},
+		mounted() {
+			console.log(this.bannerList);
+		},
+		data() {
+			return {
+				autoplay: true,
+				playVideoUrl: '',
+			}
+		},
+		methods:{
+			//图片点击
+			imgTap(index){
+				if(this.customEvent){
+					this.$emit('click', {
+						mode: 'img',
+						detail: {
+							index: index
+						}
+					})
+				}else{
+					var banner = this.bannerList[index];
+					this.previewTap(banner.file)
+				}
+			},
+			
+			previewTap(url){
+				let imgs = [];
+				this.bannerList.forEach((item, index) => {
+					if(item.file){
+						imgs.push(item.file);
+					}
+				})
+				uni.previewImage({
+					urls: imgs,
+					current: url
+				})
+			}
+		}
+	}
+</script>
+
+<style>
+	.swiper_box_com{
+		height: 434rpx;
+		width: 750rpx;
+	}
+	.swiper_box {
+		height: 434rpx;
+		width: 750rpx;
+		position: relative;	
+	}
+	.banner_swiper {
+		height: 434rpx;
+		width: 750rpx;
+	}
+	.swiper_item{
+		height: 434rpx;
+		width: 750rpx;
+	}
+	.banner_img {
+		height: 434rpx;
+		width: 750rpx;
+		background: darkblue;
+	}
+	.play_icon {
+		height: 100rpx;
+		width: 100rpx;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 10;
+	}
+</style>

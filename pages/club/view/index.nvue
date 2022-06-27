@@ -1,0 +1,118 @@
+<template>
+	<div class="container">
+		<view class="header_box">
+			<view class="header_fill" :style="{'height': (navHeight + 'px')}"></view>
+			<view class="header_content" :style="{'paddingTop': (statusBarHeight + 'px'), 'height': (navHeight + 'px')}">
+				<view class="heaer_content_left">
+					<image class="left_icon" src="../../../static/imgs/common/nav_left.png"></image>
+				</view>
+				<view class="heaer_content_center">
+					<text class="center_text">居中</text>
+				</view>
+			</view>
+		</view>
+		<view class="banner">
+			<block v-if="clubInfo.bannerObjList.length > 0">
+				<bannerNvue :bannerList="clubInfo.bannerObjList"></bannerNvue>
+			</block>
+		</view>
+		<view class="club_info">
+			<clubInfoNvue :clubInfo="clubInfo"></clubInfoNvue>
+		</view>
+		<text>详情页面</text>
+	</div>
+</template>
+
+<script>
+	import bannerNvue from './com/banner.nvue'
+	import clubInfoNvue from './com/clubInfo.nvue'
+	import api from './api/api.js'
+	export default {
+		data() {
+			return {
+				id: "",
+				statusBarHeight: 0,
+				clubInfo: {
+					bannerObjList:[],
+				}
+			}
+		},
+		components: {
+			clubInfoNvue,
+			bannerNvue
+		},
+		computed: {
+			navHeight(){
+				return this.statusBarHeight + 44;
+			}
+		},
+		created() {
+			setTimeout(() => {
+				this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight;
+			}, 1)
+		},
+		onLoad(opt) {
+			this.id = opt.id || '21';
+			this.getClubView(this.id);
+		},
+		methods: {
+			getClubView(id) {
+				api.request('/api/club/basicInformation',{'clubId': id}).then(res => {
+					console.log(res);
+					let code = res.code;
+					let data = res.data
+					if (code == 0) {
+						this.clubInfo = data.info;
+						// let info = data.info;
+						// this.collect = info.hasCollect;
+						// this.scoreList[0].score = info.serviceAvgScore
+						// this.scoreList[1].score = info.atmosphereAvgScore
+						// this.scoreList[2].score = info.surroundingsAvgScore
+						// this.scoreList[3].score = info.genreAvgScore
+						// this.scoreList[4].score = info.happyAvgScore
+					}
+				}).catch(e => {
+					console.log('getClubDetail Error', e);
+				})
+				
+			}
+		},
+	}
+</script>
+
+<style>
+	.header_fill{
+		width: 750rpx;
+		background: transparent;
+	}
+	.header_content{
+		position: fixed;
+		top: 0rpx;
+		left: 0rpx;
+		z-index: 1000;
+		width: 750rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: row;
+		background: black;
+	}
+	.heaer_content_left{
+		height: 44rpx;
+		width: 44rpx;
+		position: absolute;
+		left: 20rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.left_icon{
+		height: 30rpx;
+		width: 30rpx;
+	}
+	.center_text{
+		color: #ffffff;
+		font-size: 28rpx;
+	}
+	
+</style>

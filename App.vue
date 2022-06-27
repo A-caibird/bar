@@ -78,6 +78,7 @@
 
 <style lang="scss">
 	/*每个页面公共css */
+	/* #ifdef APP-VUE || H5 */
 	@import "uview-ui/index.scss";
 	
 	@import url("/iconfont/iconfont.css");
@@ -103,7 +104,7 @@
 			background: #191C3F;
 		}
 	}
-
+	
 	::-webkit-scrollbar {
 		display: none;
 		width: 0 !important;
@@ -115,6 +116,6 @@
 	.placeholder {
 		color: #B4B2CF;
 	}
-	
+	/* #endif */
 	
 </style>
