@@ -279,7 +279,7 @@
 				return [this.year - this.minYear, this.month - this.minMonth, this.day - this.minDay]
 			},
 			hms() {
-				return [this.hour - this.minHour, this.minute - this.minMinute, this.second - this.minSecond]
+				return [this.hour - this.minHour, (this.minute - this.minMinute) / 10, this.second - this.minSecond]
 			},
 
 			// 当前 date 是 start
@@ -602,8 +602,15 @@
 			getCurrentRange(value) {
 				const range = []
 				for (let i = this['min' + this.capitalize(value)]; i <= this['max' + this.capitalize(value)]; i++) {
-					range.push(i)
+					if(value != 'minute'){
+						range.push(i)
+					}else{
+						if(i%10 == 0){
+							range.push(i)
+						}
+					}
 				}
+				console.log(value, range);
 				return range
 			},
 
