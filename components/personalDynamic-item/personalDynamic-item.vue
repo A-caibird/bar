@@ -305,7 +305,7 @@
 							.single_img_box {
 								height: 340rpx;
 								width: 100%;
-
+								overflow: hidden;
 								&>image {
 									height: 100%;
 									width: 100%;
