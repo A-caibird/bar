@@ -44,7 +44,7 @@
 	}
 	.animation_img {
 		position: fixed;
-		z-index: 200;
+		z-index: 1000;
 		top: 50%;
 		left: 0rpx;
 		width: 100%;

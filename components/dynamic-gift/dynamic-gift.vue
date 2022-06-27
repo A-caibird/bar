@@ -171,9 +171,6 @@
 					this.giftId = ''
 				} else {
 					this.giftId = id
-					if(gift.gifUrl){
-						this.$refs.giftAnimation.show(gift.gifUrl)
-					}
 				}
 			},
 			

@@ -610,7 +610,6 @@
 						}
 					}
 				}
-				console.log(value, range);
 				return range
 			},
 

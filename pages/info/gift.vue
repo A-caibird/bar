@@ -87,13 +87,11 @@
 			handleData(pageNumber,data){
 				this.todayReceiveGiftNum = data.todayReceiveGiftNum
 				this.receiveGiftNum = data.receiveGiftNum
-				console.log(data)
 				let pageList = this.pageList
 				if (pageNumber <= 1) {
 					pageList = []
 				} 
 				pageList = pageList.concat(data.list);
-				console.log(pageList)
 				this.pageList = pageList;
 				this.totalPages = data.totalPage;
 				uni.hideLoading();

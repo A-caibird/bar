@@ -123,7 +123,6 @@ export default {
 			})
 			// #endif
 		}
-		console.log(opt)
 		if(opt&&opt.current=='info') {
 			this.current = 3
 		}else if(opt&&opt.current=='find-nearby') {
@@ -232,26 +231,26 @@ export default {
 				noRead = item.notReadNum + noRead;
 			})
 			this.noRead = noRead;
-			console.log('infoListenerEvent 聊天消息监听', noRead)
+			// console.log('infoListenerEvent 聊天消息监听', noRead)
 			this.setInfoCount(noRead)
 		},
 		// 推送监听
 		pushListenerEvent(exitNoRead = 0, refresh = true){
 			if(isNaN(exitNoRead)){
-				console.log('push_listener 系统通知 exitNoRead', exitNoRead);
+				// console.log('push_listener 系统通知 exitNoRead', exitNoRead);
 				return
 			}else if(!refresh){
-				console.log('push_listener 系统通知 exitNoRead', exitNoRead);
+				// console.log('push_listener 系统通知 exitNoRead', exitNoRead);
 				this.setPushCount(exitNoRead)
 			}else{
 				if(getApp().globalData.authorized){
 					var noRead = 0;
 					this.$u.api.getNoticeCountAPI().then(res => {
 						noRead = noRead + (res.data.activityUnReadNum || 0) + (res.data.num || 0);
-						console.log('push_listener 系统通知 noRead', noRead);
+						// console.log('push_listener 系统通知 noRead', noRead);
 						this.setPushCount(noRead);
 					}).catch(e => {
-						console.log('push_listener 系统通知 noRead err', noRead);
+						// console.log('push_listener 系统通知 noRead err', noRead);
 						this.setPushCount(noRead)
 					})
 				}

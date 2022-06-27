@@ -2,7 +2,7 @@ import logout from '@/utils/logout/index.js';
 function handlePushReceive(msg) {
 	//todo
 	let payload = Object.prototype.toString.call(msg.payload) === '[object Object]' ? msg.payload : JSON.parse(msg.payload)
-	// console.log('handlePushReceive', payload)
+	console.log('handlePushReceive', msg)
 	if (msg.aps) { // Apple APNS message  
 		//APNS下发的消息，应用在前台  
 		console.log('APNS下发的消息，应用在前台  ')
