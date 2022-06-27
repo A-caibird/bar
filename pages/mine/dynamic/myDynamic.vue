@@ -52,7 +52,7 @@
 					<view  class="content-dynamic"
 					:class="{active:currentIndex === '1' }" @tap="select('1')">资料</view>
 				</view>
-				<view class="gajiu_btn" @tap.stop="tapAwkwardWine">
+				<view class="gajiu_btn" @tap.stop="tapAwkwardWine" v-if="!isSelf">
 					<image src="/static/imgs/common/club-white.png"></image>
 					<text>尬酒</text>
 				</view>
@@ -143,12 +143,18 @@
 				maxHeight: 0, // swiper 最大高度
 				minHeight: 0, // swiper 最小高度
 				swiperHeight: 0, // swiper 当前高度
-				mode: 'personType'
+				mode: 'personType',
+				isSelf: false,
 			}
 		},
 		onLoad(option) {
 			this.userid = option.id
 			this.params.userId = option.id
+			if(app.globalData.userInfo.userId == option.id){
+				this.isSelf = true;
+			}else{
+				this.isSelf = false;
+			}
 			this.otherMsg()
 			this.pullRefresh()
 			// this.maxHeight = windowHeight - statusBarHeight - ( 150 * proportion);
