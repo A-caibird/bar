@@ -95,6 +95,7 @@
 			v-if="popShow"
 			@cancel="popCancelTap"
 			@confirm="popConfirmTap"
+			@maskTap="popShow = false"
 		></pop-common>
 	</view>
 </template>
