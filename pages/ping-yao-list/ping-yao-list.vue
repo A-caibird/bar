@@ -11,7 +11,7 @@
 		<pop-common
 			v-if="popShow"
 			title='提示'
-			content='您当前没有可以用来尬酒的订单！'
+			content='您当前没有可以用来邀约尬酒的订单！'
 			confirmText='打个招呼'
 			cancelText='立马下单'
 			@confirm="confirmEvent"
