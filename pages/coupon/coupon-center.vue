@@ -33,8 +33,8 @@
 			<coupon-pop @getcoupons="ongetCoupons"></coupon-pop>
 		</view>
 		<view class="no-result" v-if="pageList.length == 0">
-			<image src="/static/imgs/common/empty-icon.png"></image>
-			<text>空空如也</text>
+			<image src="/static/imgs/index/loading_icon.png"></image>
+			<text style="margin-top: 10rpx;">优惠券已抢光，下次早点来哦~</text>
 		</view>
 	</view>
 </template>
