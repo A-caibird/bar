@@ -61,6 +61,12 @@ function handlePushReceive(msg) {
 			content = payload.content
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
 		}
+		/* 收款通知 */
+		if(type == 'pingOrderReceiveMoney'){
+			option.title = payload.title
+			content = payload.content
+			plus.push.createMessage(content,  JSON.stringify(payload), option);
+		}
 		/* 反馈举报 */
 		if (type == 'reportBack') {
 			option.title = payload.title
@@ -199,6 +205,12 @@ function handlePushClick(msg) {
 				url:'/pages/info/activity/detail?id=' + id
 			})
 		}
+		/* 收款通知 */
+		if(type == 'pingOrderReceiveMoney'){
+			uni.navigateTo({
+				url:'/pages/info/systemNotification'
+			})
+		}
 		/* 反馈举报 */
 		if (type == 'reportBack') {
 			uni.navigateTo({
@@ -330,9 +342,14 @@ function openAPPMsg(payload){ //APP 处于关闭状态下 点击消息跳转页�
 }
 function pageJump(payload){
 	let type = payload.type
+	// 收款通知
+	if(type == 'pingOrderReceiveMoney'){
+		slientHandle(() => {
+			getApp().globalData.msgPath = '/pages/info/systemNotification'
+		})
+	}
 	// 反馈消息
 	if (type == 'reportBack') {
-		console.log(type);
 		slientHandle(() => {
 			getApp().globalData.msgPath = '/pages/info/systemNotification'
 		})
