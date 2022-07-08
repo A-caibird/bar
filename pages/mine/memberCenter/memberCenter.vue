@@ -12,10 +12,10 @@
 			<view class="member-info">
 				<view class="member-info-text">
 					<text>{{memberInfo.nickName}}</text>
-					<view class="member-info-right" @tap="$u.route('pages/mine/memberRight/memberRight')">
+					<!-- <view class="member-info-right" @tap="$u.route('pages/mine/memberRight/memberRight')">
 						<text>查看会员权益</text>
 						<image src="/static/imgs/common/right.png" mode=""></image>
-					</view>
+					</view> -->
 				</view>
 				<view class="member-info-icon">
 					<view class="member-medal">
