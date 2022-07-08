@@ -13,11 +13,11 @@
 				 <block v-for="(info, index) in pageList" :key="index">
 					 <view style="margin-bottom: 20rpx;">
 						 <view class="activity_item_box" @tap="$u.throttle(tapGoDetail(info.id))">
-						 	<view class="redPoint" v-if="!info.hasRead"></view>
 							<view class="activity_img">
 						 		<image :src="info.cover"></image>
 						 	</view>
 						 	<view class="activity_footer">
+								<view class="redPoint" v-if="!info.hasRead"></view>
 						 		<view class="activity_intro">
 						 			<text>{{info.title}}</text>
 						 		</view>
@@ -120,8 +120,8 @@
 				width: 20rpx;
 				z-index: 10;
 				border-radius: 50%;
-				right: 20rpx;
-				top: 20rpx;
+				left: 4rpx;
+				top: 40rpx;
 				background: red;
 			}
 			.activity_img{
@@ -138,6 +138,7 @@
 				padding: 30rpx;
 				box-sizing: border-box;
 				background: #2C3158;
+				position: relative;
 				.activity_intro{
 					width: 100%;
 					max-height: 40rpx;
