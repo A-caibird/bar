@@ -128,7 +128,7 @@
 					joinTogetherId:this.info.joinTogetherId,
 				})
 				if(code==0) {
-					this.$toast.text('退出成功！')
+					this.$toast.text('退出拼享成功！')
 					uni.$emit('order-list-refresh')
 				}
 			},
