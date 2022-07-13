@@ -30,60 +30,36 @@
 				</view>
 			</view>
 		</view>
-		<template v-if="memberList.length>1">
-			<view class="swiper">
-				<swiper indicator-dots="true" indicator-color="#8b8c9e" indicator-active-color="#FFFFFF" next-margin="64rpx" :current="current">
-					<swiper-item v-for="item in memberList" :key="item.id">
-						<view class="swiper-item">
-							<view class="member-level" :style="{backgroundImage: 'url('+ item.backgroundUrl +')' }">
-								<view class="member-level-info">
-									<text class="member-name" style="font-size: 40rpx; padding-bottom: 8rpx;">{{item.name}}</text>
-									<text class="member-name-text" style="font-size: 24rpx; padding-bottom: 44rpx;">您当前是{{memberInfo.membershipLevel}}</text>
-									<template v-if="memberInfo.memberPoints<item.lowestScore">
-										<u-line-progress active-color="#FFFFFF" :show-percent="false" inactive-color="#787878" height="12" :percent="calcPercent(memberInfo.memberPoints,item.lowestScore)" ></u-line-progress>
-									</template>
-									<view style="padding-top: 17rpx;" v-if="memberInfo.memberPoints<item.lowestScore">
-										<image src="/static/imgs/mine/class_icon.png" mode="" style="width: 20rpx; height: 20rpx;"></image>
-										<text style="font-size: 24rpx;" >当前还差{{item.lowestScore-parseInt(memberInfo.memberPoints)}}分</text>
-									</view>
+		<view class="single-member-wrap">
+			<block>
+				<view class="swiper-item">
+					<view class="member-level">
+						<view class="current_level_point">
+							<text>积分 ≥ {{currentLevel.lowestScore}}</text>
+						</view>
+						<view class="member-level-info">
+							<text class="member-name" style="font-size: 40rpx; margin-top: 104rpx;">{{memberInfo.membershipLevel}}级会员</text>
+							<view class="member-name-text">
+								<text style="margin-right: 10rpx;">您的当前等级是</text>
+								<view class="member-medal">
+									<image src="/static/imgs/mine/class_icon.png" mode=""></image>
+									<text>{{memberInfo.membershipLevel}}</text>
 								</view>
-								<view class="badge-icon">
-									<image :src="item.badgeUrl"></image>
-								</view>
+							</view>
+							<!-- <template>
+								<u-line-progress active-color="#FFFFFF" :show-percent="false" inactive-color="#787878" height="12" :percent="calcPercent(memberInfo.memberPoints,currentLevel.lowestScore)" ></u-line-progress>
+							</template> -->
+							<view style="margin-top: 42rpx;">
+								<text style="font-size: 24rpx;" >{{subPointText}}</text>
 							</view>
 						</view>
-					</swiper-item>
-					
-				</swiper>
-			</view>
-			
-		</template>
-		<template v-if="memberList.length==1">
-			<view class="single-member-wrap">
-				<block v-for="item in memberList" :key="item.id">
-					<view class="swiper-item">
-						<view class="member-level" :style="{backgroundImage: 'url('+ item.backgroundUrl +')' }">
-							<view class="member-level-info">
-								<text class="member-name" style="font-size: 40rpx; padding-bottom: 8rpx;">{{item.name}}</text>
-								<text class="member-name-text" style="font-size: 24rpx; padding-bottom: 44rpx;">您当前是{{memberInfo.membershipLevel}}</text>
-								<template v-if="memberInfo.memberPoints<item.lowestScore">
-									<u-line-progress active-color="#FFFFFF" :show-percent="false" inactive-color="#787878" height="12" :percent="calcPercent(memberInfo.memberPoints,item.lowestScore)" ></u-line-progress>
-								</template>
-								<view style="padding-top: 17rpx;" v-if="memberInfo.memberPoints<item.lowestScore">
-									<image src="/static/imgs/mine/class_icon.png" mode="" style="width: 20rpx; height: 20rpx;"></image>
-									<text style="font-size: 24rpx;" >当前还差{{item.lowestScore-parseInt(memberInfo.memberPoints)}}分</text>
-								</view>
-							</view>
-							<view class="badge-icon">
-								<image :src="item.badgeUrl"></image>
-							</view>
+						<view class="badge-icon">
+							<image :src="currentLevel.badgeUrl"></image>
 						</view>
 					</view>
-								
-				</block>
-				
-			</view>
-		</template>
+				</view>			
+			</block>
+		</view>
 		<view class="member-rule">
 			<text style=" padding-bottom: 10rpx;">1.消费：平台内每消费1元积1分，无上限</text>
 			<text>2.评价：评价酒吧发布者获得1积分，无上限</text>
@@ -105,23 +81,44 @@
 					// "memberPoints": 8500.00,
 				},
 				current:0,
+				currentLevel: '',
+				nextLevel: '',
 			}
 		},
 		onLoad() {
 			this.load()
 		},
+		computed: {
+			subPointText(){
+				if(this.nextLevel && this.currentLevel){
+					let subPoint = this.nextLevel - this.memberInfo.memberPoints;
+					return `距离下一个等级还需要${subPoint}积分值`
+				}else{
+					return "当前等级为最高等级"
+				}
+				
+			}
+		},
 		methods:{
 			initMemberList(list,points){
 				let memberList = []
 				let length = list.length
-				list.forEach((e,i)=>{
-					if(i==length-1) {
-						memberList.push(e)
-					} else if((list[i+1].lowestScore>points&&e.lowestScore<=points)||e.lowestScore>points){
-						memberList.push(e)
+				let selectIndex = -1;
+				let nextIndex = -1;
+				for(let i=0;i<list.length; i++){
+					if(list[i].lowestScore <= points){
+						selectIndex = i;
+					}else{
+						nextIndex = i;
+						break;
 					}
-				})
-				this.memberList = memberList
+				}
+				if(selectIndex >= 0){
+					this.currentLevel = list[selectIndex]
+				}
+				if(nextIndex >= 0){
+					this.nextLevel = list[nextIndex];
+				}
 			},
 			tapGoPointsDetail(){
 				this.$u.route('/pages/mine/points-detail/points-detail')
@@ -130,7 +127,6 @@
 				return parseInt(a*100/b)
 			},
 			load(){
-				this.getMemberLevelList()
 				this.getMemberInfo()
 			},
 			async getMemberLevelList(){
@@ -149,9 +145,10 @@
 				if(code==0) {
 					console.log(data)
 					this.memberInfo = data
-					if(this.memberList.length>0) {
-						this.initMemberList(this.originalMemberList,data.memberPoints)
-					}
+					this.getMemberLevelList();
+					// if(this.memberList.length>0) {
+					// 	this.initMemberList(this.originalMemberList,data.memberPoints)
+					// }
 				}
 			},
 		}
@@ -159,7 +156,32 @@
 </script>
 
 <style lang="scss" scoped>
+	
 	.container {
+		.member-medal {
+			padding: 0 20rpx;
+			line-height: 36rpx;
+			height: 36rpx;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 18rpx;
+			margin-right: 20rpx;
+			background: linear-gradient(148deg, #7341B9 0%, #333EC2 100%);
+		
+			&>image {
+				height: 16rpx;
+				width: 18rpx;
+			}
+		
+			&>text {
+				font-size: 20rpx;
+				color: #FFFFFF;
+				font-weight: bold;
+				height: 30rpx;
+				line-height: 36rpx;
+			}
+		}
 		.header-box {
 			padding-bottom: 30rpx;
 		}
@@ -215,31 +237,6 @@
 
 				.member-info-icon {
 					display: flex;
-
-					.member-medal {
-						padding: 0 20rpx;
-						line-height: 36rpx;
-						display: flex;
-						align-items: center;
-						justify-content: center;
-						border-radius: 18rpx;
-						margin-right: 20rpx;
-						background: linear-gradient(148deg, #7341B9 0%, #333EC2 100%);
-					
-						&>image {
-							height: 16rpx;
-							width: 18rpx;
-						}
-					
-						&>text {
-							font-size: 20rpx;
-							color: #FFFFFF;
-							font-weight: bold;
-							height: 30rpx;
-							line-height: 36rpx;
-						}
-					}
-
 					.member-credit {
 						display: flex;
 						justify-content: center;
@@ -259,56 +256,7 @@
 					}
 				}
 			}
-
-
 		}
-
-		.swiper {
-			padding-left: 20rpx;
-			swiper {
-				height: 380rpx;
-				
-				swiper-item {
-					height: 100%;
-					border-radius: 25rpx;
-					
-					.swiper-item {
-						height: 320rpx;
-						padding-right: 40rpx;
-						display: flex;
-						.member-level {
-							width: 100%;
-							height: 100%;
-							border-radius: 25rpx;
-							background-size: 100% 100%;
-							@include height-center();
-							padding: 30rpx;
-							.member-level-info {
-								flex: 1;
-								min-width: 0;
-								display: flex;
-								flex-direction: column;
-								color: #FFFFFF;
-								
-							}
-							.badge-icon {
-								padding-left: 30rpx;
-								image {
-									width: 150rpx;
-									height: 180rpx;
-								}
-							}
-						}
-						
-					}
-						
-				}
-					
-			}
-			
-			
-		}
-		
 		.single-member-wrap {
 			padding: 0 20rpx;
 			.swiper-item {
@@ -320,14 +268,32 @@
 					border-radius: 25rpx;
 					background-size: 100% 100%;
 					@include height-center();
-					padding: 30rpx;
+					padding: 0rpx 30rpx;
+					background-image: url('/static/imgs/mine/member_right_icon.png');
+					position: relative;
+					.current_level_point{
+						position: absolute;
+						top: 24rpx;
+						right: 30rpx;
+						z-index: 10;
+						line-height: 40rpx;
+						color: #4A4E61;
+						font-size: 22rpx;
+					}
 					.member-level-info {
 						flex: 1;
 						min-width: 0;
 						display: flex;
 						flex-direction: column;
 						color: #FFFFFF;
-						
+						height: 100%;
+						.member-name-text{
+							height: 36rpx;
+							font-size: 24rpx;
+							margin-top: 30rpx;
+							display: flex;
+							align-items: center;
+						}
 					}
 					.badge-icon {
 						padding-left: 30rpx;
