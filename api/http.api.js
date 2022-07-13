@@ -136,6 +136,7 @@ const install = (Vue, vm) => {
 		//邀约订单
 		getInviteOrderView: (params) => vm.$u.get('/api/order/inviteOrderView', params), //邀约订单详情
 		deleteYaoOrderApi: (params) => vm.$u.post('/api/order/deleteInviteOrder', params), //删除邀约订单
+		hideYaoOrderApi: (params) => vm.$u.post('/api/order/inviteHide', params), //隐藏邀约订单
 		yaoyueInviteApi: (params) => vm.$u.post('/api/order/inviteForOrderPaySuccess', params), //邀约别人
 		refuseYaoyueApi: (params) => vm.$u.post('/api/order/refuseInvite', params), //拒绝邀约邀请
 		agreeYaoyueApi: (params) => vm.$u.post('/api/order/agreeInvite', params), //同意邀约邀请
@@ -148,6 +149,7 @@ const install = (Vue, vm) => {
 		refusePingInviteApi: (params) => vm.$u.post('/api/order/disAgreeOrderPingInfo', params), // 拒绝拼享单邀请
 		getPingOrderView: (params) => vm.$u.get('/api/order/pingOrderView', params), //拼享订单详情
 		deletePingOrderApi: (params) => vm.$u.post('/api/order/deleteJoinOrder', params), //删除拼享订单
+		hidePingOrderApi: (params) => vm.$u.post('/api/order/pingHide', params), //隐藏拼享订单
 		endPingJoinApi: (params) => vm.$u.post('/api/order/endJoin', params), //结束拼享
 		getPingUserListApi: (params) => vm.$u.get('/api/order/joinUserList', params), //查看拼团人员
 		refundPingOrderApi: (params) => vm.$u.post('/api/order/refundJoinOrder', params), //加入者退款

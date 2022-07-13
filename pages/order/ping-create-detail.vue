@@ -274,10 +274,11 @@
 			<view class="foot_box" v-if="orderInfo.status=='comment'">
 				<!-- <view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view> -->
 				<view class="common_btn color" @tap="$u.throttle($u.route('/pages/order/evaluation',{orderId:orderId}))"> <text>我要评价</text> </view>
+				<view class="common_btn color" @tap="$u.throttle(tapDelete)"> <text>删除</text> </view>
 			</view>
 			<view class="foot_box" v-if="orderInfo.status=='complete'">
 				<!-- <view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view> -->
-				<!-- <view class="common_btn color" @tap="tapDelete"> <text>删除</text> </view> -->
+				<view class="common_btn color" @tap="$u.throttle(tapDelete)"> <text>删除</text> </view>
 			</view>
 			<view class="foot_box" v-if="orderInfo.status=='cancel'">
 				<!-- <view class="common_btn color" @tap="tapDelete"> <text>删除</text> </view> -->
@@ -301,6 +302,7 @@
 				</view>
 				<view class="foot_box" v-if="orderInfo.status=='comment'">
 					<view class="common_btn color" @tap="$u.throttle($u.route('/pages/order/evaluation',{orderId:orderId}))"> <text>我要评价</text> </view>
+					<view class="common_btn color" @tap="$u.throttle(tapDelete)"> <text>删除</text> </view>
 				</view>
 			</block>
 			<block v-else>
@@ -562,7 +564,17 @@
 			},
 			async tapDelete(){
 				await this.$toast.confirm('','确定要删除该订单？')
-				this.deletePingOrder()
+				let {code} = await this.$u.api.hidePingOrderApi({
+					joinTogetherId:this.joinTogetherId,
+				})
+				if(code==0) {
+					this.$toast.text('删除成功！')
+					uni.$emit('order-list-refresh')
+					setTimeout(()=>{
+						this.$u.route({type:'back'})
+					},500)
+				}
+				// this.deletePingOrder()
 			},
 			async deletePingOrder(){
 				let {code} = await this.$u.api.deletePingOrderApi({

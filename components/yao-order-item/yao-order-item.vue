@@ -36,6 +36,7 @@
 					<view class="common_btn color" v-if="chatTag"  @tap.stop="$u.throttle(statementPopShowTap)">去付款</view>
 					<view class="common_btn color" v-else @tap.stop="$u.throttle(goPay)">去付款</view>
 				</block>
+				<view class="common_btn" v-if="deleteShow" @tap.stop="$u.throttle(tapGoDelete)"> <text>删除</text> </view>
 				<view class="common_btn" v-if="cancelOrderShow" @tap.stop="tapCancel"> <text>取消订单</text> </view>
 				<view class="common_btn" v-if="commentShow" @tap.stop="$u.throttle($u.route('/pages/order/evaluation',{orderId:info.id}))"> <text>我要评价</text> </view>
 				<view class="common_btn" v-if="arriveShow" @tap.stop="tapArrive"> <text>确认到店</text> </view>
@@ -76,8 +77,8 @@
 			yaoyueShow(){//邀约按钮
 				return (this.info.status=='noShop'||this.info.status=='arrived')&&this.info.isCreator
 			},
-			deleteShow() { //删除按钮
-				return (this.info.status=='cancel'||this.info.status=='complete')&&this.info.isCreator
+			deleteShow() { //删除按钮 非创造者
+				return ( this.info.status=='complete' || this.info.status == 'comment')
 			},
 			goPayShow() { //去付款按钮
 				return (this.info.status == 'paying')&&this.info.isCreator
@@ -168,7 +169,18 @@
 				}
 			
 			},
-			
+			// 隐藏
+			async tapGoDelete(){
+				await this.$toast.confirm('','确定要删除该订单？')
+				let {code} = await this.$u.api.hideYaoOrderApi({
+					inviteId:this.info.inviteId
+				})
+				if(code==0) {
+					uni.$emit('order-list-refresh')
+					this.$toast.text('删除成功！')	
+				}
+			},
+			// 删除
 			async tapDelete(){
 				await this.$toast.confirm('','确定要删除该订单？')
 				this.deleteYaoOrder()
@@ -179,9 +191,7 @@
 				})
 				if(code==0) {
 					uni.$emit('order-list-refresh')
-					this.$toast.text('删除成功！')
-					
-					
+					this.$toast.text('删除成功！')	
 				}
 			},
 			tapGoDetail(info) {
@@ -196,8 +206,6 @@
 						// inviteId: info.inviteId,
 					})
 				}
-				
-			
 			},
 
 		}

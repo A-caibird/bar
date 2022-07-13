@@ -29,8 +29,9 @@
 					<view class="item_info_text">{{info.joinPersonNumber}}人</view>
 				</view>
 			</view>
-			<view class="order_btn" v-if="(endPingJoinShow||pingShow||goPayShow||goPayShareShow||cancelOrderShow||arriveShow)||(refundPingOrderShow||cancelPingOrderShow||fetchWineShow)||(addWineShow||commentShow)">
+			<view class="order_btn" v-if="(endPingJoinShow||pingShow||goPayShow||goPayShareShow||cancelOrderShow||arriveShow)||(refundPingOrderShow||cancelPingOrderShow||fetchWineShow)||(addWineShow||commentShow || deleteShow)">
 				<view class="common_btn" v-if="fetchWineShow" @tap.stop="$u.throttle(tapFetchWine)"> <text>取酒</text> </view>
+				<view class="common_btn" v-if="deleteShow" @tap.stop="$u.throttle(tapGoDelete)"> <text>删除</text> </view>
 				<view class="common_btn" v-if="commentShow" @tap.stop="$u.throttle($u.route('/pages/order/evaluation',{orderId:info.id}))"> <text>我要评价</text> </view>
 				<view class="common_btn" v-if="addWineShow" @tap.stop="$u.throttle(tapGoAddWine)"> <text>加单酒水</text> </view>
 			
@@ -86,6 +87,9 @@
 			},
 			arriveShow() { //到店按钮
 				return (this.info.status == 'noShop')&&this.info.isCreator
+			},
+			deleteShow() { //删除按钮 非创造者
+				return ( this.info.status=='complete' || this.info.status == 'comment')
 			},
 			
 			//加入者
@@ -187,6 +191,18 @@
 					this.$toast.text('取消成功！')
 				}
 			
+			},
+			// 隐藏订单
+			async tapGoDelete(){
+				await this.$toast.confirm('','确定要删除该订单？')
+				let {code} = await this.$u.api.hidePingOrderApi({
+					joinTogetherId:this.info.joinTogetherId
+				})
+				if(code==0) {
+					uni.$emit('order-list-refresh')
+					this.$toast.text('删除成功！')
+					
+				}
 			},
 			async tapDelete(){
 				await this.$toast.confirm('','确定要删除该订单？')
