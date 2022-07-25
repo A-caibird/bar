@@ -88,7 +88,6 @@
 		},
 		mounted() {
 			this.chatUserList = $chat.getChatUserListFromStorage(this.chatToken)
-			// console.log(this.chatUserList)
 			uni.$on('chat-user-list-refresh',this.chatUserListRefresh)
 			uni.$on('read-chat',this.readChat)
 			uni.$on('refresh_push', () => {
@@ -171,7 +170,7 @@
 					this.getNoticeCount();
 					uni.$emit('information_listener');
 				}else{
-					console.log('用户不存在', getApp().globalData);
+					this.chatUserList = [];
 					if(this.noticeNum){
 						this.noticeNum = 0;
 					}
@@ -237,7 +236,6 @@
 			readChat(res){
 				console.log('readChat');
 				let {chatToken,friendChatToken} = res
-				// console.log(this.chatUserList)
 				let index = this.chatUserList.findIndex(e=>{
 					return e.friendId==friendChatToken
 				})

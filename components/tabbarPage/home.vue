@@ -19,10 +19,16 @@
 			</u-navbar>
 		</view>
 		<view class="middle-box">
-			<scroll-view scroll-y="true" :lower-threshold="100" :scroll-into-view="scrollBottom" style="height: 100%;"
-				@scrolltolower="reachBottomLoad">
+			<scroll-view :scroll-y="true" :lower-threshold="100" 
+				:refresher-threshold="10"
+				:refresher-enabled="true" refresher-default-style="none" 
+				:scroll-into-view="scrollBottom" style="height: 100%;"
+				@scrolltolower="reachBottomLoad" 
+				:refresher-triggered="refreshBool"
+				refresher-background="#191C3F"
+				@refresherpulling="refresherpulling" @refresherrefresh="refresherrefresh" @refresherrestore="refresherrestore">
+				<view class="loading_box" :class="{'show': refreshBool}"> <image class="load_text" style="height: 50rpx;width: 50rpx;" src="../../static/imgs/loading.gif"></image> </view>
 				<commonBanner ref="commonBanner" :bannerList="bannerList" imgKey="file" height="400" :showVideo="true" videoKey="videoUrl" mode="normal" :customEvent="true" @click="bannerTap"></commonBanner>
-
 				<view class="feature_box" v-if="!isAppleAudit">
 					<u-grid col="4" :border="false" hover-class="none">
 						<u-grid-item bgColor="#191C3F">
@@ -90,6 +96,7 @@
 	import loginConfirm from '@/mixins/loginConfirm.js'
 	import commonBanner from '@/components/common-banner/common-banner.vue'
 	var app = getApp();
+	var timeoutEvent = null;
 	export default {
 		mixins: [pageable, location, appleAudit, loginConfirm],
 		components: {
@@ -98,6 +105,7 @@
 		},
 		data() {
 			return {
+				refreshBool: false,
 				playUrl: '',
 				bannerList: [],
 				videoImgFooter: '?x-oss-process=video/snapshot,t_0,f_jpg,w_0,h_0,m_fast',
@@ -138,6 +146,35 @@
 			}
 		},
 		methods: {
+			// 自定义下拉刷新控件被下拉
+			refresherpulling(e){
+				if(e.detail.deltaY > 40){
+					this.refreshBool = true;
+				}
+			},
+			// 自定义下拉刷新被触发
+			refresherrefresh(){
+				if(this.refreshBool){
+					if(timeoutEvent) {
+						console.log("timeoutEvent", timeoutEvent);
+						return
+					};
+					timeoutEvent = setTimeout(() => {
+						this.pullRefresh(() => {
+							this.refreshBool = false;
+						});
+					}, 2000)
+				}
+				
+			},
+			// 自定义下拉刷新被复位
+			refresherrestore(){
+				this.refreshBool = false;
+				if(timeoutEvent){
+					clearTimeout(timeoutEvent);
+					timeoutEvent = "";
+				}
+			},
 			// 页面隐藏事件
 			hideEvent(){
 				if(this.$refs.commonBanner && this.$refs.commonBanner.playVideoUrl){
@@ -277,6 +314,26 @@
 			min-height: 0;
 			min-width: 0;
 			overflow: hidden;
+			position: relative;
+			.loading_box{
+				// position: absolute;
+				// top: 40rpx;
+				// left: 0rpx;
+				margin-bottom: 0rpx;
+				width: 100%;
+				// height: 50rpx;
+				height: 0rpx;
+				text-align: center;
+				z-index: -1;
+				opacity: 0;
+				transition: all 0.3s; 
+				&.show{
+					height: 50rpx;
+					opacity: 1;
+					z-index: 2;
+					margin-bottom: 30rpx;
+				}
+			}
 			.feature_box {
 				width: 100%;
 

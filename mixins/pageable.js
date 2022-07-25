@@ -13,11 +13,11 @@ export default {
 	},
 	methods: {
 		// 下拉刷新
-		pullRefresh() {
+		pullRefresh(callback = null) {
 			this.pageNumber = 1;
 			this.totalPages = 1;
 			this.pageList = [];
-			this.getPageContent();
+			this.getPageContent(callback);
 		},
 		// 上拉加载
 		reachBottomLoad() {
@@ -25,7 +25,7 @@ export default {
 			this.getPageContent();
 		},
 		// 获取某个页面数据
-		async getPageContent() {
+		async getPageContent(callback = null) {
 			let url = this.url;
 			let pageNumber = this.pageNumber;
 			let totalPages = this.totalPages;
@@ -54,7 +54,9 @@ export default {
 						this.loading = false;
 					})
 				}
-				
+				if(callback){
+					callback(data)
+				}
 			}
 		}
 	}
