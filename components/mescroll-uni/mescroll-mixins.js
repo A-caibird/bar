@@ -73,7 +73,7 @@ const MescrollMixin = {
 		// 上拉加载的回调
 		async upCallback(page) {
 			let url = this.url;
-			console.log('上拉加载的回调', url)
+			// console.log('上拉加载的回调', url)
 			if(!this.judgeLoad()) {
 				uni.hideLoading();
 				return this.mescroll.endErr()

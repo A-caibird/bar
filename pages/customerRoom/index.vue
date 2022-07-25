@@ -27,7 +27,7 @@
 				<view class="bottom-container">
 					<view class="input-container">
 						<template>
-							<input type="text" @focus="inputFocus" class="input" confirm-type="发送" v-model="message" @confirm="judgePullback"/>
+							<input type="text" @focus="inputFocus" class="input" confirm-type="send" v-model="message" @confirm="judgePullback"/>
 						</template>
 					</view>
 					<view class="bottom_add" @tap="emojiShow = !emojiShow; popShow = false;">
@@ -223,7 +223,6 @@
 			subTextHandle: function(){
 				var regRule = /\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g;
 				let lastStr = this.message.substr(this.message.length-2, 2);
-				console.log(lastStr);
 				if(regRule.test(lastStr)){
 					this.message = this.message.substr(0, (this.message.length - 2));
 				}else{

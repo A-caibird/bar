@@ -412,7 +412,6 @@
 						title: '进入中'
 					})
 					this.$u.api.clubServiceAPI(this.clubId).then(res => {
-						console.log(res);
 						if (res.data.hasStaff) {
 							this.$u.route('/pages/customerRoom/index', {
 								id: res.data.id,

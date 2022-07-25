@@ -45,11 +45,9 @@
 					data: params,
 					success(res){
 						console.log((url + ' success'), res);
-						// console.log(params)
 					},
 					fail(e){
 						console.log((url + ' Error'),e);
-						console.log(params)
 					}
 				})
 			}

@@ -10,7 +10,7 @@
 			<view class="eva_swiper">
 				<view class="eva_select_list">
 					<block v-for="(info, index) in commentList" :key="index">
-						<view class="select_item" :class="{ active: info.isComment }" @tap="$u.throttle(chose_comment(info))">
+						<view class="select_item" :class="{ active: info.isComment || info.isSelect }" @tap="$u.throttle(chose_comment(info))">
 							<text>{{ info.name }} {{ info.num>0?info.num:'' }}</text>
 						</view>
 					</block>
@@ -32,6 +32,7 @@
 				id:-1,
 				commentList:[],
 				initInfo: {},
+				hasSelectNum: 0,
 			};
 		},
 		methods:{
@@ -55,7 +56,23 @@
 				let {code,data} = await this.$u.api.commentStateApi(params)
 				if(code==0) {
 					let {list} = data;
-					this.commentList = list;
+					let commentList = [];
+					let hasSelectNum = 0;
+					list.forEach(e => {
+						let info = {
+							id: e.id,
+							isComment: e.isComment,
+							name: e.name,
+							num: e.num || 0,
+							isSelect: e.isComment
+						}
+						if(info.isSelect){
+							hasSelectNum = hasSelectNum + 1;
+						}
+						commentList.push(info);
+					})
+					this.hasSelectNum = hasSelectNum;
+					this.commentList = commentList;
 				}
 			},
 			//评论
@@ -65,7 +82,7 @@
 				}
 				let idList = [];
 				this.commentList.forEach((e, i) => {
-					if (e.isComment) {
+					if (e.isSelect) {
 						idList.push(e.id);
 					}
 				});
@@ -98,9 +115,29 @@
 			},
 			//选择短评词
 			chose_comment(info) {
-				info.isComment=!info.isComment
-				//强制刷新
-				this.$forceUpdate();
+				let hasSelectNum = this.hasSelectNum;
+				if(info.isComment){
+					return
+				}else{
+					if(this.hasSelectNum >= 4){
+						if(info.isSelect){
+							this.hasSelectNum = hasSelectNum - 1;
+							info.isSelect = false;
+						}else{
+							this.$u.toast('评论已达上限')
+						}
+						
+					}else{
+						info.isSelect=!info.isSelect
+						if(info.isSelect){
+							this.hasSelectNum = hasSelectNum + 1;
+ 						}else{
+							this.hasSelectNum = hasSelectNum - 1;
+						}
+					}
+					//强制刷新
+					this.$forceUpdate();
+				}
 				
 			}
 		}

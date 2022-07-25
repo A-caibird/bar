@@ -1,10 +1,9 @@
 <template>
 	<view class="container">
-		<scroll-view scroll-y="true" :scroll-into-view="scrollBottom" class="chat-content" id="scrollview"
-			@tap="closeAllPop" @scrolltoupper="loadMoreChatList"
-			:style="{height:chatType=='greet'||chatType=='reply'?'calc(100vh - 340rpx)':'calc(100vh - 100rpx)'}">
+		<scroll-view :scroll-y="true" :scroll-into-view="scrollBottom" class="chat-content" id="scrollview"
+			@touchstart="closeAllPop" @scrolltoupper="loadMoreChatList" 
+			:style="{height:chatType=='greet'||chatType=='reply'?'calc(100vh - 340rpx)':'calc(100vh - 140rpx)'}">
 			<view v-if="loadPage" class="page-load">加载中...</view>
-			<view :style="`height: ${keyBoardHeight}px;`"></view>
 			<view class="chat-item" v-for="(item,index) in chatList" :key="index" :id="`chat${index}`">
 				<view class="time-content" v-if="item.timeStr">
 					<view class="time">
@@ -138,7 +137,6 @@
 				</view>
 
 			</view>
-
 			<view style="height: 20rpx;"></view>
 			<view style="height: 250rpx;" v-if="addFLag||emojiFLag"></view>
 		</scroll-view>
@@ -147,7 +145,7 @@
 			<view class="chat-input-content" :style="`bottom:${(addFLag||emojiFLag?'250rpx':'0')};`">
 				<view class="input-content">
 					<view class="input">
-						<input type="text" v-model="message" :focus="focus" @focus="inputFocusHandle" @blur="focus = false" />
+						<input type="text" v-model="message" confirm-type="send" @confirm="sendMessage" :focus="focus" @focus="inputFocusHandle" @blur="inputBlurHandle" />
 					</view>
 				</view>
 				<view class="emoticon" @tap="showEmoji">
@@ -269,7 +267,7 @@
 			return {
 				addFLag: false,
 				emojiFLag: false,
-
+ 
 				loadPage: false,
 				pageMore: true,
 
@@ -301,20 +299,22 @@
 			}
 		},
 		onLoad(options) {
-			// console.log(options)
+			
 			this.friendUserInfo = JSON.parse(options.userInfo)
-			// console.log(this.friendUserInfo)
-
 			uni.setNavigationBarTitle({
 				title: this.friendUserInfo.name
 			})
 			this.load()
 			uni.$on('chat-msg-push', this.msgPush)
-
-			uni.onKeyboardHeightChange(res => { //监听键盘高度
-				console.log(res.height)
-				this.keyBoardHeight = res.height
-			})
+			// uni.onKeyboardHeightChange(res => { //监听键盘高度
+			// 	if(res.height){
+			// 		this.keyBoardHeight = res.height
+			// 		this.pageScrollToBottom(200);
+			// 	}else{
+			// 		this.keyBoardHeight = 0
+			// 		this.scrollBottom = ""
+			// 	}
+			// })
 		},
 		onUnload() {
 			uni.$off('chat-msg-push', this.msgPush)
@@ -693,17 +693,12 @@
 				$chat.getChatList(chatToken, friendChatToken).then(res => {
 
 					let chatList = this.chatListTimeStamp(res)
-	
 					this.chatList = chatList
-					
-					setTimeout(() => {
-						this.pageScrollToBottom()
-					}, 100)
+					this.pageScrollToBottom(200, chatList.length - 2)
 					uni.$emit('read-chat', {
 						chatToken: chatToken,
 						friendChatToken: friendChatToken
 					})
-
 					this.getCanChat()
 				})
 			},
@@ -782,8 +777,12 @@
 			},
 
 			closeAllPop() {
-				this.addFLag = false
-				this.focus = false
+				if(this.addFLag){
+					this.addFLag = false
+				}
+				if(this.focus){
+					this.focus = false
+				}
 			},
 			async loadMoreChatList() {
 				if (!this.pageMore || this.loadPage) return;
@@ -799,9 +798,6 @@
 						list = this.chatListTimeStamp(list)
 						this.chatList = list.concat(this.chatList)
 						this.loadPage = false
-						this.$nextTick(() => {
-							this.scrollBottom = `chat${this.chatList.length - length}`
-						})
 					}, 1000)
 				} else {
 					this.pageMore = false
@@ -830,7 +826,6 @@
 					sourceType: ['camera'],
 					count: 1,
 					success: function(res) {
-						console.log(res)
 						let tempPath = res.tempFilePaths[0]
 						vm.sendFile('image', tempPath)
 					},
@@ -850,13 +845,15 @@
 						chatToken: chatToken,
 						friendChatToken: friendChatToken
 					})
-					this.pageScrollToBottom()
+					this.pageScrollToBottom(200, this.chatList.length - 3)
 					this.getCanChat()
 				}
 			},
-			pageScrollToBottom() {
+			pageScrollToBottom(timeout = 0, location = (this.chatList.length - 1)) {
 				this.$nextTick(() => {
-					this.scrollBottom = `chat${this.chatList.length-1}`
+					setTimeout(() => {
+						this.scrollBottom = `chat${location}`
+					}, timeout)
 				})
 			},
 			sendMessage() {
@@ -886,7 +883,10 @@
 				this.addFLag = false;
 				this.emojiFLag = false;
 				this.focus = true;
-				this.pageScrollToBottom()
+				this.pageScrollToBottom(200)
+			},
+			inputBlurHandle(){
+				this.focus = false;
 			},
 			showAdd() {
 				this.addFLag = !this.addFLag
@@ -900,12 +900,9 @@
 				this.scrollBottom = ''
 				this.pageScrollToBottom()
 			},
-
-
 		},
 
 		onNavigationBarButtonTap(e) {
-			console.log(e)
 			if (e.text == '举报') {
 				this.$u.route('/pages/discovery/report2');
 			} else {
