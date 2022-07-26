@@ -150,7 +150,6 @@
 		},
 		onLoad(opt) {
 			this.dynamicInfo = JSON.parse(decodeURIComponent(opt.dynamicInfo))
-			console.log(this.dynamicInfo);
 			this.load()
 		},
 	}

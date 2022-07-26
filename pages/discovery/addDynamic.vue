@@ -10,7 +10,7 @@
 			<u-input v-model="textarea" type="textarea" placeholder="请输入你要发表的内容" height="250" :clearable="false" :auto-height="false"
 			 :custom-style="{'font-size':'30rpx','color':'#FFFFFF'}"></u-input>
 		</view>
-		<view class="photo-box borderBottom" :class="{'hidden': videoList.length > 0 }">
+		<view class="photo-box borderBottom" :class="{'hidden': videoList.length > 0 }" v-if="selectType == 'pic'">
 			<view class="photo-text">
 				<text class="text-left">上传照片</text>
 				<text class="text-right">(最多提交9张图片)</text>
@@ -25,7 +25,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="photo-box borderBottom" :class="{'hidden': imgList.length > 0 }">
+		<view class="photo-box borderBottom" :class="{'hidden': imgList.length > 0 }" v-else-if="selectType == 'video'">
 			<view class="photo-text">
 				<text class="text-left">动态视频</text>
 				<text class="text-right"></text>
@@ -40,6 +40,17 @@
 					<image src="/static/imgs/discovery/photo_select.png" mode=""></image>
 				</view>
 				<video :direction="0" @fullscreenchange="fullScreenChange" class="videoBox" v-if="playUrl" id="videoId" :src="playUrl"></video>
+			</view>
+		</view>
+		<view class="photo-box borderBottom" :class="{'hidden': imgList.length > 0 }" v-else>
+			<view class="photo-text">
+				<text class="text-left">选择</text>
+				<text class="text-right"></text>
+			</view>
+			<view class="photo-area">
+				<view class="photo-area-select" @tap="mediaChoose">
+					<image src="/static/imgs/discovery/photo_select.png" mode=""></image>
+				</view>
 			</view>
 		</view>
 		<view class="location-box" @tap="$u.route('pages/discovery/location')" v-if="hasLocation">
@@ -82,6 +93,7 @@
 				textarea: '',
 				avatar: '',
 				imgList: [],
+				selectType: '',
 				locInfo: {
 					areaName: '',
 					lng: '',
@@ -101,6 +113,25 @@
 			uni.$off('updataLocation', this.handelUpdataLocation)
 		},
 		methods: {
+			mediaChoose(){
+				var vm = this;
+				uni.showActionSheet({
+					itemList: ['图片', '视频'],
+					success: function (res) {
+						if(res.tapIndex == 0){
+							vm.selectType = 'pic'
+							vm.select_photo();
+						}
+						if(res.tapIndex == 1){
+							vm.selectType = 'video'
+							vm.chooseVideoHandle();
+						}
+					},
+					fail: function (res) {
+						console.log(res.errMsg);
+					}
+				});
+			},
 			previewTap:function(index){
 				let urls = [];
 				this.imgList.forEach((item, i) => {
