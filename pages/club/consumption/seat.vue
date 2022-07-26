@@ -159,7 +159,7 @@
 			uni.$off('refresh-seat',this.handleRefreshSeat)
 		},
 		methods:{
-			popCancelTap(){
+			async popCancelTap(){
 				this.goDrinkSelect();
 				this.popShow = false;
 			},
@@ -223,9 +223,17 @@
 				}else{
 					this.goDrinkSelect();
 				}
-				
 			},
-			goDrinkSelect(){
+			async goDrinkSelect(){
+				if(this.orderType == "fight"){
+					let {
+						creditScore
+					} = await this.judgeVerify();
+					if (creditScore) {
+						this.$u.toast('当前信用分较低，无法拼享');
+						return
+					}
+				}
 				let data = {
 					chatTag: this.chatTag,
 					chatFriendInfo: this.chatFriendInfo,

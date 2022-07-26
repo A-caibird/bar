@@ -376,7 +376,6 @@
 						break;
 					case 'book': { // 订座
 						this.$storage.setStorageSync('clubImg', clubImg);
-						await this.judgeVerify()
 						this.$u.route('/pages/club/consumption/seat', {
 							clubId: this.clubId,
 							clubName: this.clubInfo.name,
@@ -390,21 +389,14 @@
 					break;
 				case 'fight': { //拼享
 					this.$storage.setStorageSync('clubImg', clubImg);
-					let {
-						creditScore
-					} = await this.judgeVerify();
-					if (!creditScore) {
-						this.$u.route('/pages/club/consumption/seat', {
-							clubId: this.clubId,
-							clubName: this.clubInfo.name,
-							clubSubTitle: this.clubInfo.subtitle,
-							orderType: 'fight',
-							chatTag: this.chatFriendInfo ? true : false,
-							chatFriendInfo: this.chatFriendInfo || "",
-						});
-					} else {
-						this.$u.toast('当前信用分较低，无法拼享');
-					}
+					this.$u.route('/pages/club/consumption/seat', {
+						clubId: this.clubId,
+						clubName: this.clubInfo.name,
+						clubSubTitle: this.clubInfo.subtitle,
+						orderType: 'fight',
+						chatTag: this.chatFriendInfo ? true : false,
+						chatFriendInfo: this.chatFriendInfo || "",
+					});
 				};
 				break;
 				case 'service': {
