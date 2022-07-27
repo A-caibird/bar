@@ -30,7 +30,7 @@
 					<view class="item_info_text">{{info.joinPersonNumber}}人</view>
 				</view>
 			</view>
-			<view class="order_btn" v-if="goPayShow||cancelOrderShow||commentShow||arriveShow||yaoyueShow||addWineShow||quiteOrderShow||fetchWineShow || rescheduleShow">
+			<view class="order_btn" v-if="deleteShow || goPayShow||cancelOrderShow||commentShow||arriveShow||yaoyueShow||addWineShow||quiteOrderShow||fetchWineShow || rescheduleShow">
 				<view class="common_btn" v-if="fetchWineShow" @tap.stop="$u.throttle(tapFetchWine)"> <text>取酒</text> </view>
 				<view class="common_btn" v-if="rescheduleShow" @tap.stop="$u.throttle(rescheduleHandle)"> <text>改期</text> </view>
 				<block v-if="goPayShow">
