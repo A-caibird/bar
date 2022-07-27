@@ -276,6 +276,9 @@
 				<view class="common_btn color" @tap="$u.throttle($u.route('/pages/order/evaluation',{orderId:orderId}))"> <text>我要评价</text> </view>
 				<view class="common_btn color" @tap="$u.throttle(tapDelete)"> <text>删除</text> </view>
 			</view>
+			<view class="foot_box" v-if="orderInfo.status=='expired'">
+				<view class="common_btn" @tap="$u.throttle(rescheduleHandle)"> <text>改期</text> </view>
+			</view>
 			<view class="foot_box" v-if="orderInfo.status=='complete'">
 				<!-- <view class="common_btn" @tap="$u.throttle(tapBill)" v-if="canBill"> <text>开票</text> </view> -->
 				<view class="common_btn color" @tap="$u.throttle(tapDelete)"> <text>删除</text> </view>
@@ -364,6 +367,14 @@
 			}
 		},
 		methods:{
+			// 改期按钮事件
+			rescheduleHandle(){
+				this.$u.route('/pages/order/reschedule/seat',{
+					orderId:this.orderId,
+					orderType: 'ping',
+					clubId: this.clubInfo.clubId
+				})
+			},
 			timeIntervalEnd(){
 				console.log('timeIntervalEnd');
 				if(timeInterval){

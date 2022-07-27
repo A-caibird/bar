@@ -121,6 +121,7 @@ const install = (Vue, vm) => {
 		addWinePayApi: (params) => vm.$u.post('/api/order/addWinePay', params), //加酒水付款
 
 		//酒吧订单
+		canChangeChekcApi: (params) =>  vm.$u.get('/api/order/canChangeDate', params), // 是否能修改订单 
 		changeOrderAPI: (params) => vm.$u.get('/api/order/changeOrder', params), // 修改订单
 		checkUnusedDrinksAPI: (params) => vm.$u.get('/api/order/hasNotUseOrder', params), // 是否存在未使用的酒水
 		creatOrderBillAPI: (params) => vm.$u.post('/api/order/bill', params), //创建订单发票

@@ -30,8 +30,9 @@
 					<view class="item_info_text">{{info.joinPersonNumber}}人</view>
 				</view>
 			</view>
-			<view class="order_btn" v-if="goPayShow||cancelOrderShow||commentShow||arriveShow||yaoyueShow||addWineShow||quiteOrderShow||fetchWineShow">
+			<view class="order_btn" v-if="goPayShow||cancelOrderShow||commentShow||arriveShow||yaoyueShow||addWineShow||quiteOrderShow||fetchWineShow || rescheduleShow">
 				<view class="common_btn" v-if="fetchWineShow" @tap.stop="$u.throttle(tapFetchWine)"> <text>取酒</text> </view>
+				<view class="common_btn" v-if="rescheduleShow" @tap.stop="$u.throttle(rescheduleHandle)"> <text>改期</text> </view>
 				<block v-if="goPayShow">
 					<view class="common_btn color" v-if="chatTag"  @tap.stop="$u.throttle(statementPopShowTap)">去付款</view>
 					<view class="common_btn color" v-else @tap.stop="$u.throttle(goPay)">去付款</view>
@@ -59,6 +60,9 @@
 			},
 		},
 		computed: {
+			rescheduleShow(){ // 是否能改期
+				return (this.info.status=='expired' && this.info.isCreator)
+			},
 			chatTag(){ // 是否存在聊天
 				return (this.info.saveInviteUser && this.info.isCreator)
 			},
@@ -94,6 +98,13 @@
 			},
 		},
 		methods: {
+			rescheduleHandle(){ // 改期逻辑
+				this.$u.route('/pages/order/reschedule/seat',{
+					orderId:this.info.id,
+					orderType: 'yaoyue',
+					clubId: this.info.clubId
+				})
+			},
 			statementPopShowTap(){
 				this.$emit('statementPopShowTap', this.info);
 			},

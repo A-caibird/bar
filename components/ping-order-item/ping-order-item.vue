@@ -29,8 +29,9 @@
 					<view class="item_info_text">{{info.joinPersonNumber}}人</view>
 				</view>
 			</view>
-			<view class="order_btn" v-if="(endPingJoinShow||pingShow||goPayShow||goPayShareShow||cancelOrderShow||arriveShow)||(refundPingOrderShow||cancelPingOrderShow||fetchWineShow)||(addWineShow||commentShow || deleteShow)">
+			<view class="order_btn" v-if="(rescheduleShow || endPingJoinShow||pingShow||goPayShow||goPayShareShow||cancelOrderShow||arriveShow)||(refundPingOrderShow||cancelPingOrderShow||fetchWineShow)||(addWineShow||commentShow || deleteShow)">
 				<view class="common_btn" v-if="fetchWineShow" @tap.stop="$u.throttle(tapFetchWine)"> <text>取酒</text> </view>
+				<view class="common_btn" v-if="rescheduleShow" @tap.stop="$u.throttle(rescheduleHandle)"> <text>改期</text> </view>
 				<view class="common_btn" v-if="deleteShow" @tap.stop="$u.throttle(tapGoDelete)"> <text>删除</text> </view>
 				<view class="common_btn" v-if="commentShow" @tap.stop="$u.throttle($u.route('/pages/order/evaluation',{orderId:info.id}))"> <text>我要评价</text> </view>
 				<view class="common_btn" v-if="addWineShow" @tap.stop="$u.throttle(tapGoAddWine)"> <text>加单酒水</text> </view>
@@ -63,6 +64,9 @@
 			},
 		},
 		computed:{
+			rescheduleShow(){ // 是否能改期
+				return (this.info.status=='expired' && this.info.isCreator)
+			},
 			//创建者
 			fetchWineShow(){//取酒
 				return (this.info.status=='arrived')&&(this.info.canFetch)&&this.info.isCreator
@@ -91,7 +95,6 @@
 			deleteShow() { //删除按钮 非创造者
 				return ( this.info.status=='complete' || this.info.status == 'comment')
 			},
-			
 			//加入者
 			refundPingOrderShow(){//加入者退款
 				return (this.info.status=='noShop'||this.info.status=='arrived')&&!this.info.isCreator
@@ -109,6 +112,13 @@
 			},
 		},
 		methods:{
+			rescheduleHandle(){ // 改期逻辑
+				this.$u.route('/pages/order/reschedule/seat',{
+					orderId:this.info.id,
+					orderType: 'ping',
+					clubId: this.info.clubId
+				})
+			},
 			goPay(){
 				orderUtils.goPay(this, 'ping', this.info);
 			},

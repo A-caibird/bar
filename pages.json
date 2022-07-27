@@ -291,6 +291,12 @@
 			"path": "pages/discovery/location" //所在位置
 		},
 		{
+			"path": "pages/order/reschedule/seat" //改期座位
+		},
+		{
+			"path": "pages/order/reschedule/change" //改期订单修改
+		},
+		{
 			"path": "pages/order/groupBuying" //拼团
 		},
 		{
