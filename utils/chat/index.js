@@ -512,8 +512,6 @@ function sendMsg(userInfo,friendUserInfo,chat_type,type, data, success, fail) {
 			chatId:friendUserInfo.chatToken
 		})
 	}
-	
-
 }
 
 

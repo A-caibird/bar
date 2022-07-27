@@ -142,11 +142,16 @@
 					<text>继续选购</text>
 				</view> -->
 				<!-- <view class="btn_text active" @tap="$u.route('pages/club/consumption/payPage')"> -->
-				<view class="btn_text active" @tap="tapGoPayPage">
+				
+				<view class="btn_text active" @tap="setStatement" v-if="chatTag && info.orderType=='fullAmount'">
+					<text>确认</text>
+				</view>
+				<view class="btn_text active" @tap="tapGoPayPage" v-else>
 					<text>确认</text>
 				</view>
 			</view>
 		</view>
+		<statementPop ref="statementPopRef" btnText="确定" @btnTap="sendStatement"></statementPop>
 		<u-picker v-model="arrivalTimeShow" mode="time" :params="{hour:true,minute:true}" @confirm="arrivalTimeConfirm">
 		</u-picker>
 		<!-- <u-picker mode="selector" v-model="staffListShow" :range="staffList" range-key="name" @confirm="receptionistConfirm"></u-picker> -->
@@ -155,9 +160,12 @@
 
 <script>
 	import selfRate from '@/components/self-rate/self-rate.vue'
+	import $chatUtils from '@/common/chat.js'
+	import statementPop from '@/components/chatStatement/chatStatement'
 	export default {
 		components: {
-			selfRate
+			selfRate,
+			statementPop
 		},
 		data() {
 			return {
@@ -189,7 +197,9 @@
 				},
 				form:{
 					phone: '', //联系方式
-				}
+				},
+				statement: '',
+				chatTag: false,
 			}
 		},
 		onLoad: function(opt) {
@@ -202,6 +212,11 @@
 			this.data.date = info.date;
 			this.load(info.orderType)
 			uni.$on('select-receptionist',this.handleReceptionist)
+			if(this.info.chatTag == 'true'){
+				this.chatTag = true;
+			}else{
+				this.chatTag = false;
+			}
 		},
 		onUnload() {
 			uni.$off('select-receptionist');
@@ -216,9 +231,19 @@
 				this.$u.route('/pages/receptionist-list/receptionist-list',{
 					receptionistId:this.receptorInfo.receptionistId,
 					clubId:this.clubInfo.clubId,
-					date: this.data.date,
-					
+					date: this.data.date
 				})
+			},
+			// 显示常用语句
+			setStatement(){
+				if(this.data.arrivalTime=='') return uni.showToast({title:'请选择到店时间！',icon:'none'})
+				if(this.compareTime(new Date(this.data.arrivalTime.replace(/-/g, '/')),new Date())==-1) return this.$toast.text('预约时间必须晚于当前时间！')
+				this.$refs.statementPopRef.show();
+			},
+			// 确定常用语句
+			sendStatement(e){
+				this.statement = e;
+				this.tapGoPayPage();
 			},
 			tapGoPayPage(){
 				if(this.data.arrivalTime=='') return uni.showToast({title:'请选择到店时间！',icon:'none'})
@@ -229,6 +254,7 @@
 				let vm = this
 				vm.changeOrder()
 			},
+			// 订单修改
 			async changeOrder(){
 				let vm = this
 				let data = {
@@ -241,6 +267,7 @@
 				let type = this.info.orderType=='fullAmount'?'yao-order':'ping-order'
 				let res =  await this.$u.api.changeOrderAPI(data)
 				if(res.code==0) {
+					this.sendMsgHandle();
 					this.$u.route({
 						type:'redirect',
 						url:'/pages/club/consumption/paySuccess',
@@ -255,13 +282,37 @@
 					console.log(res);
 				}
 			},
+			// 发送邀约消息
+			sendMsgHandle(){
+				if(this.chatTag){
+					var chatFriendInfo = JSON.parse(this.info.chatFriendInfo);
+					var sendChatParams = {
+						friendInfo: chatFriendInfo,
+						type: this.info.orderType == 'fullAmount' ? 'yaoyue' : 'ping',
+						orderInfo: {
+							id: this.orderId,
+							clubCover: this.clubInfo.clubCover,
+							clubName: this.clubInfo.name,
+							date: this.data.arrivalTime,
+							cardTableName: this.info.seatId,
+						},
+						statement: this.statement || "",
+					}
+					if(sendChatParams.type == 'yaoyue'){
+						$chatUtils.sendYaoyueInfo(this, sendChatParams.orderInfo, sendChatParams.friendInfo, sendChatParams.statement)
+					}else{
+						$chatUtils.sendPingInfo(this, sendChatParams.orderInfo, sendChatParams.friendInfo);
+					}
+				}
+			},
+			// 时间比较
 			compareTime(time1,time2){//time1大返回1 time2大返回-1 相等返回 0
 				if(time1.getTime()>time2.getTime()) return 1
 				else if(time1.getTime()==time2.getTime()) return 0
 				else return -1
 			},
+			// 选择到达时间
 			arrivalTimeConfirm(e){
-				console.log(e)
 				if(this.instantInfo.instantArrival){
 					let nowTime = new Date();
 					let selectTime = new Date(this.data.date+` ${e}`);

@@ -165,6 +165,8 @@
 			},
 			popConfirmTap(){
 				let data = {
+					chatTag: this.chatTag,
+					chatFriendInfo: this.chatFriendInfo,
 					seat:this.seat,
 					clubId:this.clubId,
 					clubName:this.clubName,

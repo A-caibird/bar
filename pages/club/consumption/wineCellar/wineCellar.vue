@@ -91,6 +91,8 @@
 				if(this.selectIndex==-1) return this.$toast.text('请选择订单！')
 				let orderInfo = this.pageList[this.selectIndex];
 				let data = {
+					chatTag: this.info.chatTag,
+					chatFriendInfo: this.info.chatFriendInfo,
 					seatId: this.info.seat.id,
 					date: this.info.date,
 					cludId: this.info,

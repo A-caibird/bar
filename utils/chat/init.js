@@ -114,8 +114,6 @@ function msgArrived(res){
 	
 function msgDelivered(res){
 	let chatToken = $storage.getUserInfo().chatToken
-	// console.log('发送消息: ');
-	
 	let msg = JSON.parse(JSON.stringify(res))
 	let chatUserList = []
 	if(msg.type === 1) {
@@ -158,17 +156,15 @@ function msgDelivered(res){
 		chatUserList = $chat.addChatUserListFromStorage(chatToken,msg)
 		uni.$emit('chat-user-list-refresh',chatUserList) //聊天列表的刷新
 		
-		
 		msg = $chat.setChatListFromStorage($storage.getUserInfo().chatToken,msg)
 		
 		pushMessage(msg) //调取发送推送的接口
 		uni.$emit('chat-msg-push',msg)
-		console.log(msg)
 		if(msg.type==2||msg.type==3||msg.type==4) {
 			ajax('/api/user/setCanChat',{userId:msg.toUserId},'POST')
 		}
 	}
-	
+	console.log('发送消息: msgDelivered', msg);
 	
 }
 const init = function(vm){

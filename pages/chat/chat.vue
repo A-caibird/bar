@@ -209,7 +209,7 @@
 		<template v-if="chatType=='wait'">、
 			<view class="wait-reply-tips" @tap='$u.route("/pages/club/list?mode=list")'>
 				<view class="left_text">对方同意后才可进行对话哦</view>
-				<view class="right_btn">去下单</view>
+				<view class="right_btn">{{waitBtnText}}</view>
 			</view>
 			<view class="wait-reply-wrap">
 				<text>等待回复</text>
@@ -315,6 +315,15 @@
 			// 		this.scrollBottom = ""
 			// 	}
 			// })
+		},
+		computed: {
+			waitBtnText() {
+				if(this.chatList.length > 0){
+					return this.chatList[this.chatList.length - 1].type == 2 ? '已邀约' : '去下单'
+				}else{
+					return "去下单"
+				}	
+			}
 		},
 		onUnload() {
 			uni.$off('chat-msg-push', this.msgPush)
@@ -691,8 +700,8 @@
 				let chatToken = this.userInfo.chatToken
 				let friendChatToken = this.friendUserInfo.chatToken
 				$chat.getChatList(chatToken, friendChatToken).then(res => {
-
 					let chatList = this.chatListTimeStamp(res)
+					console.log('chatList', chatList);
 					this.chatList = chatList
 					this.pageScrollToBottom(200, chatList.length - 2)
 					uni.$emit('read-chat', {
@@ -712,6 +721,7 @@
 				} = await this.$u.api.getCanChatApi({
 					userId: this.friendUserInfo.userId
 				})
+				console.log('getCanChatApi', data);
 				if (code == 0) {
 					let {
 						canChat
@@ -726,7 +736,6 @@
 						chatType = 'greet'
 					} else {
 						let chatItem = this.chatList[this.chatList.length - 1]
-						console.log(chatItem)
 						if (chatItem.type == 5 && chatItem.fromId == friendChatToken) {
 							chatType = 'reply'
 						}
@@ -739,8 +748,6 @@
 						if (chatItem.type == 6 && chatItem.fromId != friendChatToken) {
 							chatType = 'wait'
 						}
-
-
 					}
 				}
 				this.chatType = chatType
