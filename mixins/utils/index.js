@@ -229,10 +229,13 @@ let utils = ({
 			return areaName
 		},
 		analysisFullName(e) { ///utils/amap-wx.js getPoiAround 解析poisData的地址 getInputtips 解析tips的地址 返回一个省市
-			var reg = /.+?(省|市|自治区|自治州)/;
+			var reg = /.+?(省|市|自治区|自治州)/g;
 			let fullName = ''
 			if (e.district) {
-				fullName = e.district.match(reg)
+				let fullNameArr = e.district.match(reg)
+				fullNameArr.forEach(text => {
+					fullName = fullName + text;
+				})
 			} else {
 				fullName = e.pname + e.cityname
 			}
