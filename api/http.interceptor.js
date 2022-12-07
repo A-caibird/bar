@@ -7,13 +7,13 @@ const install = (Vue, vm) => {
 	console.log('拦截器');
 	Vue.prototype.$u.http.setConfig({
 		//正式域名
-		baseUrl: 'https://erp.patixiu.com',	
-		// baseUrl: 'http://106.13.1.125:11002',
+		// baseUrl: 'https://erp.patixiu.com',
+		baseUrl: 'http://xj.vverp.com:11007/login.html',
 		loadingText: '努力加载中~',
 		showLoading: false,
 		loadingMask: false,
 		loadingTime: 0, //单位ms
-		originalData: true, 
+		originalData: true,
 		header: {
 			'content-type': 'application/x-www-form-urlencoded'
 		}
