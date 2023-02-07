@@ -18,9 +18,9 @@
 					</view>
 				</view>
 				<view class="row" v-for="(row, index) in msgList" :key="index" :id="'msg' + row.id">
-					
+
 					<!-- 用户消息 -->
-					<block >
+					<block>
 						<!-- 自己发出的消息 -->
 						<view class="my" v-if="row.senderId.startsWith('user')">
 							<!-- 左-消息 -->
@@ -112,6 +112,11 @@
 <script>
 	import config from "./config";
 	import $date from "@/utils/date.js";
+	import wsRequest from "@/common/websocket.js";
+	var btnAvaliable = true;
+	    var websocketObj = null;
+	    var waitSendMsg = []; //待发送图片
+	    var waitSendVideoMsg = []; //待发送视频
 
 	export default {
 		data() {
@@ -142,6 +147,14 @@
 				clubId: "" //酒吧id
 			};
 		},
+
+		onUnload() {
+			this.scrollToView = "";
+			uni.closeSocket();
+			uni.$off('reconnectWebSocket');
+			// waitSendMsg = []; //清空待发送图片
+			// waitSendVideoMsg = []; //清空待发送视频
+		},
 		onLoad(options) {
 			this.kefuId = options.id || ''
 			this.clubId = options.clubId;
@@ -156,33 +169,65 @@
 					});
 				});
 			});
-			// websocket
-			this.connectSocket();
+
+
+			this.openConnection();
+			uni.onSocketMessage((res) => {
+				console.log("on message", res.data);
+                let data = JSON.parse(res.data);
+                this.screenMsg(data);
+
+
+			});
+			waitSendMsg = [];
+			waitSendVideoMsg = [];
+			uni.$on('reconnectWebSocket', () => {
+				uni.showLoading({
+					title: '连线中'
+				})
+				setTimeout(() => {
+					websocketObj.reconnect(() => {
+						uni.hideLoading();
+						if (waitSendMsg.length > 0) {
+							waitSendMsg.forEach(item => {
+								this.sendMsg(item, "image")
+							})
+							setTimeout(() => {
+								uni.hideLoading();
+							}, 1000);
+						}
+						if (waitSendVideoMsg.length > 0) {
+							waitSendVideoMsg.forEach(item => {
+								this.sendMsg(item, "video");
+							})
+							setTimeout(() => {
+								uni.hideLoading();
+							}, 1000);
+						}
+					})
+				}, 500)
+			})
 		},
 		onShow() {
 			this.scrollTop = 9999999;
 		},
 		methods: {
-			// 链接webSocket
-			connectSocket() {
-				var timestamp = Date.parse(new Date());
-				let socketTask = uni.connectSocket({
-					url: `wss://192.168.0.109/websocket/messageHandler?username=user@${getApp().globalData.token}@${timestamp}`,
-					success: (res) => {
-						console.log("连接成功")
-					},
-					fail: (res) => {
-						console.log("连接失败")
-					},
-				});
-				this.socketTask = socketTask;
 
-				socketTask.onMessage((res) => {
-					console.log("收到消息了1111")
-					console.log(res)
-					let data = JSON.parse(res.data);
-					//this.screenMsg(data);
-				});
+			// 连接webSocket
+			openConnection() {
+				var s = Date.parse(new Date());
+				var t = getApp().globalData.token;
+				var url = "ws://192.168.0.109:8080/websocket/messageHandler?username=user@"+t+"@" + s;
+				console.log(url)
+				uni.showLoading({
+					title: '连接中'
+				})
+				websocketObj = new wsRequest(
+					url,
+					0, () => {
+						uni.hideLoading();
+					}
+				);
 			},
 			parseDate(date) {
 				let time = "";

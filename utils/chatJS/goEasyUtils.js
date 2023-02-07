@@ -4,86 +4,86 @@ import GoEasy from '@/js_sdk/goeasy-2.0.13.min.js'
 function connect(goeasy, id = null, userInfo = null, callback = null) { //id 相当于主题
 	let avatar = userInfo ? userInfo.avatar : '';
 	let nickname = userInfo ? userInfo.nickname : '';
-	goeasy.connect({
-		id: id,
-		data: {
-			"avatar": avatar,
-			'nickname': nickname
-		},
-		onSuccess: function() { //连接成功
-			if (callback) {
-				callback();
-			}
-			console.log(id + ", GoEasy connect successfully.") //连接成功
-		},
-		onFailed: function(error) { //连接失败
-			if (error.code == 408) {
-				disconnect(goeasy);
-				setTimeout(() => {
-					connect(goeasy, id, userInfo, callback);
-				}, 200);
-			} else {
-				uni.hideLoading();
-			}
-			console.log("Failed to connect GoEasy, code:" + error.code + ",error:" + error.content);
-		},
-		onProgress: function(attempts) { //连接或自动重连中
-			console.log("GoEasy is connecting", attempts);
-		}
-	})
+	// goeasy.connect({
+	// 	id: id,
+	// 	data: {
+	// 		"avatar": avatar,
+	// 		'nickname': nickname
+	// 	},
+	// 	onSuccess: function() { //连接成功
+	// 		if (callback) {
+	// 			callback();
+	// 		}
+	// 		console.log(id + ", GoEasy connect successfully.") //连接成功
+	// 	},
+	// 	onFailed: function(error) { //连接失败
+	// 		if (error.code == 408) {
+	// 			disconnect(goeasy);
+	// 			setTimeout(() => {
+	// 				connect(goeasy, id, userInfo, callback);
+	// 			}, 200);
+	// 		} else {
+	// 			uni.hideLoading();
+	// 		}
+	// 		console.log("Failed to connect GoEasy, code:" + error.code + ",error:" + error.content);
+	// 	},
+	// 	onProgress: function(attempts) { //连接或自动重连中
+	// 		console.log("GoEasy is connecting", attempts);
+	// 	}
+	// })
 }
 
 function disconnect(goeasy, callback = null) { //断开连接
-	goeasy.disconnect({
-		onSuccess: function() {
-			console.log("GoEasy disconnect successfully.")
-			if (callback) {
-				callback();
-			}
-		},
-		onFailed: function(error) {
-			console.log("Failed to disconnect GoEasy, code:" + error.code + ",error:" + error.content);
-		}
-	});
+	// goeasy.disconnect({
+	// 	onSuccess: function() {
+	// 		console.log("GoEasy disconnect successfully.")
+	// 		if (callback) {
+	// 			callback();
+	// 		}
+	// 	},
+	// 	onFailed: function(error) {
+	// 		console.log("Failed to disconnect GoEasy, code:" + error.code + ",error:" + error.content);
+	// 	}
+	// });
 }
 
 function subscribe(pubsub, channel, callback = null) { // pubsub模式 订阅信息
-	pubsub.subscribe({
-		channel: channel, //替换为您自己的channel
-		onMessage: function(message) {
-			if (callback) {
-				callback(message); //获取发送的消息
-			}
-			console.log("Channel:" + message.channel + " content:" + message.content);
-		},
-		onSuccess: function() {
-			console.log("Channel订阅成功。");
-		},
-		onFailed: function(error) {
-			console.log("Channel订阅失败, 错误编码：" + error.code + " 错误信息：" + error.content)
-		}
-	});
+	// pubsub.subscribe({
+	// 	channel: channel, //替换为您自己的channel
+	// 	onMessage: function(message) {
+	// 		if (callback) {
+	// 			callback(message); //获取发送的消息
+	// 		}
+	// 		console.log("Channel:" + message.channel + " content:" + message.content);
+	// 	},
+	// 	onSuccess: function() {
+	// 		console.log("Channel订阅成功。");
+	// 	},
+	// 	onFailed: function(error) {
+	// 		console.log("Channel订阅失败, 错误编码：" + error.code + " 错误信息：" + error.content)
+	// 	}
+	// });
 }
 
 function publish(pubsub, textContent, channel, callback = null) { // pubsub模式下 发布消息
-	pubsub.publish({
-		channel: channel, //替换为您自己的channel
-		message: textContent, //替换为您想要发送的消息内容
-		onSuccess: function(message) {
-			console.log("消息发布成功。");
-			console.log("Channel:" + message.channel + " content:" + message.content);
-			if (callback) {
-				callback(message)
-			}
-		},
-		onFailed: function(error) {
-			console.log("消息发送失败，错误编码：" + error.code + " 错误信息：" + error.content);
-			uni.showToast({
-				title: ("消息发送失败，错误编码：" + error.code + " 错误信息：" + error.content),
-				icon: 'none'
-			})
-		}
-	});
+	// pubsub.publish({
+	// 	channel: channel, //替换为您自己的channel
+	// 	message: textContent, //替换为您想要发送的消息内容
+	// 	onSuccess: function(message) {
+	// 		console.log("消息发布成功。");
+	// 		console.log("Channel:" + message.channel + " content:" + message.content);
+	// 		if (callback) {
+	// 			callback(message)
+	// 		}
+	// 	},
+	// 	onFailed: function(error) {
+	// 		console.log("消息发送失败，错误编码：" + error.code + " 错误信息：" + error.content);
+	// 		uni.showToast({
+	// 			title: ("消息发送失败，错误编码：" + error.code + " 错误信息：" + error.content),
+	// 			icon: 'none'
+	// 		})
+	// 	}
+	// });
 }
 
 function creatMessage(im, chatInfo, sendMsg) { // 生成 Message 对象
