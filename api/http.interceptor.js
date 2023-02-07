@@ -8,7 +8,7 @@ const install = (Vue, vm) => {
 	Vue.prototype.$u.http.setConfig({
 		//正式域名
 		// baseUrl: 'https://erp.patixiu.com',
-		baseUrl: 'http://xj.vverp.com:11007/login.html',
+		baseUrl: 'http://192.168.0.109:8080',
 		loadingText: '努力加载中~',
 		showLoading: false,
 		loadingMask: false,

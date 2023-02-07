@@ -408,7 +408,8 @@
 							this.$u.route('/pages/customerRoom/index', {
 								id: res.data.id,
 								avatar: res.data.avatar,
-								nickname: res.data.nickname
+								nickname: res.data.nickname,
+								clubId:this.clubId
 							});
 							uni.hideLoading();
 						} else {

@@ -1,977 +1,396 @@
 <template>
-	<view class="wrapper" :style="{'paddingBottom': (0 + 'px')}">
-		<u-navbar :title="title" :customBack="customBackEvent"></u-navbar>
-		<view :style="{height: (swiperHeight) + 'px'}">
-			<scroll-view class="scroll_view" :scroll-y="true"
-				:style="{height: (scrollHeightCal)+'px', 'overflow-anchor': 'auto',}" 
-				@scrolltoupper="loadMoreChatList"
-				@scrolltolower="reachBottom" 
-				:scroll-into-view="scrollIntoView"
-				:refresher-threshold="50"
-				@scroll="scrollIntoView = ''"
-				>
-				<view v-if="loadPage" class="page-load">加载中...</view>
-				<view :id="'chat'+ index" v-for="(item,index) in pageList" :key="item.messageId">
-					<view class="chat_item">
-						<chatItem 
-							:lastDate="index > 0 ? pageList[index - 1].timestamp : -1"
-							:userInfo="userData"
-							:toUserInfo="toUserInfo"
-							:msg="item"
-							@videoTap="videoTap"
-						></chatItem>
+	<view>
+		<u-navbar :border-bottom="false" :is-fixed="true" :background="{
+    		background: '#191C3F'
+    	}" title="客服" title-color="#FFFFFF" back-icon-color="#FFFFFF"></u-navbar>
+		<view class="content" @touchstart="hideDrawer">
+			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation"
+				:scroll-top="scrollTop" :scroll-into-view="scrollToView" @scrolltoupper="loadHistory"
+				upper-threshold="50">
+				<!-- 加载历史数据waitingUI -->
+				<view class="loading" v-if="isHistoryLoading">
+					<view class="spinner">
+						<view class="rect1"></view>
+						<view class="rect2"></view>
+						<view class="rect3"></view>
+						<view class="rect4"></view>
+						<view class="rect5"></view>
 					</view>
+				</view>
+				<view class="row" v-for="(row, index) in msgList" :key="index" :id="'msg' + row.id">
+					
+					<!-- 用户消息 -->
+					<block >
+						<!-- 自己发出的消息 -->
+						<view class="my" v-if="row.senderId.startsWith('user')">
+							<!-- 左-消息 -->
+							<view class="left">
+								<!-- 文字消息 -->
+								<view v-if="row.type == 'text'" class="bubble">
+									<rich-text :nodes="row.payload.text || ''"></rich-text>
+								</view>
+								<!-- 图片消息 -->
+								<view v-if="row.type == 'image'" class="bubble img" @tap="showPic(row.content)">
+									<image :src="row.content"> </image>
+								</view>
+							</view>
+							<!-- 右-头像 -->
+							<view class="right">
+								<image :src="row.senderAvatar"></image>
+							</view>
+						</view>
+						<!-- 别人发出的消息 -->
+						<view class="other" v-if="row.senderId.startsWith('admin')">
+							<!-- 左-头像 -->
+							<view class="left">
+								<image :src="row.senderAvatar"></image>
+							</view>
+							<!-- 右-用户名称-时间-消息 -->
+							<view class="right">
+								<view class="username">
+									<view class="name">{{ row.senderNickname }}</view>
+									<view class="time">{{ parseDate(row.createDate) }}</view>
+								</view>
+								<!-- 文字消息 -->
+								<view v-if="row.type == 'text'" class="bubble">
+									<rich-text :nodes="row.payload.text || ''"></rich-text>
+								</view>
+								<!-- 图片消息 -->
+								<view v-if="row.type == 'image'" class="bubble img" @tap="showPic(row.content)">
+									<image :src="row.content"> </image>
+								</view>
+							</view>
+						</view>
+					</block>
 				</view>
 			</scroll-view>
-			<view class="bottom-wrapper keyboard">
-				<view class="bottom-container">
-					<view class="input-container">
-						<template>
-							<input type="text" @focus="inputFocus" class="input" confirm-type="send" v-model="message" @confirm="judgePullback"/>
-						</template>
+		</view>
+		<!-- 抽屉栏 -->
+		<view class="popup-layer" :class="popupLayerClass" @touchmove.stop.prevent="discard">
+			<!-- 表情 -->
+			<swiper class="emoji-swiper" :class="{ hidden: hideEmoji }" indicator-dots="true" duration="150">
+				<swiper-item v-for="(page, pid) in emojiList" :key="pid">
+					<view v-for="(em, eid) in page" :key="eid" @tap="addEmoji(em)">
+						<text>{{ em.emoji }}</text>
 					</view>
-					<view class="bottom_add" @tap="emojiShow = !emojiShow; popShow = false;">
-						<image class="bottom_icon" src="/static/imgs/chat/emoji.png"></image>
+				</swiper-item>
+			</swiper>
+			<!-- 更多功能 相册-拍照 -->
+			<view class="more-layer" :class="{ hidden: hideMore }">
+				<view class="list">
+					<view class="box" @tap="chooseImage">
+						<view class="icon tupian2"></view>
 					</view>
-					<view class="bottom_add" style="height: 58rpx; width: 58rpx;" @tap="popShow = !popShow; emojiShow = false;">
-						<image class="bottom_icon" src="/static/imgs/chat/add.png"></image>
-					</view>
-					<view class="bottom-btn" hover-class="hover-class" hover-stay-time="300"
-						@touchend.prevent="judgePullback">发送</view>
-				</view>
-				<view class="pop_box upload" :class="{'hidden': !popShow}" v-if="popShow">
-					<view class="upload_type_list">
-						<view class="upload_item" @tap.stop="sendPhoto('photo')">
-							<image src="/static/imgs/chat/album.png"></image>
-							<text>图片</text>
-						</view>
-						<view class="upload_item marginLeft" @tap.stop="sendPhoto('camera')">
-							<image src="/static/imgs/chat/photograph.png"></image>
-							<text>拍照</text>
-						</view>
-					</view>
-				</view>
-				<view class="pop_box emoji" :class="{'hidden': !emojiShow}">
-					<scroll-view class="emoji_list" :scroll-y="true">
-						<view class="emoji_box">
-							<block v-for="(item, index) in emojiList" :key="index">
-								<view class="emoji_item" @tap.stop="emojiTap(index)">
-									<text style="font-size: 50rpx;" class="emoji_text">{{item.emoji}}</text>
-								</view>
-							</block>
-						</view>
-					</scroll-view>
-					<view class="emoji_btn" v-if="emojiShow">
-						<view class="btn_item" @tap.stop="subTextHandle">
-							<image src="/static/imgs/chat/tuige.png"></image>
-						</view>
-						<view class="btn_item" style="margin-left: 20rpx;" @tap="$u.debounce(judgePullback, 300, true)">
-							<text>发送</text>
-						</view>
+					<view class="box" @tap="camera">
+						<view class="icon paizhao"></view>
 					</view>
 				</view>
 			</view>
 		</view>
-		<video :direction="0" @fullscreenchange="fullScreenChange" class="videoBox" id="videoId" v-if="playUrl" :src="playUrl"></video>
+		<!-- 底部输入栏 -->
+		<view class="input-box" :class="popupLayerClass" @touchmove.stop.prevent="discard">
+			<view class="more" @tap="showMore">
+				<view class="icon add"></view>
+			</view>
+			<view class="textbox">
+				<view class="text-mode">
+					<view class="box">
+						<textarea auto-height="true" v-model="textMsg" @focus="textareaFocus" />
+					</view>
+					<view class="em" @tap="chooseEmoji">
+						<view class="icon biaoqing"></view>
+					</view>
+				</view>
+			</view>
+			<view class="send" @tap="sendText">
+				<view class="btn">发送</view>
+			</view>
+		</view>
+		<!-- 录音UI效果 -->
 	</view>
 </template>
-
 <script>
-	const app = getApp()
-	import chatItem from '@/components/chatInfo/chatInfo.vue'
-	import $storage from '@/common/storage.js'
-	import chatUtils from '@/utils/chatJS/chat.js'
-	import {emojiList} from '@/utils/chatJS/emoji.js'
-	import $store from '@/store/index.js'
+	import config from "./config";
+	import $date from "@/utils/date.js";
+
 	export default {
 		data() {
 			return {
-				playUrl: '',
-				chatConnect: false,
-				emojiList: emojiList,
-				loadPage: false,
-				popShow: false,
-				emojiShow: false,
-				swiperHeight: '',
-				scrollIntoView: '',
-				scrollHeight: '',
-				keyBoardHeight: 0,
-				tabbarTop: '',
-				message: '',
-				channel: '',
-				userData: '',
-				newChatList: [],
-				toUserInfo: "",
-				title: '客服',
-				// 分页数据
-				loading:false,
-				more: true,
-				pageNumber: 0,
+				pageNumber: 1,
 				pageSize: 20,
-				totalPages: 1,
-				pageList:[],
+				nomore: false,
+				//文字消息
+				textMsg: "",
+				//消息列表
+				isHistoryLoading: false,
+				scrollAnimation: false,
+				scrollTop: 0,
+				scrollToView: "",
+				msgList: [],
+				msgImgList: [],
+				// 抽屉参数
+				popupLayerClass: "",
+				// more参数
+				hideMore: true,
+				//表情定义
+				hideEmoji: true,
+				emojiList: config.emojiList,
+				socketTask: "",
+				kefuId: "", //客服id
+				avatar: "", //客服头像
+				nickname: "", //客服昵称
+				clubId: "" //酒吧id
 			};
 		},
-		components: {
-			chatItem
-		},
-		watch: {
-			// "scrollIntoView"(newValue, oldValue) {
-				
-			// }
-		},
-		computed:{
-			scrollHeightCal:function(){
-				this.scrollToBottom();
-				if(this.keyBoardHeight > 0){
-					return (this.scrollHeight - this.keyBoardHeight);
-				}
-				if(this.popShow){
-					return (this.scrollHeight - uni.upx2px(340));
-				}
-				if(this.emojiShow){
-					return (this.scrollHeight - uni.upx2px(340));
-				}
-				return this.scrollHeight;
-			}
-		},
 		onLoad(options) {
-			let {
-				windowHeight,
-				statusBarHeight,
-				screenHeight,
-				safeArea,
-			} = uni.getSystemInfoSync()
-			// console.log(screenHeight);
-			// console.log(safeArea);
-			this.statusBarHeight = statusBarHeight
-			this.windowHeight = windowHeight
-			this.swiperHeight = safeArea.bottom - statusBarHeight - uni.upx2px(88);
-			this.scrollHeight = safeArea.bottom - statusBarHeight - uni.upx2px(188)
-			this.tabbarTop = statusBarHeight + uni.upx2px(88)
-			uni.onKeyboardHeightChange(res => { //监听键盘高度
-				this.keyBoardHeight = res.height
-				if(res.height > 0){
-					this.scrollIntoView = "chat" + (this.pageList.length - 1);
-					this.$nextTick(() => {
-						this.scrollIntoView = "";
-					})
-				}
-			})
-			this.toUserInfo = options;
-			this.title = options.nickname || '暂无客服';
-			$store.commit('disconnectGoEasy', {
-				callback: () => {
-					if(options.id){
-						this.$nextTick(() => {
-							this.getUserInfo();
-						})
-					}
-				}
+			this.kefuId = options.id || ''
+			this.clubId = options.clubId;
+
+			this.getMsgList(() => {
+				// 滚动到底部
+				this.$nextTick(function() {
+					//进入页面滚动到底部
+					this.scrollTop = 9999;
+					this.$nextTick(function() {
+						this.scrollAnimation = true;
+					});
+				});
 			});
+			// websocket
+			this.connectSocket();
 		},
 		onShow() {
-
-		},
-		onHide() {
-
-		},
-		onUnload() {
-			
+			this.scrollTop = 9999999;
 		},
 		methods: {
-			customBackEvent(){
-				if(this.chatConnect){
-					this.disconnect(() => {
-						setTimeout(() => {
-							let userInfo = $storage.getUserInfo();
-							let info = {
-								chatId: userInfo.chatToken,
-								callback:function(){
-								}
-							}
-							$store.commit('connetGoEasy',info);
-						}, 500)
-					});
-					uni.navigateBack({
-						delta:1
-					})
-				}
-			},
-			fullScreenChange(e){
-				if(!e.detail.fullScreen){
-					this.playUrl = "";
-				}
-			},
-			videoTap(e){
-				this.playUrl = e.url;
-				var vm = this;
-				this.$nextTick(function(){
-					var videoContext = uni.createVideoContext("videoId", vm);
-					videoContext.requestFullScreen({
-						direction: 0
-					});
-					videoContext.play()
-				})
-			},
-			scrollToBottom: function(){
-				this.scrollIntoView = "";
-				this.$nextTick(() => {
-					this.scrollIntoView = "chat" + (this.pageList.length - 1)
-				})
-			},
-			subTextHandle: function(){
-				var regRule = /\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g;
-				let lastStr = this.message.substr(this.message.length-2, 2);
-				if(regRule.test(lastStr)){
-					this.message = this.message.substr(0, (this.message.length - 2));
-				}else{
-					this.message = this.message.substr(0, (this.message.length - 1));
-				}
-			},
-			inputFocus: function(){
-				this.emojiShow = false;
-				this.popShow = false;
-			},
-			emojiTap: function(index){
-				this.message = this.message + emojiList[index].emoji;
-			},
-			// 获取个人信息
-			getUserInfo: function() {
-				this.$u.api.getMyInfo({}).then((res)=>{
-					if(parseInt(res.code) == 0) {
-						this.userData = res.data.info;
-						this.channel = res.data.info.id;
-						this.$nextTick(() => {
-							this.initChatInfo();
-						})
-					}
-				}).catch(err=>{
-					console.log('获取用户异常')
-					console.log(err);
-				})
-			},
-			reachBottom: function(){
-				// console.log("上拉刷新");
-				// this.pageNumber = this.pageNumber + 1;
-				// this.$nextTick(() => {
-				// 	this.getChatList();
-				// })
-			},
-			loadMoreChatList: function() {
-				console.log('下拉加载');
-				this.loadPage = true;
-				this.pageNumber = this.pageNumber + 1;
-				setTimeout(() => {
-					this.loadPage = false;
-				}, 1200)
-			},
-			// 初始化 chatInfo
-			initChatInfo: function() {
-				let userInfo = this.userData;
-				let toUserInfo = this.toUserInfo;
-				let info = {
-					token: app.globalData.token,
-					userInfo: {
-						id: userInfo.id,
-						nickname: userInfo.nickName,
-						avatar: userInfo.avatar,
+			// 链接webSocket
+			connectSocket() {
+				var timestamp = Date.parse(new Date());
+				let socketTask = uni.connectSocket({
+					url: `wss://192.168.0.109/websocket/messageHandler?username=user@${getApp().globalData.token}@${timestamp}`,
+					success: (res) => {
+						console.log("连接成功")
 					},
-					toUserInfo: { // 被发送人信息
-						id: toUserInfo.id,
-						avatar: toUserInfo.avatar,
-						nickname: toUserInfo.nickname
-					}
-				};
-				chatUtils.initChat(this.goeasy, info.token, info.userInfo, this.channel, info.toUserInfo);
-				this.getChatList(() => {
-					this.connect();
+					fail: (res) => {
+						console.log("连接失败")
+					},
+				});
+				this.socketTask = socketTask;
+
+				socketTask.onMessage((res) => {
+					console.log("收到消息了1111")
+					console.log(res)
+					let data = JSON.parse(res.data);
+					//this.screenMsg(data);
 				});
 			},
-			// 获取聊天列表
-			async getChatList(callback = null) {
-				let url = '/api/chatMessage/historyList';
-				let pageNumber = this.pageNumber;
-				let pageSize = this.pageSize;
-				let totalPages = this.totalPages;
-				if (url) {
-					
-					if (pageNumber > totalPages) {
-						this.more = false;
-						if(callback){
+			parseDate(date) {
+				let time = "";
+				let ymd = $date.formatTime(date, "Y-M-D");
+				let todayYmd = $date.formatTime(new Date(), "Y-M-D");
+				if (ymd === todayYmd) {
+					time = $date.formatTime(date, "h:m");
+				} else {
+					time = $date.formatTime(date, "M-D h:m");
+				}
+				return time;
+			},
+			// 接受消息(筛选处理)
+			screenMsg(msg) {
+				// console.log("收到消息了")
+				// console.log(msg)
+				uni.vibrateLong();
+				// 用户消息
+				switch (msg.type) {
+					case "text":
+						this.addTextMsg(msg);
+						break;
+					case "image":
+						this.addImgMsg(msg);
+						break;
+				}
+
+
+				this.$nextTick(function() {
+					// 滚动到底
+					this.scrollToView = "msg" + msg.id;
+				});
+			},
+			//触发滑动到顶部(加载历史信息记录)
+			loadHistory() {
+				if (this.nomore) {
+					return;
+				}
+				if (this.isHistoryLoading) {
+					return;
+				}
+				this.pageNumber = this.pageNumber + 1;
+				this.isHistoryLoading = true; //参数作为进入请求标识，防止重复请求
+				this.scrollAnimation = false; //关闭滑动动画
+				let Viewid = this.msgList[0].id; //记住第一个信息ID
+				setTimeout(() => {
+					this.getMsgList(() => {
+						//这段代码很重要，不然每次加载历史数据都会跳到顶部
+						this.$nextTick(function() {
+							this.scrollToView = "msg" + Viewid; //跳转上次的第一行信息位置
+							this.$nextTick(function() {
+								this.scrollAnimation = true; //恢复滚动动画
+							});
+						});
+						this.isHistoryLoading = false;
+					});
+				}, 1000);
+			},
+			// 加载初始页面消息
+			getMsgList(callback) {
+				var s = Date.parse(new Date());
+				this.$u.api.chatMessageList({
+						pageNumber: this.pageNumber,
+						pageSize: this.pageSize,
+						clubId: this.clubId || '',
+						timestamp: s
+					})
+					.then((res) => {
+						// console.log("拉历史记录")
+						// console.log(res)
+						// if (this.pageNumber >= res.data.totalPages) {
+						// 	this.nomore = true;
+						// }
+						this.isHistoryLoading = false;
+						let list = res.data.list;
+						for (let item of list) {
+							this.msgList.unshift(item);
+						}
+						// 获取消息中的图片,并处理显示尺寸
+						for (let item of list) {
+							if (item.type === "image" && item.content) {
+								this.msgImgList.push(item.content);
+							}
+						}
+						if (callback) {
 							callback();
 						}
-						return console.log('最后一页')
-					}
-					let params = {
-						chatUserId: this.toUserInfo.id,
-						myUserId: this.userData.id,
-						pageNumber,
-						pageSize,
-					}
-					if(pageNumber >= 2){
-						params['timestamp'] = this.pageList[this.pageList.length - 1].timestamp;
-					}
-					this.loading = true;
-					let {code,data} = await this.$u.api.commonRequest(url, params)
-					if(code==0) {
-						let pageList = this.pageList
-						let chatList = data.list;
-						chatList = chatList.reverse();
-						if (pageNumber <= 1) {
-							pageList = chatList
-						} else {
-							pageList = pageList.concat(chatList);
-						}
-						this.pageList = pageList;
-						this.totalPages = data.totalPage;
-						this.scrollToBottom();
-					}
-					this.$nextTick(() => {
-						this.loading = false;
-					})
-					if(callback){
-						callback();
-					}
+					});
+				return;
+			},
+			//更多功能(点击+弹出)
+			showMore() {
+				this.hideEmoji = true;
+				if (this.hideMore) {
+					this.hideMore = false;
+					this.openDrawer();
+				} else {
+					this.hideDrawer();
 				}
 			},
-			// 获取消息
-			receiveMsg: function() {
-				chatUtils.receiveMessage((chatInfo, msg) => {
-					if(msg.type == 'endThisChat'){
-						uni.showModal({
-							title: '提示',
-							content: '本次服务已结束，感谢您的配合',
-							showCancel: false,
-							success(res) {
-								if(res.confirm){
-									uni.navigateBack({
-										delta:1
-									})
-								}
-							}
-						})
-						return;
-					}
-					let pageList = this.pageList;
-					let canJoin = true;
-					pageList.forEach((item, index) => {
-						if(item.messageId == msg.messageId){
-							canJoin = false;
-						}
-					})
-					if(canJoin){
-						pageList.push(msg);
-					}
-					// let pageList = this.pageList;
-					// pageList.push(msg);
-					this.pageList = pageList;
-					this.$nextTick(() => {
-						this.scrollIntoView = "chat" + (pageList.length - 1)
-					})		
-				});
+			// 打开抽屉
+			openDrawer() {
+				this.popupLayerClass = "showLayer";
 			},
-			// 连接客服
-			connect: function() {
-				uni.showLoading({
-					title: '连接中'
-				})
-				chatUtils.connectChat(() => {
-					console.log('链接成功');
-					this.receiveMsg();
-					this.chatConnect = true;
-					setTimeout(() => {
-						uni.hideLoading();
-					}, 400)
-				});
+			// 隐藏抽屉
+			hideDrawer() {
+				this.popupLayerClass = "";
+				setTimeout(() => {
+					this.hideMore = true;
+					this.hideEmoji = true;
+				}, 150);
 			},
-			disconnect: function(callback = null) {
-				chatUtils.disconnectChat(callback);
+			// 选择图片发送
+			chooseImage() {
+				this.getImage("album");
 			},
-			// 发送文字
-			judgePullback: function() {
-				let message = this.message;
-				this.sendMsg(message);
-				this.message = "";
-				this.emojiShow = false
+			//拍照发送
+			camera() {
+				this.getImage("camera");
 			},
-			// 发送图片
-			sendPhoto: function(type){
-				let  chooseType = "";
-				if(type == 'photo'){
-					chooseType = ['album'];
-				}else{
-					chooseType = ['camera'];
-				}
+			//选照片 or 拍照
+			getImage(type) {
+				this.hideDrawer();
 				uni.chooseImage({
-					sourceType: chooseType,
+					sourceType: [type],
+					sizeType: ["original", "compressed"], //可以指定是原图还是压缩图，默认二者都有
 					success: (res) => {
-						this.sendMsg(res, 1);
-						this.popShow = false;
+						for (let i = 0; i < res.tempFilePaths.length; i++) {
+							this.$api.uploadFile(res.tempFilePaths[i]).then((e) => {
+								this.sendMsg(JSON.parse(e).url, "image");
+							});
+						}
 					},
-					fail: (e) => {
-						console.log(e);
-						console.log('图片获取失败');
-					}
-				})
+				});
 			},
-			sendMsg: function(message, type=0) {
-				chatUtils.sendMsg(message, (chatInfo, msg) => {
-					let pageList = this.pageList;
-					pageList.push(msg);
-					this.pageList = pageList;
-					this.scrollToBottom();
-				},type);
+			// 选择表情
+			chooseEmoji() {
+				this.hideMore = true;
+				if (this.hideEmoji) {
+					this.hideEmoji = false;
+					this.openDrawer();
+				} else {
+					this.hideDrawer();
+				}
+			},
+			//添加表情
+			addEmoji(em) {
+				this.textMsg += em.emoji;
+			},
+			//获取焦点，如果不是选表情ing,则关闭抽屉
+			textareaFocus() {
+				if (this.popupLayerClass == "showLayer" && this.hideMore == false) {
+					this.hideDrawer();
+				}
+			},
+			// 发送文字消息
+			sendText() {
+				this.hideDrawer(); //隐藏抽屉
+				if (!this.textMsg) {
+					return;
+				}
+				let content = this.textMsg;
+				this.sendMsg(content, "text");
+				this.textMsg = ""; //清空输入框
+			},
+			// 发送消息
+			sendMsg(content, type) {
+				var payloadStr = "";
+				if (type == "text") {
+					payloadStr = "{'text':'" + content + "'}"
+				}
 
-			}
+				let params = {
+					type: type,
+					payloadStr: payloadStr,
+					staffId: this.kefuId,
+				};
+				this.$u.api.chatMessageSend(params).then((res) => {
+					this.screenMsg(res.data);
+				});
+			},
+			// 添加文字消息到列表
+			addTextMsg(msg) {
+				this.msgList.push(msg);
+			},
+			// 添加图片消息到列表
+			addImgMsg(msg) {
+				this.msgImgList.push(msg.content);
+				this.msgList.push(msg);
+			},
+			// 添加系统文字消息到列表
+			addSystemTextMsg(msg) {
+				this.msgList.push(msg);
+			},
+			// 预览图片
+			showPic(msg) {
+				uni.previewImage({
+					indicator: "none",
+					current: msg,
+					urls: this.msgImgList,
+				});
+			},
+			discard() {
+				return;
+			},
 		},
-
-	}
+	};
 </script>
-
-<style lang="scss" scoped>
-	page {
-		height: 100%;
-		background-color: #FAFAFA;
-	}
-	$base-color: '#191C3F';
-	.scroll_view {
-		width: 100%;
-		background-color: #F5F5F5;
-		overflow: hidden;
-	}
-	.videoBox{
-		position: fixed;
-		left: 0rpx;
-		top: 0rpx;
-		z-index: -1;
-		height: 100%;
-		width: 100%;
-		opacity: 0;
-	}
-	.bottom-wrapper {
-		position: relative;
-		width: 100%;
-		transition: all, 0.3s;
-		padding-bottom: constant(safe-area-inset-bottom);
-		padding-bottom: env(safe-area-inset-bottom);
-
-		&.keyboard {
-			position: fixed;
-			left: 0rpx;
-			z-index: 100;
-			bottom: 0rpx;
-		}
-	}
-	.pop_box{
-		width: 100%;
-		height: 340rpx;
-		background: #F5F5F5;
-		box-sizing: border-box;
-		padding: 50rpx 30rpx;
-		display: flex;
-		// align-items: center;
-		flex-wrap: wrap;
-		position: relative;
-		&.emoji{
-			padding: 30rpx 24rpx;
-		}
-		&.upload{
-			padding: 30rpx;
-		}
-		.upload_type_list{
-			height: 100%;
-			width: 100%;
-			display: flex;
-			flex-wrap: wrap;
-			.upload_item{
-				height: 140rpx;
-				width: 140rpx;
-				display: flex;
-				align-items: center;
-				flex-direction: column;
-				position: relative;
-				&.marginLeft{
-					margin-left: 40rpx;
-				}
-				margin-bottom: 20rpx;
-				&>image{
-					height: 90rpx;
-					width: 90rpx;
-				}
-				&>text{
-					// position: absolute;
-					// bottom: 0rpx;
-					// left: 0rpx;
-					// z-index: 10;
-					line-height: 40rpx;
-					text-align: center;
-					width: 100%;
-					margin-top: 10rpx;
-				}
-			}
-		}
-		.emoji_list{
-			height: 100%;
-			width: 100%;
-			overflow: hidden;
-			white-space: nowrap;
-			.emoji_box{
-				width: 100%;
-				display: flex;
-				align-items: center;
-				flex-wrap: wrap;
-				box-sizing: border-box;
-				padding-bottom: 80rpx;
-			}
-			.emoji_item{
-				height: 60rpx;
-				width: 60rpx;
-				line-height: 60rpx;
-				text-align: center;
-				margin: 20rpx;
-			}
-		}
-		.emoji_btn{
-			height: 70rpx;
-			width: 240rpx;
-			position: absolute;
-			right: 0rpx;
-			bottom: 30rpx;
-			display: flex;
-			align-items: center;
-			background: #F5F5F5;
-			.btn_item{
-				width: 100rpx;
-				height: 70rpx;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				background: #FFFFFF;
-				border-radius: 6rpx;
-				&>image{
-					height: 40rpx;
-					width: 40rpx;
-				}
-			}
-		}
-		.close_img{
-			height: 40rpx;
-			width: 40rpx;
-			position: absolute;
-			right: 30rpx;
-			top: 10rpx;
-		}
-		&.hidden{
-			height: 0rpx;
-			padding: 0rpx;
-		}
-		transition: all 0.3s;
-		.pop_item{
-			height: 100rpx;
-			width: 100rpx;
-			margin: 0 30rpx;
-			border-radius: 10rpx;
-			overflow: hidden;
-			white-space: nowrap;
-			.pop_icon{
-				height: 100%;
-				width: 100%;
-			}
-		}
-	}
-	.bottom-container {
-		width: 100%;
-		height: 110rpx;
-		background-color: #fff;
-		box-sizing: border-box;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.iconicon-location,
-	.icon-keyboard {
-		width: 50rpx;
-		height: 50rpx;
-		line-height: 60rpx;
-		text-align: center;
-		font-size: 40rpx;
-		margin-left: 20rpx;
-		flex-shrink: 0;
-		color: #9b9b9b;
-		border-radius: 100%;
-
-		&.hover-class {
-			color: #d3d3d3;
-		}
-	}
-
-	.input-container {
-		width: 440rpx;
-		position: relative;
-		flex-shrink: 0;
-		border-radius: 30rpx;
-		border: 2rpx solid #E5E3E5;
-		background-color: #fff;
-		margin-left: 8rpx;
-		.input{
-			width: calc(100% - 40rpx);
-			margin-left: 20rpx;
-			height: 64rpx;
-			font-size: 28rpx;
-			color: #4A4A4A;
-			text-indent: 0rpx;
-			white-space: pre-wrap;
-			overflow: hidden;
-		}
-	}
-	.bottom_add{
-		height: 60rpx;
-		width: 60rpx;
-		margin-left: 24rpx;
-		.bottom_icon{
-			height: 100%;
-			width: 100%;
-		}
-	}
-
-	.input-voice {
-		width: 100%;
-		line-height: 64rpx;
-		font-size: 28rpx;
-		color: #999999;
-		text-align: center;
-		border-radius: 30rpx;
-
-		&.on {
-			background-color: #f3f3f3;
-		}
-	}
-
-	.input-icon {
-		width: 64rpx;
-		height: 64rpx;
-		line-height: 64rpx;
-		text-align: center;
-		border-radius: 100%;
-		font-size: 40rpx;
-		position: absolute;
-		right: 0;
-		top: 0;
-		color: #9b9b9b;
-
-		&.hover-class {
-			color: #d3d3d3;
-		}
-
-		&.active {
-			color: $base-color;
-		}
-	}
-
-	.bottom-btn {
-		font-size: 28rpx;
-		color: #646364;
-		padding: 10rpx 20rpx;
-		margin-left: 10rpx;
-		box-sizing: border-box;
-		flex-shrink: 0;
-		font-weight: bold;
-
-		&.hover-class {
-			color: #d3d3d3;
-		}
-	}
-
-	.tabbar {
-		width: 100%;
-		height: 120rpx;
-		position: relative;
-		background-color: #fff;
-		position: fixed;
-		left: 0;
-		z-index: 100;
-	}
-
-	.tabbar-box {
-		width: calc(100% - 60rpx);
-		height: 118rpx;
-		margin: 0 30rpx;
-		display: flex;
-		justify-content: center;
-		border-bottom: 2rpx solid #E5E3E5;
-	}
-
-	.tabbar-item {
-		width: 250rpx;
-		line-height: 118rpx;
-		text-align: center;
-		font-size: 28rpx;
-		color: #9B9B9B;
-		font-weight: bold;
-
-		&.active {
-			color: $base-color;
-		}
-	}
-
-	.tabbar-line {
-		width: 128rpx;
-		height: 4rpx;
-		position: absolute;
-		bottom: 0;
-		background-color: $base-color;
-		transition: all ease-in-out 0.3s;
-	}
-
-	.wrapper {
-		background-color: #FAFAFA;
-		position: fixed;
-		left: 0rpx;
-		top: 0rpx;
-		z-index: 100;
-		width: 100%;
-		height: 100%;
-		box-sizing: border-box;
-	}
-
-	.iconicon-more {
-		font-size: 48rpx;
-
-		&.hover-class {
-			color: #999999;
-		}
-	}
-
-	.chat-swiper {
-		overflow-anchor: auto;
-	}
-
-	.talk-list {
-		padding-bottom: 20rpx;
-		font-size: 28rpx;
-
-		.item-time {
-			font-size: 24rpx;
-			color: #9B9B9B;
-			padding-top: 80rpx;
-			text-align: center;
-		}
-
-		/* 消息项，基础类 */
-		.item {
-			padding: 30rpx 20rpx 0 20rpx;
-			align-items: flex-start;
-			align-content: flex-start;
-			color: #333;
-			// position: relative;
-
-			.pic {
-				width: 84rpx;
-				height: 84rpx;
-				border-radius: 50%;
-				border: #fff solid 1px;
-			}
-
-			.content {
-				padding: 20rpx;
-				border-radius: 8px;
-				max-width: 435rpx;
-				word-break: break-all;
-				line-height: 52rpx;
-			}
-
-			.msg-address {
-				width: 475rpx;
-				height: 270rpx;
-				border-radius: 8px;
-				overflow: hidden;
-				background-color: #fff;
-				position: relative;
-				box-shadow: 0px 2px 20px 0px rgba(97, 56, 203, 0.04);
-
-				.msg-address-mask {
-					position: absolute;
-					left: 0;
-					right: 0;
-					top: 0;
-					bottom: 0;
-					z-index: 10;
-
-					&.hover-class {
-						background-color: rgba(0, 0, 0, 0.3);
-					}
-				}
-
-				.msg-address-wrapper {
-					width: 475rpx;
-					height: 100rpx;
-					background-color: #fff;
-					display: flex;
-					flex-direction: column;
-					justify-content: center;
-
-					.msg-address-name {
-						padding: 0 20rpx;
-						font-size: 28rpx;
-						color: #323232;
-						font-weight: bold;
-						line-height: 1.4;
-						@include ellipsis;
-						padding-bottom: 10rpx;
-					}
-
-					.msg-address-address {
-						padding: 0 20rpx;
-						font-size: 26rpx;
-						color: #999;
-						line-height: 1.2;
-						@include ellipsis;
-					}
-				}
-
-				.msg-address-pic {
-					width: 475rpx;
-					height: 170rpx;
-				}
-			}
-
-			/* 收到的消息 */
-			&.pull {
-				.msg-address {
-					margin-left: 32rpx;
-				}
-
-				.content {
-					margin-left: 32rpx;
-					background-color: #F3D5CE;
-					color: #4A4A4A;
-					display: flex;
-					align-items: center;
-					margin-bottom: 16rpx;
-					position: relative;
-
-					&.unread::before {
-						content: '';
-						width: 16rpx;
-						height: 16rpx;
-						flex-shrink: 0;
-						border-radius: 100%;
-						background-color: $base-color;
-						position: absolute;
-						right: -30rpx;
-						top: 50%;
-						transform: translateY(-50%);
-					}
-
-					&::after {
-						content: '';
-						display: block;
-						width: 0;
-						height: 0;
-						border-top: 16rpx solid transparent;
-						border-bottom: 16rpx solid transparent;
-						border-left: 20rpx solid #F3D5CE;
-						position: absolute;
-						bottom: -16rpx;
-						left: 0;
-					}
-				}
-			}
-
-			/* 发出的消息 */
-			&.push {
-				/* 主轴为水平方向，起点在右端。使不修改DOM结构，也能改变元素排列顺序 */
-				flex-direction: row-reverse;
-
-				.msg-address {
-					margin-right: 32rpx;
-				}
-
-				.content {
-					margin-right: 32rpx;
-					background-color: $base-color;
-					color: #fff;
-					display: flex;
-					align-items: center;
-					margin-bottom: 16rpx;
-					position: relative;
-
-					&::after {
-						content: '';
-						display: block;
-						width: 0;
-						height: 0;
-						border-top: 16rpx solid transparent;
-						border-bottom: 16rpx solid transparent;
-						border-right: 20rpx solid $base-color;
-						border-radius: 2rpx;
-						position: absolute;
-						bottom: -16rpx;
-						right: 0;
-					}
-				}
-			}
-		}
-
-		.flex_col {
-			display: flex;
-			flex-direction: row;
-			flex-wrap: nowrap;
-			justify-content: flex-start;
-			align-items: flex-end;
-			align-content: flex-end;
-		}
-	}
-
-	.loading {
-		font-size: 26rpx;
-		color: #999999;
-		text-align: center;
-		position: absolute;
-		bottom: 50%;
-		left: 50%;
-		transform: translate(-50%, 50%);
-	}
-
-	.page-load {
-		line-height: 80rpx;
-		font-size: 26rpx;
-		color: #999999;
-		text-align: center;
-	}
-
-	.chat-coustom-pic {
-		width: 475rpx;
-		// height: 120rpx;
-		border-radius: 16rpx;
-		box-shadow: 0px 2px 20px 0px rgba(97, 56, 203, 0.04);
-		margin-left: 140rpx;
-		margin-bottom: -60rpx;
-		margin-top: 20rpx;
-	}
-
-	.chat-coustom-card {
-		width: 470rpx;
-		border-radius: 16rpx;
-		background-color: #fff;
-		box-shadow: 0px 2px 20px 0px rgba(97, 56, 203, 0.04);
-		margin-left: 145rpx;
-		margin-bottom: -60rpx;
-		margin-top: 20rpx;
-
-		.chat-coustom-card-title {
-			font-size: 24rpx;
-			color: #646364;
-			padding: 80rpx 40rpx 28rpx 40rpx;
-		}
-
-		.chat-coustom-card-content {
-			font-family: siyuan;
-			font-size: 40rpx;
-			color: #000000;
-			padding: 0rpx 40rpx 114rpx 40rpx;
-		}
-	}
+<style lang="scss">
+	@import "@/static/HM-chat/css/style.scss";
 </style>

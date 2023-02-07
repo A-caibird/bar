@@ -52,12 +52,13 @@
 				})
 			}
 		},
-		
+
 		globalData: {
 			platform: '', // 平台
 			msgPath: '', // 推送消息路径；
 			passwordInputTimes: 0,
-			baseUrl: 'https://erp.patixiu.com',
+			// baseUrl: 'https://erp.patixiu.com',
+            baseUrl: 'http://192.168.0.109:8080',
 			authorized:  $storage.getLoginToken() ? true : false, //是否登录
 			// 用户识别码
 			token: $storage.getLoginToken(),
@@ -78,7 +79,7 @@
 	/*每个页面公共css */
 	/* #ifdef APP-VUE || H5 */
 	@import "uview-ui/index.scss";
-	
+
 	@import url("/iconfont/iconfont.css");
 	@font-face {
 		font-family: 'iconfont';
@@ -90,7 +91,7 @@
 			url('//at.alicdn.com/t/font_2349706_qz9s7frz0ln.ttf') format('truetype'),
 			url('//at.alicdn.com/t/font_2349706_qz9s7frz0ln.svg#iconfont') format('svg');
 	}
-	
+
 	page {
 		width: 100%;
 		height: 100%;
@@ -102,7 +103,7 @@
 			background: #191C3F;
 		}
 	}
-	
+
 	::-webkit-scrollbar {
 		display: none;
 		width: 0 !important;
@@ -115,5 +116,5 @@
 		color: #B4B2CF;
 	}
 	/* #endif */
-	
+
 </style>
