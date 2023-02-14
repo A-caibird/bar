@@ -26,7 +26,7 @@
 		data() {
 			return {
 				triggered: false,
-				url: '/api/user/revenueRecordList',
+				url: '/api/user/revenueRecordList',//收益记录
 				testTResult: { //测试数据
 					"msg": "success",
 					"code": 0,
@@ -113,7 +113,7 @@
 				justify-content: space-between;
 				font-size: 30rpx;
 				color: #FFFFFF;
-				
+
 			}
 			.record-time{
 				font-size: 24rpx;

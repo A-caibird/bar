@@ -106,7 +106,7 @@
 				<view class="btn">发送</view>
 			</view>
 		</view>
-		<!-- 录音UI效果 -->
+
 	</view>
 </template>
 <script>
@@ -114,9 +114,9 @@
 	import $date from "@/utils/date.js";
 	import wsRequest from "@/common/websocket.js";
 	var btnAvaliable = true;
-	    var websocketObj = null;
-	    var waitSendMsg = []; //待发送图片
-	    var waitSendVideoMsg = []; //待发送视频
+	var websocketObj = null;
+	var waitSendMsg = []; //待发送图片
+	var waitSendVideoMsg = []; //待发送视频
 
 	export default {
 		data() {
@@ -124,23 +124,17 @@
 				pageNumber: 1,
 				pageSize: 20,
 				nomore: false,
-				//文字消息
-				textMsg: "",
-				//消息列表
-				isHistoryLoading: false,
-				scrollAnimation: false,
-				scrollTop: 0,
-				scrollToView: "",
-				msgList: [],
-				msgImgList: [],
-				// 抽屉参数
-				popupLayerClass: "",
-				// more参数
-				hideMore: true,
-				//表情定义
-				hideEmoji: true,
-				emojiList: config.emojiList,
-				socketTask: "",
+				textMsg: "",//底部输入框中的文字
+				isHistoryLoading: false,//默认不加载历史消息
+				scrollAnimation: false,//scrollView组件的内置属性，是否需要滚动动画，scroll-with-animation
+				scrollTop: 0,//设置竖向滚动条位置
+				scrollToView: "",//值应为某子元素id（id不能以数字开头）。设置哪个方向可滚动，则在哪个方向滚动到该元素，是scrollView组件的默认属性
+				msgList: [],//需要显示在界面上的消息列表
+				msgImgList: [],//需要图片一张张多张的预览，所以需要一个数组
+				popupLayerClass: "",	// 抽屉参数
+				hideMore: true,// more参数
+				hideEmoji: true,	//表情定义
+				emojiList: config.emojiList,//表情列表
 				kefuId: "", //客服id
 				avatar: "", //客服头像
 				nickname: "", //客服昵称
@@ -152,12 +146,12 @@
 			this.scrollToView = "";
 			uni.closeSocket();
 			uni.$off('reconnectWebSocket');
-			// waitSendMsg = []; //清空待发送图片
-			// waitSendVideoMsg = []; //清空待发送视频
+			waitSendMsg = []; //清空待发送图片
+			waitSendVideoMsg = []; //清空待发送视频
 		},
 		onLoad(options) {
 			this.kefuId = options.id || ''
-			this.clubId = options.clubId;
+			this.clubId = options.clubId || ''
 
 			this.getMsgList(() => {
 				// 滚动到底部
@@ -173,9 +167,9 @@
 
 			this.openConnection();
 			uni.onSocketMessage((res) => {
-				console.log("on message", res.data);
-                let data = JSON.parse(res.data);
-                this.screenMsg(data);
+				// console.log("on message", res.data);
+				let data = JSON.parse(res.data);
+				this.screenMsg(data);
 
 
 			});
@@ -212,19 +206,17 @@
 			this.scrollTop = 9999999;
 		},
 		methods: {
-
 			// 连接webSocket
 			openConnection() {
 				var s = Date.parse(new Date());
 				var t = getApp().globalData.token;
-				var url = "ws://192.168.0.109:8080/websocket/messageHandler?username=user@"+t+"@" + s;
-				console.log(url)
+				var url = "ws://192.168.0.109:8080/websocket/messageHandler?username=user@" + t + "@" + s;
+
 				uni.showLoading({
 					title: '连接中'
 				})
 				websocketObj = new wsRequest(
-					url,
-					0, () => {
+					url, 0, () => {
 						uni.hideLoading();
 					}
 				);
@@ -242,10 +234,8 @@
 			},
 			// 接受消息(筛选处理)
 			screenMsg(msg) {
-				// console.log("收到消息了")
-				// console.log(msg)
-				uni.vibrateLong();
-				// 用户消息
+
+				uni.vibrateLong();//震动一下
 				switch (msg.type) {
 					case "text":
 						this.addTextMsg(msg);
@@ -255,13 +245,12 @@
 						break;
 				}
 
-
 				this.$nextTick(function() {
 					// 滚动到底
 					this.scrollToView = "msg" + msg.id;
 				});
 			},
-			//触发滑动到顶部(加载历史信息记录)
+			//触发滑动到顶部(加载历史信息记录)，scroll-view自带的功能
 			loadHistory() {
 				if (this.nomore) {
 					return;
@@ -286,32 +275,34 @@
 					});
 				}, 1000);
 			},
+
 			// 加载初始页面消息
 			getMsgList(callback) {
-				var s = Date.parse(new Date());
 				this.$u.api.chatMessageList({
 						pageNumber: this.pageNumber,
 						pageSize: this.pageSize,
 						clubId: this.clubId || '',
-						timestamp: s
+						timestamp: Date.parse(new Date())
 					})
 					.then((res) => {
-						// console.log("拉历史记录")
-						// console.log(res)
-						// if (this.pageNumber >= res.data.totalPages) {
-						// 	this.nomore = true;
-						// }
 						this.isHistoryLoading = false;
 						let list = res.data.list;
 						for (let item of list) {
 							this.msgList.unshift(item);
 						}
 						// 获取消息中的图片,并处理显示尺寸
-						for (let item of list) {
-							if (item.type === "image" && item.content) {
-								this.msgImgList.push(item.content);
-							}
-						}
+						// for (let item of list) {
+						// 	if (item.type === "image" && item.content) {
+						// 		this.msgImgList.push(item.content);
+						// 	}
+						// }
+            // 获取消息中的图片,并处理显示尺寸
+            for(let i=0;i<list.length;i++){
+              if(list[i].type=='user'&&list[i].msg.type=="img"){
+                list[i].msg.content = this.setPicSize(list[i].msg.content);
+                this.msgImgList.push(list[i].msg.content.url);
+              }
+            }
 						if (callback) {
 							callback();
 						}
@@ -356,8 +347,10 @@
 					sizeType: ["original", "compressed"], //可以指定是原图还是压缩图，默认二者都有
 					success: (res) => {
 						for (let i = 0; i < res.tempFilePaths.length; i++) {
-							this.$api.uploadFile(res.tempFilePaths[i]).then((e) => {
-								this.sendMsg(JSON.parse(e).url, "image");
+							this.$u.api.uploadFile(res.tempFilePaths[i]).then((e) => {
+								console.log("图片上传成功")
+								console.log(e)
+								//this.sendMsg(JSON.parse(e).url, "image");
 							});
 						}
 					},
@@ -393,7 +386,7 @@
 				this.sendMsg(content, "text");
 				this.textMsg = ""; //清空输入框
 			},
-			// 发送消息
+			// 发送文字消息
 			sendMsg(content, type) {
 				var payloadStr = "";
 				if (type == "text") {
@@ -406,22 +399,36 @@
 					staffId: this.kefuId,
 				};
 				this.$u.api.chatMessageSend(params).then((res) => {
-					this.screenMsg(res.data);
+					//this.screenMsg(res.data);
 				});
 			},
 			// 添加文字消息到列表
 			addTextMsg(msg) {
 				this.msgList.push(msg);
 			},
-			// 添加图片消息到列表
+
+      //处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
+      setPicSize(content){
+        // 让图片最长边等于设置的最大长度，短边等比例缩小，图片控件真实改变，区别于aspectFit方式。
+        let maxW = uni.upx2px(350);//350是定义消息图片最大宽度
+        let maxH = uni.upx2px(350);//350是定义消息图片最大高度
+        if(content.w>maxW||content.h>maxH){
+          let scale = content.w/content.h;
+          content.w = scale>1?maxW:maxH*scale;
+          content.h = scale>1?maxW/scale:maxH;
+        }
+        return content;
+      },
+
+      // 添加图片消息到列表
 			addImgMsg(msg) {
-				this.msgImgList.push(msg.content);
-				this.msgList.push(msg);
+				// this.msgImgList.push(msg.content);
+				// this.msgList.push(msg);
+        msg.msg.content = this.setPicSize(msg.msg.content);
+        this.msgImgList.push(msg.msg.content.url);
+        this.msgList.push(msg);
 			},
-			// 添加系统文字消息到列表
-			addSystemTextMsg(msg) {
-				this.msgList.push(msg);
-			},
+
 			// 预览图片
 			showPic(msg) {
 				uni.previewImage({
@@ -436,6 +443,6 @@
 		},
 	};
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 	@import "@/static/HM-chat/css/style.scss";
 </style>

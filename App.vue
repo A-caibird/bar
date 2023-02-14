@@ -1,6 +1,6 @@
 <script>
 	import $storage from '@/common/storage.js'
-	import init from '@/utils/init/index.js'
+	import init from '@/utils/init/index.js'//聊天、推送、上传的一些工具函数
 	import checkLocationPermision from '@/utils/checkLocationPermision.js'
 	import $store from '@/store/index.js'
 	export default {

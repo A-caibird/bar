@@ -16,9 +16,9 @@
 				<location-btn></location-btn>
 			</block>
 		</mescroll-uni>
-		
+
 	</view>
-	
+
 </template>
 
 <script>
@@ -26,15 +26,15 @@
 	//混入
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
 	import MescrollMoreItemMixin from "@/components/mescroll-uni/mixins/mescroll-more-item.js";
-	
+
 	//组件
 	import MescrollUni from '@/components/mescroll-uni/mescroll-uni.vue'
 
 	import findItem from '@/components/find-item/find-item.vue';
 	import dynamicItem from '@/components/nearby-club-dynamic/nearby-club-dynamic.vue'
-	
+
 	import locationBtn from '@/components/location-btn/location-btn.vue';
-	
+
 	import location from '@/mixins/location.js';
 	export default{
 		mixins: [MescrollMixin,MescrollMoreItemMixin,location], // 注意此处还需使用MescrollMoreItemMixin (必须写在MescrollMixin后面)
@@ -69,10 +69,10 @@
 						size: 10 // 每页数据的数量
 					},
 					noMoreSize: 4, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看; 默认5
-					
+
 				},
-				
-				url: '/api/dynamic/myAttentionUserDynamic',
+
+				url: '/api/dynamic/myAttentionUserDynamic',//关注的动态
 				params:{
 					lng:  app.globalData.location.lng, //经度
 					lat: app.globalData.location.lat,
@@ -83,7 +83,7 @@
 			}
 		},
 		computed:{
-		
+
 		},
 		methods:{
 			reportTap(info){
@@ -93,7 +93,7 @@
 				this.$emit('videoPlayTap', e);
 			},
 			toTopClick(){
-				return this.$refs.mescrollRef ? this.$refs.mescrollRef.toTopClick() : "" 
+				return this.$refs.mescrollRef ? this.$refs.mescrollRef.toTopClick() : ""
 			},
 			refreshScrll(){
 				this.mescroll.resetUpScroll()

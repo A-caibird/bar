@@ -6,7 +6,7 @@
 				<recruitment :info="info"></recruitment>
 			 </view>
 		 </view>
-		
+
 	</mescroll-uni>
 
 </template>
@@ -19,8 +19,6 @@
 
 	//组件
 	import MescrollUni from '@/components/mescroll-uni/mescroll-uni.vue'
-
-
 	import recruitment from '@/components/recruitment-item/recruitment-item.vue'
 	export default {
 		mixins: [MescrollMixin, MescrollMoreItemMixin], // 注意此处还需使用MescrollMoreItemMixin (必须写在MescrollMixin后面)

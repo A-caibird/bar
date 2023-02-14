@@ -1,3 +1,6 @@
+/**
+ * 暂时好像目前没看到在用了
+ */
 import $store from '@/store/index.js'
 import $storage from '@/common/storage.js'
 import $chat from './index.js'
@@ -6,13 +9,13 @@ var vmm = ''
 async function pushMessage(msg){
 	console.log(msg)
 	let message = msg.content
-	
+
 	let type='text'
 	if(msg.type == 1) {
 		message = '[图片]'
 		type = 'img'
 	}
-	 
+
 	// if(msg.type == 2) {
 	// 	return
 	// }
@@ -33,7 +36,7 @@ function msgArrived(res){
 		msg.status = 2
 		chatUserList = $chat.addChatUserListFromStorage(chatToken,msg)
 		uni.$emit('chat-user-list-refresh',chatUserList) //聊天列表的刷新
-		msg = $chat.setChatListFromStorage(chatToken,msg) 
+		msg = $chat.setChatListFromStorage(chatToken,msg)
 		uni.$emit('chat-msg-push',msg) //聊天记录的刷新
 		uni.$emit('information_listener')
 	} else if(msg.type === 1) {
@@ -73,45 +76,45 @@ function msgArrived(res){
 				uni.$emit('information_listener')
 			}
 		});
-						
+
 	} else if(msg.type === 2 ) {
 		msg.status = 2
 		chatUserList = $chat.addChatUserListFromStorage(chatToken,msg)
 		uni.$emit('chat-user-list-refresh',chatUserList) //聊天列表的刷新
-		msg = $chat.setChatListFromStorage(chatToken,msg) 
+		msg = $chat.setChatListFromStorage(chatToken,msg)
 		uni.$emit('chat-msg-push',msg) //聊天记录的刷新
 		uni.$emit('information_listener')
 	} else if(msg.type === 3 ) {
 		msg.status = 2
 		chatUserList = $chat.addChatUserListFromStorage(chatToken,msg)
 		uni.$emit('chat-user-list-refresh',chatUserList) //聊天列表的刷新
-		msg = $chat.setChatListFromStorage(chatToken,msg) 
+		msg = $chat.setChatListFromStorage(chatToken,msg)
 		uni.$emit('chat-msg-push',msg) //聊天记录的刷新
 		uni.$emit('information_listener')
 	} else if(msg.type === 4 ) {
 		msg.status = 2
 		chatUserList = $chat.addChatUserListFromStorage(chatToken,msg)
 		uni.$emit('chat-user-list-refresh',chatUserList) //聊天列表的刷新
-		msg = $chat.setChatListFromStorage(chatToken,msg) 
+		msg = $chat.setChatListFromStorage(chatToken,msg)
 		uni.$emit('chat-msg-push',msg) //聊天记录的刷新
 		uni.$emit('information_listener')
 	} else if(msg.type === 5 ) {
 		msg.status = 2
 		chatUserList = $chat.addChatUserListFromStorage(chatToken,msg)
 		uni.$emit('chat-user-list-refresh',chatUserList) //聊天列表的刷新
-		msg = $chat.setChatListFromStorage(chatToken,msg) 
+		msg = $chat.setChatListFromStorage(chatToken,msg)
 		uni.$emit('chat-msg-push',msg) //聊天记录的刷新
 		uni.$emit('information_listener')
 	} else if(msg.type === 6 ) {
 		msg.status = 2
 		chatUserList = $chat.addChatUserListFromStorage(chatToken,msg)
 		uni.$emit('chat-user-list-refresh',chatUserList) //聊天列表的刷新
-		msg = $chat.setChatListFromStorage(chatToken,msg) 
+		msg = $chat.setChatListFromStorage(chatToken,msg)
 		uni.$emit('chat-msg-push',msg) //聊天记录的刷新
 		uni.$emit('information_listener')
 	}
 }
-	
+
 function msgDelivered(res){
 	let chatToken = $storage.getUserInfo().chatToken
 	let msg = JSON.parse(JSON.stringify(res))
@@ -151,13 +154,13 @@ function msgDelivered(res){
 				uni.$emit('chat-msg-push',msg)
 			}
 		});
-						
+
 	} else {
 		chatUserList = $chat.addChatUserListFromStorage(chatToken,msg)
 		uni.$emit('chat-user-list-refresh',chatUserList) //聊天列表的刷新
-		
+
 		msg = $chat.setChatListFromStorage($storage.getUserInfo().chatToken,msg)
-		
+
 		pushMessage(msg) //调取发送推送的接口
 		uni.$emit('chat-msg-push',msg)
 		if(msg.type==2||msg.type==3||msg.type==4) {
@@ -165,21 +168,21 @@ function msgDelivered(res){
 		}
 	}
 	console.log('发送消息: msgDelivered', msg);
-	
+
 }
 const init = function(vm){
 	vmm = vm
 	uni.$off('mqtt-arrived-msg',msgArrived)
 	uni.$off('mqtt-delivered-msg',msgDelivered)
-	
+
 	uni.$on('mqtt-arrived-msg',msgArrived)
 	uni.$on('mqtt-delivered-msg',msgDelivered)
-	
+
 	if($storage.getLoginToken()) {
 		// $store.commit('initMQTT',$storage.getUserInfo().chatToken)
-		
+
 		$store.commit('initGoEasy',JSON.stringify($storage.getUserInfo()));
 	}
-	
+
 }
 module.exports = init

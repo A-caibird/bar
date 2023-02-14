@@ -5,14 +5,14 @@ import {ajax} from '@/utils/ajax.js'
 
 const login = function (data, register = false) {
 	let {token,fillInformation,info} = data
-	
+
 	if(fillInformation){
 		getApp().globalData.authorized=true;
 		getApp().globalData.token = token
 		getApp().globalData.userInfo = info
 		$storage.setLoginToken(token)
 		$storage.setUserInfo(info)
-		
+
 		ajax('/api/user/hasCanUserPayPasswordCount',{},'GET').then(res => {
 			let count = res.data.count || 0;
 			console.log("count: " + count);
@@ -24,7 +24,7 @@ const login = function (data, register = false) {
 		// #ifdef APP-PLUS
 		// $store.commit('initMQTT',info.chatToken)
 		// #endif
-		uni.$emit('information_listener')
+		uni.$emit('information_listener')//触发全局的自定义事件
 		uni.$emit('push_listener')
 		$store.commit('initGoEasy', JSON.stringify(info))
 		if(register){
@@ -42,7 +42,7 @@ const login = function (data, register = false) {
 						$cross.applyPageMethod(beforePage, 'refreshPage');
 					}
 				}
-				
+
 				uni.navigateBack()
 			}
 		}
@@ -51,7 +51,7 @@ const login = function (data, register = false) {
 		uni.navigateTo({
 			url:'/pages/register/information' + `?token=${token}`
 		})
-	}	
+	}
 }
 module.exports = login
 

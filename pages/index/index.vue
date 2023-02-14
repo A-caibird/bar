@@ -64,10 +64,10 @@ import homePage from '@/components/tabbarPage/home.vue';
 import findPage from '@/components/tabbarPage/find.vue';
 import mePage from '@/components/tabbarPage/me.vue';
 import infoPage from '@/components/tabbarPage/info.vue';
-import tipsPop from '@/components/pop/tips.vue';
+import tipsPop from '@/components/pop/tips.vue';//年满18的提示，但是好像没用到
 import loginMixin from '@/mixins/loginConfirm.js'
 import $chat from '@/utils/chat/index.js'
-import reportPop from '@/components/pop/report.vue'
+import reportPop from '@/components/pop/report.vue'//举报用户
 var app = getApp();
 export default {
 	components: {
@@ -114,7 +114,7 @@ export default {
 			this.maskShow = false
 		}
 		this.loadingAnimalHandle();
-		
+
 		if(app.globalData.token) {
 			this.getPasswordInputTimes();
 			// #ifdef APP-PLUS
@@ -353,13 +353,13 @@ export default {
 					return
 				}
 				this.$refs.addDynamic.open()
-				return 
+				return
 			} else {
 				this.$refs.addDynamic.close()
 			}
 			this.current = e;
 			if(e==0) {
-				
+
 			}
 			if(e!=0){
 				this.$refs.home.hideEvent();
@@ -381,7 +381,7 @@ export default {
 					this.$refs.me.load()
 				})
 			}
-			
+
 		},
 	}
 };
@@ -396,7 +396,7 @@ export default {
 			position: relative;
 			display: flex;
 			flex-direction: column;
-			
+
 			.middle_box {
 				flex: 1;
 				min-width: 0;
@@ -412,7 +412,7 @@ export default {
 				height: 100%;
 				background: #191C3F;
 				opacity: 1;
-				transition: all 1s; 
+				transition: all 1s;
 				&.hidden{
 					opacity: 0;
 					z-index: -1;

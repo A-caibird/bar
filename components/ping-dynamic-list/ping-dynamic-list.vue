@@ -6,7 +6,7 @@
 		 	<dynamic :info="info"></dynamic>
 		 </block>
 	 </view>
-		
+
 	</mescroll-uni>
 
 </template>
@@ -19,8 +19,6 @@
 
 	//组件
 	import MescrollUni from '@/components/mescroll-uni/mescroll-uni.vue'
-
-
 	import dynamic from '@/components/dynamic-item/dynamic-item.vue'
 	export default {
 		mixins: [MescrollMixin, MescrollMoreItemMixin], // 注意此处还需使用MescrollMoreItemMixin (必须写在MescrollMixin后面)

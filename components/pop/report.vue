@@ -16,13 +16,12 @@
 </template>
 
 <script>
-	import shareJS from '@/utils/share.js'
 	export default {
 		props: {
 			isMask:{
 				type:Boolean,
 				default: true
-			}	
+			}
 		},
 		data() {
 			return {
@@ -160,6 +159,6 @@
 				}
 			}
 		}
-		
+
 	}
 </style>

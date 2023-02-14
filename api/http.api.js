@@ -68,7 +68,7 @@ const install = (Vue, vm) => {
 		fillInformationApi: (params) => vm.$u.post('/api/user/fillInformation', params), //填写用户信息
 		setClientId: (params) => vm.$u.post('/api/user/setClientId', params), //保证一个设备只发一条信息
 		getIsAppleAuditApi: (params) => vm.$u.get('/api/information/isAppleAudit', params), //获取苹果审核状态
-	
+
 		//酒吧列表
 		getClubTypeAPI: () => vm.$u.get('/api/club/clubTypeList'), //酒吧类型
 		getCitys: () => vm.$u.post('/api/club/getOpenedCities'), //所有开通城市
@@ -98,7 +98,7 @@ const install = (Vue, vm) => {
 		getYaoOrderApi: (params) => vm.$u.get('/api/order/canInviteOrder', params), //获取可以用来邀请的邀约订单列表
 		getPingOrderApi: (params) => vm.$u.get('/api/order/canPingOrder', params), //获取可以用来邀请的拼享订单列表
 		getCanOrderApi: (params) => vm.$u.get('/api/order/canUseOrder', params), //当前可用(邀约拼享)订单
-		
+
 		//酒吧招聘
 		getJobDetail: (id) => vm.$u.post('/api/recruitment/view', {
 			id
@@ -121,7 +121,7 @@ const install = (Vue, vm) => {
 		addWinePayApi: (params) => vm.$u.post('/api/order/addWinePay', params), //加酒水付款
 
 		//酒吧订单
-		canChangeChekcApi: (params) =>  vm.$u.get('/api/order/canChangeDate', params), // 是否能修改订单 
+		canChangeChekcApi: (params) =>  vm.$u.get('/api/order/canChangeDate', params), // 是否能修改订单
 		changeOrderAPI: (params) => vm.$u.get('/api/order/changeOrder', params), // 修改订单
 		checkUnusedDrinksAPI: (params) => vm.$u.get('/api/order/hasNotUseOrder', params), // 是否存在未使用的酒水
 		creatOrderBillAPI: (params) => vm.$u.post('/api/order/bill', params), //创建订单发票
@@ -133,18 +133,18 @@ const install = (Vue, vm) => {
 		arriveOrderApi: (params) => vm.$u.post('/api/order/arrive', params), //到店
 		getEvalutaionApi: (params) => vm.$u.get('/api/order/canTextComment', params), //是否允许文字评论
 		commentOrderApi: (params) => vm.$u.post('/api/order/comment', params), //评价订单
-		
+
 		//邀约订单
 		getInviteOrderView: (params) => vm.$u.get('/api/order/inviteOrderView', params), //邀约订单详情
 		deleteYaoOrderApi: (params) => vm.$u.post('/api/order/deleteInviteOrder', params), //删除邀约订单
-		hideYaoOrderApi: (params) => vm.$u.post('/api/order/inviteHide', params), //隐藏邀约订单
+		hideYaoOrderApi: (params) => vm.$u.post('/api/order/inviteHide', params), //隐藏已完成的邀约订单
 		yaoyueInviteApi: (params) => vm.$u.post('/api/order/inviteForOrderPaySuccess', params), //邀约别人
 		refuseYaoyueApi: (params) => vm.$u.post('/api/order/refuseInvite', params), //拒绝邀约邀请
 		agreeYaoyueApi: (params) => vm.$u.post('/api/order/agreeInvite', params), //同意邀约邀请
 		refundInviteOrderApi: (params) => vm.$u.post('/api/order/orderRefund', params), //退款
 		quitInviteOrderApi: (params) => vm.$u.post('/api/order/quitInviteOrder', params), //退出邀约
 		getNotPayInviteOrderSizeApi: (params) => vm.$u.post('/api/order/getNotPayInviteOrderSize', params), //未付款邀约订单数
-		
+
 		//拼享订单
 		pingInviteApi: (params) => vm.$u.post('/api/order/sendOrderPingInfo', params), //拼享单邀请别人
 		refusePingInviteApi: (params) => vm.$u.post('/api/order/disAgreeOrderPingInfo', params), // 拒绝拼享单邀请
@@ -161,18 +161,18 @@ const install = (Vue, vm) => {
 		agreePingJoinApi: (params) => vm.$u.post('/api/order/agreeApplyJoinOrder', params), //同意他人加入拼享订单
 		refusePingJoinAPI: (params) => vm.$u.post('/api/order/disagreeApplyJoinOrder', params), //拒绝他人加入拼享订单
 		getNotPayJoinOrderSizeApi: (params) => vm.$u.post('/api/order/getNotPayJoinOrderSize', params), //未付款拼享订单数
-		
+
 		//加单酒水
 		getAddWineShoppingCart: (params) => vm.$u.get('/api/order/addWineView', params), //获取购物车
 		addWineEmptyApi: (params) => vm.$u.post('/api/order/addWineEmpty', params), //清空购物车
 		addWineApi: (params) => vm.$u.post('/api/order/addWine', params), //添加商品到购物车
 		addWineApiDeleteApi: (params) => vm.$u.post('/api/order/addWineDelete', params), //减一商品购物车
-		
+
 		//取酒
 		getFetchWineListApi: (params) => vm.$u.get('/api/order/fetchWineList', params), //获取当前订单酒吧可以取酒的列表
 		fetchWineApi: (params) => vm.$u.post('/api/order/fetchWine', params), //取酒
-		
-		
+
+
 		//聊天消息
 		setClientIdApi: (params) => vm.$u.post('/api/user/setClientId', params), //保证一个设备只发一条信息
 		sendChatPush: (params) => vm.$u.post('/api/chat/sendChatInfo', params), //发送聊天信息
@@ -204,12 +204,12 @@ const install = (Vue, vm) => {
 		getPasswordInputTimesAPI: () => vm.$u.get('/api/user/hasCanUserPayPasswordCount'), //获取用户今天密码可输入次数
 		feedBackSaveApi: (params) => vm.$u.post('/api/feedBack/save',params), //反馈提交
 		getCommonProblemListApi: (params) => vm.$u.get('/api/feedBack/feedBackTitleList',params), //帮助中心问题
-		
+
 		//商家入驻
 		admissionApplicationSaveApi: (params) => vm.$u.post('/api/admissionApplication/save',params), //入驻申请
 
-		
-	
+
+
 		//我的收藏
 		myCollectionApi: (params) => vm.$u.get('/api/user/myCollect', params), //我的收藏
 
@@ -230,7 +230,7 @@ const install = (Vue, vm) => {
 		getWineCoinWeChatPaymentApi: (params) => vm.$u.get('/api/payment/wechatPay', params), //获取微信支付支付信息
 		getWineCoinAliPayPaymentApi: (params) => vm.$u.get('/api/payment/aliPay', params), //获取支付宝支付支付信息
 		getCoinRechargeListApi: (params) => vm.$u.get('/api/user/coinRechargeList', params), //充值选项列表
-		
+
 		//个人动态
 		getMyDynamicListApi: (params) => vm.$u.post('/api/dynamic/myPublishList', params), //个人动态
 		sendGiftApi: (params) => vm.$u.post('/api/dynamic/sendGift', params), //赠送礼物 弹窗
@@ -269,15 +269,15 @@ const install = (Vue, vm) => {
 		//会员中心
 		getMemberLevelListApi: (params) => vm.$u.get('/api/memberLevel/list', params), //会员等级列表
 		getMemberInfoApi: (params) => vm.$u.get('/api/user/memberInfo', params), //会员信息
-		
+
 		//酒库详情
 		getSaveWineViewApi: (params) => vm.$u.get('/api/saveWine/view', params), //酒库详情
-		
+
 		getAboutUs: () => vm.$u.post('/api/information/aboutUs'), //关于我们
 		getCredit: () => vm.$u.post('/api/information/creditRules'), //信用规则
 		platformActivityDetailApi: (id) => vm.$u.post('/api/platformActivity/view', {id}), //平台活动详情
-		
-		
+
+
 		chatMessageSend: (params) => vm.$u.post('/api/chatMessage/sendToCustomStaff', params), //给客服发送消息
 		chatMessageList: (params) => vm.$u.post('/api/chatMessage/historyListByCustomStaff', params), //获取历史聊天记录
 

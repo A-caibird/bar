@@ -148,16 +148,16 @@
 </template>
 
 <script>
-	import evaluate from '@/components/evaluate-item/evaluate-item.vue'
-	import clubFooter from '@/components/club-footer/club-footer.vue'
-	import selfRate from '@/components/self-rate/self-rate.vue'
-	import certPop from '@/components/pop/certification.vue'
-	import pingDynamicList from '@/components/ping-dynamic-list/ping-dynamic-list.vue'
-	import pingActivityList from '@/components/ping-activity-list/ping-activity-list.vue'
-	import pingRecruitmentList from '@/components/ping-recruitment-list/ping-recruitment-list.vue'
+	import evaluate from '@/components/evaluate-item/evaluate-item.vue'//整一个评价item组件
+	import clubFooter from '@/components/club-footer/club-footer.vue'//最底部的一行
+	import selfRate from '@/components/self-rate/self-rate.vue'//评价的星星
+	import certPop from '@/components/pop/certification.vue'//实名认证的提示
+	import pingDynamicList from '@/components/ping-dynamic-list/ping-dynamic-list.vue'//动态列表item组件
+	import pingActivityList from '@/components/ping-activity-list/ping-activity-list.vue'//活动列表item组件
+	import pingRecruitmentList from '@/components/ping-recruitment-list/ping-recruitment-list.vue'//招聘
 	import appleAudit from '@/mixins/apple-audit.js'
 	import loginMixins from '@/mixins/loginConfirm.js'
-	import bannerList from '@/components/common-banner/common-banner.vue'
+	import bannerList from '@/components/common-banner/common-banner.vue'//带有视频和图片的轮播组件
 	var app = getApp();
 	export default {
 		mixins: [appleAudit, loginMixins],
@@ -230,7 +230,7 @@
 			}
 		},
 		onPageScroll: function() {
-			let vm = this;		
+			let vm = this;
 			this.$u.getRect('.classify_box').then(res => {
 				let top = res.top;
 				if (top <= this.statusBarHeight) {
@@ -376,7 +376,7 @@
 						break;
 					case 'book': { // 订座
 						this.$storage.setStorageSync('clubImg', clubImg);
-						this.$u.route('/pages/club/consumption/seat', {
+						this.$u.route('/pages/club/consumption/seat', {//开始跳到订座页面
 							clubId: this.clubId,
 							clubName: this.clubInfo.name,
 							clubSubTitle: this.clubInfo.subtitle,
@@ -592,7 +592,7 @@
 
 			.startBar_box {
 				width: 100%;
-				height: var(--status-bar-height); //状态栏高度			
+				height: var(--status-bar-height); //状态栏高度
 			}
 
 			.custom_nav {

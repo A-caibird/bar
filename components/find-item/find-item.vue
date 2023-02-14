@@ -76,7 +76,7 @@
 			<view class="club_labels" v-if="info.labelList.length > 0">
 				<block v-for="(item, index) in info.labelList" :key="index">
 					<view class="commom_label"> <text>{{item}}</text> </view>
-				</block>	
+				</block>
 			</view>
 			<view class="feature_box" :class="{'right': personType}">
 				<view style="display: flex;">
@@ -95,7 +95,7 @@
 					</view>
 					<view class="common_item hideMarginRight" @tap.stop="$u.throttle(shareToWeChatHandle)"><image src="/static/imgs/mine/forward.png" mode=""></image></view>
 				</view>
-				
+
 				<!-- <view style="display: flex;" v-if="!info.myself&&showPercent">
 					<view class="feature_btn" style="margin-right: 38rpx;" @tap.stop="showYaoyue">
 						<image src="/static/imgs/common/club-white.png"></image>
@@ -112,7 +112,7 @@
 						<text>尬酒</text>
 					</view>
 				</view>
-			
+
 			</view>
 		</view>
 	</view>
@@ -127,7 +127,7 @@
 		},
 		mixins:[loginMixins],
 		props:{
-			info: {
+			info: {//动态的数据库item的一个数据
 				type: Object,
 				default: null
 			},
@@ -135,15 +135,15 @@
 				type:String,
 				default:'follow',
 			},
-			showPercent:{
+			showPercent:{//礼物图标是否显示
 				type:Boolean,
 				default:false,
 			},
-			userShow:{
+			userShow:{//整个用户头像那行是否显示
 				type: Boolean,
 				default: true
 			},
-			personType: {
+			personType: {//控制中间那个样式
 				type: Boolean,
 				default: false
 			}
@@ -244,7 +244,7 @@
 			showPing(){
 				this.$emit('showPing',this.info)
 			},
-			
+
 		}
 	}
 </script>
@@ -267,12 +267,12 @@
 				border-radius: 18rpx;
 				margin-left: 20rpx;
 				background: linear-gradient(148deg, #7341B9 0%, #333EC2 100%);
-			
+
 				&>image {
 					height: 16rpx;
 					width: 18rpx;
 				}
-			
+
 				&>text {
 					font-size: 20rpx;
 					color: #FFFFFF;
@@ -286,7 +286,7 @@
 					height: 74rpx;
 					width: 74rpx;
 					border-radius: 50%;
-					
+
 				}
 			}
 			.header_right{
@@ -339,7 +339,7 @@
 					}
 				}
 			}
-			
+
 		}
 		.club_header{
 			width: 100%;
