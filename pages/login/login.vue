@@ -96,11 +96,12 @@
 				}
 			}
 		},
+    //在实例初始化之后，数据观测(data observer)和 event/watcher 事件配置之前被调用，但是目前看起来好像没啥用了
 		beforeCreate() {
 			// #ifdef APP-PLUS
 			plus.screen.lockOrientation('portrait-primary'); //锁死屏幕方向为竖屏
 			// #endif
-			
+
 		},
 		onLoad:function(options){
 			if (options.data) {
@@ -139,7 +140,7 @@
 						wechatNickName:params.wechatNickName,
 					})
 				}
-			},	
+			},
 			tapWXLogin(){
 				if(!this.isSelect){
 					this.$u.toast('请勾选爬梯秀用户协议')
@@ -154,7 +155,7 @@
 							provider: 'weixin',
 							success: function(infoRes) {
 								// console.log(infoRes);
-								
+
 								let params = {
 									openId:res.authResult.openid,
 									wechatNickName : infoRes.userInfo.nickName,
@@ -169,19 +170,19 @@
 								console.log(err);
 							}
 						});
-						
-				
-						
+
+
+
 					},
 					fail(err) {
 						vm.$toast.text('微信登录失败！')
 						console.log(err);
 					}
 				})
-				
+
 			},
 			// 登录事件 $u.throttle() 节流防抖处理
-			loginHandle: function(){ 
+			loginHandle: function(){
 				let params = {
 					phone: this.phone,
 					password: this.passText,
@@ -190,7 +191,7 @@
 					// #endif
 				}
 				let phoneCheck = this.$u.test.mobile(params.phone)
-			
+
 				if(!phoneCheck){
 					this.$u.toast('请输入正确的手机号')
 					return;
@@ -202,7 +203,7 @@
 				if(!this.isSelect){
 					this.$u.toast('请勾选爬梯秀用户协议')
 					return;
-				}	
+				}
 				uni.showLoading({
 					title: '加载中'
 				})
@@ -216,7 +217,7 @@
 					console.log(e)
 					uni.hideLoading();
 				})
-				
+
 			},
 			// 清空手机号
 			clearPhone: function() {

@@ -134,7 +134,7 @@ const install = (Vue, vm) => {
 		getEvalutaionApi: (params) => vm.$u.get('/api/order/canTextComment', params), //是否允许文字评论
 		commentOrderApi: (params) => vm.$u.post('/api/order/comment', params), //评价订单
 
-		//邀约订单
+		//邀约订单（就是尬酒）
 		getInviteOrderView: (params) => vm.$u.get('/api/order/inviteOrderView', params), //邀约订单详情
 		deleteYaoOrderApi: (params) => vm.$u.post('/api/order/deleteInviteOrder', params), //删除邀约订单
 		hideYaoOrderApi: (params) => vm.$u.post('/api/order/inviteHide', params), //隐藏已完成的邀约订单

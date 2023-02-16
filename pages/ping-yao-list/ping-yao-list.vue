@@ -21,8 +21,8 @@
 		<statementPop ref="statementPopRef" @btnTap="sendYaoyueStatement"></statementPop>
 		<view class="btn" @tap="$u.throttle(tapSubmit)" :class="{'active': selectIndex!=-1}" type="default">确认邀请</view>
 	</view>
-		
-	
+
+
 </template>
 
 <script>
@@ -49,6 +49,11 @@
 			load(){
 				this.getCanOrder()
 			},
+
+      /**
+       * 确认邀请
+       * @returns {*}
+       */
 			tapSubmit(){
 				if(this.selectIndex==-1) return this.$toast.text('请选择订单！')
 				let friendUserInfo = this.$u.deepClone(this.dynamicInfo)
@@ -74,6 +79,9 @@
 					}
 				}
 			},
+      /**
+       * 跳到打招呼页面
+       */
 			confirmEvent(){
 				let vm = this
 				let friendUserInfo = this.$u.deepClone(this.dynamicInfo)
@@ -89,7 +97,11 @@
 					}
 				})
 			},
-			cancelEvent(){
+
+      /**
+       * 跳到下单页面
+       */
+      cancelEvent(){
 				let vm = this
 				this.popShow = false;
 				let dynamicInfo = this.dynamicInfo;
@@ -111,6 +123,10 @@
 					delta:1
 				})
 			},
+      /**
+       * 选择某一个可以邀约的订单
+       * @param orderInfo
+       */
 			selectOrder({orderInfo}){
 				let index = this.list.findIndex(e=>{
 					return e.id == orderInfo.id
@@ -123,6 +139,11 @@
 					}
 				}
 			},
+      /**
+       * 确定发送邀约
+       * @param statement
+       * @returns {*}
+       */
 			sendYaoyueStatement(statement){
 				if(this.selectIndex==-1) return this.$toast.text('请选择订单！')
 				let friendUserInfo = this.$u.deepClone(this.dynamicInfo)
@@ -131,6 +152,13 @@
 				let orderInfo = this.list[this.selectIndex]
 				this.sendYaoyue(orderInfo,friendUserInfo, statement);
 			},
+      /**
+       * 确定发送邀约的处理
+       * @param orderInfo
+       * @param friendUserInfo
+       * @param statement
+       * @returns {Promise<void>}
+       */
 			async sendYaoyue(orderInfo, friendUserInfo, statement) {
 				$chatUtils.sendYaoyueInfo(this, orderInfo,friendUserInfo, statement, () => {
 					this.$toast.text('已发送邀约请求')
@@ -179,10 +207,10 @@
 					background: $uni-button-color;
 				}
 			}
-			
+
 		}
-		
+
 	}
-	
+
 </style>
 

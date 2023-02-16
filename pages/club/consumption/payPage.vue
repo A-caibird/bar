@@ -197,7 +197,7 @@
 						<image v-if="!tipsAgree" src="/static/imgs/common/no-select.png" ></image>
 						<image v-else src="/static/imgs/common/select2.png" ></image>
 					</view>
-					
+
 					<text>用户安全须知 <text style="color: #FFFFFF;" @tap="$u.throttle(goArticle('protocol'))">《爬梯秀用户协议》</text> </text>
 				</view>
 			</view>
@@ -251,13 +251,13 @@
 			this.allAmount = allAmount
 			this.type = type;
 		},
-		onBackPress(options) {  
-			if (options.from === 'navigateBack') {  
-				return false;  
-			}  
+		onBackPress(options) {
+			if (options.from === 'navigateBack') {
+				return false;
+			}
 			this.back(this.distance)
-			return true;  
-		},  
+			return true;
+		},
 		methods:{
 			// 邀约发信息
 			sendInfo(){
@@ -272,7 +272,7 @@
 				this.$u.route({
 					type:'back',
 					delta:delta
-				}) 
+				})
 			},
 			paymentHandle: function(data, callback){
 				let payParams = {};
@@ -323,7 +323,7 @@
 				if(this.type=='ping-order') { //拼享订单支付
 					data = this.$u.deepMerge(data,{orderId:this.params.orderId})
 					this.payOrder(data)
-				} 
+				}
 				if(this.type=='yao-order') { // 邀约订单支付
 					data = this.$u.deepMerge(data,{orderId:this.params.orderId})
 					this.payOrder(data)
@@ -339,7 +339,7 @@
 				if(this.type == 'ping-join-order-invite'){// 我邀请别人支付
 					data['orderId'] = this.params.orderId;
 					this.payPingJoinInvite(data)
-				} 
+				}
 			},
 			async payPingJoinInvite(params){
 				uni.showLoading({
@@ -364,7 +364,7 @@
 				} else if(code==1) {//订单不存在
 					setTimeout(()=>{
 						uni.reLaunch({
-							url: '/pages/index/index?type=share', 
+							url: '/pages/index/index?type=share',
 						})
 					},500)
 				} else if(code==2) {//已经付款
@@ -400,6 +400,12 @@
 					this.btnAvaliable = true;
 				}
 			},
+
+      /**
+       * 别人加入拼享支付
+       * @param params
+       * @returns {Promise<void>}
+       */
 			async payPingJoin(params){
 				uni.showLoading({
 					title: '加载中'
@@ -423,7 +429,7 @@
 				} else if(code==1) {//订单不存在
 					setTimeout(()=>{
 						uni.reLaunch({
-							url: '/pages/index/index?type=share', 
+							url: '/pages/index/index?type=share',
 						})
 					},500)
 				} else if(code==2) {//已经付款
@@ -478,11 +484,11 @@
 							url:'/pages/club/consumption/paySuccess',
 							params:{allAmount:this.allAmount,type:this.type,distance:this.distance},
 						})
-					})	
+					})
 				} else if(code==1) {//订单不存在
 					setTimeout(()=>{
 						uni.reLaunch({
-							url: '/pages/index/index', 
+							url: '/pages/index/index',
 						})
 					},500)
 				} else if(code==2) {//订单未支付
@@ -697,7 +703,7 @@
 						height: 50rpx;
 						margin-right: 20rpx;
 					}
-				}	
+				}
 				.cost-right {
 					& > image {
 						width: 30rpx;
@@ -709,19 +715,19 @@
 				@include verticalCenter();
 				justify-content: space-between;
 				margin-top: 60rpx;
-		
+
 				.cost-left {
 					font-size: 30rpx;
 					color: #ffffff;
 					@include verticalCenter();
-		
+
 					& > image {
 						width: 50rpx;
 						height: 50rpx;
 						margin-right: 20rpx;
 					}
 				}
-		
+
 				.cost-right {
 					& > image {
 						width: 30rpx;
@@ -778,7 +784,7 @@
 				color: #FFFFFF;
 				line-height: 46rpx;
 			}
-			
+
 		}
 	}
 	.footer_box{

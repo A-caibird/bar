@@ -1,6 +1,6 @@
-import $storage from '@/common/storage.js'
-import $store from '@/store/index.js'
-import $chatList from '@/utils/sqllite/chat-list/index.js'
+import $storage from '@/common/storage.js'//只是一些用户信息和登录令牌啥的
+import $store from '@/store/index.js'//vuex goeasy相关
+import $chatList from '@/utils/sqllite/chat-list/index.js'//数据库聊天相关的信息
 import uploadFile from '@/utils/upload';
 
 async function downloadAvatar(url) {
@@ -32,7 +32,7 @@ async function downloadAvatar(url) {
 }
 
 
-/* 
+/*
 	获取整个聊天对象列表 chatUserList
 	account 用户
  */
@@ -41,7 +41,7 @@ function getChatUserListFromStorage(account) {
 	return list
 }
 
-/* 
+/*
 	获取整个聊天对象列表 未读数
 	account 用户
  */
@@ -67,19 +67,17 @@ function getCanChat(account,friendId) {
 		if(list[index].canChat) {
 			canChat = true
 		}
-	} 
+	}
 	return canChat
 }
 
 
-/* 
+/*
 	添加聊天对象列表
  */
 function addChatUserListFromStorage(account,item) {
-	// console.log(account)
-	// console.log(item)
 	let canChat = false
-	
+
 	let list = $storage.getStorageSync(`chatUserList_${account}`) || []
 	let friendId = ''
 	let friendName = ''
@@ -115,8 +113,8 @@ function addChatUserListFromStorage(account,item) {
 		friendName = item.fromName
 		friendAvatar = item.fromAvatar
 		type = 'received'
-	} 
-	if(friendId=='') return 
+	}
+	if(friendId=='') return
 	item.friendId = friendId
 	item.friendName = friendName
 	item.avatar = friendAvatar
@@ -152,20 +150,20 @@ function addChatUserListFromStorage(account,item) {
 			item.notReadNum = 1
 			list.unshift(item)
 		}
-	} 
+	}
 	$storage.setStorageSync(`chatUserList_${account}`, list)
 	// console.log(list)
 	return list
 }
 
-/* 
+/*
 	添加聊天对象列表
  */
 function setChatUserListFromStorage(account,list) {
-	$storage.setStorageSync(`chatUserList_${account}`,list) 
+	$storage.setStorageSync(`chatUserList_${account}`,list)
 }
 
-/* 
+/*
 	根据userId修改聊天对象的昵称和头像
 	根据hasSave来判断头像是否保存下来
  */
@@ -233,8 +231,8 @@ function setChatUserListNameAvatarFromStorageByUserId(account,userId,name,avatar
 						}
 						resolve(avatar)
 					})
-					
-				} 
+
+				}
 			} else {//不相同
 				user.avatar = avatar
 				//下载头像
@@ -257,17 +255,17 @@ function setChatUserListNameAvatarFromStorageByUserId(account,userId,name,avatar
 					resolve(avatar)
 				})
 			}
-			
+
 		} else {
 			resolve(avatar)
 		}
-	
-	
+
+
 	})
-	
+
 }
 
-/* 
+/*
 	更新聊天记录
 	list 聊天记录列表
  */
@@ -282,7 +280,7 @@ function delChatUserItem(account,friendId) {
 	}
 }
 
-/* 
+/*
 	根据 time和type 分别更新数据库和缓存中的聊天记录
  */
 function upadteChatByTimeType(account,friendId,time,type,item) {
@@ -296,22 +294,22 @@ function upadteChatByTimeType(account,friendId,time,type,item) {
 	}
 	$chatList.setChatListAgreeStatusToDBByTimeType(account,friendId,time,type,item.agreeStatus)
 }
-/* 
+/*
 	获取整个聊天列表 chatList
  */
 function getChatListFromStorage(account,friendId) {
 	let list = $storage.getStorageSync(`chatList_${account}_${friendId}`) || []
 	return list
 }
-/* 
+/*
 	获取整个聊天列表 chatList
  */
 function removeChatListFromStorage(account,friendId) {
-	$storage.removeStorageSync(`chatList_${account}_${friendId}`) 
+	$storage.removeStorageSync(`chatList_${account}_${friendId}`)
 	console.log(getChatListFromStorage(account,friendId))
 }
 
-/* 
+/*
 	添加聊天列表
  */
 function setChatListFromStorage(account,item) {
@@ -322,8 +320,8 @@ function setChatListFromStorage(account,item) {
 	} else if(account==item.toId) {
 		friendId = item.fromId
 		type = 'received'
-	} 
-	if(friendId==-1) return 
+	}
+	if(friendId==-1) return
 	item.account = account
 	let list = $storage.getStorageSync(`chatList_${account}_${friendId}`) || []
 	list.push(item)
@@ -332,7 +330,7 @@ function setChatListFromStorage(account,item) {
 	return item
 }
 
-/* 
+/*
 	更新聊天记录
 	list 聊天记录列表
  */
@@ -342,7 +340,7 @@ function updateChatList(account,friendId,list) {
 
 
 
-/* 
+/*
 	获取聊天列表
 	先从storage中查找记录，若无记录，再从数据库中查找数据 15条一页
  */
@@ -378,7 +376,7 @@ async function saveChatList(account,friendId){
 		let newChatList = storageChatlist.slice(storageChatlist.length-15)
 		console.log(newChatList)
 		updateChatList(account,friendId,newChatList)
-		
+
 	}
 }
 
@@ -389,10 +387,16 @@ async function delChatList(account,friendId){
 	await $chatList.delChatListToDB(account,friendId)
 }
 
-/* 
-	发送数据之前 先需要保存数据到本地
+/*
+	发送数据之前 先需要保存数据到本地【实际有在用，之前goeasy模式下】
 	type: string (text文本，image图片，voice语音，address地址)
 	success, fail 成功，失败回调
+
+	$chat.sendMsg(userInfo, friendUserInfo, 'single', 'greet', {
+					content: msg,
+				})
+
+
  */
 function sendMsg(userInfo,friendUserInfo,chat_type,type, data, success, fail) {
 	let params = JSON.parse(JSON.stringify(data))
@@ -410,7 +414,7 @@ function sendMsg(userInfo,friendUserInfo,chat_type,type, data, success, fail) {
 	params.toAvatar = friendUserInfo.avatar
 	params.toUserId = friendUserInfo.userId
 	params.chatUserId = friendUserInfo.chatUserId
-	params.status = 0 
+	params.status = 0
 	params.read = 0
 	// console.log(params.chatUserId)
 	// 文本消息
@@ -418,7 +422,7 @@ function sendMsg(userInfo,friendUserInfo,chat_type,type, data, success, fail) {
 		// 文本保存完之后直接发送
 		params.type = 0;
 		// 同步阻塞存贮
-		
+
 		params.status = 2
 		// console.log(params)
 		uni.$emit('mqtt-delivered-msg', params)
@@ -426,8 +430,8 @@ function sendMsg(userInfo,friendUserInfo,chat_type,type, data, success, fail) {
 			msg: JSON.stringify(params),
 			chatId:friendUserInfo.chatToken
 		})
-	} 
-	
+	}
+
 	else if(type === 'image') {
 		// 删除一些不需要的字段
 		// 本地资源临时url
@@ -442,7 +446,7 @@ function sendMsg(userInfo,friendUserInfo,chat_type,type, data, success, fail) {
 			// console.log(localStr)
 			uni.$emit('mqtt-delivered-msg', localStr)
 			// 文件网络地址 发送给对方
-			
+
 			$store.commit('sendMsg', {
 				msg: JSON.stringify(params),
 				chatId:friendUserInfo.chatToken
@@ -450,12 +454,12 @@ function sendMsg(userInfo,friendUserInfo,chat_type,type, data, success, fail) {
 		}, function fail(err) {
 			params.status = 3
 		})
-		
+
 	} else if(type === 'yaoyue') {
 		// 文本保存完之后直接发送
 		params.type = 2;
 		// 同步阻塞存贮
-		
+
 		params.status = 2
 		// console.log(params)
 		uni.$emit('mqtt-delivered-msg', params)
@@ -467,7 +471,7 @@ function sendMsg(userInfo,friendUserInfo,chat_type,type, data, success, fail) {
 		// 文本保存完之后直接发送
 		params.type = 3;
 		// 同步阻塞存贮
-		
+
 		params.status = 2
 		// console.log(params)
 		uni.$emit('mqtt-delivered-msg', params)
@@ -479,7 +483,7 @@ function sendMsg(userInfo,friendUserInfo,chat_type,type, data, success, fail) {
 		// 文本保存完之后直接发送
 		params.type = 4;
 		// 同步阻塞存贮
-		
+
 		params.status = 2
 		// console.log(params)
 		uni.$emit('mqtt-delivered-msg', params)
@@ -491,11 +495,11 @@ function sendMsg(userInfo,friendUserInfo,chat_type,type, data, success, fail) {
 		// 文本保存完之后直接发送
 		params.type = 5
 		// 同步阻塞存贮
-		
+
 		params.status = 2
 		// console.log(params)
 		uni.$emit('mqtt-delivered-msg', params)
-		$store.commit('sendMsg', {
+		$store.commit('sendMsg', {//通过goeasy正式发出去
 			msg: JSON.stringify(params),
 			chatId:friendUserInfo.chatToken
 		})
@@ -503,7 +507,7 @@ function sendMsg(userInfo,friendUserInfo,chat_type,type, data, success, fail) {
 		// 文本保存完之后直接发送
 		params.type = 6
 		// 同步阻塞存贮
-		
+
 		params.status = 2
 		// console.log(params)
 		uni.$emit('mqtt-delivered-msg', params)
@@ -515,9 +519,9 @@ function sendMsg(userInfo,friendUserInfo,chat_type,type, data, success, fail) {
 }
 
 
-/* 
+/*
 	保存临时文件为本地文件
-	path: string, 临时文件url 
+	path: string, 临时文件url
  */
 function saveTempFileToLocal(path,account, type, success, error) {
 	// console.log(path);
@@ -530,7 +534,7 @@ function saveTempFileToLocal(path,account, type, success, error) {
 			// account 用户账号
 			rootDir.getDirectory(account, {create: true}, function(userDir) {
 				// 根据type类型进入或创建相应的文件夹
-				// vioce文件夹放音频 image文件夹放图片和地址的图片 
+				// vioce文件夹放音频 image文件夹放图片和地址的图片
 				let dirName = '';
 				switch (type){
 					case 1:
@@ -588,7 +592,7 @@ function saveAction(entry, dir, success) {
 
 
 module.exports={
-	
+
 	// 获取未读记录
 	getChatUserNotReadNum,
 	// 删除与某人的聊天记录
@@ -597,7 +601,7 @@ module.exports={
 	saveChatList,
 	// 获取聊天记录列表
 	getChatList,
-	// 保存临时文件 
+	// 保存临时文件
 	saveTempFileToLocal,
 	// 获取聊天对象存列表
 	getChatUserListFromStorage,
@@ -615,5 +619,5 @@ module.exports={
 	updateChatList,
 	upadteChatByTimeType,
 	getCanChat,
-	
+
 }

@@ -30,8 +30,8 @@
 									<rich-text :nodes="row.payload.text || ''"></rich-text>
 								</view>
 								<!-- 图片消息 -->
-								<view v-if="row.type == 'image'" class="bubble img" @tap="showPic(row.content)">
-									<image :src="row.content"> </image>
+								<view v-if="row.type == 'image'" class="bubble img" @tap="showPic(row.payload.url)">
+									<image :src="row.payload.url" mode="aspectFit"> </image>
 								</view>
 							</view>
 							<!-- 右-头像 -->
@@ -56,8 +56,8 @@
 									<rich-text :nodes="row.payload.text || ''"></rich-text>
 								</view>
 								<!-- 图片消息 -->
-								<view v-if="row.type == 'image'" class="bubble img" @tap="showPic(row.content)">
-									<image :src="row.content"> </image>
+								<view v-if="row.type == 'image'" class="bubble img" @tap="showPic(row.payload.url)">
+									<image :src="row.payload.url" mode="aspectFit"> </image>
 								</view>
 							</view>
 						</view>
@@ -124,17 +124,17 @@
 				pageNumber: 1,
 				pageSize: 20,
 				nomore: false,
-				textMsg: "",//底部输入框中的文字
-				isHistoryLoading: false,//默认不加载历史消息
-				scrollAnimation: false,//scrollView组件的内置属性，是否需要滚动动画，scroll-with-animation
-				scrollTop: 0,//设置竖向滚动条位置
-				scrollToView: "",//值应为某子元素id（id不能以数字开头）。设置哪个方向可滚动，则在哪个方向滚动到该元素，是scrollView组件的默认属性
-				msgList: [],//需要显示在界面上的消息列表
-				msgImgList: [],//需要图片一张张多张的预览，所以需要一个数组
-				popupLayerClass: "",	// 抽屉参数
-				hideMore: true,// more参数
-				hideEmoji: true,	//表情定义
-				emojiList: config.emojiList,//表情列表
+				textMsg: "", //底部输入框中的文字
+				isHistoryLoading: false, //默认不加载历史消息
+				scrollAnimation: false, //scrollView组件的内置属性，是否需要滚动动画，scroll-with-animation
+				scrollTop: 0, //设置竖向滚动条位置
+				scrollToView: "", //值应为某子元素id（id不能以数字开头）。设置哪个方向可滚动，则在哪个方向滚动到该元素，是scrollView组件的默认属性
+				msgList: [], //需要显示在界面上的消息列表
+				msgImgList: [], //需要图片一张张多张的预览，所以需要一个数组
+				popupLayerClass: "", // 抽屉参数
+				hideMore: true, // more参数
+				hideEmoji: true, //表情定义
+				emojiList: config.emojiList, //表情列表
 				kefuId: "", //客服id
 				avatar: "", //客服头像
 				nickname: "", //客服昵称
@@ -210,7 +210,7 @@
 			openConnection() {
 				var s = Date.parse(new Date());
 				var t = getApp().globalData.token;
-				var url = "ws://192.168.0.109:8080/websocket/messageHandler?username=user@" + t + "@" + s;
+				var url = "ws://192.168.0.108:8080/websocket/messageHandler?username=user@" + t + "@" + s;
 
 				uni.showLoading({
 					title: '连接中'
@@ -235,7 +235,7 @@
 			// 接受消息(筛选处理)
 			screenMsg(msg) {
 
-				uni.vibrateLong();//震动一下
+				uni.vibrateLong(); //震动一下
 				switch (msg.type) {
 					case "text":
 						this.addTextMsg(msg);
@@ -290,19 +290,15 @@
 						for (let item of list) {
 							this.msgList.unshift(item);
 						}
+						
 						// 获取消息中的图片,并处理显示尺寸
-						// for (let item of list) {
-						// 	if (item.type === "image" && item.content) {
-						// 		this.msgImgList.push(item.content);
-						// 	}
-						// }
-            // 获取消息中的图片,并处理显示尺寸
-            for(let i=0;i<list.length;i++){
-              if(list[i].type=='user'&&list[i].msg.type=="img"){
-                list[i].msg.content = this.setPicSize(list[i].msg.content);
-                this.msgImgList.push(list[i].msg.content.url);
-              }
-            }
+						for (let i = 0; i < list.length; i++) {
+							console.log(list[i])
+							if (list[i].type == 'image') {
+								list[i].payload.url = this.setPicSize(list[i].payload.url);
+								this.msgImgList.push(list[i].payload.url);
+							}
+						}
 						if (callback) {
 							callback();
 						}
@@ -341,6 +337,7 @@
 			},
 			//选照片 or 拍照
 			getImage(type) {
+				var that = this;
 				this.hideDrawer();
 				uni.chooseImage({
 					sourceType: [type],
@@ -350,7 +347,8 @@
 							this.$u.api.uploadFile(res.tempFilePaths[i]).then((e) => {
 								console.log("图片上传成功")
 								console.log(e)
-								//this.sendMsg(JSON.parse(e).url, "image");
+								// console.log()
+								that.sendMsg(e, "image");
 							});
 						}
 					},
@@ -388,9 +386,14 @@
 			},
 			// 发送文字消息
 			sendMsg(content, type) {
+				console.log("类型" + type)
 				var payloadStr = "";
 				if (type == "text") {
 					payloadStr = "{'text':'" + content + "'}"
+				}
+				if(type == "image"){
+					console.log("发送图片")
+					payloadStr = "{'url':'" + content + "'}"
 				}
 
 				let params = {
@@ -407,33 +410,35 @@
 				this.msgList.push(msg);
 			},
 
-      //处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
-      setPicSize(content){
-        // 让图片最长边等于设置的最大长度，短边等比例缩小，图片控件真实改变，区别于aspectFit方式。
-        let maxW = uni.upx2px(350);//350是定义消息图片最大宽度
-        let maxH = uni.upx2px(350);//350是定义消息图片最大高度
-        if(content.w>maxW||content.h>maxH){
-          let scale = content.w/content.h;
-          content.w = scale>1?maxW:maxH*scale;
-          content.h = scale>1?maxW/scale:maxH;
-        }
-        return content;
-      },
+			//处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
+			setPicSize(content) {
+				// 让图片最长边等于设置的最大长度，短边等比例缩小，图片控件真实改变，区别于aspectFit方式。
+				let maxW = uni.upx2px(350); //350是定义消息图片最大宽度
+				let maxH = uni.upx2px(350); //350是定义消息图片最大高度
+				if (content.w > maxW || content.h > maxH) {
+					let scale = content.w / content.h;
+					content.w = scale > 1 ? maxW : maxH * scale;
+					content.h = scale > 1 ? maxW / scale : maxH;
+				}
+				return content;
+			},
 
-      // 添加图片消息到列表
+			// 添加图片消息到列表
 			addImgMsg(msg) {
+				console.log("=======")
+				console.log(msg)
 				// this.msgImgList.push(msg.content);
 				// this.msgList.push(msg);
-        msg.msg.content = this.setPicSize(msg.msg.content);
-        this.msgImgList.push(msg.msg.content.url);
-        this.msgList.push(msg);
+				msg.payload.url = this.setPicSize(msg.payload.url);
+				this.msgImgList.push(msg.payload.url);
+				this.msgList.push(msg);
 			},
 
 			// 预览图片
-			showPic(msg) {
+			showPic(url) {
 				uni.previewImage({
 					indicator: "none",
-					current: msg,
+					current: url,
 					urls: this.msgImgList,
 				});
 			},

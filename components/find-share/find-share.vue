@@ -88,7 +88,7 @@
 						<text>申请中</text>
 					</view>
 				</block>
-				
+
 			</view>
 		</view>
 		<pop
@@ -167,7 +167,7 @@
 					orderId:info.id,
 					method: 'sendInviteMsg2',
 					type:'ping-join-order'})
-				
+
 			},
 			sendPingMsg: function(info, joinTogetherId = ""){
 				let userInfo = this.$u.deepClone(this.userInfo)
@@ -189,7 +189,11 @@
 					agreeStatus: 'none',
 				})
 			},
-			
+
+      /**
+       * 申请加入拼享订单
+       * @param info
+       */
 			goGroupBuying:function(info){
 				if(!this.loginConfirmHandle(false)) return;
 				let clubId = info.clubId
@@ -202,7 +206,7 @@
 				});
 			}
 		}
-		
+
 	}
 </script>
 
@@ -336,7 +340,7 @@
 
 				.commom_label {
 					height: 40rpx;
-					
+
 					@include flex-center();
 					border: 1px solid #565B86;
 					font-size: 20rpx;

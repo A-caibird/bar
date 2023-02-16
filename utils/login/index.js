@@ -24,9 +24,9 @@ const login = function (data, register = false) {
 		// #ifdef APP-PLUS
 		// $store.commit('initMQTT',info.chatToken)
 		// #endif
-		uni.$emit('information_listener')//触发全局的自定义事件
-		uni.$emit('push_listener')
-		$store.commit('initGoEasy', JSON.stringify(info))
+		uni.$emit('information_listener')//触发事件，目前发现是在首页来监听的
+		uni.$emit('push_listener')//触发事件，目前发现是在首页来监听的
+		//$store.commit('initGoEasy', JSON.stringify(info))//目前应该不需要goeasy了，这个去掉后，消息收不到
 		if(register){
 			uni.reLaunch({
 				url: '/pages/index/index'

@@ -41,7 +41,7 @@ const store = new Vuex.Store({
 		userInfo: {},
 		pushCount: 0,// 推送未读数量
 		infoCount: 0,// 消息未读数量
-		
+
 	},
 	mutations: {
 		// 清除消息
@@ -93,7 +93,7 @@ const store = new Vuex.Store({
 					var msgInfo = msg.payload.payloadString;
 					// console.log(msgInfo);
 					goEasyUtils.markPrivateMessageAsRead(state.goEasy.im, msg.senderId);
-					// 触发全局事件
+					// 触发全局事件，，，消息到达用这个来通知，还是沿用了之前的mqtt名称
 					uni.$emit('mqtt-arrived-msg', {
 						payload: msgInfo
 					})
@@ -124,13 +124,19 @@ const store = new Vuex.Store({
 				});
 			});
 		},
-		
+
 		// goEasy 断开连接
 		disconnectGoEasy(state, {callback}){
 			callback = callback ? callback : null;
 			goEasyUtils.disconnect(state.goEasy, callback);
 		},
 
+		/**
+		 * 消息发送出去
+		 * @param state
+		 * @param msg
+		 * @param chatId
+		 */
 		sendMsg(state, {
 			msg,
 			chatId

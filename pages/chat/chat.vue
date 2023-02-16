@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<scroll-view :scroll-y="true" :scroll-into-view="scrollBottom" class="chat-content" id="scrollview"
-			@touchstart="closeAllPop" @scrolltoupper="loadMoreChatList" 
+			@touchstart="closeAllPop" @scrolltoupper="loadMoreChatList"
 			:style="{height:chatType=='greet'||chatType=='reply'?'calc(100vh - 340rpx)':'calc(100vh - 140rpx)'}">
 			<view v-if="loadPage" class="page-load">加载中...</view>
 			<view class="chat-item" v-for="(item,index) in chatList" :key="index" :id="`chat${index}`">
@@ -10,6 +10,7 @@
 						{{item.timeStr}}
 					</view>
 				</view>
+        <!--看起来是普通消息的显示-->
 				<view class="msg-warp" :class="[item.fromId==friendUserInfo.chatToken ? 'left' : 'right']">
 					<view class="avatar"
 						@tap="$u.throttle(goPersonalHomepage(item.fromId==friendUserInfo.chatToken?friendUserInfo.userId:userInfo.userId,item.fromId!=friendUserInfo.chatToken))">
@@ -21,20 +22,20 @@
 							{{item.fromId==friendUserInfo.chatToken?friendUserInfo.name:userInfo.name}}
 						</view>
 						<view class="msg-content">
-							<view class="content" v-if="item.type==0">
+							<view class="content" v-if="item.type==0"><!--看起来0是普通消息-->
 								{{item.content}}
 							</view>
-							<view class="image" v-else-if="item.type==1">
+							<view class="image" v-else-if="item.type==1"><!--看起来1是图片消息-->
 								<image @tap="$u.throttle(previewImg(`file://${item.src}`))" mode="widthFix"
 									:src="`file://${item.src}`"></image>
 							</view>
-							<view class="content" v-else-if="item.type==2">
+							<view class="content" v-else-if="item.type==2"><!--看起来？？？？-->
 								{{ item.statement ? item.statement : '我想和你喝杯酒可以么？'}}
 							</view>
 							<view class="content" v-else-if="item.type==3">
 								我想和你拼单可以么？
 							</view>
-							<view class="content" v-else-if="item.type==4"> 
+							<view class="content" v-else-if="item.type==4">
 								我想加入你的拼单可以么？
 							</view>
 							<view class="content" v-else-if="item.type==5">
@@ -47,8 +48,9 @@
 					</view>
 				</view>
 
+        <!--类型2-->
 				<view class="yaoyue-wrap" v-if="item.type==2">
-					<view class="yaoyue" @tap="tapGoYaodDetail(item.orderId)">
+					<view class="yaoyue" @tap="tapGoYaodDetail(item.orderId)"><!--邀约尬酒订单消息中需要订单号-->
 						<view class="club-cover">
 							<image :src="item.clubCover" />
 						</view>
@@ -60,7 +62,7 @@
 								<view class="date">邀约时间：{{item.date}}</view>
 								<!-- <view class="card">台位：{{item.cardTableName}}</view> -->
 							</view>
-							<block v-if="item.fromId==friendUserInfo.chatToken">
+							<block v-if="item.fromId==friendUserInfo.chatToken"><!--如果消息是别人发送给我的，这个消息需要有同意状态-->
 								<view class="yaoyue-btn" v-if="item.agreeStatus=='agree'">
 									<view class="btn agreed">已同意</view>
 								</view>
@@ -72,11 +74,11 @@
 									<view class="btn agree" @tap.stop="tapAgreeYaoyue(item)">同意</view>
 								</view>
 							</block>
-
 						</view>
 					</view>
 				</view>
 
+        <!--类型3 表示是邀请别人加入我的拼享订单 发送消息-->
 				<view class="yaoyue-wrap" v-if="item.type==3">
 					<view class="yaoyue" @tap="tapGoPingDetail(item.orderId)">
 						<view class="club-cover">
@@ -106,6 +108,7 @@
 						</view>
 					</view>
 				</view>
+        <!--类型4 表示是用户加入我的拼享订单 发送消息-->
 				<view class="yaoyue-wrap" v-if="item.type==4">
 					<view class="yaoyue" @tap="tapGoPingDetail(item.orderId)">
 						<view class="club-cover">
@@ -249,11 +252,12 @@
 </template>
 
 <script>
-	/* 
+	/*
 	 消息类型区分
-	 type = 2: 表示用户邀请别人加入邀约订单 发送消息
-	 type = 4: 表示是用户加入我的拼享订单 发送消息
+	 type = 2: 表示用户邀请别人加入邀约（尬酒）订单 发送消息
 	 type = 3; 表示是邀请别人加入我的拼享订单 发送消息
+	 type = 4: 表示是用户加入我的拼享订单 发送消息
+
 	 */
 	import $chat from '@/utils/chat/index.js'
 	import GraphemeSplitter from 'grapheme-splitter'
@@ -267,7 +271,7 @@
 			return {
 				addFLag: false,
 				emojiFLag: false,
- 
+
 				loadPage: false,
 				pageMore: true,
 
@@ -299,13 +303,13 @@
 			}
 		},
 		onLoad(options) {
-			
+
 			this.friendUserInfo = JSON.parse(options.userInfo)
 			uni.setNavigationBarTitle({
 				title: this.friendUserInfo.name
 			})
 			this.load()
-			uni.$on('chat-msg-push', this.msgPush)
+			uni.$on('chat-msg-push', this.msgPush)//goeasy收到消息后，数据库消息插入，然后更新聊天界面
 			// uni.onKeyboardHeightChange(res => { //监听键盘高度
 			// 	if(res.height){
 			// 		this.keyBoardHeight = res.height
@@ -322,7 +326,7 @@
 					return this.chatList[this.chatList.length - 1].type == 2 ? '已邀约' : '去下单'
 				}else{
 					return "去下单"
-				}	
+				}
 			}
 		},
 		onUnload() {
@@ -330,6 +334,7 @@
 			$chat.saveChatList(this.userInfo.chatToken, this.friendUserInfo.chatToken)
 		},
 		methods: {
+
 			tapSendReply(msg) {
 				let userInfo = this.$u.deepClone(this.userInfo)
 				let friendUserInfo = this.$u.deepClone(this.friendUserInfo)
@@ -337,6 +342,11 @@
 					content: msg,
 				})
 			},
+
+      /**
+       * 发送打招呼消息
+       * @param msg
+       */
 			tapSendGreet(msg) {
 				let userInfo = this.$u.deepClone(this.userInfo)
 				let friendUserInfo = this.$u.deepClone(this.friendUserInfo)
@@ -355,8 +365,7 @@
 					this.$u.toast('请先实名');
 					setTimeout(() => {
 						uni.navigateTo({
-							url: '/pages/mine/setting/certification' +
-								`?hasVerified=unverify`
+							url: '/pages/mine/setting/certification?hasVerified=unverify'
 						})
 					}, 500);
 					return
@@ -378,6 +387,7 @@
 					})
 				}
 			},
+
 			// 拒绝别人加人拼享订单
 			async tapRefuseJoinPing(item) {
 				console.log(item);
@@ -400,6 +410,7 @@
 					})
 				}
 			},
+
 			chatTimeStamp(arr, ele) {
 				let lastTime = '';
 				let timeStamp = ele.time
@@ -590,7 +601,7 @@
 					orderId: item.orderId,
 					type: 'ping-join-order-invite'
 				})
-				
+
 			},
 			// 同意加入接口
 			agreePingSuccess(userInfo, friendUserInfo, item){
@@ -622,6 +633,11 @@
 					})
 				}
 			},
+      /**
+       * 拒绝尬酒邀约
+       * @param e
+       * @returns {Promise<void>}
+       */
 			async refuseYaoyue(e) {
 				let userInfo = this.$u.deepClone(this.userInfo)
 				let friendUserInfo = this.$u.deepClone(this.friendUserInfo)
@@ -655,6 +671,11 @@
 					this.chatList[index] = item
 				}
 			},
+      /**
+       * 显示拒绝邀约原因弹框
+       * @param item
+       * @returns {Promise<void>}
+       */
 			async tapRefuseYaoyue(item) {
 				this.$refs.refuseYaoyue.open(item)
 			},
@@ -841,6 +862,8 @@
 					}
 				});
 			},
+
+      //收到消息后的处理
 			msgPush(e) {
 				let chatToken = this.userInfo.chatToken
 				let friendChatToken = this.friendUserInfo.chatToken
@@ -871,7 +894,7 @@
 				})
 				// 将消息推入聊天列表
 				// this.chatList.push(msg)
-				// this.pageScrollToBottom() 
+				// this.pageScrollToBottom()
 				this.message = ''
 			},
 			sendFile(fileType, tempPath) {

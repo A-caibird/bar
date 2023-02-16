@@ -1,3 +1,4 @@
+
 import storageUtil from './storage.js';
 import ChatInfo from './chatInfo.js'
 import goEasyUtils from './goEasyUtils.js'
@@ -35,7 +36,7 @@ function disconnectChat(callback = null) {
 }
 //发消息
 function sendMsg(message, callback = null, type = 0, mode = 'single') {
-	
+
 	let chatInfo = new ChatInfo(baseInfo.token, baseInfo.userInfo, baseInfo.channel, baseInfo.toUserInfo, type, mode);
 	goEasyUtils.sendMessage(goeasy.im, chatInfo, message, callback);
 }
@@ -68,14 +69,14 @@ function getChatList(pageNumber, pageSize, channel) {
 		list: [],
 	}
 	let chatAllList = storageUtil.getChatStorage(channel) || [];
-	let total = chatAllList.length; //总数量 
+	let total = chatAllList.length; //总数量
 	page.total = total;
 	let totalPages = total / pageSize; // 总页面
 	if ((totalPages * pageSize) - total < 0) {
 		totalPages = totalPages + 1;
 	}
 	page.totalPages = totalPages;
-	
+
 	let startPoint = (pageNumber - 1) * pageSize;
 	let endPoint = pageNumber * pageSize;
 	if (startPoint >= total) {

@@ -1,6 +1,4 @@
-/**
- * 暂时好像目前没看到在用了
- */
+
 import $store from '@/store/index.js'
 import $storage from '@/common/storage.js'
 import $chat from './index.js'
@@ -27,6 +25,11 @@ async function pushMessage(msg){
 	console.log(code)
 }
 
+/**
+ * goeasy全局的消息到达后抛出mqtt-arrived-msg后再触发
+ * 根据不同的消息类型做不同处理，重要重要重要
+ * @param res
+ */
 function msgArrived(res){
 	console.log(res)
 	let chatToken = $storage.getUserInfo().chatToken
@@ -34,9 +37,9 @@ function msgArrived(res){
 	let msg = JSON.parse(res.payload)
 	if(msg.type === 0 ) {
 		msg.status = 2
-		chatUserList = $chat.addChatUserListFromStorage(chatToken,msg)
-		uni.$emit('chat-user-list-refresh',chatUserList) //聊天列表的刷新
-		msg = $chat.setChatListFromStorage(chatToken,msg)
+		chatUserList = $chat.addChatUserListFromStorage(chatToken,msg)//这两个各自做啥的？？？
+		msg = $chat.setChatListFromStorage(chatToken,msg)//这两个各自做啥的？？？
+		uni.$emit('chat-user-list-refresh',chatUserList) //首页的消息那边的列表数据更新
 		uni.$emit('chat-msg-push',msg) //聊天记录的刷新
 		uni.$emit('information_listener')
 	} else if(msg.type === 1) {
@@ -115,6 +118,10 @@ function msgArrived(res){
 	}
 }
 
+/**
+ * 消息投递出去
+ * @param res
+ */
 function msgDelivered(res){
 	let chatToken = $storage.getUserInfo().chatToken
 	let msg = JSON.parse(JSON.stringify(res))
@@ -170,12 +177,14 @@ function msgDelivered(res){
 	console.log('发送消息: msgDelivered', msg);
 
 }
+
+
 const init = function(vm){
 	vmm = vm
 	uni.$off('mqtt-arrived-msg',msgArrived)
 	uni.$off('mqtt-delivered-msg',msgDelivered)
 
-	uni.$on('mqtt-arrived-msg',msgArrived)
+	uni.$on('mqtt-arrived-msg',msgArrived)//goeasy监听消息到达，到了以后，抛出这个mqtt-arrived-msg，重要重要
 	uni.$on('mqtt-delivered-msg',msgDelivered)
 
 	if($storage.getLoginToken()) {

@@ -59,8 +59,8 @@
 							<text class="left">到店时间:</text><text class="right">{{pingOrderInfo.arriveTime}}</text>
 						</view>
 						<view class="common_info_item" >
-							<view class="item_left"> 
-								<text style="color: #9292BA;">拼享方式：</text> 
+							<view class="item_left">
+								<text style="color: #9292BA;">拼享方式：</text>
 							</view>
 							<view class="item_right" v-if="pingOrderInfo.type=='AA'">
 								<text style="color: #FFFFFF; ">AA</text>
@@ -75,14 +75,14 @@
 						</view>
 						<view class="common_info_item" style="align-items: flex-start;">
 							<view class="item_left">
-								<text style="color: #9292BA;">拼享方式：</text> 
+								<text style="color: #9292BA;">拼享方式：</text>
 							</view>
 							<view class="item_right" style="flex-direction: column; align-items: flex-start;"  v-if="pingOrderInfo.type=='AA'">
 								<view v-if="pingOrderInfo.shareWay.menNumber>0">
 									<text style="color: #FFFFFF; margin-right: 14rpx;">男：{{pingOrderInfo.shareWay.menNumber}}人 {{pingOrderInfo.shareWay.avgWineCoin}}元</text>
 								</view>
 								<view v-if="pingOrderInfo.shareWay.womenNumber>0">
-									<text style="color: #FFFFFF; ">女：{{pingOrderInfo.shareWay.womenNumber}}人 {{pingOrderInfo.shareWay.avgWineCoin}}元</text>			
+									<text style="color: #FFFFFF; ">女：{{pingOrderInfo.shareWay.womenNumber}}人 {{pingOrderInfo.shareWay.avgWineCoin}}元</text>
 								</view>
 							</view>
 							<view class="item_right" style="flex-direction: column; align-items: flex-start;"  v-if="pingOrderInfo.type=='customize'">
@@ -212,7 +212,7 @@
 														</view>
 														<view class="score_label">{{info.text}}</view>
 													</view>
-												</block>					
+												</block>
 											</view>
 										</view>
 										<view class="eva_label">
@@ -239,11 +239,11 @@
 												<empty content="暂无评价"></empty>
 											</view>
 										</template>
-									</view>  				
+									</view>
 								</scroll-view>
 							</swiper-item>
-						</block>					
-					</swiper>	
+						</block>
+					</swiper>
 				</view>
 			</view>
 		</view>
@@ -252,7 +252,7 @@
 				<view class="common_item" @tap="$u.throttle(clickEvent('service'), 800)">
 					<view class="common_icon">
 						<image src="/static/imgs/common/kefu.png"></image>
-					</view>		
+					</view>
 					<text>客服</text>
 				</view>
 				<view class="common_item" @tap="$u.throttle(clickEvent('collect'), 800)">
@@ -468,7 +468,7 @@
 				if(platform=='ios') {
 					this.stickyStatus = false
 				}
-				
+
 			},
 			scrolltolower(){
 				this.pageNumber = this.pageNumber + 1;
@@ -567,9 +567,9 @@
 						}
 					})
 				}
-				
+
 			},
-			
+
 			// 预定事件
 			bookEvent: function() {
 				this.$u.route('pages/club/consumption/seat');
@@ -643,6 +643,11 @@
 					this.lat = data.lat
 				}
 			},
+
+      /**
+       * 加入拼享
+       * @returns {Promise<void>}
+       */
 			async joinPing(){
 				// await this.$toast.confirm('','确定要发起加入请求吗？')
 				this.popShow = false
@@ -652,6 +657,7 @@
 					method: 'sendInviteMsg',
 					type:'ping-join-order'})
 			},
+
 			sendPingMsg:function(joinTogetherId =""){
 				let {sponsorId,sponsorChatId,sponsorChatToken,name,sponsorAvatar,} = this.pingOrderInfo
 				let {id,clubSimpleInfoVo,arriveTime,cardTableName} = this.pingOrderInfo
@@ -679,8 +685,8 @@
 			clickEvent: function(e){
 				let type = e;
 				switch(type){
-					case 'collect': this.toggleCollect(); break; 
-					case 'ping':this.tapPingTap();break; 
+					case 'collect': this.toggleCollect(); break;
+					case 'ping':this.tapPingTap();break;
 					case 'service': {
 						this.$u.api.clubServiceAPI(this.clubId).then(res => {
 							console.log(res);
@@ -696,7 +702,7 @@
 									icon: 'none'
 								})
 							}
-							
+
 						}).catch(e => {
 							console.log(e);
 						})
@@ -822,7 +828,7 @@
 
 			.startBar_box {
 				width: 100%;
-				height: var(--status-bar-height); //状态栏高度			
+				height: var(--status-bar-height); //状态栏高度
 			}
 
 			.custom_nav {
@@ -927,14 +933,14 @@
 								.captian_name {
 									font-size: 32rpx;
 									color: #F9F9F9;
-									
+
 									.label {
 										font-size: 24rpx;
 										color: #FFFFFF;
 										padding-left: 10rpx;
 									}
 								}
-							
+
 								.captian_slogan {
 									font-size: 26rpx;
 									color: #B3B3DD;
@@ -950,7 +956,7 @@
 
 
 						.captian_unfollow {
-							
+
 							display: flex;
 							justify-content: center;
 							align-items: center;
@@ -979,7 +985,7 @@
 							}
 						}
 						.captian_follow {
-							
+
 							display: flex;
 							justify-content: center;
 							align-items: center;
@@ -990,7 +996,7 @@
 							border-radius: 49rpx;
 							font-size: 26rpx;
 							color: #FFFFFF;
-						
+
 							button {
 								padding: 0;
 								width: 150rpx;
@@ -1057,7 +1063,7 @@
 								flex: 1;
 								min-width: 0;
 								color: #F9F9F9;
-								
+
 							}
 						}
 					}
@@ -1089,7 +1095,7 @@
 									padding-left: 15rpx;
 								}
 							}
-							
+
 						}
 						.apply_content{
 							display: flex;
@@ -1135,7 +1141,7 @@
 								padding-bottom: 15rpx;
 							}
 						}
-						
+
 					}
 					.order_goods{
 						width: 100%;

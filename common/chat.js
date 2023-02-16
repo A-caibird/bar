@@ -1,5 +1,5 @@
 import $chat from '@/utils/chat/index.js'
-/* 
+/*
 	尬酒 发送邀约订单
 	orderInfo： 订单信息， id(订单id)  clubCover(酒吧图片) clubName(酒吧名称) date(接待时间) cardTableName(酒吧座位编号) amount(支付金额)
 	friendInfo： chatToken, chatUserId, userId, name, avatar
@@ -12,7 +12,7 @@ async function sendYaoyueInfo(vm, orderInfo, friendInfo, statement, callback = n
 	} = await vm.$u.api.yaoyueInviteApi({
 		orderId: orderInfo.id,
 		userId: friendInfo.userId
-	})
+	})//创建后台尬酒邀约记录
 	if (code == 0) {
 		$chat.sendMsg(userInfo, friendInfo, 'single', 'yaoyue', {
 			orderId: orderInfo.id,

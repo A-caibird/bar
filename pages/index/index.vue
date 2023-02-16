@@ -66,7 +66,7 @@ import mePage from '@/components/tabbarPage/me.vue';
 import infoPage from '@/components/tabbarPage/info.vue';
 import tipsPop from '@/components/pop/tips.vue';//年满18的提示，但是好像没用到
 import loginMixin from '@/mixins/loginConfirm.js'
-import $chat from '@/utils/chat/index.js'
+import $chat from '@/utils/chat/index.js'///
 import reportPop from '@/components/pop/report.vue'//举报用户
 var app = getApp();
 export default {
@@ -155,7 +155,7 @@ export default {
 		this.$nextTick(() => {
 			this.changeHandle(this.current);
 		});
-		uni.$on('information_listener', this.infoListenerEvent);
+		uni.$on('information_listener', this.infoListenerEvent);//
 		uni.$on('push_listener', (e)=>{
 			if(e && !e.refresh){
 				this.pushListenerEvent(e.num, e.refresh);

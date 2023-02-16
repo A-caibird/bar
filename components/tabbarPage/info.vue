@@ -41,16 +41,16 @@
 								<view class="second_line">{{item.content}}</view>
 							</view>
 						</view>
-									
+
 					</uni-swipe-action-item>
-				
+
 				</uni-swipe-action>
-				
+
 			</scroll-view>
-			
-			
+
+
 		</view>
-				
+
 	</view>
 </template>
 
@@ -70,7 +70,7 @@
 				chatUserList:[],
 				noticeNum: 0,
 				activityNum: 0,
-				rightOptions: [
+				rightOptions: [//右侧的按钮item
 					{
 						text: '标记为已读',
 						style: {
@@ -88,7 +88,7 @@
 		},
 		mounted() {
 			this.chatUserList = $chat.getChatUserListFromStorage(this.chatToken)
-			uni.$on('chat-user-list-refresh',this.chatUserListRefresh)
+			uni.$on('chat-user-list-refresh',this.chatUserListRefresh)//收到goeay消息，消息类型是0触发
 			uni.$on('read-chat',this.readChat)
 			uni.$on('refresh_push', () => {
 				console.log('refresh_push');
@@ -127,7 +127,7 @@
 						name: '评论',
 						url:'/pages/info/comment'
 					},
-					
+
 				]:[
 					{
 						icon: '/static/imgs/information/notice.png',
@@ -159,7 +159,7 @@
 						name: '评论',
 						url:'/pages/info/comment'
 					},
-					
+
 				]
 			},
 		},
@@ -213,7 +213,7 @@
 					console.log('标记为已读')
 					this.chatUserList[index].notReadNum = 0
 					$chat.setChatUserListFromStorage(this.chatToken,this.chatUserList)
-				} 
+				}
 			},
 			tapGoChat(userId,chatUserId,chatToken,name,avatar,hasSave,localAvatar){
 				let info = {
@@ -228,7 +228,7 @@
 				this.$u.route('/pages/chat/chat',{
 					userInfo : JSON.stringify(info)
 				})
-				
+
 			},
 			chatUserListRefresh(chatUserList){
 				this.chatUserList = chatUserList
@@ -272,7 +272,7 @@
 				// justify-content: space-between;
 				padding: 20rpx 30rpx;
 				box-sizing: border-box;
-				
+
 				.common_classify_item{
 					flex: 1;
 					display: flex;
@@ -296,17 +296,17 @@
 					}
 				}
 			}
-			
+
 		}
 		.info_list{
 			flex: 1;
 			min-width: 0;
 			min-height: 0;
-			
+
 			// background-color: red;
 			// width: 100%;
 			padding: 20rpx 0rpx;
-		
+
 			.common_info{
 				width: 100%;
 				padding: 30rpx;
@@ -350,11 +350,11 @@
 					}
 				}
 			}
-						
-		
+
+
 		}
-					
+
 	}
-	
-	
+
+
 </style>
