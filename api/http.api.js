@@ -282,7 +282,7 @@ const install = (Vue, vm) => {
 		chatMessageList: (params) => vm.$u.post('/api/chatMessage/historyListByCustomStaff', params), //获取和酒吧客服的历史聊天记录
 		chatFriendMessageList: (params) => vm.$u.post('/api/chatMessage/historyList', params), //获取好友的历史聊天记录
 		chatFriendMessageSend: (params) => vm.$u.post('/api/chatMessage/sendToUser', params), //给好友发消息
-		chatSessionList: () => vm.$u.post('/api/chatMessage/historySessionList', params) //用户之前的历史会话列表
+		chatSessionList: () => vm.$u.post('/api/chatMessage/historySessionList') //用户之前的历史会话列表
 	};
 }
 

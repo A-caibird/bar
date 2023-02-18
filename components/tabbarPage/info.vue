@@ -156,6 +156,14 @@
 
 		methods:{
 			show(){
+				
+				this.$u.api.chatSessionList().then(res => {
+					console.log("获取到的聊天数据")
+					console.log(res)
+				}).catch(e => {
+					console.log(e);
+				})
+				
 				console.log('info show');
 				if(getApp().globalData.authorized){
 					this.getNoticeCount();
