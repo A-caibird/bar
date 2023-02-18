@@ -205,12 +205,19 @@
 		onShow() {
 			this.scrollTop = 9999999;
 		},
+		// onHide() {
+		// 	this.scrollToView = "";
+		// 	uni.closeSocket();
+		// 	uni.$off('reconnectWebSocket');
+		// 	waitSendMsg = []; //清空待发送图片
+		// 	waitSendVideoMsg = []; //清空待发送视频
+		// },
 		methods: {
 			// 连接webSocket
 			openConnection() {
 				var s = Date.parse(new Date());
 				var t = getApp().globalData.token;
-				var url = "ws://192.168.0.108:8080/websocket/messageHandler?username=user@" + t + "@" + s;
+				var url = "ws://erp.patixiu.com/websocket/messageHandler?username=user@" + t + "@" + s;
 
 				uni.showLoading({
 					title: '连接中'

@@ -1,21 +1,43 @@
 import logout from '@/utils/logout/index.js';
 function handlePushReceive(msg) {
+
+
+
+	console.log("收到下发消息")
 	//todo
 	let payload = Object.prototype.toString.call(msg.payload) === '[object Object]' ? msg.payload : JSON.parse(msg.payload)
+
+	console.log('payload', payload)
 	console.log('handlePushReceive', msg)
-	if (msg.aps) { // Apple APNS message  
-		//APNS下发的消息，应用在前台  
+
+	// uni.showToast({
+	// 	title: '标题',
+	// 	duration: 2000
+	// });
+
+
+	//为啥这段没有执行？？？？？
+	// option.title = "测试"
+	// content = "测试"
+	// payload.msgLocal = 'LocalMSG'
+	// // option.title = payload.title
+	// // content = payload.content
+	// plus.push.createMessage(content,  JSON.stringify(payload), option);
+
+
+	if (msg.aps) { // Apple APNS message
+		//APNS下发的消息，应用在前台
 		console.log('APNS下发的消息，应用在前台  ')
 	}
-	if ('LocalMSG' == payload.msgLocal) { // 特殊payload标识本地创建的消息  
-		//本地创建的消息，通常不需要处理  
-		//注意：不要在这种情况下再此调用plus.push.createMessage，从而引起循环创建本地消息 
+	if ('LocalMSG' == payload.msgLocal) { // 特殊payload标识本地创建的消息
+		//本地创建的消息，通常不需要处理
+		//注意：不要在这种情况下再此调用plus.push.createMessage，从而引起循环创建本地消息
 		 console.log('本地创建的消息，通常不需要处理')
 	} else if (!getApp().globalData.token) {
 		console.log('未知用户');
-	} 
+	}
 	// else if (getApp().globalData.userInfo.chatToken != payload.identifier) {
-	// } 
+	// }
 	else {
 		let pages = getCurrentPages();
 		let page = pages[pages.length - 1];
@@ -30,7 +52,7 @@ function handlePushReceive(msg) {
 		let content = ''
 		let type = payload.type
 		payload.msgLocal = 'LocalMSG' //ios用于区分自己创建的消息还是发送过来的透传消息
-		
+
 		if(type=='gift'&&route!='/pages/gift-animation/gift-animation') {//发布的动态被人赠送礼物
 			if(route=='/pages/info/gift') {
 				vm.reLoad()
@@ -45,7 +67,7 @@ function handlePushReceive(msg) {
 			}
 			plus.push.createMessage(content,  JSON.stringify(payload), option);
 		}
-		
+
 		if (payload.type == 'loginOtherDevice') {//离线通知不用创建消息
 			logout()
 		}
@@ -53,7 +75,7 @@ function handlePushReceive(msg) {
 			// console.log('聊天消息')
 			if(route=='/pages/chat/chat') {
 				if(vm.userInfo.chatToken==payload.identifier&&vm.friendUserInfo.chatToken==payload.sendUserId) {
-					return 
+					return
 				}
 			}
 			option.title = payload.nickName
@@ -149,7 +171,8 @@ function handlePushReceive(msg) {
 	}
 }
 function handlePushClick(msg) {
-	//处理点击消息的业务逻辑代码  
+	console.log("收到点击消息")
+	//处理点击消息的业务逻辑代码
 	let payload = Object.prototype.toString.call(msg.payload) === '[object Object]' ? msg.payload : JSON.parse(msg.payload)
 	console.log('handlePushClick', payload)
 	if (payload.msgLocal == 'LocalMSG') {
@@ -173,7 +196,7 @@ function handlePushClick(msg) {
 				uni.navigateTo({
 					url:'/pages/chat/chat'+`?userInfo=${infoStr}`
 				})
-			} 
+			}
 		}
 		if(type=='gift') {
 			console.log("礼物消息");
@@ -196,7 +219,7 @@ function handlePushClick(msg) {
 					}
 				})
 			}
-			
+
 		}
 		/* 平台活动推送 */
 		if(type == 'platformActivity'){
@@ -266,7 +289,7 @@ function handlePushClick(msg) {
 				uni.navigateTo({
 					url:'/pages/order/ping-create-detail'+`?orderId=${orderId}`
 				})
-			}	
+			}
 		}
 		if(type=='comment') {
 			console.log(payload)
@@ -380,7 +403,7 @@ function pageJump(payload){
 		let {userId} =  payload
 		slientHandle(() => {
 			getApp().globalData.msgPath = '/pages/info/fans';
-		})	
+		})
 	}
 	if(type=='orderInviteSuccess') {
 		console.log(payload)
@@ -391,7 +414,7 @@ function pageJump(payload){
 			// 	url:'/pages/order/yao-create-detail'+`?orderId=${orderId}`
 			// })
 			getApp().globalData.msgPath = '/pages/order/yao-create-detail'+`?orderId=${orderId}`;
-		})	
+		})
 	}
 	if(type=='quitInviteOrder') {
 		console.log(payload)
@@ -431,7 +454,7 @@ function pageJump(payload){
 				getApp().globalData.msgPath = '/pages/order/ping-create-detail'+`?orderId=${orderId}`;
 			})
 		}
-		
+
 	}
 	if(type=='comment') {
 		console.log(payload)
@@ -502,7 +525,7 @@ const init = function(vm){
 	//点击消息
 	plus.push.addEventListener('click', handlePushClick, false);
 	// #endif
-	
-	
+
+
 }
 module.exports = init

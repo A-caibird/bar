@@ -163,6 +163,7 @@
 									clientId:plus.push.getClientInfo().clientid,
 									// #endif
 								}
+								console.log(clientId)
 								vm.wxLogin(params)
 							},
 							fail(err) {
@@ -190,6 +191,8 @@
 					clientId:plus.push.getClientInfo().clientid,
 					// #endif
 				}
+				
+				console.log("cid号码" + plus.push.getClientInfo().clientid)
 				let phoneCheck = this.$u.test.mobile(params.phone)
 
 				if(!phoneCheck){

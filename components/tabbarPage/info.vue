@@ -56,7 +56,7 @@
 
 <script>
 	const app = getApp()
-	import $chat from '@/utils/chat/index.js'
+  // import $chat from '@/utils/chat/index.js'
 	import empty from '@/components/empty/empty.vue'
 	import appleAudit from '@/mixins/apple-audit.js'
 	export default{
@@ -66,10 +66,9 @@
 		},
 		data() {
 			return {
-				chatToken:app.globalData.userInfo.chatToken,
-				chatUserList:[],
-				noticeNum: 0,
-				activityNum: 0,
+				chatUserList:[],//实际的消息的数据列表
+				noticeNum: 0,//上面通知的数量
+				activityNum: 0,//上面活动的数量
 				rightOptions: [//右侧的按钮item
 					{
 						text: '标记为已读',
@@ -86,26 +85,16 @@
 				],
 			}
 		},
-		mounted() {
-			this.chatUserList = $chat.getChatUserListFromStorage(this.chatToken)
-			uni.$on('chat-user-list-refresh',this.chatUserListRefresh)//收到goeay消息，消息类型是0触发
-			uni.$on('read-chat',this.readChat)
-			uni.$on('refresh_push', () => {
-				console.log('refresh_push');
-				this.getNoticeCount();
-			})
-			uni.$on('refresh_chat', () => {
-				this.chatToken = app.globalData.userInfo?.chatToken
-				this.chatUserList = $chat.getChatUserListFromStorage(this.chatToken)
-				uni.$emit('information_listener')
-			});
+
+		created() {
+			// this.$u.api.chatSessionList().then(res => {
+			// 	console.log("获取到的聊天数据")
+			// 	console.log(res)
+			// }).catch(e => {
+			// 	console.log(e);
+			// })
 		},
-		beforeDestroy() {
-			uni.$off('chat-user-list-refresh',this.chatUserListRefresh)
-			uni.$off('read-chat',this.readChat)
-			uni.$off('refresh_push')
-			uni.$off('refresh_chat')
-		},
+
 		computed:{
 			classifyList(){
 				return this.isAppleAudit?[
@@ -163,12 +152,14 @@
 				]
 			},
 		},
+
+
 		methods:{
 			show(){
 				console.log('info show');
 				if(getApp().globalData.authorized){
 					this.getNoticeCount();
-					uni.$emit('information_listener');
+					//uni.$emit('information_listener');//感觉这个也不需要
 				}else{
 					this.chatUserList = [];
 					if(this.noticeNum){
@@ -183,10 +174,10 @@
 				this.$u.api.getNoticeCountAPI().then(res => {
 					this.noticeNum = res.data.num || 0;
 					this.activityNum = res.data.activityUnReadNum || 0
-					uni.$emit('push_listener', {
-						num: (this.noticeNum + this.activityNum),
-						refresh: false
-					})
+					// uni.$emit('push_listener', {//感觉这样也不太需要
+					// 	num: (this.noticeNum + this.activityNum),
+					// 	refresh: false
+					// })
 				}).catch(e => {
 					console.log(e);
 				})
@@ -203,49 +194,49 @@
 					content
 				} = e;
 				if (content.text === '删除') {
-					console.log('删除')
-					await this.$toast.confirm('','删除后，将清空该聊天的消息记录')
-					let msg = this.chatUserList[index]
-					$chat.delChatList(msg.account,msg.friendId)
-					this.chatUserList.splice(index,1)
-					$chat.setChatUserListFromStorage(this.chatToken,this.chatUserList)
-				} else if (content.text === '标记为已读') {
-					console.log('标记为已读')
-					this.chatUserList[index].notReadNum = 0
-					$chat.setChatUserListFromStorage(this.chatToken,this.chatUserList)
+				// 	console.log('删除')
+				// 	await this.$toast.confirm('','删除后，将清空该聊天的消息记录')
+				// 	let msg = this.chatUserList[index]
+				// 	$chat.delChatList(msg.account,msg.friendId)
+				// 	this.chatUserList.splice(index,1)
+				// 	$chat.setChatUserListFromStorage(this.chatToken,this.chatUserList)
+				// } else if (content.text === '标记为已读') {
+				// 	console.log('标记为已读')
+				// 	this.chatUserList[index].notReadNum = 0
+				// 	$chat.setChatUserListFromStorage(this.chatToken,this.chatUserList)
 				}
 			},
-			tapGoChat(userId,chatUserId,chatToken,name,avatar,hasSave,localAvatar){
-				let info = {
-						userId,
-						chatUserId,
-						chatToken,
-						name,
-						avatar,
-						hasSave,
-						localAvatar
-					}
-				this.$u.route('/pages/chat/chat',{
-					userInfo : JSON.stringify(info)
-				})
-
-			},
+			// tapGoChat(userId,chatUserId,chatToken,name,avatar,hasSave,localAvatar){
+			// 	let info = {
+			// 			userId,
+			// 			chatUserId,
+			// 			chatToken,
+			// 			name,
+			// 			avatar,
+			// 			hasSave,
+			// 			localAvatar
+			// 		}
+			// 	this.$u.route('/pages/chat/chat',{
+			// 		userInfo : JSON.stringify(info)
+			// 	})
+      //
+			// },
 			chatUserListRefresh(chatUserList){
 				this.chatUserList = chatUserList
 			},
 			readChat(res){
-				console.log('readChat');
-				let {chatToken,friendChatToken} = res
-				let index = this.chatUserList.findIndex(e=>{
-					return e.friendId==friendChatToken
-				})
-				if(index!=-1) {
-					this.chatUserList[index].notReadNum = 0
-					$chat.setChatUserListFromStorage(chatToken,this.chatUserList)
-				}
-				this.$nextTick(() => {
-					uni.$emit('information_listener')
-				})
+				// console.log('readChat');
+				// let {chatToken,friendChatToken} = res
+				// let index = this.chatUserList.findIndex(e=>{
+				// 	return e.friendId==friendChatToken
+				// })
+				// if(index!=-1) {
+				// 	this.chatUserList[index].notReadNum = 0
+				// 	$chat.setChatUserListFromStorage(chatToken,this.chatUserList)
+				// }
+				// this.$nextTick(() => {
+				// 	uni.$emit('information_listener')
+				// })
 			},
 		}
 	}
