@@ -1,8 +1,8 @@
 <template>
 	<view>
-		<u-navbar :border-bottom="false" :is-fixed="true" :background="{
-    		background: '#191C3F'
-    	}" title="客服" title-color="#FFFFFF" back-icon-color="#FFFFFF"></u-navbar>
+		<!--		<u-navbar :border-bottom="false" :is-fixed="true" :background="{-->
+		<!--    		background: '#191C3F'-->
+		<!--    	}" title="客服" title-color="#FFFFFF" back-icon-color="#FFFFFF"></u-navbar>-->
 		<view class="content" @touchstart="hideDrawer">
 			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation"
 				:scroll-top="scrollTop" :scroll-into-view="scrollToView" @scrolltoupper="loadHistory"
@@ -138,7 +138,7 @@
 				friendId: "", //客服id
 				friendAvatar: "", //客服头像
 				friendNickname: "" //客服昵称
-				
+
 			};
 		},
 
@@ -150,8 +150,18 @@
 			waitSendVideoMsg = []; //清空待发送视频
 		},
 		onLoad(options) {
-			this.friendId = options.friendId || ''
-		
+			this.friendUserInfo = JSON.parse(options.userInfo) //原先的逻辑
+			uni.setNavigationBarTitle({
+				title: this.friendUserInfo.name
+			})
+
+			if (this.friendUserInfo.friendId) {
+				this.friendId = this.friendUserInfo.friendId
+			} else {
+				this.friendId = "user@" + this.friendUserInfo.userId + "@"
+			}
+			
+			console.log("好友的id===>" + this.friendId)	
 
 			this.getMsgList(() => {
 				// 滚动到底部
@@ -217,7 +227,7 @@
 			openConnection() {
 				var s = Date.parse(new Date());
 				var t = getApp().globalData.token;
-				var url = "ws://erp.patixiu.com/websocket/messageHandler?username=user@" + t + "@" + s;
+				var url = "ws://192.168.0.102:8080/websocket/messageHandler?username=user@" + t + "@" + s;
 
 				uni.showLoading({
 					title: '连接中'
@@ -292,6 +302,8 @@
 						timestamp: Date.parse(new Date())
 					})
 					.then((res) => {
+						console.log("获取到好友的聊天记录")
+						console.log(res)
 						this.isHistoryLoading = false;
 						let list = res.data.list;
 						for (let item of list) {
@@ -398,7 +410,7 @@
 				if (type == "text") {
 					payloadStr = "{'text':'" + content + "'}"
 				}
-				if(type == "image"){
+				if (type == "image") {
 					console.log("发送图片")
 					payloadStr = "{'url':'" + content + "'}"
 				}

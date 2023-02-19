@@ -27,18 +27,18 @@
 			<scroll-view scroll-y="true" style="height: 100%;">
 				<empty content="暂无消息" v-if="chatUserList.length==0"></empty>
 				<uni-swipe-action  v-else>
-					<uni-swipe-action-item v-for="(item,index) in chatUserList" :right-options="rightOptions" :key="item.chatUserId" @change="swipeChange($event, index)" @click="swipeClick($event, index)">
-						<view class="common_info" @tap="tapGoChat(item.userId,item.chatUserId,item.friendId,item.friendName,item.avatar,item.hasSave,item.localAvatar)">
+					<uni-swipe-action-item v-for="(item,index) in chatUserList" :right-options="rightOptions" :key="item.userId" @change="swipeChange($event, index)" @click="swipeClick($event, index)">
+						<view class="common_info" @tap="tapGoChat(item.lastMessage.senderId,item.data.nickname)">
 							<view class="person_img">
-								<image :src="item.hasSave?item.localAvatar:item.avatar"></image>
-								<u-badge :absolute="true" :offset="[-10, -10]"  :count="item.notReadNum" bgColor="#733CFF" color="#ffffff" :showZero="false"></u-badge>
+								<image :src="item.data.avatar"></image>
+								<u-badge :absolute="true" :offset="[-10, -10]"  :count="item.unread" bgColor="#733CFF" color="#ffffff" :showZero="false"></u-badge>
 							</view>
 							<view class="person_info">
 								<view class="first_line">
-									<view class="line_left"> <text>{{item.friendName}}</text> </view>
-									<view class="line_right">{{timeChange(item.time)}}</view>
+									<view class="line_left"> <text>{{item.data.nickname}}</text> </view>
+									<view class="line_right">{{timeChange(item.type)}}</view>
 								</view>
-								<view class="second_line">{{item.content}}</view>
+								<view class="second_line">{{item.lastMessage.payload.text}}</view>
 							</view>
 						</view>
 
@@ -156,10 +156,20 @@
 
 		methods:{
 			show(){
-				
+				this.chatUserList=[];
 				this.$u.api.chatSessionList().then(res => {
-					console.log("获取到的聊天数据")
-					console.log(res)
+
+
+					let list = res.data.list;
+			
+					console.log(list)
+					console.log(list instanceof Array );
+					for(var i = 0; i < list.length; i++){
+						console.log(list[i])
+						var item = list[i];
+						this.chatUserList.unshift(item);
+					}
+				
 				}).catch(e => {
 					console.log(e);
 				})
@@ -214,21 +224,15 @@
 				// 	$chat.setChatUserListFromStorage(this.chatToken,this.chatUserList)
 				}
 			},
-			// tapGoChat(userId,chatUserId,chatToken,name,avatar,hasSave,localAvatar){
-			// 	let info = {
-			// 			userId,
-			// 			chatUserId,
-			// 			chatToken,
-			// 			name,
-			// 			avatar,
-			// 			hasSave,
-			// 			localAvatar
-			// 		}
-			// 	this.$u.route('/pages/chat/chat',{
-			// 		userInfo : JSON.stringify(info)
-			// 	})
-      //
-			// },
+			tapGoChat(friendUserId,friendNickname){
+				let info = {
+						friendId:friendUserId,
+						name:friendNickname,
+					}
+				this.$u.route('/pages/chat/chat',{
+					userInfo : JSON.stringify(info)
+				})
+			},
 			chatUserListRefresh(chatUserList){
 				this.chatUserList = chatUserList
 			},
