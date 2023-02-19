@@ -28,7 +28,7 @@
 				<empty content="暂无消息" v-if="chatUserList.length==0"></empty>
 				<uni-swipe-action  v-else>
 					<uni-swipe-action-item v-for="(item,index) in chatUserList" :right-options="rightOptions" :key="item.userId" @change="swipeChange($event, index)" @click="swipeClick($event, index)">
-						<view class="common_info" @tap="tapGoChat(item.lastMessage.senderId,item.data.nickname)">
+						<view class="common_info" @tap="tapGoChat(item.userId,item.data.nickname)">
 							<view class="person_img">
 								<image :src="item.data.avatar"></image>
 								<u-badge :absolute="true" :offset="[-10, -10]"  :count="item.unread" bgColor="#733CFF" color="#ffffff" :showZero="false"></u-badge>
@@ -75,13 +75,13 @@
 						style: {
 							backgroundColor: 'rgb(254,156,1)'
 						}
-					},
-					{
-						text: '删除',
-						style: {
-							backgroundColor: 'rgb(255,58,49)'
-						}
 					}
+					// {
+					// 	text: '删除',
+					// 	style: {
+					// 		backgroundColor: 'rgb(255,58,49)'
+					// 	}
+					// }
 				],
 			}
 		},
@@ -159,7 +159,6 @@
 				this.chatUserList=[];
 				this.$u.api.chatSessionList().then(res => {
 
-
 					let list = res.data.list;
 			
 					console.log(list)
@@ -211,17 +210,21 @@
 				let {
 					content
 				} = e;
-				if (content.text === '删除') {
+				// if (content.text === '标记为已读') {
 				// 	console.log('删除')
 				// 	await this.$toast.confirm('','删除后，将清空该聊天的消息记录')
 				// 	let msg = this.chatUserList[index]
 				// 	$chat.delChatList(msg.account,msg.friendId)
 				// 	this.chatUserList.splice(index,1)
 				// 	$chat.setChatUserListFromStorage(this.chatToken,this.chatUserList)
-				// } else if (content.text === '标记为已读') {
-				// 	console.log('标记为已读')
-				// 	this.chatUserList[index].notReadNum = 0
-				// 	$chat.setChatUserListFromStorage(this.chatToken,this.chatUserList)
+				// } else 
+				if (content.text === '标记为已读') {
+					console.log('标记为已读')
+					// this.$u.api.readUserAll(params).then((res) => {
+					
+					// });
+					// this.chatUserList[index].notReadNum = 0
+					// $chat.setChatUserListFromStorage(this.chatToken,this.chatUserList)
 				}
 			},
 			tapGoChat(friendUserId,friendNickname){
@@ -232,6 +235,9 @@
 				this.$u.route('/pages/chat/chat',{
 					userInfo : JSON.stringify(info)
 				})
+				// this.$u.api.readUserAll(params).then((res) => {
+				
+				// });
 			},
 			chatUserListRefresh(chatUserList){
 				this.chatUserList = chatUserList

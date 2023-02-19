@@ -138,11 +138,7 @@
 					}
 				}
 			},
-			/**
-			 * 确定发送邀约
-			 * @param statement
-			 * @returns {*}
-			 */
+			
 			sendYaoyueStatement(statement) {
 				if (this.selectIndex == -1) return this.$toast.text('请选择订单！')
 				let friendUserInfo = this.$u.deepClone(this.dynamicInfo)
@@ -151,71 +147,43 @@
 				let orderInfo = this.list[this.selectIndex]
 				this.sendYaoyue(orderInfo, friendUserInfo, statement);
 			},
+			
 			/**
 			 * 确定发送邀约的处理
-			 * @param orderInfo
-			 * @param friendUserInfo
-			 * @param statement
-			 * @returns {Promise<void>}
 			 */
 			sendYaoyue(orderInfo, friendUserInfo, statement) {
-				//async sendYaoyue(orderInfo, friendUserInfo, statement) {
-				// $chatUtils.sendYaoyueInfo(this, orderInfo,friendUserInfo, statement, () => {
-				// 	this.$toast.text('已发送邀约请求')
-				// 	setTimeout(()=>{
-				// 		this.$u.route({type:'back'})
-				// 	},500)
-				// })
+				
 				console.log("确定邀约")
+				var that = this;
 
 				this.$u.api.yaoyueInviteApi({
 					orderId: orderInfo.id,
 					userId: friendUserInfo.userId
 				}).then((res) => {
-					console.log("邀约成功")
-					//发送邀约的聊天信息
-
-					var payloadStr = "";
-					if (type == "text") {
-						payloadStr = "{'text':'" + content + "'}"
-					}
-
-
+					
+					console.log(orderInfo.id)
+					console.log(orderInfo.sn1676844459266835481)
+					console.log(orderInfo.clubId)
+					console.log(orderInfo.clubCover)
+					console.log(orderInfo.clubName)
+					
 					let params = {
-						type: type,
-						payloadStr: payloadStr,
-						staffId: this.kefuId,
+						type: "chat",
+						payloadStr: "{'text':'" + statement + "'}",
+						receiverId: "user@" + friendUserInfo.userId + "@"
 					};
-					// this.$u.api.chatMessageSend(params).then((res) => {
+					
+					that.$u.api.chatFriendMessageSend(params).then((res) => {
 
-					// });
+					});
 
-
-
-					this.$u.api.chatFriendMessageSend({});
-
-					this.$toast.text('已发送邀约请求')
+					that.$toast.text('已发送邀约请求')
 					setTimeout(() => {
-						this.$u.route({
+						that.$u.route({
 							type: 'back'
 						})
 					}, 500)
 				});
-
-				// if (code == 0) {
-				//   $chat.sendMsg(userInfo, friendInfo, 'single', 'yaoyue', {
-				//     orderId: orderInfo.id,
-				//     clubCover: orderInfo.clubCover,
-				//     clubName: orderInfo.clubName,
-				//     date: orderInfo.date,
-				//     cardTableName: orderInfo.cardTableName,
-				//     awkwardWineId: data.awkwardWineId,
-				//     agreeStatus: 'none',
-				//     statement: statement
-				//   })
-				//
-				// }
-
 
 			},
 			async sendPing(orderInfo, friendUserInfo) {

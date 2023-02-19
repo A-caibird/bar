@@ -1,8 +1,5 @@
 <template>
 	<view>
-		<!--		<u-navbar :border-bottom="false" :is-fixed="true" :background="{-->
-		<!--    		background: '#191C3F'-->
-		<!--    	}" title="客服" title-color="#FFFFFF" back-icon-color="#FFFFFF"></u-navbar>-->
 		<view class="content" @touchstart="hideDrawer">
 			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation"
 				:scroll-top="scrollTop" :scroll-into-view="scrollToView" @scrolltoupper="loadHistory"
@@ -33,6 +30,11 @@
 								<view v-if="row.type == 'image'" class="bubble img" @tap="showPic(row.payload.url)">
 									<image :src="row.payload.url" mode="aspectFit"> </image>
 								</view>
+								<!-- 尬酒消息 -->
+								<view v-if="row.type == 'chat'" class="bubble">
+									<rich-text :nodes="row.payload.text || ''"></rich-text>
+									<image :src="row.payload.url" mode="aspectFit"> </image>
+								</view>
 							</view>
 							<!-- 右-头像 -->
 							<view class="right">
@@ -57,6 +59,11 @@
 								</view>
 								<!-- 图片消息 -->
 								<view v-if="row.type == 'image'" class="bubble img" @tap="showPic(row.payload.url)">
+									<image :src="row.payload.url" mode="aspectFit"> </image>
+								</view>
+								<!-- 尬酒消息 -->
+								<view v-if="row.type == 'chat'" class="bubble">
+									<rich-text :nodes="row.payload.text || ''"></rich-text>
 									<image :src="row.payload.url" mode="aspectFit"> </image>
 								</view>
 							</view>
@@ -154,12 +161,17 @@
 			uni.setNavigationBarTitle({
 				title: this.friendUserInfo.name
 			})
-
+			
 			if (this.friendUserInfo.friendId) {
 				this.friendId = this.friendUserInfo.friendId
 			} else {
 				this.friendId = "user@" + this.friendUserInfo.userId + "@"
 			}
+			
+			
+			this.$u.api.readUserAll({"userId":this.friendId}).then((res) => {
+				console.log("消息全部已读")
+			});
 			
 			console.log("好友的id===>" + this.friendId)	
 
