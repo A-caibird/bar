@@ -417,26 +417,11 @@
 				this.msgList.push(msg);
 			},
 
-			//处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
-			// setPicSize(content) {
-			// 	// 让图片最长边等于设置的最大长度，短边等比例缩小，图片控件真实改变，区别于aspectFit方式。
-			// 	let maxW = uni.upx2px(350); //350是定义消息图片最大宽度
-			// 	let maxH = uni.upx2px(350); //350是定义消息图片最大高度
-			// 	if (content.w > maxW || content.h > maxH) {
-			// 		let scale = content.w / content.h;
-			// 		content.w = scale > 1 ? maxW : maxH * scale;
-			// 		content.h = scale > 1 ? maxW / scale : maxH;
-			// 	}
-			// 	return content;
-			// },
+			
 
 			// 添加图片消息到列表
 			addImgMsg(msg) {
-				console.log("=======")
-				console.log(msg)
-				// this.msgImgList.push(msg.content);
-				// this.msgList.push(msg);
-				// msg.payload.url = this.setPicSize(msg.payload.url);
+				
 				this.msgImgList.push(msg.payload.url);
 				this.msgList.push(msg);
 			},
