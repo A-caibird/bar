@@ -31,7 +31,7 @@
 								</view>
 								<!-- 图片消息 -->
 								<view v-if="row.type == 'image'" class="bubble img" @tap="showPic(row.payload.url)">
-									<image :src="row.payload.url" mode="aspectFit"> </image>
+									<image :src="row.payload.url" mode="widthFix"> </image>
 								</view>
 							</view>
 							<!-- 右-头像 -->
@@ -57,7 +57,7 @@
 								</view>
 								<!-- 图片消息 -->
 								<view v-if="row.type == 'image'" class="bubble img" @tap="showPic(row.payload.url)">
-									<image :src="row.payload.url" mode="aspectFit"> </image>
+									<image :src="row.payload.url" mode="widthFix"> </image>
 								</view>
 							</view>
 						</view>
@@ -217,7 +217,7 @@
 			openConnection() {
 				var s = Date.parse(new Date());
 				var t = getApp().globalData.token;
-				var url = "ws://erp.patixiu.com/websocket/messageHandler?username=user@" + t + "@" + s;
+				var url = "ws://192.168.0.112:8080/websocket/messageHandler?username=user@" + t + "@" + s;
 
 				uni.showLoading({
 					title: '连接中'
@@ -418,17 +418,17 @@
 			},
 
 			//处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
-			setPicSize(content) {
-				// 让图片最长边等于设置的最大长度，短边等比例缩小，图片控件真实改变，区别于aspectFit方式。
-				let maxW = uni.upx2px(350); //350是定义消息图片最大宽度
-				let maxH = uni.upx2px(350); //350是定义消息图片最大高度
-				if (content.w > maxW || content.h > maxH) {
-					let scale = content.w / content.h;
-					content.w = scale > 1 ? maxW : maxH * scale;
-					content.h = scale > 1 ? maxW / scale : maxH;
-				}
-				return content;
-			},
+			// setPicSize(content) {
+			// 	// 让图片最长边等于设置的最大长度，短边等比例缩小，图片控件真实改变，区别于aspectFit方式。
+			// 	let maxW = uni.upx2px(350); //350是定义消息图片最大宽度
+			// 	let maxH = uni.upx2px(350); //350是定义消息图片最大高度
+			// 	if (content.w > maxW || content.h > maxH) {
+			// 		let scale = content.w / content.h;
+			// 		content.w = scale > 1 ? maxW : maxH * scale;
+			// 		content.h = scale > 1 ? maxW / scale : maxH;
+			// 	}
+			// 	return content;
+			// },
 
 			// 添加图片消息到列表
 			addImgMsg(msg) {
@@ -436,7 +436,7 @@
 				console.log(msg)
 				// this.msgImgList.push(msg.content);
 				// this.msgList.push(msg);
-				msg.payload.url = this.setPicSize(msg.payload.url);
+				// msg.payload.url = this.setPicSize(msg.payload.url);
 				this.msgImgList.push(msg.payload.url);
 				this.msgList.push(msg);
 			},

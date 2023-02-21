@@ -62,9 +62,9 @@
 									<image :src="row.payload.url" mode="aspectFit"> </image>
 								</view>
 								<!-- 尬酒消息 -->
-								<view v-if="row.type == 'chat'" class="bubble">
-									<rich-text :nodes="row.payload.text || ''"></rich-text>
-									<image :src="row.payload.url" mode="aspectFit"> </image>
+								<view v-if="row.type == 'chat'" class="bubble red-envelope">
+									<!-- <rich-text :nodes="row.payload.text || ''"></rich-text> -->
+									<image :src="row.payload.url"> </image>
 								</view>
 							</view>
 						</view>
@@ -239,7 +239,7 @@
 			openConnection() {
 				var s = Date.parse(new Date());
 				var t = getApp().globalData.token;
-				var url = "ws://192.168.0.102:8080/websocket/messageHandler?username=user@" + t + "@" + s;
+				var url = "ws://192.168.0.112:8080/websocket/messageHandler?username=user@" + t + "@" + s;
 
 				uni.showLoading({
 					title: '连接中'
