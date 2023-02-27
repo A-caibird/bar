@@ -67,9 +67,9 @@
 				<!-- <view class="dynamic-box">
 					<commonLabel leftText="我的动态" :showRight="false"></commonLabel>
 					<view class="bottom_line"></view>
-					
+
 					<dynamic kind="personal" :pageList="pageList"></dynamic>
-					
+
 				</view> -->
 			</view>
 			<view class="first_part">
@@ -100,6 +100,14 @@
 						<text>用户协议</text>
 						<image src="/static/imgs/mine/common_right.png" mode=""></image>
 					</view>
+					<view v-if="isAppleAudit" class="items" @tap="$u.throttle(goArticle('privacy'))">
+						<text>隐私政策</text>
+						<image src="/static/imgs/mine/common_right.png" mode=""></image>
+					</view>
+					<view v-if="isAppleAudit" class="items" @tap="navigateHandle('/pages/logout/tips')">
+						<text>账户注销</text>
+						<image src="/static/imgs/mine/common_right.png" mode=""></image>
+					</view>
 					<view class="items" @tap="navigateHandle('/pages/business-settlement/business-settlement')">
 						<text>商家入驻</text>
 						<image src="/static/imgs/mine/common_right.png" mode=""></image>
@@ -113,8 +121,8 @@
 </template>
 
 <script>
-	var yaoOrderListUrl = '/pages/order/index'
-	var pingOrderListUrl = '/pages/order/index?type=share'
+	var yaoOrderListUrl = '/pages/order/index'//显示订单列表
+	var pingOrderListUrl = '/pages/order/index?type=share'//订单列表页面
 	var app = getApp();
 	import commonLabel from '@/components/common-label/common-label.vue'
 	import dynamic from '@/components/personalDynamic-item/personalDynamic-item.vue'
@@ -174,7 +182,6 @@
 								icon: '/static/imgs/mine/collect_icon.png',
 								text: '我的收藏',
 								url: '/pages/mine/myCollection/myCollection'
-
 							},
 							{
 								icon: '/static/imgs/mine/setting_icon.png',
@@ -290,6 +297,7 @@
 			goWallet() {
 				this.$u.route('/pages/mine/myWallet/myWallet')
 			},
+			//显示之前的初始函数
 			load() {
 				let authorized = false;
 				if (app.globalData.token) {
@@ -320,6 +328,7 @@
 			goYaoOrderList() {
 				this.$u.route(yaoOrderListUrl)
 			},
+			
 			goShareOrderList() {
 				this.$u.route(pingOrderListUrl)
 			},
@@ -510,7 +519,6 @@
 		background-image: url('/static/imgs/mine/backImg.png');
 		background-size: 100% 748rpx;
 		background-repeat: no-repeat;
-
 
 		.middle_box {
 			width: 100%;

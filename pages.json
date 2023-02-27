@@ -40,6 +40,10 @@
 			"path": "pages/index/index"
 		},
 		{
+			"path": "pages/logout/tips" 
+			
+		},
+		{
 			"path":"pages/discovery/dynamic_detail" //动态详情
 		},
 		{

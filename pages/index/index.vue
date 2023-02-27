@@ -1,6 +1,7 @@
 <template>
 	<view class="container">
 		<!-- <u-mask :show="maskShow" :custom-style="{background: '#FFFFFF'}"></u-mask> -->
+		<!--中间的实际四个页面展示-->
 		<view class="middle_box">
 			<swiper v-if="contentShow" style="height: 100%;" :duration="0" :disable-touch="true" :current="current">
 				<swiper-item>
@@ -27,6 +28,8 @@
 				</swiper-item>
 			</swiper>
 		</view>
+		<!--中间的实际四个页面展示-->
+		<!--登录加载页-->
 		<view class="loading_page" :class="{'hidden': !pageloading}">
 			<view class="top_box">
 				<image class="top_img" src="/static/imgs/index/loading_bg.png"></image>
@@ -38,6 +41,7 @@
 				<view class="footer_text">爬梯秀</view>
 			</view>
 		</view>
+		<!--登录加载页-->
 		<selfTabbar
 			:border-top="false"
 			inactiveColor="#998FAA"
@@ -50,7 +54,9 @@
 		></selfTabbar>
 		<reportPop ref="reportPop"></reportPop>
 		<add-dynamic ref="addDynamic" @goDynamic="goFind" @joinPingTap="goPing" @goClubList="goClubList" :bottomHeight="bottomHeight"></add-dynamic>
+		<!--动态评论标签-->
 		<dynamic-comment ref="dynamicComment" @sendComment="$refs.find.handleSendComment($event)"></dynamic-comment>
+		<!--赠送礼物相关-->
 		<dynamic-gift ref="dynamicGift" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @sendGiftSuccess="$refs.find.handleSendGiftSuccess($event)"></dynamic-gift>
 		<dynamic-gift-edit ref="dynamicGiftEdit" @confirm="$refs.dynamicGift.setSendNum($event)"></dynamic-gift-edit>
 		<pop-share v-model="popShareShow"></pop-share>
@@ -59,14 +65,14 @@
 
 <script>
 import { mapState, mapMutations} from 'vuex';
-import selfTabbar from '@/components/self-tabbar/self-tabbar.vue';
-import homePage from '@/components/tabbarPage/home.vue';
-import findPage from '@/components/tabbarPage/find.vue';
-import mePage from '@/components/tabbarPage/me.vue';
-import infoPage from '@/components/tabbarPage/info.vue';
+import selfTabbar from '@/components/self-tabbar/self-tabbar.vue';//四个底部组件
+import homePage from '@/components/tabbarPage/home.vue';//四个底部组件
+import findPage from '@/components/tabbarPage/find.vue';//四个底部组件
+import mePage from '@/components/tabbarPage/me.vue';//四个底部组件
+import infoPage from '@/components/tabbarPage/info.vue';//四个底部组件
 import tipsPop from '@/components/pop/tips.vue';//年满18的提示，但是好像没用到
-import loginMixin from '@/mixins/loginConfirm.js'
-import $chat from '@/utils/chat/index.js'///
+import loginMixin from '@/mixins/loginConfirm.js'//跟用户是否登录有关的函数loginConfirmHandle
+// import $chat from '@/utils/chat/index.js'///看起来应该不需要了
 import reportPop from '@/components/pop/report.vue'//举报用户
 var app = getApp();
 export default {
@@ -86,29 +92,32 @@ export default {
 			current: 0,
 			scrollTop:0,
 			bottomHeight:0,
-			maskShow:true,
-			pageloading: true,
-			contentShow: false,
-			tabExit: [1, 0, 1, 0, 1],
-			noRead: 0,
-			noticeNum: 0, //系统通知
+			maskShow:true,//现在看起来没在用了
+			pageloading: true,//动态加载页面
+			contentShow: false,//实际的内容区
+			tabExit: [1, 0, 1, 0, 1],//
+			noRead: 0,//未读消息
+			noticeNum: 0, //系统通知，但是看代码中，好像没在用到
 		};
 	},
 	computed: {
+		//https://vuex.vuejs.org/zh/guide/state.html#%E5%8D%95%E4%B8%80%E7%8A%B6%E6%80%81%E6%A0%91
 		...mapState(['list'])
 	},
 	watch: {
+		//应该是监听current变量的数据，如果从0变成其他的，或者去不是其他非0页面，需要调用主页的hideEvent
 		current(newVal, oldVal){
 			if(oldVal == 0 && newVal != 0){
 				this.$refs.home.hideEvent();
 			}
 		}
 	},
-	beforeCreate() {
-		// #ifdef APP-PLUS
-		plus.screen.lockOrientation('portrait-primary'); //锁死屏幕方向为竖屏
-		// #endif
-	},
+	//应该没在用了
+	// beforeCreate() {
+	// 	// #ifdef APP-PLUS
+	// 	plus.screen.lockOrientation('portrait-primary'); //锁死屏幕方向为竖屏
+	// 	// #endif
+	// },
 	onLoad(opt) {
 		if(!opt.maskShow) {
 			this.maskShow = false
@@ -171,9 +180,9 @@ export default {
 		uni.$off('push_listener');
 	},
 	onShow: function() {
-		// #ifdef APP-PLUS
-		plus.screen.lockOrientation('portrait-primary');
-		// #endif
+		// // #ifdef APP-PLUS
+		// plus.screen.lockOrientation('portrait-primary');
+		// // #endif
 		let vm = this;
 		if(this.$refs.find) {
 			this.$nextTick(function(){
@@ -204,7 +213,10 @@ export default {
 		this.$refs.home.hideEvent();
 	},
 	methods: {
+		//https://vuex.vuejs.org/zh/guide/mutations.html
 		...mapMutations(['setInfoCount', 'setPushCount']),
+		
+		//一般是发现页面这边触发传过来的触发事件
 		reportTap(info){
 			this.$refs.reportPop.show(info);
 		},
@@ -222,18 +234,18 @@ export default {
 				}
 			}
 		},
-		// 消息监听
-		infoListenerEvent(ignoreNotice = true){
-			var chatToken = getApp().globalData.userInfo.chatToken;
-			var chatUserList = $chat.getChatUserListFromStorage(chatToken) || [];
-			let noRead = 0;
-			chatUserList.forEach((item, index) => {
-				noRead = item.notReadNum + noRead;
-			})
-			this.noRead = noRead;
-			// console.log('infoListenerEvent 聊天消息监听', noRead)
-			this.setInfoCount(noRead)
-		},
+		// //消息监听
+		// infoListenerEvent(ignoreNotice = true){
+		// 	var chatToken = getApp().globalData.userInfo.chatToken;
+		// 	var chatUserList = $chat.getChatUserListFromStorage(chatToken) || [];
+		// 	let noRead = 0;
+		// 	chatUserList.forEach((item, index) => {
+		// 		noRead = item.notReadNum + noRead;
+		// 	})
+		// 	this.noRead = noRead;
+		// 	// console.log('infoListenerEvent 聊天消息监听', noRead)
+		// 	this.setInfoCount(noRead)
+		// },
 		// 推送监听
 		pushListenerEvent(exitNoRead = 0, refresh = true){
 			if(isNaN(exitNoRead)){
@@ -270,6 +282,8 @@ export default {
 				url: '/pages/info/gift'
 			});
 		},
+		
+		//最初的触发函数
 		loadingAnimalHandle: function(){
 			this.contentShow = true;
 			this.$nextTick(() =>{
@@ -324,18 +338,23 @@ export default {
 		goClub(){
 			this.current = 0
 		},
+		//
 		goYaoOrderList(){
 			this.current = 4
 			setTimeout(() => {
 				this.$refs.me.goYaoOrderList()
 			},50);
 		},
+		
+		//显示拼享订单列表
 		goShareOrderList(){
 			this.current = 4
 			setTimeout(() => {
 				this.$refs.me.goShareOrderList()
 			},50);
 		},
+		
+		//跳转到发现页面
 		goFind(){
 			this.current = 1;
 			this.tabExit[this.current] = 1;

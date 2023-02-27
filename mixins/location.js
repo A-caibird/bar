@@ -31,6 +31,10 @@ let location = ({
 		handleUpdateLocationService(){
 			this.updateLocationService()
 		},
+		
+		/**
+		 * 在home页面会被混合并被调用
+		 */
 		updateLocationService(callBack=()=>{}){//更新每个页面的位置权限信息
 			this.locationService = getApp({allowDefault: true}).globalData.locationService
 			this.locationPermission = getApp({allowDefault: true}).globalData.locationPermission
@@ -40,6 +44,8 @@ let location = ({
 		handleLocation(res){
 			// console.log(res)
 		},
+		
+		
 		getLocation(){//获取定位
 			let vm = this
 			console.log("获取定位");

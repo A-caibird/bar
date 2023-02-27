@@ -20,7 +20,7 @@
 </template>
 
 <script>
-	import $chatUtils from '@/common/chat.js'
+	// import $chatUtils from '@/common/chat.js'
 	import popCommon from '@/components/commonPop/pop.vue'
 	import statementPop from '@/components/chatStatement/chatStatement.vue'
 	const app = getApp()
@@ -88,9 +88,10 @@
 				this.popShow = false;
 				vm.$u.route({
 					type: 'redirect',
-					url: '/pages/chat/chat',
+					url: '/pages/chat/chat?isGreet=1',
 					params: {
 						userInfo: infoStr
+
 					}
 				})
 			},
@@ -138,7 +139,7 @@
 					}
 				}
 			},
-			
+
 			sendYaoyueStatement(statement) {
 				if (this.selectIndex == -1) return this.$toast.text('请选择订单！')
 				let friendUserInfo = this.$u.deepClone(this.dynamicInfo)
@@ -147,12 +148,12 @@
 				let orderInfo = this.list[this.selectIndex]
 				this.sendYaoyue(orderInfo, friendUserInfo, statement);
 			},
-			
+
 			/**
 			 * 确定发送邀约的处理
 			 */
 			sendYaoyue(orderInfo, friendUserInfo, statement) {
-				
+
 				console.log("确定邀约")
 				var that = this;
 
@@ -160,19 +161,20 @@
 					orderId: orderInfo.id,
 					userId: friendUserInfo.userId
 				}).then((res) => {
-					
-					console.log(orderInfo.id)
-					console.log(orderInfo.sn1676844459266835481)
-					console.log(orderInfo.clubId)
-					console.log(orderInfo.clubCover)
-					console.log(orderInfo.clubName)
-					
+					var p1 = {};
+					p1.orderId = orderInfo.id
+					p1.orderSn = orderInfo.sn
+					p1.orderClubId = orderInfo.clubId
+					p1.clubCover = orderInfo.clubCover
+					p1.orderClubName = orderInfo.clubName
+					p1.text = statement
+					var last = JSON.stringify(p1);
+
 					let params = {
 						type: "chat",
-						payloadStr: "{'text':'" + statement + "'}",
+						payloadStr: last,
 						receiverId: "user@" + friendUserInfo.userId + "@"
 					};
-					
 					that.$u.api.chatFriendMessageSend(params).then((res) => {
 
 					});
@@ -186,15 +188,44 @@
 				});
 
 			},
-			async sendPing(orderInfo, friendUserInfo) {
-				$chatUtils.sendPingInfo(this, orderInfo, friendUserInfo, () => {
+
+			/**
+			 * 发送拼享受
+			 */
+			sendPing(orderInfo, friendUserInfo) {
+			
+				this.$u.api.pingInviteApi({
+					orderId: orderInfo.id,
+					userId: friendInfo.userId
+				}).then((res) => {
+					
+					var p1 = {};
+					p1.orderId = orderInfo.id
+					p1.orderSn = orderInfo.sn
+					p1.orderClubId = orderInfo.clubId
+					p1.clubCover = orderInfo.clubCover
+					p1.orderClubName = orderInfo.clubName
+					
+					var last = JSON.stringify(p1);
+					let params = {
+						type: "inviteJoinOrder",
+						payloadStr: last,
+						receiverId: "user@" + friendUserInfo.userId + "@"
+					};
+					that.$u.api.chatFriendMessageSend(params).then((res) => {
+					
+					});
+					
 					this.$toast.text('已发送邀约请求')
 					setTimeout(() => {
 						this.$u.route({
 							type: 'back'
 						})
 					}, 500)
-				})
+					
+				});
+				
+
 			},
 		},
 		onLoad(opt) {

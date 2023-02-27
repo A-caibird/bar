@@ -1,4 +1,5 @@
 const storage_chat_name = "service_chat_file";
+
 function setChatStorage(chatList, channel){
 	let serviceInfo = uni.getStorageSync(storage_chat_name) || {};
 	let currentInfo = serviceInfo[channel] || [];

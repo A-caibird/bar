@@ -2,36 +2,36 @@
 	<view class="find-page">
 		<block v-if="!pageLoading">
 			<view class="find_header_box">
-				<classify fontSize="28" bgColor="#191C3F" ref="tabs" :list="list" :current="swiperCurrent" @dbTap="dbTap" @change="change"
-					:is-scroll="false" swiperWidth="750" inactiveColor="#B7B9D6" activeColor="#ffffff" :activeItemStyle="{
+				<classify fontSize="28" bgColor="#191C3F" ref="tabs" :list="list" :current="swiperCurrent"
+					@dbTap="dbTap" @change="change" :is-scroll="false" swiperWidth="750" inactiveColor="#B7B9D6"
+					activeColor="#ffffff" :activeItemStyle="{
 						'font-size': '34rpx'
 					}"></classify>
 			</view>
 			<view class="find_middle_box" v-if="!pageLoading">
 				<swiper class="swiper-box" :duration="250" :current="swiperCurrent" @change="animationfinish">
 					<swiper-item class="swiper-item">
-						<dynamic-list2 
-							@reportTap="reportTap"
-							@shareTap="$emit('shareTap')" ref="follow-dynamic-list" :index="swiperCurrent" 
-							@showYaoyue="handleShowYaoyue" @showPing="handleShowPing" :showPercent="!isAppleAudit"
-							@oepnComment="openDynamicComment('follow',$event)" @oepnGift="oepnGift('follow',$event)">
+						<dynamic-list2 @reportTap="reportTap" @shareTap="$emit('shareTap')" ref="follow-dynamic-list"
+							:index="swiperCurrent" @showYaoyue="handleShowYaoyue" @showPing="handleShowPing"
+							:showPercent="!isAppleAudit" @oepnComment="openDynamicComment('follow',$event)"
+							@oepnGift="oepnGift('follow',$event)">
 						</dynamic-list2>
 					</swiper-item>
 					<swiper-item class="swiper-item">
 						<view style="height: 100%;">
-							<dynamic-list 
-								@reportTap="reportTap"
-								@videoPlayTap="videoPlayHandle" @shareTap="$emit('shareTap')" 
-								ref="nearby-dynamic-list" :index="swiperCurrent"
+							<dynamic-list @reportTap="reportTap" @videoPlayTap="videoPlayHandle"
+								@shareTap="$emit('shareTap')" ref="nearby-dynamic-list" :index="swiperCurrent"
 								@showYaoyue="handleShowYaoyue" @showPing="handleShowPing" :showPercent="!isAppleAudit"
-								@oepnComment="openDynamicComment('nearby',$event)" @oepnGift="oepnGift('nearby',$event)">
+								@oepnComment="openDynamicComment('nearby',$event)"
+								@oepnGift="oepnGift('nearby',$event)">
 							</dynamic-list>
 						</view>
 					</swiper-item>
-			
+
 					<swiper-item class="swiper-item" v-if="!isAppleAudit">
 						<find-share-list ref="find-share-list" :i="2" :index="swiperCurrent"></find-share-list>
 					</swiper-item>
+
 					<swiper-item class="swiper-item" v-if="!isAppleAudit">
 						<gift-board ref="gift-board" :i="3" :index="swiperCurrent"></gift-board>
 					</swiper-item>
@@ -68,11 +68,11 @@
 	import appleAudit from '@/mixins/apple-audit.js'
 	import loginConfirm from '@/mixins/loginConfirm.js'
 	import $chat from '@/utils/chat/index.js'
-	import giftAnimation from '@/components/giftAnimation/giftAnimation.vue'
-	import videoBox from '@/components/common-video/video.vue'
+	import giftAnimation from '@/components/giftAnimation/giftAnimation.vue'//礼物动画相关
+	import videoBox from '@/components/common-video/video.vue' //视频播放组件
 	var app = getApp();
 	export default {
-		mixins: [appleAudit,loginConfirm],
+		mixins: [appleAudit, loginConfirm],
 		components: {
 			classify,
 			findShare,
@@ -103,44 +103,79 @@
 			};
 		},
 		computed: {
+			//根据是否属于苹果审核状态，切换显示不同的数据
 			list() {
-				return (this.isAppleAudit) ? [{name: '关注动态',value: ''},{name: '附近动态',value: ''},] : [{name: '关注动态',value: ''},{name: '附近动态',value: ''},{name: '拼享快乐',value: ''},{name: '礼物排行',value: ''},]
+				return (this.isAppleAudit) ? [{
+					name: '关注动态',
+					value: ''
+				}, {
+					name: '附近动态',
+					value: ''
+				}, ] : [{
+					name: '关注动态',
+					value: ''
+				}, {
+					name: '附近动态',
+					value: ''
+				}, {
+					name: '拼享快乐',
+					value: ''
+				}, {
+					name: '礼物排行',
+					value: ''
+				}, ]
 			}
 		},
-		mounted() {	
+		mounted() {
 			var vm = this;
 			this.pageLoading = true;
-			this.$nextTick(function(){
+			this.$nextTick(function() {
 				setTimeout(() => {
 					vm.pageLoading = false;
 				}, 300)
 			})
 		},
 		methods: {
-			reportTap(info){
+			
+			//向上一级发送举报信息
+			reportTap(info) {
 				this.$emit('reportTap', info);
 			},
-			videoPlayHandle(e){
+			
+			//动态中涉及到一些视频需要播放
+			videoPlayHandle(e) {
 				this.$refs.videoBox.videoPlayTap(e.src);
 			},
-			openDynamicComment(mode, e){
-				let info = Object.assign(e, {mode});
+			
+			//打开动态评论
+			openDynamicComment(mode, e) {
+				let info = Object.assign(e, {
+					mode
+				});
 				this.$emit('openDynamicComment', info);
 			},
-			oepnGift(mode, e){
-				let info = Object.assign(e, {mode});
+			
+			//打开显示礼物
+			oepnGift(mode, e) {
+				let info = Object.assign(e, {
+					mode
+				});
 				this.$emit('oepnGift', info);
 			},
-			show(){
+			
+			
+			show() {
 				this.authorized = getApp().globalData.authorized;
-				if(this.$refs['nearby-dynamic-list']){
+				if (this.$refs['nearby-dynamic-list']) {
 					let ref = this.$refs['nearby-dynamic-list'];
 					let searchValue = ref.params.searchKey;
-					if(searchValue){
+					if (searchValue) {
 						ref.searchChange("");
 					}
 				}
 			},
+			
+			//看起来像是礼物发送完成的处理函数
 			handleSendGiftSuccess(e) {
 				this.$refs['follow-dynamic-list'].setGifttNum(e)
 				this.$refs['nearby-dynamic-list'].setGifttNum(e)
@@ -148,19 +183,23 @@
 					this.$refs.giftAnimation.show(e.gifUrl)
 				}
 			},
+			
+			//看起来像是评论发送完成的处理函数
 			handleSendComment(e) {
-				if(e.mode == 'follow'){
+				if (e.mode == 'follow') {
 					this.$refs['follow-dynamic-list'].setCommentNum(e)
-				} else if(e.mode == 'nearby'){
+				} else if (e.mode == 'nearby') {
 					this.$refs['nearby-dynamic-list'].setCommentNum(e)
-				}else{
+				} else {
 					this.$refs['follow-dynamic-list'].setCommentNum(e)
 					this.$refs['nearby-dynamic-list'].setCommentNum(e)
 				}
 			},
+			
 			goClub() {
 				this.$emit('goClub')
 			},
+			
 			pingOrderListConfirm(arr) {
 				console.log(this.pingOrderList[arr[0]]) //订单信息
 				console.log(this.pingInfo) //动态信息
@@ -169,6 +208,7 @@
 				friendUserInfo.hasSave = false
 				this.sendPing(this.pingOrderList[arr[0]], friendUserInfo)
 			},
+			
 			yaoOrderListConfirm(arr) {
 				console.log(this.yaoOrderList[arr[0]]) //订单信息
 				console.log(this.yaoInfo) //动态信息
@@ -177,6 +217,7 @@
 				friendUserInfo.hasSave = false
 				this.sendYaoyue(this.yaoOrderList[arr[0]], friendUserInfo)
 			},
+			
 			async sendPing(orderInfo, friendUserInfo) {
 				let userInfo = this.$u.deepClone(this.userInfo)
 				console.log(orderInfo)
@@ -194,6 +235,7 @@
 					userInfo: JSON.stringify(friendUserInfo)
 				})
 			},
+			
 			async sendYaoyue(orderInfo, friendUserInfo) {
 				let userInfo = this.$u.deepClone(this.userInfo)
 				console.log(orderInfo)
@@ -222,9 +264,11 @@
 					})
 				}
 			},
+			
 			goChat(e) {
 				this.$emit('goChat', e)
 			},
+			
 			async handleOpenPingOrderList(info) {
 				console.log(info)
 				let {
@@ -246,6 +290,7 @@
 					}
 				}
 			},
+			
 			async handleOpenYaoOrderList(info) {
 				console.log(info)
 				let {
@@ -267,50 +312,56 @@
 					}
 				}
 			},
+			
 			handleShowPing(e) {
 				this.$refs.pingPop.open(e)
 			},
+			
 			handleShowYaoyue(e) {
 				this.$refs.yaoyuePop.open(e)
 			},
-			switchToGift() { //显示礼物排行
-			console.log('显示礼物排行')
+			//显示礼物排行
+			switchToGift() {
+				console.log('显示礼物排行')
 				this.swiperCurrent = 3;
 			},
-			switchToPing() { //显示拼享快乐
+			//显示拼享快乐
+			switchToPing() {
 				console.log('显示拼享快乐')
 				this.swiperCurrent = 2;
 			},
 			switchToFind() { //显示附近动态
-			console.log('显示附近动态')
+				console.log('显示附近动态')
 				this.swiperCurrent = 1;
 				this.$nextTick(() => {
-					if(this.$refs['nearby-dynamic-list']){
+					if (this.$refs['nearby-dynamic-list']) {
 						let ref = this.$refs['nearby-dynamic-list'];
 						ref.searchChange("");
 					}
 				})
 			},
-			switchToNearby() { //显示附近动态
+			// 显示附近动态
+			switchToNearby() {
 				this.swiperCurrent = 1;
 				this.$nextTick(() => {
-					if(this.$refs['nearby-dynamic-list']){
+					if (this.$refs['nearby-dynamic-list']) {
 						let ref = this.$refs['nearby-dynamic-list'];
 						ref.searchChange("");
 					}
 				})
 			},
-			switchToAtt(){
+			//切换显示关注动态
+			switchToAtt() {
 				this.swiperCurrent = 0;
 				this.$nextTick(() => {
-					if(this.$refs['follow-dynamic-list']){
+					if (this.$refs['follow-dynamic-list']) {
 						let ref = this.$refs['follow-dynamic-list']
 						ref.refreshScrll()
 					}
 				})
 			},
-			// tab 栏双击
-			dbTap(index){
+			// 顶部tab 栏双击
+			dbTap(index) {
 				let refs = ['follow-dynamic-list', 'nearby-dynamic-list', 'find-share-list', 'gift-board'];
 				this.$refs[refs[index]].toTopClick();
 			},
@@ -337,7 +388,8 @@
 		flex-direction: column;
 		height: 100%;
 		position: relative;
-		.loading_page{
+
+		.loading_page {
 			position: absolute;
 			z-index: 100;
 			left: 0rpx;
@@ -349,14 +401,17 @@
 			align-items: center;
 			justify-content: center;
 			transition: all 0.3s;
-			&>image{
+
+			&>image {
 				height: 60rpx;
 				width: 60rpx;
 			}
-			&.hide{
+
+			&.hide {
 				opacity: 0;
 			}
 		}
+
 		.find_header_box {
 
 			background-color: transparent;

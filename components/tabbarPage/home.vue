@@ -92,7 +92,7 @@
 	import club from '@/components/club-item/club-item.vue';
 	import pageable from '@/mixins/pageable.js';
 	import location from '@/mixins/location.js';
-	import appleAudit from '@/mixins/apple-audit.js'
+	import appleAudit from '@/mixins/apple-audit.js'//混合一个是否审核的变量进来，组件mounted就触发
 	import loginConfirm from '@/mixins/loginConfirm.js'
 	import commonBanner from '@/components/common-banner/common-banner.vue'
 	var app = getApp();
@@ -175,25 +175,24 @@
 					timeoutEvent = "";
 				}
 			},
-			// 页面隐藏事件
+			// 页面隐藏事件，发现首页index有主动调用
 			hideEvent(){
 				if(this.$refs.commonBanner && this.$refs.commonBanner.playVideoUrl){
 					this.$refs.commonBanner.colseVideo();
 				}
 			},
-			goWheel() {
-				if (!this.loginConfirmHandle(false)) return;
-				this.$u.route('/pages/blindBox/index')
-				// this.$u.route('/pages/snatch/snatch')
-			},
+			
+			//点击轮播图
 			bannerTap(e) {
 				let index = e.detail.index;
 				let info = this.bannerList[index];
 				this.$nav.bannberNav(info);
 			},
+			//点击城市选择
 			tapGoSelectCity() {
 				this.$u.route('/pages/select/city')
 			},
+			
 			handleUpdateLocation() {
 				this.setLocation(() => {
 					let {
@@ -209,6 +208,7 @@
 					this.pullRefresh();
 				})
 			},
+			
 			handleUpdateLocationService() {
 				this.updateLocationService(() => {
 					if (this.canLocation && app.globalData.location.cityName == '未定位') {
@@ -217,6 +217,7 @@
 				})
 			},
 
+			//功能按钮区触发，去酒吧列表
 			tapGoClubList(mode = 'list') {
 				console.log(mode);
 				if (mode == 'list') {
@@ -227,32 +228,26 @@
 				}
 
 			},
+			
+			//应该是最初的方法
 			load() {
 				this.getHomeBannerList()
 				this.getClubList()
 			},
-			async getClubList() {
-				await this.getLocation()
-				if (this.canLocation) {
-					let hasLocation = await this.getLocation()
-					if (!hasLocation && this.hasLocation) {
-						this.pullRefresh()
-					}
-				} else {
-					if (this.hasLocation) {
-						this.pullRefresh()
-					}
-				}
-			},
+			
+			
 			scrollToClubList() {
 				this.scrollBottom = ''
 				this.$nextTick(() => {
 					this.scrollBottom = 'club-list'
 				})
 			},
+			
 			handlePullRefresh() {
 				this.clubListLoad = true
 			},
+			
+			//没有被调用，是不是没在用？
 			getSelfLocation: function() {
 				uni.getLocation({
 					type: 'wgs84',
@@ -264,24 +259,52 @@
 					}
 				});
 			},
-			async getHomeBannerList() {
-				let {
-					code,
-					data
-				} = await this.$u.api.getHomeBannerListApi()
-				if (code == 0) {
-					var list = data.list;
-					this.bannerList = list;
-					this.bannerListLoad = true
+			//最初的触发方法
+			 getHomeBannerList() {
+				 var that= this;
+			
+				this.$u.api.getHomeBannerListApi().then(function(res){
+					if(res.code == 0){
+						var list = res.data.list;
+						that.bannerList = list;
+						that.bannerListLoad = true
+					}
+				});
+				
+				
+			},
+			//最初触发的方法
+			async getClubList() {
+				//调用mixins/location的方法，拿到经纬度和城市名，存起来
+				await this.getLocation()
+				
+				if (this.canLocation) {//是location.js中的一个变量
+					let hasLocation = await this.getLocation()
+					if (!hasLocation && this.hasLocation) {
+						this.pullRefresh()
+					}
+				} else {
+					if (this.hasLocation) {
+						this.pullRefresh()
+					}
 				}
 			},
+			
+			//功能按钮区触发，去礼物列表
 			goGift: function() {
 				if (!this.loginConfirmHandle(false)) return;
 				this.$emit('goGift')
 			},
+			//功能按钮区触发，去拼享列表
 			goPing: function() {
 				if (!this.loginConfirmHandle(false)) return;
 				this.$emit('goPing')
+			},
+			//功能按钮区触发，去抽奖
+			goWheel() {
+				if (!this.loginConfirmHandle(false)) return;
+				this.$u.route('/pages/blindBox/index')
+				// this.$u.route('/pages/snatch/snatch')
 			},
 		}
 	};
@@ -344,8 +367,8 @@
 					justify-content: center;
 
 					&>image {
-						height: 98rpx;
-						width: 98rpx;
+						height: 84rpx;
+						width: 84rpx;
 					}
 
 					&>text {

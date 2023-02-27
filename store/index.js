@@ -2,9 +2,9 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
 
-import GoEasy from '@/js_sdk/goeasy-2.0.13.min.js'
-import goEasyUtils from '@/utils/chatJS/goEasyUtils.js'
-import ChatInfo from '@/utils/chatJS/chatInfo.js'
+// import GoEasy from '@/js_sdk/goeasy-2.0.13.min.js'
+// import goEasyUtils from '@/utils/chatJS/goEasyUtils.js'
+// import ChatInfo from '@/utils/chatJS/chatInfo.js'
 const store = new Vuex.Store({
 	state: {
 		'list': [{
@@ -35,10 +35,6 @@ const store = new Vuex.Store({
 				"count": 0,
 			},
 		],
-		// goEasy 对象
-		goEasy: '',
-		// 发送者消息
-		userInfo: {},
 		pushCount: 0,// 推送未读数量
 		infoCount: 0,// 消息未读数量
 
@@ -69,102 +65,8 @@ const store = new Vuex.Store({
 			state.infoCount = count;
 			state.list[3].count = count + state.pushCount;
 		},
-		// goEasy 初始化
-		initGoEasy(state, info) {
-			info = JSON.parse(info);
-			var chatId = info.chatToken;
-			let callback = info.callback || null
-			state.userInfo = {
-				nickName: info.name,
-				avatar: info.avatar
-			}
-			state.goEasy = GoEasy.getInstance({
-				host: "hangzhou.goeasy.io", //若是新加坡区域：singapore.goeasy.io
-				// appkey: "BC-025546bc12d04071b9113d33a63bbaca",
-				appkey: 'BC-1df93636844c48db9e5b7fe0a9a718b4',
-				modules: ['pubsub', 'im'] //根据需要，传入‘pubsub’或'im’，或数组方式同时传入
-			});
-			goEasyUtils.connect(state.goEasy, chatId, {
-				avatar: state.userInfo.avatar,
-				nickname: state.userInfo.nickName
-			}, function(){
-				goEasyUtils.receiveMessage(state.goEasy.im, (msg) => {
-					// console.log(msg);
-					var msgInfo = msg.payload.payloadString;
-					// console.log(msgInfo);
-					goEasyUtils.markPrivateMessageAsRead(state.goEasy.im, msg.senderId);
-					// 触发全局事件，，，消息到达用这个来通知，还是沿用了之前的mqtt名称
-					uni.$emit('mqtt-arrived-msg', {
-						payload: msgInfo
-					})
-				});
-			});
-		},
-		// goEasy 连接
-		connetGoEasy(state, {chatId, callback}){
-			console.log("chatId: ", chatId);
-			let callBackEvent = callback
-			if(callback){
-				callBackEvent = callback
-			}else{
-				callBackEvent = null
-			}
-			goEasyUtils.connect(state.goEasy, chatId, {
-				avatar: state.userInfo.avatar,
-				nickname: state.userInfo.nickName
-			}, function(){
-				callBackEvent();
-				goEasyUtils.receiveMessage(state.goEasy.im, (msg) => {
-					var msgInfo = msg.payload.payloadString;
-					goEasyUtils.markPrivateMessageAsRead(state.goEasy.im, msg.senderId);
-					// 触发全局事件
-					uni.$emit('mqtt-arrived-msg', {
-						payload: msgInfo
-					})
-				});
-			});
-		},
-
-		// goEasy 断开连接
-		disconnectGoEasy(state, {callback}){
-			callback = callback ? callback : null;
-			goEasyUtils.disconnect(state.goEasy, callback);
-		},
-
-		/**
-		 * 消息发送出去
-		 * @param state
-		 * @param msg
-		 * @param chatId
-		 */
-		sendMsg(state, {
-			msg,
-			chatId
-		}) {
-			let info = JSON.parse(msg);
-			console.log(info);
-			console.log('chatId', chatId);
-			var userInfo = {
-				id: state.userInfo.chatId,
-				nickname: state.userInfo.nickName,
-				avatar: state.userInfo.avatar
-			}
-			var toUserInfo = {
-				id: chatId,
-				nickname: info.toName,
-				avatar: info.toAvatar,
-			}
-			var chatInfo = new ChatInfo(chatId, userInfo, chatId, toUserInfo, 2);;
-			var msgInfo = {
-				payloadString: msg,
-				destinationName: chatId
-			};
-			var callback = null;
-			goEasyUtils.sendMessage(state.goEasy.im, chatInfo, msgInfo, callback);
-		}
-	},
-	actions: {
-
+		
 	}
+	
 })
 module.exports = store
