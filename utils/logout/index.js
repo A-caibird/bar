@@ -1,10 +1,11 @@
 import $store from '@/store/index.js'
 import $storage from '@/common/storage.js'
-import {ajax} from '@/utils/ajax.js'
-// app推送 
+// import {ajax} from '@/utils/ajax.js'
+// app推送
 const logout = function (out = true) {
 	if(out){
-		ajax('/api/user/setClientId',{clientId:''},'POST')
+		// ajax('/api/user/setClientId',{clientId:''},'POST')
+		this.$u.api.setClientId({clientId:''});
 	}
 	console.log('设备登出');
 	$storage.removeLoginToken()
