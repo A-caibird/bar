@@ -35,6 +35,7 @@
 			console.log('App unload');
 		},
 		methods:{
+      //看起来没在用
 			// requestAPI(url ,params){
 			// 	uni.request({
 			// 		url: this.globalData.baseUrl + url,
