@@ -35,22 +35,22 @@
 			console.log('App unload');
 		},
 		methods:{
-			requestAPI(url ,params){
-				uni.request({
-					url: this.globalData.baseUrl + url,
-					header:{
-						"Content-Type": 'application/x-www-form-urlencoded'
-					},
-					method:"POST",
-					data: params,
-					success(res){
-						console.log((url + ' success'), res);
-					},
-					fail(e){
-						console.log((url + ' Error'),e);
-					}
-				})
-			}
+			// requestAPI(url ,params){
+			// 	uni.request({
+			// 		url: this.globalData.baseUrl + url,
+			// 		header:{
+			// 			"Content-Type": 'application/x-www-form-urlencoded'
+			// 		},
+			// 		method:"POST",
+			// 		data: params,
+			// 		success(res){
+			// 			console.log((url + ' success'), res);
+			// 		},
+			// 		fail(e){
+			// 			console.log((url + ' Error'),e);
+			// 		}
+			// 	})
+			// }
 		},
 
 		globalData: {
@@ -58,7 +58,7 @@
 			msgPath: '', // 推送消息路径；
 			passwordInputTimes: 0,
 			// baseUrl: 'https://erp.patixiu.com',
-            baseUrl: 'http://192.168.0.100:8080',
+      baseUrl: 'http://192.168.0.100:8080',
 			authorized:  $storage.getLoginToken() ? true : false, //是否登录
 			// 用户识别码
 			token: $storage.getLoginToken(),

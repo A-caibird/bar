@@ -5,11 +5,11 @@ async function checkPermission() {
 	return status;
 }
 
-
+//app每次打开的时候都会被调用
 const checkLocationPermision = async function() {
 	if(getApp({allowDefault: true}).globalData.locationTime==3) {
 		getApp({allowDefault: true}).globalData.locationTime = 0
-		return 
+		return
 	}
 	let status = await checkPermission();
 	if (status === 1) {
@@ -25,7 +25,7 @@ const checkLocationPermision = async function() {
 			getApp({allowDefault: true}).globalData.locationService  = true
 			getApp({allowDefault: true}).globalData.locationPermission = false
 		}
-		
+
 	}
 	// console.log(getApp({allowDefault: true}).globalData.canLocation)
 	// console.log(getApp({allowDefault: true}).globalData.locationService)

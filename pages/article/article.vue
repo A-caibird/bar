@@ -37,54 +37,54 @@ export default {
 	},
 	methods: {
 		getContent: async function(type) {
-			var requestApi = null;
+			var rqapi = null;
 			let title = ''
 			switch (type) {
 				case 'helpInformation':
 					{
-						requestApi = this.$u.api.getHelpInformationApi();
+						rqapi = this.$u.api.getHelpInformationApi();
 						title = '反馈与帮助'
 					}
 					break;
 				case 'protocol':
 					{
-						requestApi = this.$u.api.getProtocol();
+						rqapi = this.$u.api.getProtocol();
 						title = '用户协议'
 					}
 					break;
 				case 'about':
 					{
-						requestApi = this.$u.api.getAboutUs();
+						rqapi = this.$u.api.getAboutUs();
 						title = '关于我们'
 					}
 					break;
 				case 'privacy':
 					{
-						requestApi = this.$u.api.getPrivacy();
+						rqapi = this.$u.api.getPrivacy();
 						title = '隐私协议'
 					}
 					break;
 				case 'credit':
 					{
-						requestApi = this.$u.api.getCredit();
+						rqapi = this.$u.api.getCredit();
 						title = '信用规则'
 					}
 					break;
 				case 'walletHelpCenter':
 					{
-						requestApi = this.$u.api.getWalletHelpCenterApi();
+						rqapi = this.$u.api.getWalletHelpCenterApi();
 						title = '帮助中心'
 					}
 					break;
 				case 'Graphic':
 					{
-						requestApi = "";
+						rqapi = "";
 						title = '图文详情'
 					}
 					break;
 				case 'BlindBox':
 					{
-						requestApi = this.$u.api.getBlindBoxRuleApi()
+						rqapi = this.$u.api.getBlindBoxRuleApi()
 						title = '拆盲盒攻略'
 					}
 					break;
@@ -92,8 +92,8 @@ export default {
 					break;
 			}
 			this.title = title
-			if (requestApi) {
-				let {code,data} = await requestApi
+			if (rqapi) {
+				let {code,data} = await rqapi
 				if(code==0) {
 					console.log(data)
 					this.content = data.content;
@@ -106,7 +106,7 @@ export default {
 
 <style lang="scss" scoped>
 	.container{
-		
+
 		.middle_box{
 			padding-left: 20rpx;
 			padding-right: 20rpx;
@@ -114,6 +114,6 @@ export default {
 			font-size: 26rpx;
 			line-height: 1.8;
 		}
-		
+
 	}
 </style>
