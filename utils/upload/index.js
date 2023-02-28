@@ -1,3 +1,5 @@
+//这个文件好像没被调用
+
 /*
  *上传文件到阿里云oss
  *@param - filePath :图片的本地资源路径
@@ -103,6 +105,8 @@ const uploadFileAPI = function(filePath, dir, successc, failc, aliyunSign) {
 	})
 }
 
+
+//应该不需要了
 function getOssInfo(){
 	let baseUrl = getApp().globalData.baseUrl;
 	return new Promise(function(resolve, reject){

@@ -1,7 +1,11 @@
 /// null = 未请求，1 = 已允许，0 = 拒绝|受限, 2 = 系统未开启
-
+//初步看了看 目前好像只有定位啥的被用了
 var isIOS
 
+/**
+ *
+ * @returns {number}
+ */
 function album() {
     var result = 0;
     var PHPhotoLibrary = plus.ios.import("PHPhotoLibrary");
@@ -141,7 +145,11 @@ function memo() {
     return result;
 }
 
-
+/**
+ * 申请获取授权
+ * @param permissionID
+ * @returns {Promise<unknown>}
+ */
 function requestIOS(permissionID) {
     return new Promise((resolve, reject) => {
         switch (permissionID) {
@@ -189,12 +197,12 @@ function isLocServiceEnable(){
 
 function openGPSService(){
 	if (permission.isIOS) {
-		var UIApplication = plus.ios.import("UIApplication");  
-		var NSURL = plus.ios.import("NSURL");  
-		var setting = NSURL.URLWithString("app-settings:");  
-		var application = UIApplication.sharedApplication();  
-		application.openURL(setting);  
-		plus.ios.deleteObject(setting);  
+		var UIApplication = plus.ios.import("UIApplication");
+		var NSURL = plus.ios.import("NSURL");
+		var setting = NSURL.URLWithString("app-settings:");
+		var application = UIApplication.sharedApplication();
+		application.openURL(setting);
+		plus.ios.deleteObject(setting);
 		plus.ios.deleteObject(application);
 	} else {
 		var main=plus.android.runtimeMainActivity();

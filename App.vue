@@ -1,17 +1,17 @@
 <script>
 	import $storage from '@/common/storage.js'
-	import init from '@/utils/init/index.js'//聊天、推送、上传的一些工具函数
+	import init from '@/utils/init/index.js'//推送、上传的一些工具函数
 	import checkLocationPermision from '@/utils/checkLocationPermision.js'
 	import $store from '@/store/index.js'
 	export default {
 		onLaunch: async function(options) {
 			console.log('App Launch')
 			init(this)
-			if($storage.getLoginToken()){
+			//if($storage.getLoginToken()){
 				// this.requestAPI('/api/user/use', {
 				// 	token: $storage.getLoginToken(),
 				// })
-			}
+			//}
 			uni.getSystemInfo({
 				success: (res) => {
 					if(res.platform == 'ios'){
@@ -54,12 +54,14 @@
 			// }
 		},
 
+
+    //globalData.baseUrl
 		globalData: {
 			platform: '', // 平台
 			msgPath: '', // 推送消息路径；
 			passwordInputTimes: 0,
 			// baseUrl: 'https://erp.patixiu.com',
-      baseUrl: 'http://192.168.0.100:8080',
+      baseUrl: 'http://192.168.0.100:8080',//应该没在用了
 			authorized:  $storage.getLoginToken() ? true : false, //是否登录
 			// 用户识别码
 			token: $storage.getLoginToken(),

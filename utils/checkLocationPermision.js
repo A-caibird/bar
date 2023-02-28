@@ -1,4 +1,5 @@
 import $permision from "@/common/permission.js"
+
 async function checkPermission() {
 	let status = $permision.isIOS ? await $permision.requestIOS('location') :
 	await $permision.requestAndroid('android.permission.ACCESS_FINE_LOCATION');

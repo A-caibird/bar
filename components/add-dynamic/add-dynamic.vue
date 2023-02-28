@@ -17,8 +17,8 @@
 		</view>
 		<pop
 			v-if="popShow"
-			title="拼享提醒" 
-			content="您当前没有订单，请先在酒吧下单后邀约人一起拼享订单吧" 
+			title="拼享提醒"
+			content="您当前没有订单，请先在酒吧下单后邀约人一起拼享订单吧"
 			cancelText="加入拼享" confirmText="去下订单"
 			:isMask="true"
 			@cancel="popCancelTap"
@@ -39,7 +39,7 @@
 				type:Number,
 				default:50,
 			}
-			
+
 		},
 		data(){
 			return {
@@ -58,10 +58,13 @@
 					url: '/pages/club/list?mode=list'
 				})
 			},
+      //跳到添加动态
 			tapGoAddNew(){
 				this.$u.route('/pages/discovery/addDynamic')
 				this.show = false
 			},
+
+      //跳到我要拼享
 			tapGoClub(){
 				this.$u.api.hasPingOrderAPI().then(res => {
 					console.log(res);
@@ -84,9 +87,9 @@
 				this.show = false
 				this.popShow = false
 			},
-			
+
 		},
-		
+
 	}
 </script>
 
@@ -96,7 +99,7 @@
 		top:0;
 		right: 0;
 		left: 0;
-		
+
 		z-index: 996;
 		background: $uni-title-color;
 		// background: red;
