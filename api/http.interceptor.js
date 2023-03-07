@@ -7,8 +7,8 @@ const install = (Vue, vm) => {
 	console.log('拦截器');
 	Vue.prototype.$u.http.setConfig({
 		//正式域名
-		// baseUrl: 'https://erp.patixiu.com',
-		baseUrl: 'http://192.168.0.100:8080',
+		baseUrl: 'https://erp.patixiu.com',
+		// baseUrl: 'http://192.168.0.101:8080',
 		loadingText: '努力加载中~',
 		showLoading: false,
 		loadingMask: false,

@@ -102,7 +102,8 @@
 											<view class="btn agreed">已拒绝</view>
 										</view>
 										<view class="yaoyue-btn" v-else>
-											<view class="btn cancel" @tap.stop="tapRefuseJoinPing(row.payload)">拒绝</view>
+											<view class="btn cancel" @tap.stop="tapRefuseJoinPing(row.payload)">拒绝
+											</view>
 											<view class="btn agree" @tap.stop="tapAgreeJoinPing(row.payload)">同意</view>
 										</view>
 									</view>
@@ -154,8 +155,10 @@
 												<view class="btn agreed">已拒绝</view>
 											</view>
 											<view class="yaoyue-btn" v-else>
-												<view class="btn cancel" @tap.stop="tapRefuseYaoyue(row.payload)">拒绝</view>
-												<view class="btn agree" @tap.stop="tapAgreeYaoyue(row.payload)">同意</view>
+												<view class="btn cancel" @tap.stop="tapRefuseYaoyue(row.payload)">拒绝
+												</view>
+												<view class="btn agree" @tap.stop="tapAgreeYaoyue(row.payload)">同意
+												</view>
 											</view>
 										</view>
 									</view>
@@ -180,13 +183,14 @@
 												<view class="btn agreed">已拒绝</view>
 											</view>
 											<view class="yaoyue-btn" v-else>
-												<view class="btn cancel" @tap.stop="tapRefusePing(row.payload)">拒绝</view>
+												<view class="btn cancel" @tap.stop="tapRefusePing(row.payload)">拒绝
+												</view>
 												<view class="btn agree" @tap.stop="tapAgreePing(row.payload)">同意</view>
 											</view>
 										</view>
 									</view>
 								</view>
-								
+
 								<!-- 别人想加入到我的拼享受 -->
 								<view v-if="row.type == 'applyJoinOrder'" class="yaoyue"
 									@tap="tapGoPingDetail(row.payload.orderId)">
@@ -207,7 +211,8 @@
 											<view class="btn agreed">已拒绝</view>
 										</view>
 										<view class="yaoyue-btn" v-else>
-											<view class="btn cancel" @tap.stop="tapRefuseJoinPing(row.payload)">拒绝</view>
+											<view class="btn cancel" @tap.stop="tapRefuseJoinPing(row.payload)">拒绝
+											</view>
 											<view class="btn agree" @tap.stop="tapAgreeJoinPing(row.payload)">同意</view>
 										</view>
 									</view>
@@ -433,7 +438,7 @@
 				var s = Date.parse(new Date());
 				var t = getApp().globalData.token;
 				// var url = "ws://erp.patixiu.com/websocket/messageHandler?username=user@" + t + "@" + s;
-				var url = "ws://192.168.0.100:8080/websocket/messageHandler?username=user@" + t + "@" + s;
+				var url = "ws://192.168.0.101:8080/websocket/messageHandler?username=user@" + t + "@" + s;
 
 				uni.showLoading({
 					title: '连接中'
@@ -651,7 +656,7 @@
 
 			// 添加图片消息到列表
 			addImgMsg(msg) {
-				
+
 				msg.payload.url = this.setPicSize(msg.payload.url);
 				this.msgImgList.push(msg.payload.url);
 				this.msgList.push(msg);
@@ -668,7 +673,7 @@
 			discard() {
 				return;
 			},
-			
+
 			//拒绝普通尬酒订单的邀请
 			tapRefuseYaoyue(item) {
 				this.$refs.refuseYaoyue.open(item)
@@ -677,11 +682,11 @@
 			//todo chatMessageId
 			refuseYaoyue(e) {
 				console.log(e)
-				
+
 				this.$u.api.refuseYaoyueApi({
 					awkwardWineId: e.item.awkwardWineId,
 					rejectionReason: e.reason,
-				}).then(function(){
+				}).then(function() {
 					// item.agreeStatus = 'refuse'
 					// this.updateChatListByTimeType(item.time, item.type, item)
 					// $chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken, item.time, item
@@ -690,7 +695,7 @@
 					// $chat.sendMsg(userInfo, friendUserInfo, 'single', 'text', {
 					// 	content: e.reason,
 				})
-				
+
 			},
 			//同意普通尬酒订单的邀请
 			//chatMessageId
@@ -728,7 +733,7 @@
 					console.log(code);
 				}
 			},
-			
+
 			// 拒绝别人加人拼享订单
 			async tapRefuseJoinPing(item) {
 				console.log(item);
@@ -784,86 +789,88 @@
 					// })
 				}
 			},
-		
-		// 别人拒绝和我一起拼享（我发出的邀请）
-		//chatMessageId
-		async tapRefusePing(item) {
-			// let userInfo = this.$u.deepClone(this.userInfo)
-			// let friendUserInfo = this.$u.deepClone(this.friendUserInfo)
-			await this.$toast.confirm('', '确定要拒绝邀请吗？')
-			let {
-				code
-			} = await this.$u.api.refusePingInviteApi({
-				orderId: item.orderId,
-			})
-			if(code == 0){
-				// item.agreeStatus = 'refuse'
-				// this.updateChatListByTimeType(item.time, item.type, item)
+
+			// 别人拒绝和我一起拼享（我发出的邀请）
+			//chatMessageId
+			async tapRefusePing(item) {
+				// let userInfo = this.$u.deepClone(this.userInfo)
+				// let friendUserInfo = this.$u.deepClone(this.friendUserInfo)
+				await this.$toast.confirm('', '确定要拒绝邀请吗？')
+				let {
+					code
+				} = await this.$u.api.refusePingInviteApi({
+					orderId: item.orderId,
+				})
+				if (code == 0) {
+					// item.agreeStatus = 'refuse'
+					// this.updateChatListByTimeType(item.time, item.type, item)
+					// $chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken, item.time, item
+					// 	.type, item)
+					// $chat.sendMsg(userInfo, friendUserInfo, 'single', 'text', {
+					// 	content: '拒绝邀请',
+					// })
+				}
+			},
+
+
+			// 别人同意和我一起拼享（我发出的邀请）
+			//chatMessageId
+			async tapAgreePing(item) {
+				// let userInfo = this.$u.deepClone(this.userInfo)
+				// let friendUserInfo = this.$u.deepClone(this.friendUserInfo)
+				let res = await this.$u.api.hasVerifyAPI();
+				let hasVerified = res.data.hasVerified;
+				let hasAdult = res.data.hasAdult;
+				if (!hasVerified) {
+					this.$u.toast('请先实名');
+					setTimeout(() => {
+						uni.navigateTo({
+							url: '/pages/mine/setting/certification' +
+								`?hasVerified=unverify`
+						})
+					}, 500);
+					return
+				}
+				await this.$toast.confirm('', '确定要同意邀请吗？')
+				// item.agreeStatus = 'agree'
 				// $chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken, item.time, item
 				// 	.type, item)
 				// $chat.sendMsg(userInfo, friendUserInfo, 'single', 'text', {
-				// 	content: '拒绝邀请',
+				// 	content: '同意邀请',
 				// })
-			}
-		},
-		
-		
-		// 别人同意和我一起拼享（我发出的邀请）
-		//chatMessageId
-		async tapAgreePing(item) {
-			// let userInfo = this.$u.deepClone(this.userInfo)
-			// let friendUserInfo = this.$u.deepClone(this.friendUserInfo)
-			let res = await this.$u.api.hasVerifyAPI();
-			let hasVerified = res.data.hasVerified;
-			let hasAdult = res.data.hasAdult;
-			if (!hasVerified) {
-				this.$u.toast('请先实名');
-				setTimeout(() => {
-					uni.navigateTo({
-						url: '/pages/mine/setting/certification' +
-							`?hasVerified=unverify`
-					})
-				}, 500);
-				return
-			}
-			await this.$toast.confirm('', '确定要同意邀请吗？')
-			// item.agreeStatus = 'agree'
-			// $chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken, item.time, item
-			// 	.type, item)
-			// $chat.sendMsg(userInfo, friendUserInfo, 'single', 'text', {
-			// 	content: '同意邀请',
-			// })
-			// this.$forceUpdate()
-			// uni.$on('agreePingSuccess', () => {
+				// this.$forceUpdate()
+				// uni.$on('agreePingSuccess', () => {
 				// this.agreePingSuccess(userInfo, friendUserInfo, item);
 				// uni.$off('agreePingSuccess');
-			// })
-			this.$u.route('/pages/club/consumption/payPage', {
-				allAmount: item.amount,
-				orderId: item.orderId,
-				type: 'ping-join-order-invite'
-			})
-		
-		},
-		
-		},
+				// })
+				this.$u.route('/pages/club/consumption/payPage', {
+					allAmount: item.amount,
+					orderId: item.orderId,
+					type: 'ping-join-order-invite'
+				})
+
+			}
+
+		}
 	};
 </script>
 <style lang="scss" scoped>
 	@import "@/static/HM-chat/css/style.scss";
 
 	.yaoyue {
-		width:526rpx;
-		background: rgba(255,255,255,0.05);
+		width: 526rpx;
+		background: rgba(255, 255, 255, 0.05);
 		border-radius: 16rpx;
-		.title{
+
+		.title {
 			font-size: 30rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 500;
 			color: #FFFFFF;
 			line-height: 44rpx;
-			margin-left:24rpx;
+			margin-left: 24rpx;
 		}
+
 		.club-cover {
 			width: 100%;
 			height: 234rpx;
@@ -871,7 +878,7 @@
 			image {
 				width: 478rpx;
 				height: 100%;
-				margin-left:24rpx;
+				margin-left: 24rpx;
 				// border-top-left-radius: 10rpx;
 				// border-top-right-radius: 10rpx;
 			}
@@ -899,46 +906,46 @@
 				line-height: 40rpx;
 			}
 
-				// .card {
-				// 	flex: 1;
-				// 	color: #666666;
-				// 	font-size: 24rpx;
-				// }
-			}
+			// .card {
+			// 	flex: 1;
+			// 	color: #666666;
+			// 	font-size: 24rpx;
+			// }
+		}
 
-			.yaoyue-btn {
-				margin-top: 28rpx;
-				display: flex;
-				justify-content: space-between;
+		.yaoyue-btn {
+			margin-top: 28rpx;
+			display: flex;
+			justify-content: space-between;
 
-				.btn {
-					border-radius: 35rpx;
-					width: 300rpx;
-					height: 70rpx;
-					@include flex-center();
-					font-size: 28rpx;
+			.btn {
+				border-radius: 35rpx;
+				width: 300rpx;
+				height: 70rpx;
+				@include flex-center();
+				font-size: 28rpx;
 
-					&.cancel {
-						border: 1rpx solid #666666;
-						color: #333333;
-					}
-
-					&.agreed {
-						border: 1rpx solid #666666;
-						color: #333333;
-						width: 100%;
-					}
-
-					&.agree {
-						// background-color: #F72EB2;
-						// color: #FFFFFF;
-						background-color: #F72EB2;
-						color: #FFFFFF;
-					}
-
-
+				&.cancel {
+					border: 1rpx solid #666666;
+					color: #333333;
 				}
+
+				&.agreed {
+					border: 1rpx solid #666666;
+					color: #333333;
+					width: 100%;
+				}
+
+				&.agree {
+					// background-color: #F72EB2;
+					// color: #FFFFFF;
+					background-color: #F72EB2;
+					color: #FFFFFF;
+				}
+
+
 			}
 		}
+	}
 	}
 </style>

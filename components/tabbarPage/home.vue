@@ -261,7 +261,7 @@
 			},
 			//最初的触发方法
 			 getHomeBannerList() {
-				 var that= this;
+				 var that = this;
 			
 				this.$u.api.getHomeBannerListApi().then(function(res){
 					if(res.code == 0){
@@ -269,6 +269,8 @@
 						that.bannerList = list;
 						that.bannerListLoad = true
 					}
+				}).catch(function(){
+					
 				});
 				
 				

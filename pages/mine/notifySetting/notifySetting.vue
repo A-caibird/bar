@@ -60,19 +60,19 @@ export default {
 					checked: false,
 					way: 'togglePublishDynamicAPI',
 					isShow: true,
-				},
-				{
-					content: '个性化通知',
-					checked: false,
-					way: 'toggleNoticeAPI',
-					isShow: true,
 				}
+				// {
+				// 	content: '个性化通知',
+				// 	checked: false,
+				// 	way: 'toggleNoticeAPI',
+				// 	isShow: true,
+				// }
 			]
 		};
 	},
 	onLoad() {
 		this.show();
-		this.list[7].checked = uni.getStorageSync('personal_notice') || false;
+		// this.list[7].checked = uni.getStorageSync('personal_notice') || false;
 	},
 	methods: {
 		getPushInfo(){
@@ -94,12 +94,12 @@ export default {
 		// 即使不监听此事件，this.checked此时也会相应的变成true或者false
 		changeHandle: function(e, index) {
 			let key = this.list[index].way;
-			if(index == 7){
-				console.log(e);
-				uni.setStorageSync('personal_notice', !e);
-				this.list[7].checked = !e;
-				return
-			}
+			// if(index == 7){
+			// 	console.log(e);
+			// 	uni.setStorageSync('personal_notice', !e);
+			// 	this.list[7].checked = !e;
+			// 	return
+			// }
 			if (this.list[index].checked == true) {
 				this.$u.api[key]({
 					open: !e

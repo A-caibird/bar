@@ -284,7 +284,7 @@ const install = (Vue, vm) => {
 		chatFriendMessageSend: (params) => vm.$u.post('/api/chatMessage/sendToUser', params), //给好友发消息
 		chatSessionList: () => vm.$u.post('/api/chatMessage/historySessionList'), //用户之前的历史会话列表
 		readUserAll: (params) => vm.$u.post('/api/chatMessage/readUserAll', params) //尬酒消息已读
-		getOssInfo: (params) => vm.$u.post('/api/OSSSign/sign', params) //尬酒消息已读
+		// getOssInfo: (params) => vm.$u.post('/api/OSSSign/sign', params) //尬酒消息已读
 	};
 }
 

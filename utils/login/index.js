@@ -14,14 +14,15 @@ const login = function (data, register = false) {
 		$storage.setUserInfo(info)
 
 		//修改去掉了ajax.js
-		this.$u.api.getPasswordInputTimesAPI().then(function (res){
-			let count = res.data.count || 0;
-			console.log("count: " + count);
-			getApp().globalData.passwordInputTimes = count;
-		}).catch(function (e){
-			console.log(e);
-			getApp().globalData.passwordInputTimes = 0;
-		});
+		//2023暂时去掉
+		// this.$u.api.getPasswordInputTimesAPI().then(function (res){
+		// 	let count = res.data.count || 0;
+		// 	console.log("count: " + count);
+		// 	getApp().globalData.passwordInputTimes = count;
+		// }).catch(function (e){
+		// 	console.log(e);
+		// 	getApp().globalData.passwordInputTimes = 0;
+		// });
 
 		// ajax('/api/user/hasCanUserPayPasswordCount',{},'GET').then(res => {
 		// 	let count = res.data.count || 0;

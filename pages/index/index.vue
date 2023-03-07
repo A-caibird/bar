@@ -164,7 +164,7 @@ export default {
 		this.$nextTick(() => {
 			this.changeHandle(this.current);
 		});
-		uni.$on('information_listener', this.infoListenerEvent);//
+		// uni.$on('information_listener', this.infoListenerEvent);//
 		uni.$on('push_listener', (e)=>{
 			if(e && !e.refresh){
 				this.pushListenerEvent(e.num, e.refresh);
@@ -172,7 +172,7 @@ export default {
 				this.pushListenerEvent();
 			}
 		});
-		this.infoListenerEvent();
+		// this.infoListenerEvent();
 		this.pushListenerEvent();
 	},
 	onUnload() {
@@ -246,7 +246,7 @@ export default {
 		// 	// console.log('infoListenerEvent 聊天消息监听', noRead)
 		// 	this.setInfoCount(noRead)
 		// },
-		// 推送监听
+		//推送监听
 		pushListenerEvent(exitNoRead = 0, refresh = true){
 			if(isNaN(exitNoRead)){
 				// console.log('push_listener 系统通知 exitNoRead', exitNoRead);
