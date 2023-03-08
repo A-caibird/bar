@@ -17,8 +17,9 @@
 				<view class="row" v-for="(row, index) in msgList" :key="index" :id="'msg' + row.id">
 					<!-- 用户消息 -->
 					<block>
-						<!-- 自己发出的消息 -->
-						<view class="my" v-if="row.senderId.startsWith('user')">
+						<!-- 自己发出的消息  -->
+
+						<view class="my" v-if="row.senderId == selfId">
 							<!-- 左-消息 -->
 							<view class="left">
 								<!-- 文字消息 -->
@@ -32,25 +33,16 @@
 								<!-- 普通订单尬酒消息 -->
 								<view v-if="row.type == 'chat'" class="yaoyue"
 									@tap="tapGoYaodDetail(row.payload.orderId)">
+									<view class="title">{{row.payload.text}}</view>
 									<view class="club-cover">
-										<image :src="row.payload.clubName" />
+										<image :src="row.payload.clubCover" />
 									</view>
 									<view class="order-info">
 										<view class="club-name">
 											{{row.payload.clubName}}
 										</view>
 										<view class="date-card">
-											<view class="date">邀约时间：{{row.timestamp}}</view>
-										</view>
-										<view class="yaoyue-btn" v-if="row.payload.agreeStatus=='agreed'">
-											<view class="btn agreed">已同意</view>
-										</view>
-										<view class="yaoyue-btn" v-else-if="row.payload.agreeStatus=='refuse'">
-											<view class="btn agreed">已拒绝</view>
-										</view>
-										<view class="yaoyue-btn" v-else>
-											<view class="btn cancel" @tap.stop="tapRefuseYaoyue(row.payload)">拒绝</view>
-											<view class="btn agree" @tap.stop="tapAgreeYaoyue(row.payload)">同意</view>
+											<view class="date">邀约时间：{{row.createDate}}</view>
 										</view>
 									</view>
 								</view>
@@ -116,7 +108,7 @@
 							</view>
 						</view>
 						<!-- 别人发出的消息 -->
-						<view class="other" v-if="row.senderId.startsWith('admin')">
+						<view class="other" v-if="row.senderId != selfId">
 							<!-- 左-头像 -->
 							<view class="left">
 								<image :src="row.senderAvatar"></image>
@@ -125,7 +117,7 @@
 							<view class="right">
 								<view class="username">
 									<view class="name">{{ row.senderNickname }}</view>
-									<view class="time">{{ parseDate(row.createDate) }}</view>
+									<view class="time">{{ row.createDate }}</view>
 								</view>
 								<!-- 文字消息 -->
 								<view v-if="row.type == 'text'" class="bubble">
@@ -136,8 +128,9 @@
 									<image :src="row.payload.url" mode="widthFix"> </image>
 								</view>
 								<!-- 普通订单的尬酒消息 -->
-								<view v-if="row.type == 'chat'" class="bubble">
+								<view v-if="row.type == 'chat'">
 									<view class="yaoyue" @tap="tapGoYaodDetail(row.payload.orderId)">
+										<view class="title">{{row.payload.text}}</view>
 										<view class="club-cover">
 											<image :src="row.payload.clubCover" />
 										</view>
@@ -155,9 +148,9 @@
 												<view class="btn agreed">已拒绝</view>
 											</view>
 											<view class="yaoyue-btn" v-else>
-												<view class="btn cancel" @tap.stop="tapRefuseYaoyue(row.payload)">拒绝
+												<view class="btn cancel" @tap.stop="tapRefuseYaoyue(row)">拒绝
 												</view>
-												<view class="btn agree" @tap.stop="tapAgreeYaoyue(row.payload)">同意
+												<view class="btn agree" @tap.stop="tapAgreeYaoyue(row)">同意
 												</view>
 											</view>
 										</view>
@@ -282,6 +275,7 @@
 	export default {
 		data() {
 			return {
+				selfId: '',
 				pageNumber: 1,
 				pageSize: 20,
 				nomore: false,
@@ -321,7 +315,11 @@
 			waitSendVideoMsg = []; //清空待发送视频
 		},
 		onLoad(options) {
+			this.selfId = getApp().globalData.userInfo.chatUid;
+			console.log(this.selfId)
+	
 			this.friendUserInfo = JSON.parse(options.userInfo) //原先的逻辑
+			console.log(this.friendUserInfo)
 			if (options.isGreet) {
 				// this.isGreet = options.isGreet;
 				if (options.isGreet == "1") {
@@ -344,17 +342,17 @@
 				console.log("消息全部已读")
 			});
 
-			console.log("好友的id===>" + this.friendId)
-
 
 			this.getMsgList(() => {
-				// 滚动到底部
+
 				this.$nextTick(function() {
-					//进入页面滚动到底部
-					this.scrollTop = 9999;
-					this.$nextTick(function() {
-						this.scrollAnimation = true;
-					});
+					setTimeout(() => {
+						this.scrollTop = 999999;
+						this.$nextTick(function() {
+							this.scrollAnimation = true;
+						});
+
+					}, 100)
 				});
 			});
 
@@ -397,7 +395,10 @@
 			})
 		},
 		onShow() {
+			console.log("onShow===>")
 			this.scrollTop = 9999999;
+
+
 		},
 		// onHide() {
 		// 	this.scrollToView = "";
@@ -679,7 +680,6 @@
 				this.$refs.refuseYaoyue.open(item)
 			},
 			//拒绝普通尬酒订单的邀请按钮确认
-			//todo chatMessageId
 			refuseYaoyue(e) {
 				console.log(e)
 
@@ -698,10 +698,10 @@
 
 			},
 			//同意普通尬酒订单的邀请
-			//chatMessageId
+
 			async tapAgreeYaoyue(item) {
-				// let userInfo = this.$u.deepClone(this.userInfo)
-				// let friendUserInfo = this.$u.deepClone(this.friendUserInfo)
+				console.log("点击同意")
+				console.log(item)
 				let res = await this.$u.api.hasVerifyAPI();
 				let hasVerified = res.data.hasVerified;
 				let hasAdult = res.data.hasAdult;
@@ -719,10 +719,12 @@
 				let {
 					code
 				} = await this.$u.api.agreeYaoyueApi({
-					awkwardWineId: item.awkwardWineId,
+					awkwardWineId: item.payload.awkwardWineId,
+					chatMessageId:item.id
 				})
 				if (code == 0) {
-					item.agreeStatus = 'agree'
+					console.log("同意的回调")
+					//item.agreeStatus = 'agree'
 					// $chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken, item.time, item
 					// 	.type, item)
 					// $chat.sendMsg(userInfo, friendUserInfo, 'single', 'text', {
@@ -857,95 +859,182 @@
 <style lang="scss" scoped>
 	@import "@/static/HM-chat/css/style.scss";
 
-	.yaoyue {
-		width: 526rpx;
-		background: rgba(255, 255, 255, 0.05);
-		border-radius: 16rpx;
+	.my {
+		.yaoyue {
+			width: 526rpx;
+			background: rgba(255, 255, 255, 0.05);
+			border-radius: 16rpx;
 
-		.title {
-			font-size: 30rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: 500;
-			color: #FFFFFF;
-			line-height: 44rpx;
-			margin-left: 24rpx;
-		}
-
-		.club-cover {
-			width: 100%;
-			height: 234rpx;
-
-			image {
-				width: 478rpx;
-				height: 100%;
-				margin-left: 24rpx;
-				// border-top-left-radius: 10rpx;
-				// border-top-right-radius: 10rpx;
-			}
-		}
-
-		.order-info {
-			// background-color: #FFFFFF;
-			// border-bottom-left-radius: 10rpx;
-			// border-bottom-right-radius: 10rpx;
-			padding: 30rpx;
-
-			.club-name {
-				width: 100%;
-				@include ellipsis();
-				font-size: 34rpx;
+			.title {
+				margin-top: 24rpx;
+				font-size: 30rpx;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: 500;
 				color: #FFFFFF;
+				// line-height: 44rpx;
+				margin-left: 24rpx;
 			}
 
-			.date-card {
-				margin-top: 7rpx;
-				font-size: 28rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
-				font-weight: 400;
-				color: #7E7E7E;
-				line-height: 40rpx;
-			}
 
-			// .card {
-			// 	flex: 1;
-			// 	color: #666666;
-			// 	font-size: 24rpx;
-			// }
-		}
+			.club-cover {
+				margin-top: 24rpx;
+				margin-left: 24rpx;
+				height: 234rpx;
 
-		.yaoyue-btn {
-			margin-top: 28rpx;
-			display: flex;
-			justify-content: space-between;
-
-			.btn {
-				border-radius: 35rpx;
-				width: 300rpx;
-				height: 70rpx;
-				@include flex-center();
-				font-size: 28rpx;
-
-				&.cancel {
-					border: 1rpx solid #666666;
-					color: #333333;
+				image {
+					width: 478rpx;
+					height: 234rpx;
 				}
+			}
 
-				&.agreed {
-					border: 1rpx solid #666666;
-					color: #333333;
+			.order-info {
+
+				margin-top: 30rpx;
+				margin-bottom: 30rpx;
+
+				.club-name {
 					width: 100%;
-				}
-
-				&.agree {
-					// background-color: #F72EB2;
-					// color: #FFFFFF;
-					background-color: #F72EB2;
+					// @include ellipsis();
+					font-size: 34rpx;
 					color: #FFFFFF;
 				}
 
+				.date-card {
+					margin-top: 7rpx;
+					font-size: 28rpx;
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
+					color: #7E7E7E;
+					// line-height: 40rpx;
+				}
 
+				// .card {
+				// 	flex: 1;
+				// 	color: #666666;
+				// 	font-size: 24rpx;
+				// }
+			}
+
+			.yaoyue-btn {
+				margin-top: 28rpx;
+				display: flex;
+				justify-content: space-between;
+
+				.btn {
+					border-radius: 35rpx;
+					width: 214rpx;
+					height: 70rpx;
+					@include flex-center();
+					font-size: 28rpx;
+
+					&.cancel {
+						border: 1rpx solid rgba(255, 255, 255, 0.5);
+						color: rgba(255, 255, 255, 0.5);
+					}
+
+					&.agreed {
+						border: 1rpx solid #666666;
+						color: #333333;
+						width: 100%;
+					}
+
+					&.agree {
+						// background-color: #F72EB2;
+						// color: #FFFFFF;
+						// background-color: #F72EB2;
+						background: linear-gradient(134deg, #B73FFF 0%, #5A1FFF 100%);
+						color: #FFFFFF;
+					}
+
+
+				}
 			}
 		}
 	}
+
+	.other {
+		.yaoyue {
+			width: 526rpx;
+			padding:0 24rpx;
+			background: rgba(255, 255, 255, 0.05);
+			border-radius: 16rpx;
+
+			.title {
+				margin-top: 24rpx;
+				font-size: 30rpx;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: 500;
+				color: #fff;
+				margin-left: 24rpx;
+			}
+
+
+			.club-cover {
+				margin-top: 24rpx;
+				// margin-left: 24rpx;
+				height: 234rpx;
+
+				image {
+					width: 478rpx;
+					height: 234rpx;
+				}
+			}
+
+			.order-info {
+
+				margin-top: 30rpx;
+				margin-bottom: 30rpx;
+
+				.club-name {
+					width: 100%;
+					// @include ellipsis();
+					font-size: 34rpx;
+					color: #FFFFFF;
+				}
+
+				.date-card {
+					margin-top: 7rpx;
+					font-size: 28rpx;
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
+					color: #7E7E7E;
+					// line-height: 40rpx;
+				}
+
+			}
+
+			.yaoyue-btn {
+				margin-top: 28rpx;
+				display: flex;
+				justify-content: space-between;
+
+				.btn {
+					border-radius: 35rpx;
+					width: 214rpx;
+					height: 70rpx;
+					@include flex-center();
+					font-size: 28rpx;
+
+					&.cancel {
+						border: 1rpx solid rgba(255, 255, 255, 0.5);
+						color: rgba(255, 255, 255, 0.5);
+					}
+
+					&.agreed {
+						border: 1rpx solid #666666;
+						color: #333333;
+						width: 100%;
+					}
+
+					&.agree {
+
+						background: linear-gradient(134deg, #B73FFF 0%, #5A1FFF 100%);
+						color: #FFFFFF;
+					}
+
+
+				}
+			}
+		}
 	}
 </style>

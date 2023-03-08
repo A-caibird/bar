@@ -161,30 +161,47 @@
 					orderId: orderInfo.id,
 					userId: friendUserInfo.userId
 				}).then((res) => {
-					var p1 = {};
-					p1.orderId = orderInfo.id
-					p1.orderSn = orderInfo.sn
-					p1.orderClubId = orderInfo.clubId
-					p1.clubCover = orderInfo.clubCover
-					p1.orderClubName = orderInfo.clubName
-					p1.text = statement
-					var last = JSON.stringify(p1);
-
-					let params = {
-						type: "chat",
-						payloadStr: last,
-						receiverId: "user@" + friendUserInfo.userId + "@"
-					};
-					that.$u.api.chatFriendMessageSend(params).then((res) => {
-
-					});
-
-					that.$toast.text('已发送邀约请求')
-					setTimeout(() => {
-						that.$u.route({
-							type: 'back'
-						})
-					}, 500)
+					
+					if(res.code == 0){
+						var p1 = {};
+						p1.orderId = orderInfo.id
+						p1.orderSn = orderInfo.sn
+						p1.orderClubId = orderInfo.clubId
+						p1.clubCover = orderInfo.clubCover
+						p1.orderClubName = orderInfo.clubName
+						p1.awkwardWineId = res.data.awkwardWineId
+						p1.text = statement
+						p1.agreeStatus = 'none'
+						var last = JSON.stringify(p1);
+						
+						let params = {
+							type: "chat",
+							payloadStr: last,
+							receiverId: "user@" + friendUserInfo.userId + "@"
+						};
+						that.$u.api.chatFriendMessageSend(params).then((res) => {
+						
+						});
+						
+						that.$toast.text('已发送邀约请求')
+						setTimeout(() => {
+							that.$u.route({
+								type: 'back'
+							})
+						}, 500)
+						
+					}else{
+						console.log(res)
+						// that.$toast.text(res.data.)
+						// setTimeout(() => {
+						// 	that.$u.route({
+						// 		type: 'back'
+						// 	})
+						// }, 500)
+					}
+					
+				
+				
 				});
 
 			},

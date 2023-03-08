@@ -5,7 +5,7 @@ import $storage from '@/common/storage.js'
 const logout = function (out = true) {
 	if(out){
 		// ajax('/api/user/setClientId',{clientId:''},'POST')
-		this.$u.api.setClientId({clientId:''});
+		// this.$u.api.setClientId({clientId:''});
 	}
 	console.log('设备登出');
 	$storage.removeLoginToken()
@@ -13,8 +13,8 @@ const logout = function (out = true) {
 	$storage.removeLocation()
 	$storage.removePayPassword()
 	var app = getApp();
-	$store.commit('disconnectGoEasy',{callback: null});
-	$store.commit('clearInfoCount', 0);
+	// $store.commit('disconnectGoEasy',{callback: null});
+	// $store.commit('clearInfoCount', 0);
 	app.globalData.token = "";
 	app.globalData.passwordInputTimes = 0;
 	app.globalData.authorized = false;

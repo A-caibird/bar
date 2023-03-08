@@ -157,21 +157,21 @@
 		methods:{
 			show(){
 				this.chatUserList=[];
-			// 	this.$u.api.chatSessionList().then(res => {
-
-			// 		let list = res.data.list;
+				this.$u.api.chatSessionList().then(res => {
+					console.log("获取聊天数量")
+					let list = res.data.list;
 			
-			// 		console.log(list)
-			// 		console.log(list instanceof Array );
-			// 		for(var i = 0; i < list.length; i++){
-			// 			console.log(list[i])
-			// 			var item = list[i];
-			// 			this.chatUserList.unshift(item);
-			// 		}
+					console.log(list)
+					console.log(list instanceof Array );
+					for(var i = 0; i < list.length; i++){
+						console.log(list[i])
+						var item = list[i];
+						this.chatUserList.unshift(item);
+					}
 				
-			// 	}).catch(e => {
-			// 		console.log(e);
-			// 	})
+				}).catch(e => {
+					console.log(e);
+				})
 				
 				console.log('info show');
 				if(getApp().globalData.authorized){
