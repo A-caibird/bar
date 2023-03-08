@@ -50,7 +50,7 @@
 								<view v-if="row.type == 'inviteJoinOrder'" class="yaoyue"
 									@tap="tapGoPingDetail(row.payload.orderId)">
 									<view class="title">
-										<image :src="row.payload.clubName" />
+										{{row.payload.text}}
 									</view>
 									<view class="club-cover">
 										<image :src="row.payload.clubCover" />
@@ -62,7 +62,7 @@
 										<view class="date-card">
 											<view class="date">邀约时间：{{row.timestamp}}</view>
 										</view>
-										<view class="yaoyue-btn" v-if="row.payload.agreeStatus=='agreed'">
+										<!-- <view class="yaoyue-btn" v-if="row.payload.agreeStatus=='agreed'">
 											<view class="btn agreed">已同意</view>
 										</view>
 										<view class="yaoyue-btn" v-else-if="row.payload.agreeStatus=='refuse'">
@@ -71,7 +71,7 @@
 										<view class="yaoyue-btn" v-else>
 											<view class="btn cancel" @tap.stop="tapRefusePing(row.payload)">拒绝</view>
 											<view class="btn agree" @tap.stop="tapAgreePing(row.payload)">同意</view>
-										</view>
+										</view> -->
 									</view>
 								</view>
 								<!-- 别人想加入到我的拼享 -->
@@ -87,7 +87,7 @@
 										<view class="date-card">
 											<view class="date">邀约时间：{{row.timestamp}}</view>
 										</view>
-										<view class="yaoyue-btn" v-if="row.payload.agreeStatus=='agree'">
+										<!-- <view class="yaoyue-btn" v-if="row.payload.agreeStatus=='agree'">
 											<view class="btn agreed">已同意</view>
 										</view>
 										<view class="yaoyue-btn" v-else-if="row.payload.agreeStatus=='refuse'">
@@ -97,7 +97,7 @@
 											<view class="btn cancel" @tap.stop="tapRefuseJoinPing(row.payload)">拒绝
 											</view>
 											<view class="btn agree" @tap.stop="tapAgreeJoinPing(row.payload)">同意</view>
-										</view>
+										</view> -->
 									</view>
 								</view>
 								<!-- 别人想加入到我的拼享受 -->
@@ -157,7 +157,7 @@
 									</view>
 								</view>
 								<!-- 邀请别人加入到我的拼享 -->
-								<view v-if="row.type == 'inviteJoinOrder'" class="bubble red-envelope">
+								<view v-if="row.type == 'inviteJoinOrder'">
 									<view class="yaoyue" @tap="tapGoPingDetail(row.payload.orderId)">
 										<view class="club-cover">
 											<image :src="row.payload.clubCover" />
@@ -176,9 +176,9 @@
 												<view class="btn agreed">已拒绝</view>
 											</view>
 											<view class="yaoyue-btn" v-else>
-												<view class="btn cancel" @tap.stop="tapRefusePing(row.payload)">拒绝
+												<view class="btn cancel" @tap.stop="tapRefusePing(row)">拒绝
 												</view>
-												<view class="btn agree" @tap.stop="tapAgreePing(row.payload)">同意</view>
+												<view class="btn agree" @tap.stop="tapAgreePing(row)">同意</view>
 											</view>
 										</view>
 									</view>
@@ -204,9 +204,9 @@
 											<view class="btn agreed">已拒绝</view>
 										</view>
 										<view class="yaoyue-btn" v-else>
-											<view class="btn cancel" @tap.stop="tapRefuseJoinPing(row.payload)">拒绝
+											<view class="btn cancel" @tap.stop="tapRefuseJoinPing(row)">拒绝
 											</view>
-											<view class="btn agree" @tap.stop="tapAgreeJoinPing(row.payload)">同意</view>
+											<view class="btn agree" @tap.stop="tapAgreeJoinPing(row)">同意</view>
 										</view>
 									</view>
 								</view>
@@ -439,7 +439,7 @@
 				var s = Date.parse(new Date());
 				var t = getApp().globalData.token;
 				// var url = "ws://erp.patixiu.com/websocket/messageHandler?username=user@" + t + "@" + s;
-				var url = "ws://192.168.0.101:8080/websocket/messageHandler?username=user@" + t + "@" + s;
+				var url = "ws://192.168.0.102:8080/websocket/messageHandler?username=user@" + t + "@" + s;
 
 				uni.showLoading({
 					title: '连接中'
@@ -698,7 +698,6 @@
 
 			},
 			//同意普通尬酒订单的邀请
-
 			async tapAgreeYaoyue(item) {
 				console.log("点击同意")
 				console.log(item)
@@ -736,19 +735,21 @@
 				}
 			},
 
-			// 拒绝别人加人拼享订单
+			// 拒绝别人加人拼享订单【自己是审核人】
 			async tapRefuseJoinPing(item) {
+				console.log("点击了拒绝别人");
 				console.log(item);
-				// let userInfo = this.$u.deepClone(this.userInfo)
-				// let friendUserInfo = this.$u.deepClone(this.friendUserInfo)
+			
 				await this.$toast.confirm('', '确定要拒绝邀请吗？')
 				let {
 					code,
 					data
 				} = await this.$u.api.refusePingJoinAPI({
-					joinTogetherId: item.joinTogetherId,
+					joinTogetherId: item.payload.joinTogetherId,
+					chatMessageId:item.id
 				})
 				if (code == 0) {
+					console.log("拒绝成功")
 					// item.agreeStatus = 'refuse'
 					// this.updateChatListByTimeType(item.time, item.type, item)
 					// $chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken, item.time, item
@@ -758,10 +759,9 @@
 					// })
 				}
 			},
-			// 同意别人加入拼享订单
+			// 同意别人加入拼享订单【自己是审核人】
 			async tapAgreeJoinPing(item) {
-				// let userInfo = this.$u.deepClone(this.userInfo)
-				// let friendUserInfo = this.$u.deepClone(this.friendUserInfo)
+	
 				let res = await this.$u.api.hasVerifyAPI();
 				let hasVerified = res.data.hasVerified;
 				let hasAdult = res.data.hasAdult;
@@ -779,9 +779,11 @@
 					code,
 					data
 				} = await this.$u.api.agreePingJoinApi({
-					joinTogetherId: item.joinTogetherId,
+					joinTogetherId: item.payload.joinTogetherId,
+					chatMessageId:item.id
 				})
 				if (code == 0) {
+					console.log("同意成功")
 					// item.agreeStatus = 'agree'
 					// this.updateChatListByTimeType(item.time, item.type, item)
 					// $chat.upadteChatByTimeType(userInfo.chatToken, friendUserInfo.chatToken, item.time, item.type,
@@ -792,18 +794,21 @@
 				}
 			},
 
-			// 别人拒绝和我一起拼享（我发出的邀请）
-			//chatMessageId
+			// 别人拒绝和我一起拼享【我发出的邀请】
+			///api/order/disAgreeOrderPingInfo
 			async tapRefusePing(item) {
-				// let userInfo = this.$u.deepClone(this.userInfo)
-				// let friendUserInfo = this.$u.deepClone(this.friendUserInfo)
+				console.log("拒绝拼享")
+				console.log(item)
+				
 				await this.$toast.confirm('', '确定要拒绝邀请吗？')
 				let {
 					code
 				} = await this.$u.api.refusePingInviteApi({
-					orderId: item.orderId,
+					orderId: item.payload.orderId,
+					chatMessageId: item.id
 				})
 				if (code == 0) {
+					console.log("拒绝成功")
 					// item.agreeStatus = 'refuse'
 					// this.updateChatListByTimeType(item.time, item.type, item)
 					// $chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken, item.time, item
@@ -815,11 +820,11 @@
 			},
 
 
-			// 别人同意和我一起拼享（我发出的邀请）
-			//chatMessageId
+			// 别人同意和我一起拼享【我发出的邀请】
 			async tapAgreePing(item) {
-				// let userInfo = this.$u.deepClone(this.userInfo)
-				// let friendUserInfo = this.$u.deepClone(this.friendUserInfo)
+				console.log("同意拼享")
+				console.log(item)
+			
 				let res = await this.$u.api.hasVerifyAPI();
 				let hasVerified = res.data.hasVerified;
 				let hasAdult = res.data.hasAdult;
@@ -834,6 +839,17 @@
 					return
 				}
 				await this.$toast.confirm('', '确定要同意邀请吗？')
+				
+				
+				let {
+					code
+				} = await this.$u.api.agreePingInviteApi({
+					joinTogetherId: item.payload.orderPingHistoryId,
+					chatMessageId: item.id
+				})
+				if (code == 0) {
+					console.log("同意成功")
+				}
 				// item.agreeStatus = 'agree'
 				// $chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken, item.time, item
 				// 	.type, item)
@@ -846,8 +862,8 @@
 				// uni.$off('agreePingSuccess');
 				// })
 				this.$u.route('/pages/club/consumption/payPage', {
-					allAmount: item.amount,
-					orderId: item.orderId,
+					allAmount: item.payload.amount,
+					orderId: item.payload.orderId,
 					type: 'ping-join-order-invite'
 				})
 

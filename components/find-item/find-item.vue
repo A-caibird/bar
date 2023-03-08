@@ -231,7 +231,9 @@
 				this.$u.route('/pages/discovery/dynamic_detail?id='+this.info.id)
 			},
 			tapAwkwardWine(){
+				console.log(this.info)
 				if(!this.loginConfirmHandle(false)){
+					console.log('未登录')
 					return ;
 				}
 				this.$u.route('/pages/ping-yao-list/ping-yao-list',{

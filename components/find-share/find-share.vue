@@ -155,6 +155,10 @@
 			},
 			async tapPing(info){
 				// await this.$toast.confirm('','确定要发起加入请求吗？')
+				console.log("点击了===》")
+				console.log(info)
+				
+				
 				this.popShow = false
 				uni.$on('sendInviteMsg2', (joinTogetherId) => {
 					console.log('joinTogetherId', joinTogetherId);
@@ -169,25 +173,52 @@
 					type:'ping-join-order'})
 
 			},
-			sendPingMsg: function(info, joinTogetherId = ""){
-				let userInfo = this.$u.deepClone(this.userInfo)
-				let friendUserInfo = {
-					userId:info.userId,
-					chatUserId:info.chatUserId,
-					chatToken:info.chatToken,
-					name:info.userNickName,
-					avatar:info.userAvatar,
-					hasSave:false,
-				}
-				$chat.sendMsg(userInfo, friendUserInfo, 'single', 'pingJoin', {
-					orderId: info.id,
-					clubCover: info.clubCover,
-					clubName: info.clubName,
-					date: info.date,
-					joinTogetherId: joinTogetherId,
-					cardTableName: info.cardTableSn,
-					agreeStatus: 'none',
-				})
+			
+			sendPingMsg: function(orderInfo, joinTogetherId = ""){
+				
+				
+				// let friendInfo = this.$u.deepClone(this.info)
+				console.log("用户信息===》")
+				console.log(this.info)
+				// let friendUserInfo = {
+				// 	userId:info.userId,
+				// 	chatUserId:info.chatUserId,
+				// 	chatToken:info.chatToken,
+				// 	name:info.userNickName,
+				// 	avatar:info.userAvatar,
+				// 	hasSave:false,
+				// }
+				// $chat.sendMsg(userInfo, friendUserInfo, 'single', 'pingJoin', {
+				// 	orderId: info.id,
+				// 	clubCover: info.clubCover,
+				// 	clubName: info.clubName,
+				// 	date: info.date,
+				// 	joinTogetherId: joinTogetherId,
+				// 	cardTableName: info.cardTableSn,
+				// 	agreeStatus: 'none',
+				// })
+				
+				var p1 = {};
+				p1.orderId = orderInfo.id
+				p1.clubCover = orderInfo.clubCover
+				p1.orderClubName = orderInfo.clubName
+				p1.date = orderInfo.date
+				p1.joinTogetherId = joinTogetherId
+				p1.cardTableName = orderInfo.cardTableName
+				p1.agreeStatus = 'none'
+				p1.statement = "我想和你拼单"
+				var last = JSON.stringify(p1);
+				
+				let params = {
+					type: "applyJoinOrder",
+					payloadStr: last,
+					receiverId: "user@" + this.info.userId + "@"
+				};
+				this.$u.api.chatFriendMessageSend(params).then((res) => {
+					console.log("发送成功")
+				});
+				
+				
 			},
 
       /**

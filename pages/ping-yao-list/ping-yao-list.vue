@@ -55,7 +55,6 @@
 				friendUserInfo.hasSave = false
 				let orderInfo = this.list[this.selectIndex]
 				if (orderInfo.type == 'yao') {
-					// this.sendYaoyue(orderInfo,friendUserInfo)
 					this.$refs.statementPopRef.show();
 				} else {
 					this.sendPing(orderInfo, friendUserInfo)
@@ -140,6 +139,10 @@
 				}
 			},
 
+/**
+ * 普通的发送邀约
+ * @param {Object} statement
+ */
 			sendYaoyueStatement(statement) {
 				if (this.selectIndex == -1) return this.$toast.text('请选择订单！')
 				let friendUserInfo = this.$u.deepClone(this.dynamicInfo)
@@ -207,38 +210,58 @@
 			},
 
 			/**
-			 * 发送拼享受
+			 * 发送拼享消息【调试中】
 			 */
-			sendPing(orderInfo, friendUserInfo) {
+			sendPing(orderInfo, friendInfo) {
+				var that = this;
 			
 				this.$u.api.pingInviteApi({
 					orderId: orderInfo.id,
 					userId: friendInfo.userId
 				}).then((res) => {
+					console.log("订单信息")
+					console.log(orderInfo)
 					
-					var p1 = {};
-					p1.orderId = orderInfo.id
-					p1.orderSn = orderInfo.sn
-					p1.orderClubId = orderInfo.clubId
-					p1.clubCover = orderInfo.clubCover
-					p1.orderClubName = orderInfo.clubName
+					if(res.code == 0){
+						var p1 = {};
+						p1.orderId = orderInfo.id
+						p1.orderSn = orderInfo.sn
+						p1.orderClubId = orderInfo.clubId
+						p1.clubCover = orderInfo.clubCover
+						p1.orderClubName = orderInfo.clubName
+						p1.orderPingHistoryId = res.data.orderPingHistoryId
+						p1.agreeStatus = 'none'
+						p1.statement = "跟我一起来拼订单吧"
+						p1.amount = orderInfo.amount
+						var last = JSON.stringify(p1);
+						
+						let params = {
+							type: "inviteJoinOrder",
+							payloadStr: last,
+							receiverId: "user@" + friendInfo.userId + "@"
+						};
+						that.$u.api.chatFriendMessageSend(params).then((res) => {
+							console.log("发送成功")
+						});
+						
+						console.log("1")
+						that.$toast.text('已发送邀约请求')
+						setTimeout(() => {
+							that.$u.route({
+								type: 'back'
+							})
+						}, 500)
+						
+					}else{
+						console.log(res)
+						// that.$toast.text(res.data.)
+						// setTimeout(() => {
+						// 	that.$u.route({
+						// 		type: 'back'
+						// 	})
+						// }, 500)
+					}
 					
-					var last = JSON.stringify(p1);
-					let params = {
-						type: "inviteJoinOrder",
-						payloadStr: last,
-						receiverId: "user@" + friendUserInfo.userId + "@"
-					};
-					that.$u.api.chatFriendMessageSend(params).then((res) => {
-					
-					});
-					
-					this.$toast.text('已发送邀约请求')
-					setTimeout(() => {
-						this.$u.route({
-							type: 'back'
-						})
-					}, 500)
 					
 				});
 				

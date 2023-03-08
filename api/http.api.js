@@ -148,6 +148,7 @@ const install = (Vue, vm) => {
 		//拼享订单
 		pingInviteApi: (params) => vm.$u.post('/api/order/sendOrderPingInfo', params), //拼享单邀请别人
 		refusePingInviteApi: (params) => vm.$u.post('/api/order/disAgreeOrderPingInfo', params), // 拒绝拼享单邀请
+		agreePingInviteApi: (params) => vm.$u.post('/api/order/agreeApplyJoinOrder', params), // 同意拼享单邀请，只是发文字消息
 		getPingOrderView: (params) => vm.$u.get('/api/order/pingOrderView', params), //拼享订单详情
 		deletePingOrderApi: (params) => vm.$u.post('/api/order/deleteJoinOrder', params), //删除拼享订单
 		hidePingOrderApi: (params) => vm.$u.post('/api/order/pingHide', params), //隐藏拼享订单
