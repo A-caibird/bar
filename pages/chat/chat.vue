@@ -33,7 +33,7 @@
 								<!-- 普通订单尬酒消息 -->
 								<view v-if="row.type == 'chat'" class="yaoyue"
 									@tap="tapGoYaodDetail(row.payload.orderId)">
-									<view class="title">{{row.payload.text}}</view>
+									<view class="title">{{row.payload.statement}}</view>
 									<view class="club-cover">
 										<image :src="row.payload.clubCover" />
 									</view>
@@ -187,6 +187,9 @@
 								<!-- 别人想加入到我的拼享受 -->
 								<view v-if="row.type == 'applyJoinOrder'" class="yaoyue"
 									@tap="tapGoPingDetail(row.payload.orderId)">
+									<view class="title">
+										{{row.payload.statement}}
+									</view>
 									<view class="club-cover">
 										<image :src="row.payload.clubCover" />
 									</view>
@@ -197,7 +200,7 @@
 										<view class="date-card">
 											<view class="date">邀约时间：{{row.timestamp}}</view>
 										</view>
-										<view class="yaoyue-btn" v-if="row.payload.agreeStatus=='agree'">
+										<view class="yaoyue-btn" v-if="row.payload.agreeStatus=='agreed'">
 											<view class="btn agreed">已同意</view>
 										</view>
 										<view class="yaoyue-btn" v-else-if="row.payload.agreeStatus=='refuse'">
@@ -687,13 +690,10 @@
 					awkwardWineId: e.item.awkwardWineId,
 					rejectionReason: e.reason,
 				}).then(function() {
-					// item.agreeStatus = 'refuse'
-					// this.updateChatListByTimeType(item.time, item.type, item)
-					// $chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken, item.time, item
-					// 	.type, item)
-					// // $chat.sendMsg(userInfo,friendUserInfo,'single','text',{content: '拒绝邀请',})
-					// $chat.sendMsg(userInfo, friendUserInfo, 'single', 'text', {
-					// 	content: e.reason,
+					var index = this.msgList.findIndex(function(x){
+						return x.id == item.id
+					})
+					var s = this.msgList[index].payload.agreeStatus ='refuse';
 				})
 
 			},
@@ -723,12 +723,10 @@
 				})
 				if (code == 0) {
 					console.log("同意的回调")
-					//item.agreeStatus = 'agree'
-					// $chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken, item.time, item
-					// 	.type, item)
-					// $chat.sendMsg(userInfo, friendUserInfo, 'single', 'text', {
-					// 	content: '同意邀请',
-					// })
+					var index = this.msgList.findIndex(function(x){
+						return x.id == item.id
+					})
+					var s = this.msgList[index].payload.agreeStatus ='agreed';
 					this.$forceUpdate()
 				} else {
 					console.log(code);
@@ -750,17 +748,17 @@
 				})
 				if (code == 0) {
 					console.log("拒绝成功")
-					// item.agreeStatus = 'refuse'
-					// this.updateChatListByTimeType(item.time, item.type, item)
-					// $chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken, item.time, item
-					// 	.type, item)
-					// $chat.sendMsg(userInfo, friendUserInfo, 'single', 'text', {
-					// 	content: '拒绝加入',
-					// })
+					var index = this.msgList.findIndex(function(x){
+						return x.id == item.id
+					})
+					var s = this.msgList[index].payload.agreeStatus ='refuse';
 				}
 			},
 			// 同意别人加入拼享订单【自己是审核人】
 			async tapAgreeJoinPing(item) {
+				console.log("点击了同意===》")
+				console.log(item)
+				// var that = this;
 	
 				let res = await this.$u.api.hasVerifyAPI();
 				let hasVerified = res.data.hasVerified;
@@ -783,14 +781,13 @@
 					chatMessageId:item.id
 				})
 				if (code == 0) {
-					console.log("同意成功")
-					// item.agreeStatus = 'agree'
-					// this.updateChatListByTimeType(item.time, item.type, item)
-					// $chat.upadteChatByTimeType(userInfo.chatToken, friendUserInfo.chatToken, item.time, item.type,
-					// 	item)
-					// $chat.sendMsg(userInfo, friendUserInfo, 'single', 'text', {
-					// 	content: '同意加入',
-					// })
+					
+					var index = this.msgList.findIndex(function(x){
+						return x.id == item.id
+					})
+					var s = this.msgList[index].payload.agreeStatus ='agreed';
+					
+	
 				}
 			},
 
@@ -800,6 +797,7 @@
 				console.log("拒绝拼享")
 				console.log(item)
 				
+				
 				await this.$toast.confirm('', '确定要拒绝邀请吗？')
 				let {
 					code
@@ -808,14 +806,11 @@
 					chatMessageId: item.id
 				})
 				if (code == 0) {
-					console.log("拒绝成功")
-					// item.agreeStatus = 'refuse'
-					// this.updateChatListByTimeType(item.time, item.type, item)
-					// $chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken, item.time, item
-					// 	.type, item)
-					// $chat.sendMsg(userInfo, friendUserInfo, 'single', 'text', {
-					// 	content: '拒绝邀请',
-					// })
+					var index = this.msgList.findIndex(function(x){
+						return x.id == item.id
+					})
+					var s = this.msgList[index].payload.agreeStatus ='refuse';
+					
 				}
 			},
 
@@ -849,18 +844,12 @@
 				})
 				if (code == 0) {
 					console.log("同意成功")
+					var index = this.msgList.findIndex(function(x){
+						return x.id == item.id
+					})
+					var s = this.msgList[index].payload.agreeStatus ='agreed';
 				}
-				// item.agreeStatus = 'agree'
-				// $chat.upadteChatByTimeType(this.userInfo.chatToken, this.friendUserInfo.chatToken, item.time, item
-				// 	.type, item)
-				// $chat.sendMsg(userInfo, friendUserInfo, 'single', 'text', {
-				// 	content: '同意邀请',
-				// })
-				// this.$forceUpdate()
-				// uni.$on('agreePingSuccess', () => {
-				// this.agreePingSuccess(userInfo, friendUserInfo, item);
-				// uni.$off('agreePingSuccess');
-				// })
+				
 				this.$u.route('/pages/club/consumption/payPage', {
 					allAmount: item.payload.amount,
 					orderId: item.payload.orderId,
