@@ -313,6 +313,7 @@
 				});
 			},
 			handlePay(e){
+				console.log("11111")
 				let data = {
 					payType: this.payType
 				}

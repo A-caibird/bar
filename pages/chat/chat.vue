@@ -365,6 +365,13 @@
 				// console.log("on message", res.data);
 				let data = JSON.parse(res.data);
 				this.screenMsg(data);
+				
+				///待确认，还在想
+				this.$u.api.readUserAll({
+					"userId": this.friendId
+				}).then((res) => {
+					console.log("消息全部已读")
+				});
 
 
 			});

@@ -366,6 +366,7 @@ export default {
 		},
 		// 更换事件
 		changeHandle: function(e) {
+			console.log(e)
 			this.tabExit[e] = 1;
 			if(e==2) {
 				if(!this.loginConfirmHandle(false)){

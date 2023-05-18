@@ -247,7 +247,7 @@
 				this.clubListLoad = true
 			},
 			
-			//没有被调用，是不是没在用？
+			
 			getSelfLocation: function() {
 				uni.getLocation({
 					type: 'wgs84',

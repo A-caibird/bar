@@ -9,7 +9,7 @@ const install = (Vue, vm) => {
 		//正式域名
 		// baseUrl: 'https://erp.patixiu.com',
 		
-		baseUrl: 'http://192.168.0.102:8080',
+		baseUrl: 'http://192.168.0.101:9090',
 		loadingText: '努力加载中~',
 		showLoading: false,
 		loadingMask: false,

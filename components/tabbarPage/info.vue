@@ -161,8 +161,7 @@
 					console.log("获取聊天数量")
 					let list = res.data.list;
 			
-					console.log(list)
-					console.log(list instanceof Array );
+				
 					for(var i = 0; i < list.length; i++){
 						console.log(list[i])
 						var item = list[i];
