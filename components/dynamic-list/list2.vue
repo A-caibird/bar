@@ -1,4 +1,5 @@
 <template>
+	<!--关注动态-->
 	<view>
 		<mescroll-uni ref="mescrollRef" :canShowTop="false" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" @up="upCallback">
 			<block v-if="hasLocation">

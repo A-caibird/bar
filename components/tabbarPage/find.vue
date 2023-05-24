@@ -10,6 +10,7 @@
 			</view>
 			<view class="find_middle_box" v-if="!pageLoading">
 				<swiper class="swiper-box" :duration="250" :current="swiperCurrent" @change="animationfinish">
+					<!--关注动态-->
 					<swiper-item class="swiper-item">
 						<dynamic-list2 @reportTap="reportTap" @shareTap="$emit('shareTap')" ref="follow-dynamic-list"
 							:index="swiperCurrent" @showYaoyue="handleShowYaoyue" @showPing="handleShowPing"
@@ -17,6 +18,7 @@
 							@oepnGift="oepnGift('follow',$event)">
 						</dynamic-list2>
 					</swiper-item>
+					<!--附近动态-->
 					<swiper-item class="swiper-item">
 						<view style="height: 100%;">
 							<dynamic-list @reportTap="reportTap" @videoPlayTap="videoPlayHandle"
@@ -27,11 +29,11 @@
 							</dynamic-list>
 						</view>
 					</swiper-item>
-
+					<!--拼享快乐-->
 					<swiper-item class="swiper-item" v-if="!isAppleAudit">
 						<find-share-list ref="find-share-list" :i="2" :index="swiperCurrent"></find-share-list>
 					</swiper-item>
-
+					<!--礼物排行-->
 					<swiper-item class="swiper-item" v-if="!isAppleAudit">
 						<gift-board ref="gift-board" :i="3" :index="swiperCurrent"></gift-board>
 					</swiper-item>
@@ -166,6 +168,7 @@
 			
 			show() {
 				this.authorized = getApp().globalData.authorized;
+				console.log("准备跳转到附近动态")
 				if (this.$refs['nearby-dynamic-list']) {
 					let ref = this.$refs['nearby-dynamic-list'];
 					let searchValue = ref.params.searchKey;

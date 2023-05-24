@@ -63,7 +63,7 @@
 			</view>
 			<view class="price_btn" @tap="randomTap">
 				<text v-if="freetimes > 0">还剩{{freetimes}}次免费拆盲盒</text>
-				<text v-else>花费{{unitPrice}}酒吧拆盲盒</text>
+				<text v-else>花费{{unitPrice}}酒币拆盲盒</text>
 			</view>
 		</view>
 	</view>

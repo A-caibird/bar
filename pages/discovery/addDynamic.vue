@@ -107,7 +107,7 @@
 	
 		onLoad: function() {
 			this.load()
-			uni.$on('updataLocation', this.handelUpdataLocation)
+			//uni.$on('updataLocation', this.handelUpdataLocation)
 		},
 		onUnload: function() {
 			uni.$off('updataLocation', this.handelUpdataLocation)

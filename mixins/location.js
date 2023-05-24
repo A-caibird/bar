@@ -11,12 +11,14 @@ let location = ({
 		}
 	},
 	mounted(){
-		uni.$on('update-location-service', this.handleUpdateLocationService)
-		uni.$on('update-location', this.handleUpdateLocation)
+		//试下暂时关闭定位，暂时
+		// uni.$on('update-location-service', this.handleUpdateLocationService)
+		// uni.$on('update-location', this.handleUpdateLocation)
 	},
 	beforeDestroy() {
-		uni.$off('update-location-service', this.handleUpdateLocationService)
-		uni.$off('update-location', this.handleUpdateLocation)
+		//试下暂时关闭定位，暂时
+		// uni.$off('update-location-service', this.handleUpdateLocationService)
+		// uni.$off('update-location', this.handleUpdateLocation)
 		
 	},
 	methods:{

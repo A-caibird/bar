@@ -1,4 +1,6 @@
+
 <template>
+	<!--附近动态-->
 	<view>
 		<mescroll-uni ref="mescrollRef" :canShowTop="false" :fixed="true" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" @up="upCallback">
 			<block v-if="hasLocation">
@@ -99,6 +101,7 @@
 				this.mescroll.resetUpScroll()
 			},
 			searchChange(e){
+				console.log("显示附近动态")
 				this.params.searchKey = e;
 				this.mescroll.resetUpScroll()
 			},

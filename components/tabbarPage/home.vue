@@ -210,16 +210,16 @@
 			},
 			
 			handleUpdateLocationService() {
-				this.updateLocationService(() => {
-					if (this.canLocation && app.globalData.location.cityName == '未定位') {
-						this.getLocation()
-					}
-				})
+				// this.updateLocationService(() => {
+				// 	if (this.canLocation && app.globalData.location.cityName == '未定位') {
+				// 		this.getLocation()
+				// 	}
+				// })
 			},
 
 			//功能按钮区触发，去酒吧列表
 			tapGoClubList(mode = 'list') {
-				console.log(mode);
+				
 				if (mode == 'list') {
 					this.$u.route('/pages/club/list' + `?mode=${mode}`)
 				}
@@ -231,6 +231,7 @@
 			
 			//应该是最初的方法
 			load() {
+				// console.log("载入load方法")
 				this.getHomeBannerList()
 				this.getClubList()
 			},
@@ -248,17 +249,17 @@
 			},
 			
 			
-			getSelfLocation: function() {
-				uni.getLocation({
-					type: 'wgs84',
-					success: res => {
-						console.log(res);
-					},
-					fail: e => {
-						console.log(e);
-					}
-				});
-			},
+			// getSelfLocation: function() {
+			// 	uni.getLocation({
+			// 		type: 'wgs84',
+			// 		success: res => {
+			// 			console.log(res);
+			// 		},
+			// 		fail: e => {
+			// 			console.log(e);
+			// 		}
+			// 	});
+			// },
 			//最初的触发方法
 			 getHomeBannerList() {
 				 var that = this;
@@ -275,21 +276,51 @@
 				
 				
 			},
-			//最初触发的方法
-			async getClubList() {
-				//调用mixins/location的方法，拿到经纬度和城市名，存起来
-				await this.getLocation()
+			//最初触发的方法,原先的方法，目前重写了
+			// async getClubList() {
+			// 	//调用mixins/location的方法，拿到经纬度和城市名，存起来
+			// 	await this.getLocation()
 				
-				if (this.canLocation) {//是location.js中的一个变量
-					let hasLocation = await this.getLocation()
-					if (!hasLocation && this.hasLocation) {
-						this.pullRefresh()
+			// 	if (this.canLocation) {//是location.js中的一个变量
+			// 		let hasLocation = await this.getLocation()
+			// 		if (!hasLocation && this.hasLocation) {
+			// 			this.pullRefresh()
+			// 		}
+			// 	} else {
+			// 		if (this.hasLocation) {
+			// 			this.pullRefresh()
+			// 		}
+			// 	}
+			// },
+			
+			//需要修改，目前这边只传了标准的经纬度，城市默认是宁波，但是后台这边是根据城市名来的
+			getClubList(){
+				// console.log("111")
+				var that = this;
+				uni.getLocation({
+					// type:'gcj02',
+					// geocode:true,
+					success(res){
+						// console.log(res)
+						let {latitude,longitude,address} = res
+						let location = {
+							lng:longitude,
+							lat:latitude,
+							// cityName:address.city
+						}
+						
+						getApp().globalData.location = location;
+						// console.log("定位成功===>")
+						// console.log(res)
+						that.pullRefresh()
+						
+					},
+					fail(err){
+						// console.log("定位失败===>")
+						console.log(err)
+						
 					}
-				} else {
-					if (this.hasLocation) {
-						this.pullRefresh()
-					}
-				}
+				})
 			},
 			
 			//功能按钮区触发，去礼物列表
@@ -302,7 +333,7 @@
 				if (!this.loginConfirmHandle(false)) return;
 				this.$emit('goPing')
 			},
-			//功能按钮区触发，去抽奖
+			//盲盒
 			goWheel() {
 				if (!this.loginConfirmHandle(false)) return;
 				this.$u.route('/pages/blindBox/index')
