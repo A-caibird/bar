@@ -298,19 +298,19 @@
 				// console.log("111")
 				var that = this;
 				uni.getLocation({
-					// type:'gcj02',
-					// geocode:true,
+					type:'gcj02',
+					geocode:true,
 					success(res){
-						// console.log(res)
+						console.log(res)
 						let {latitude,longitude,address} = res
 						let location = {
 							lng:longitude,
 							lat:latitude,
-							// cityName:address.city
+							cityName:address.city
 						}
 						
 						getApp().globalData.location = location;
-						// console.log("定位成功===>")
+						console.log("定位成功===>")
 						// console.log(res)
 						that.pullRefresh()
 						

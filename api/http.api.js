@@ -44,7 +44,7 @@ const install = (Vue, vm) => {
 		getCouponPurviewApi: (params) => vm.$u.get('/api/coupon/canOrderUseCouponCount', params),
 		//通用
 		getOSSUrlAPI: () => vm.$u.get('/api/OSSSign/sign'),
-		commonRequest: (url, params = {}, method = 'get') => vm.$u[method](url, params), // 通用请求
+		commonRequest: (url, params = {}, method = 'post') => vm.$u[method](url, params), // 通用请求
 		readSysNoticeAPI: () => vm.$u.post('/api/user/readAllSystemNotification'), //阅读系统消息
  		getNoticeCountAPI: () => vm.$u.get('/api/user/notReadSystemNotification'), //系统未通知消息
 		registerCodeApi: (params) => vm.$u.post('/api/user/getCode', params), //获取验证码

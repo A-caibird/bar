@@ -61,7 +61,7 @@
 				let location = app.globalData.location
 				location.cityName = city.cityName;
 				app.globalData.location = location
-				$storage.setLocation(location)
+				// $storage.setLocation(location)
 				uni.$emit('update-location')
 				uni.navigateBack();
 			}

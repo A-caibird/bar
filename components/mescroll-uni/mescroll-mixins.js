@@ -46,10 +46,13 @@ const MescrollMixin = {
 		},
 		// 下拉刷新的回调 (mixin默认resetUpScroll)
 		downCallback() {
+			console.log("downCallback")
 			if(this.mescroll.optUp.use){
+				console.log("downCallback1111")
 				this.mescroll.resetUpScroll()
 			}else{
 				setTimeout(()=>{
+					console.log("downCallback222")
 					this.mescroll.endSuccess();
 				}, 500)
 			}
@@ -73,16 +76,21 @@ const MescrollMixin = {
 		// 上拉加载的回调
 		async upCallback(page) {
 			let url = this.url;
-			// console.log('上拉加载的回调', url)
+			console.log('上拉加载的回调', url)
 			if(!this.judgeLoad()) {
+				console.log("1111222")
 				uni.hideLoading();
 				return this.mescroll.endErr()
 			} 
+			console.log("11118888")
 			let pageNumber = page.num;
 			let pageSize = page.size; // 页长, 默认每页10条
 			let totalPages = this.totalPages;
-			// console.log(pageNumber)
-			// console.log(totalPages)
+			console.log(pageNumber)
+			console.log(totalPages)
+			console.log(url)
+			console.log(this.params)
+			console.log(pageSize)
 			if (url) {
 				// if (pageNumber > totalPages) {
 				// 	uni.hideLoading();
@@ -105,8 +113,11 @@ const MescrollMixin = {
 				let {code,data} = await this.$u.api.commonRequest(url, params)
 				if(code==0) {
 					// this.resultInfo = data;
+					console.log("获取到数据==》")
+					console.log(data)
 					this.handleData(pageNumber,data)
 				} else {
+					console.log("error network")
 					uni.hideLoading();
 					this.mescroll.endErr()
 				}

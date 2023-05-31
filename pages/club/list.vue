@@ -136,10 +136,12 @@
 				})
 			},
 			load() {
+				console.log("调用load")
 				this.getCitys()
 				this.getClubType();
 				if(this.mode=='list') {
 					this.$nextTick(function(){
+						console.log("downCallback");
 						this.downCallback()
 					})
 				}
@@ -158,6 +160,7 @@
 					}
 					typeList.push(info);
 				})
+				console.log(typeList)
 				this.dropDownOptions[2].contents = typeList;
 			},
 			searchKeyChange(e) {
@@ -167,7 +170,7 @@
 				this.downCallback()
 			},
 			filterChane(e) {
-				console.log(e)
+				console.log("filterChane")
 				let params = this.$u.deepClone(this.params)
 				this.dropDownOptions[e.headerIndex].header = e.content.name
 				if (e.headerIndex == 0) {
@@ -189,7 +192,9 @@
 				}, 300)
 			},
 			async getCitys() {
+				console.log("获取城市数据")
 				if (this.hasLocation) {
+					console.log("获取城市数据1")
 					let {
 						code,
 						data
@@ -202,9 +207,11 @@
 							name: '全部',
 						}];
 						newlist = newlist.concat(areaList)
+						console.log(newlist)
 						this.dropDownOptions[0].contents = newlist
 					}
 				} else {
+					console.log("获取城市数据2")
 					if(this.canLocation) {
 						this.getLocation()
 					}

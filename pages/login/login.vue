@@ -154,16 +154,18 @@
 						uni.getUserInfo({
 							provider: 'weixin',
 							success: function(infoRes) {
-								// console.log(infoRes);
+								console.log("微信登录授权信息获取成功");
+								console.log(infoRes);
+								var cid = plus.push.getClientInfo().clientid
 
 								let params = {
 									openId:res.authResult.openid,
 									wechatNickName : infoRes.userInfo.nickName,
 									// #ifdef APP-PLUS
-									clientId:plus.push.getClientInfo().clientid,
+									clientId:cid,
 									// #endif
 								}
-								console.log(clientId)
+								console.log(cid)
 								vm.wxLogin(params)
 							},
 							fail(err) {

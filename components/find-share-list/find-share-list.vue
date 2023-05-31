@@ -56,6 +56,7 @@
 				
 				url:'/api/order/list',
 				params:{
+					cityName: app.globalData.location.cityName,
 					lng:  app.globalData.location.lng, //经度
 					lat: app.globalData.location.lat,
 					areaName: app.globalData.location.cityName
@@ -63,6 +64,7 @@
 			}
 		},
 		mounted() {
+			console.log("定位==》" + app.globalData.location.cityName,)
 			uni.$on('find-share-list-refresh', () => {
 				this.mescroll.resetUpScroll()
 			})
