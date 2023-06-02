@@ -516,7 +516,7 @@
 	.me_box {
 		width: 100%;
 		height: 100%;
-		background-image: url('/static/imgs/mine/backImg.png');
+		background-image: url('/static/imgs/mine/backImg2.png');
 		background-size: 100% 748rpx;
 		background-repeat: no-repeat;
 

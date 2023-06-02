@@ -174,9 +174,24 @@ export default {
 		});
 		// this.infoListenerEvent();
 		this.pushListenerEvent();
+		
+		if(getApp().globalData.authorized){
+			var noRead = 0;
+			this.$u.api.getNoticeCountAPI().then(res => {
+				// this.setPushCount(noRead);
+			});
+			// 	noRead = noRead + (res.data.activityUnReadNum || 0) + (res.data.num || 0);
+			// 	// console.log('push_listener 系统通知 noRead', noRead);
+			// 	this.setPushCount(noRead);
+			// }).catch(e => {
+			// 	// console.log('push_listener 系统通知 noRead err', noRead);
+			// 	this.setPushCount(noRead)
+			// })
+		}
+		
 	},
 	onUnload() {
-		uni.$off('information_listener');
+		// uni.$off('information_listener');
 		uni.$off('push_listener');
 	},
 	onShow: function() {
@@ -213,8 +228,8 @@ export default {
 		this.$refs.home.hideEvent();
 	},
 	methods: {
-		//https://vuex.vuejs.org/zh/guide/mutations.html
-		...mapMutations(['setInfoCount', 'setPushCount']),
+		
+		...mapMutations(['setCount']),
 		
 		//一般是发现页面这边触发传过来的触发事件
 		reportTap(info){
@@ -257,14 +272,14 @@ export default {
 			}else{
 				if(getApp().globalData.authorized){
 					var noRead = 0;
-					this.$u.api.getNoticeCountAPI().then(res => {
-						noRead = noRead + (res.data.activityUnReadNum || 0) + (res.data.num || 0);
-						// console.log('push_listener 系统通知 noRead', noRead);
-						this.setPushCount(noRead);
-					}).catch(e => {
-						// console.log('push_listener 系统通知 noRead err', noRead);
-						this.setPushCount(noRead)
-					})
+					// this.$u.api.getNoticeCountAPI().then(res => {
+					// 	noRead = noRead + (res.data.activityUnReadNum || 0) + (res.data.num || 0);
+					// 	// console.log('push_listener 系统通知 noRead', noRead);
+					// 	this.setPushCount(noRead);
+					// }).catch(e => {
+					// 	// console.log('push_listener 系统通知 noRead err', noRead);
+					// 	this.setPushCount(noRead)
+					// })
 				}
 			}
 		},
@@ -311,7 +326,7 @@ export default {
 		goChat(e){
 			let vm = this
 			this.current = 3
-			this.infoListenerEvent();
+			// this.infoListenerEvent();
 			this.pushListenerEvent();
 			setTimeout(function(){
 				vm.$u.route('/pages/chat/chat',e)
@@ -379,12 +394,13 @@ export default {
 			}
 			this.current = e;
 			if(e==0) {
-
+				console.log("回到首页===》")
 			}
 			if(e!=0){
 				this.$refs.home.hideEvent();
 			}
 			if(e==1) {
+				console.log("去发现页面===》")
 				this.$nextTick(() => {
 					if(this.$refs.find){
 						this.$refs.find.show()
@@ -392,11 +408,13 @@ export default {
 				})
 			}
 			if(e==3){
+				console.log("去消息页面===》")
 				this.$nextTick(() => {
 					this.$refs.info.show()
 				})
 			}
 			if(e==4) {
+				console.log("去我的页面===》")
 				this.$nextTick(() => {
 					this.$refs.me.load()
 				})

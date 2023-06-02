@@ -35,7 +35,7 @@
 					color: elColor(index)
 				}" v-if="item.text">
 					<u-badge :count="item.count" :is-dot="item.isDot"
-						v-if="item.count"
+					
 						:offset="[-2, getOffsetRight(item.count, item.isDot)]"
 					></u-badge>
 					<text class="u-line-1 tab_text">{{item.text}}</text>

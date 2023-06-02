@@ -1,10 +1,8 @@
 <template>
 	<view class="container">
-		<!-- <u-navbar :border-bottom="false" :is-fixed="true" :background="{'background': '#191C3F'}" title="酒吧" title-color="#FFFFFF" back-icon-color="#FFFFFF">
-			<view slot="right" style="padding-right: 30rpx; color: #FFFFFF;"> <text>替换</text> </view>
-		</u-navbar> -->
+	
 		<wyb-drop-down ref="dropDown" :defaultProps="dropDownDefaultProps" :options="dropDownOptions"
-			@select="filterChane" :dropIcon="'line'" :bg-color="{header:'#191C3F',content: '#191C3F'}"
+			@select="filterChane" :dropIcon="'line'" :bg-color="{header:'#16192B',content: '#16192B'}"
 			:defaultColor="'#FFFFFF'" :activeColor="'#FFFFFF'"></wyb-drop-down>
 		<view style="height: 100rpx;"></view>
 		<view class="middle-box">

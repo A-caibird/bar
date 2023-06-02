@@ -317,7 +317,7 @@
 		flex: 1;
 		height: 100rpx;
 		font-size: 28rpx;
-		border-bottom: 1px solid #454975;
+		/* border-bottom: 1px solid #454975; */
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -409,7 +409,7 @@
 	.wyb-drop-down-vline {
 		width: 1px;
 		height: 25rpx;
-		background-color: #454975;
+		/* background-color: #454975; */
 		position: absolute;
 		right: 0;
 	}
@@ -417,7 +417,7 @@
 	.wyb-drop-down-line {
 		width: 100%;
 		height: 1px;
-		background-color: #eee;
+		/* background-color: #eee; */
 		margin-left: 50rpx;
 	}
 </style>

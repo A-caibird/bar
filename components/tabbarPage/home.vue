@@ -229,9 +229,9 @@
 
 			},
 			
-			//应该是最初的方法
+			
 			load() {
-				// console.log("载入load方法")
+				console.log("载入load方法")
 				this.getHomeBannerList()
 				this.getClubList()
 			},
@@ -295,12 +295,13 @@
 			
 			//需要修改，目前这边只传了标准的经纬度，城市默认是宁波，但是后台这边是根据城市名来的
 			getClubList(){
-				// console.log("111")
+				console.log("111")
 				var that = this;
 				uni.getLocation({
 					type:'gcj02',
 					geocode:true,
 					success(res){
+						console.log("定位成功===>")
 						console.log(res)
 						let {latitude,longitude,address} = res
 						let location = {
@@ -310,13 +311,13 @@
 						}
 						
 						getApp().globalData.location = location;
-						console.log("定位成功===>")
+						
 						// console.log(res)
 						that.pullRefresh()
 						
 					},
 					fail(err){
-						// console.log("定位失败===>")
+						console.log("定位失败===>")
 						console.log(err)
 						
 					}

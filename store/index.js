@@ -27,7 +27,10 @@ const store = new Vuex.Store({
 				'text': '消息',
 				'customIcon': false,
 				"count": 0,
-				"isDot": false
+				"isDot": true,
+				// "badge": {
+				// 	isDot: true
+				// }
 			},
 			{
 				'text': '我的',
@@ -35,8 +38,9 @@ const store = new Vuex.Store({
 				"count": 0,
 			},
 		],
-		pushCount: 0,// 推送未读数量
-		infoCount: 0,// 消息未读数量
+		// pushCount: 0,// 推送未读数量
+		// infoCount: 0,// 消息未读数量
+		//countFlag:false
 
 	},
 	mutations: {
@@ -53,18 +57,21 @@ const store = new Vuex.Store({
 			}
 			console.log('清除消息后', state.list[3]);
 		},
-		// 设置通知消息
-		setPushCount(state, count){
-			// console.log('更新push', count, state.infoCount)
-			state.pushCount = count;
-			state.list[3].count = count + state.infoCount;
-		},
-		// 设置消息已读未读
-		setInfoCount(state, count){
-			// console.log('更新info', count, state.pushCount)
-			state.infoCount = count;
-			state.list[3].count = count + state.pushCount;
-		},
+		setCount(state, count){
+			state.countFlag = count;
+		}
+		// // 设置通知消息
+		// setPushCount(state, count){
+		// 	// console.log('更新push', count, state.infoCount)
+		// 	state.pushCount = count;
+		// 	state.list[3].count = count + state.infoCount;
+		// },
+		// // 设置消息已读未读
+		// setInfoCount(state, count){
+		// 	// console.log('更新info', count, state.pushCount)
+		// 	state.infoCount = count;
+		// 	state.list[3].count = count + state.pushCount;
+		// },
 		
 	}
 	
