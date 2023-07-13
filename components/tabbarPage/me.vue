@@ -23,12 +23,14 @@
 						</view>
 						<image class="go_icon" src="/static/imgs/mine/common_right.png"></image>
 					</view>
+					
 					<view class="person_intro" v-else @tap="$u.throttle($u.route('/pages/login/login'))">
 						<image class="person_img" src="/static/imgs/common/default_avatar.png" mode=""></image>
 						<view class="intro_info">
 							<text style="color: #FFFFFF; font-size: 44rpx;">点击登录</text>
 						</view>
 					</view>
+					
 					<view class="dispaly_box">
 						<view class="display_item"
 							@tap="$u.throttle(navigateHandle('/pages/mine/dynamic/personalDynamic'))">
@@ -48,6 +50,7 @@
 							<view>信用分</view>
 						</view>
 					</view>
+					
 					<view class="feature_box">
 						<block v-for="(info, index) in featureList" :key="index">
 							<view class="feature_item" @tap="goRoute(info.url)">
@@ -517,14 +520,13 @@
 		width: 100%;
 		height: 100%;
 		background-image: url('/static/imgs/mine/backImg.png');
-		background-size: 100% 748rpx;
+		background-size: 100% 471rpx; // Acaibird颜色修改
 		background-repeat: no-repeat;
-
+		background-color: #16192B;  // Acaibird颜色修改
 		.middle_box {
 			width: 100%;
 			padding-top: 140rpx;
-
-			.person_box {
+		.person_box {
 				width: 100%;
 				box-sizing: border-box;
 				padding: 0 30rpx;
@@ -629,7 +631,6 @@
 					display: flex;
 					align-items: center;
 					justify-content: space-around;
-
 					.display_item {
 						display: flex;
 						align-items: center;
@@ -649,7 +650,7 @@
 					}
 				}
 
-				.feature_box {
+				.feature_box {		
 					width: 100%;
 					// height: 328rpx;
 					min-height: 164rpx;
@@ -710,7 +711,6 @@
 
 		.first_part {
 			padding: 30rpx;
-
 			.box-content {
 				border-radius: 10rpx;
 				background: #2C3158;
