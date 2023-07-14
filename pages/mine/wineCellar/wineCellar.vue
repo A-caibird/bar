@@ -7,7 +7,7 @@
 			</view>
 		</u-navbar>
 		<view class="tip">提示：订单确认到店后才可以取酒</view>
-		<view class="order-info-box">
+		<view class="order-info-box" >
 			<wine-cellar ref="wineCellRef"></wine-cellar>
 		</view>
 	</view>
@@ -57,14 +57,14 @@
 				@include height-center();
 				color: #ffffff;
 				font-size: 30rpx;
+				background: #16192B; // Acaibird 颜色修改
 			}
 			.order-info-box {
+                background-color: #16192B; // Acaibird 颜色修改
 				flex: 1;
 				min-width: 0;
 				min-height: 0;
 			}
-			
-		
 			
 		
 		}

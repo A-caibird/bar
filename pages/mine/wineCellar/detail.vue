@@ -33,9 +33,9 @@
 							<view class="common_label"> <text>{{info}}</text> </view>
 						</block>
 					</view>
-					
+
 				</view>
-				<u-gap height="20" bgColor="#20234B"></u-gap>
+				<u-gap height="20" bgColor="#16192B"></u-gap>
 			</view>
 			<view class="wine_detail">
 				<view class="wine_title">
@@ -44,7 +44,8 @@
 				</view>
 				<view class="wine_kind">
 					<view class="kind_item" v-for="item,index in wineInfo.itemList" :key="index">
-						<image :src="item.commodity.cover" mode="aspectFill" @tap="$u.throttle(previewImg(item.commodity.cover))"></image>
+						<image :src="item.commodity.cover" mode="aspectFill"
+							@tap="$u.throttle(previewImg(item.commodity.cover))"></image>
 						<text class="wine_name">{{item.commodity.name}}</text>
 						<view class="remain_num">
 							<text class="text">剩余数量:</text>
@@ -53,7 +54,7 @@
 					</view>
 				</view>
 			</view>
-			<u-gap height="20" bgColor="#20234B"></u-gap>
+			<u-gap height="20" bgColor="#16192B"></u-gap>
 		</view>
 		<view class="footer_box">
 			<!-- 基本信息 -->
@@ -143,15 +144,15 @@
 		},
 		data() {
 			return {
-				clubId:'',
-				id:'',
+				clubId: '',
+				id: '',
 				stickyStatus: false,
-				clubInfo:{
-					bannerObjList:[],
+				clubInfo: {
+					bannerObjList: [],
 				},
-				navOpacity:0,
-				wineInfo:{
-					itemList:[],
+				navOpacity: 0,
+				wineInfo: {
+					itemList: [],
 				},
 			}
 		},
@@ -159,18 +160,21 @@
 			let vm = this
 			this.$u.getRect('.club_info_second').then(res => {
 				let top = res.top;
-				
-				if(top<=50&&top>=0) {
-					vm.navOpacity = parseFloat((50-top)/50).toFixed(1)
-				} else if(top<0) {
+
+				if (top <= 50 && top >= 0) {
+					vm.navOpacity = parseFloat((50 - top) / 50).toFixed(1)
+				} else if (top < 0) {
 					vm.navOpacity = 1
-				} else if(top>50) {
+				} else if (top > 50) {
 					vm.navOpacity = 0
 				}
 			})
 		},
 		onLoad(opt) {
-			let {clubId,id} = opt
+			let {
+				clubId,
+				id
+			} = opt
 			this.clubId = clubId
 			this.id = id
 			this.load()
@@ -178,36 +182,44 @@
 		onHide() {
 			this.hideEvent();
 		},
-		methods:{
+		methods: {
 			// 页面隐藏事件
-			hideEvent(){
-				if(this.$refs.commonBanner && this.$refs.commonBanner.playVideoUrl){
+			hideEvent() {
+				if (this.$refs.commonBanner && this.$refs.commonBanner.playVideoUrl) {
 					this.$refs.commonBanner.colseVideo();
 				}
 			},
-			load(){
+			load() {
 				this.getClubDetail();
 				this.getSaveWineView();
 			},
 			// 获取酒吧详情
-			async getClubDetail(){
-				let {code,data} = await this.$u.api.getClubDetail(this.clubId)
-				if(code==0) {
+			async getClubDetail() {
+				let {
+					code,
+					data
+				} = await this.$u.api.getClubDetail(this.clubId)
+				if (code == 0) {
 					console.log(data)
 					this.clubInfo = data.info;
 				}
 			},
-			async getSaveWineView(){
-				let {code,data} = await this.$u.api.getSaveWineViewApi({id:this.id})
-				if(code==0) {
+			async getSaveWineView() {
+				let {
+					code,
+					data
+				} = await this.$u.api.getSaveWineViewApi({
+					id: this.id
+				})
+				if (code == 0) {
 					console.log(data)
 					uni.$emit('personal-info-refresh');
 					uni.$emit('refreshWineCellList', this.id);
 					this.wineInfo = data
-					
+
 				}
 			},
-			
+
 		}
 	}
 </script>
@@ -216,6 +228,7 @@
 	.container {
 		width: 100%;
 		padding-bottom: 120rpx;
+		background: #16192B; // 酒吧消费详情		
 
 		.header_box {
 			width: 100%;
@@ -245,7 +258,8 @@
 				.swiper_box {
 					width: 100%;
 					height: 435rpx;
-					background: #16192B;
+					background: #191C3F;
+
 					image {
 						width: 100%;
 						height: 100%;
