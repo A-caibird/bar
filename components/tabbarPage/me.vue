@@ -519,8 +519,8 @@
 	.me_box {
 		width: 100%;
 		height: 100%;
-		background-image: url('/static/imgs/mine/backImg.png');
-		background-size: 100% 471rpx; // Acaibird颜色修改
+		background-image: url('/static/imgs/mine/mineBackground.png');
+		background-size: 100% 791rpx; // Acaibird颜色修改
 		background-repeat: no-repeat;
 		background-color: #16192B;  // Acaibird颜色修改
 		.middle_box {
