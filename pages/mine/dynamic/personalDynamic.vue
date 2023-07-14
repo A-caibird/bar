@@ -28,6 +28,7 @@
 					<view class="nav_box" :class="{'show': navShow}" @tap="$u.throttle($u.route({type:'back'}))">
 						<u-icon name="arrow-left" color="#FFFFFF" size="44"></u-icon>
 					</view>
+
 					<view  class="content-dynamic" 
 					:class="{active:currentIndex === '0' }" @tap="select('0')">动态</view>
 					
@@ -40,10 +41,12 @@
 				</view>
 			</view>
 			<view class="">
-				<view v-if="currentIndex == 0" class="dynamic-details" >
+				<view v-if="currentIndex == 0" class="dynamic-details">
 					<block v-if="hasLocation">
-					<!-- kind值为personal时 个人动态组件 -->
-						<personalDynamic @deleteTap="deleteHandle" :pageList="pageList" @videoPlayTap="videoPlayHandle" @shareTap="popShareShow = true" @oepnComment="$refs.dynamicComment.open($event)" @oepnGift="$refs.dynamicGift.open($event)" :showPercent="!isAppleAudit"></personalDynamic>
+						<!-- kind值为personal时 个人动态组件 -->
+						<personalDynamic @deleteTap="deleteHandle" :pageList="pageList" @videoPlayTap="videoPlayHandle"
+							@shareTap="popShareShow = true" @oepnComment="$refs.dynamicComment.open($event)"
+							@oepnGift="$refs.dynamicGift.open($event)" :showPercent="!isAppleAudit"></personalDynamic>
 					</block>
 					<block v-else>
 						<location-btn></location-btn>
@@ -59,7 +62,8 @@
 		</view>
 		<videoBox ref="videoBox"></videoBox>
 		<dynamic-comment ref="dynamicComment" @sendComment="setCommentNum($event)"></dynamic-comment>
-		<dynamic-gift ref="dynamicGift" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)" @sendGiftSuccess="handleSendGiftSuccess($event)"></dynamic-gift>
+		<dynamic-gift ref="dynamicGift" @oepnGiftEdit="$refs.dynamicGiftEdit.open($event)"
+			@sendGiftSuccess="handleSendGiftSuccess($event)"></dynamic-gift>
 		<dynamic-gift-edit ref="dynamicGiftEdit" @confirm="$refs.dynamicGift.setSendNum($event)"></dynamic-gift-edit>
 		<giftAnimation ref="giftAnimation"></giftAnimation>
 		<popShare v-model="popShareShow"></popShare>
@@ -74,9 +78,12 @@
 	import giftAnimation from '@/components/giftAnimation/giftAnimation.vue'
 	import appleAudit from '@/mixins/apple-audit.js'
 	import videoBox from '@/components/common-video/video.vue'
-	var {windowHeight, statusBarHeight} = uni.getSystemInfoSync();
+	var {
+		windowHeight,
+		statusBarHeight
+	} = uni.getSystemInfoSync();
 	export default {
-		mixins: [pageable, location,appleAudit], // 使用mixin (在main.js注册全局组件)
+		mixins: [pageable, location, appleAudit], // 使用mixin (在main.js注册全局组件)
 		components: {
 			personalDynamic,
 			giftAnimation,
@@ -259,32 +266,34 @@
 					}
 				})
 			},
-			load(){
+			load() {
 				this.downRefresh()
 			},
-			async downRefresh(){
-				if(!this.hasLocation&&this.canLocation) {
+			async downRefresh() {
+				if (!this.hasLocation && this.canLocation) {
 					this.getLocation()
-				} 
+				}
 			}
-			
+
 		},
-		
+
 	};
-	
 </script>
 
 <style lang="scss" scoped>
-	.divider{
+	.divider {
 		height: 10rpx;
 		width: 100%;
-		background: #2C3158;
+		background: #16192B; // Acaibird 个人动态颜色分割图
 	}
+	
 	.container {
-		.header_img{
+		background-color: #16192B; // Acaibird 个人动态颜色分割图
+		.header_img {
 			width: 100%;
 			height: 402rpx;
-			.bg_img{
+
+			.bg_img {
 				width: 100%;
 				height: 402rpx;
 				z-index: 1;
@@ -293,10 +302,12 @@
 		.myinfo {
 			display: flex;
 			align-items: center;
-			color: #FFFFFF;
+			color: #FFFFFF;   //Acaibird 颜色修改
+			background: #16192B;
 			position: relative;
 			box-sizing: border-box;
 			padding: 30rpx;
+
 			.avatar {
 				width: 90rpx;
 				height: 90rpx;
@@ -304,7 +315,6 @@
 				position: relative;
 				z-index: 10;
 			}
-	
 			.myinfo-details {
 				flex: 1;
 				min-width: 0;
@@ -313,12 +323,15 @@
 				padding-left: 24rpx;
 				position: relative;
 				z-index: 10;
-				.myinfo-details-head{
-					.text-name{
+
+				.myinfo-details-head {
+					.text-name {
 						padding: 0rpx;
 						font-size: 42rpx;
+						color: #FFFFFF;  //Acaibird 颜色修改
 					}
-					image{
+
+					image {
 						width: 30rpx;
 						height: 30rpx;
 						padding-left: 20rpx;
@@ -328,17 +341,21 @@
 					@include height-center();
 					justify-content: space-between;
 					padding-right: 30rpx;
+
 					text {
+						color: rgba(255, 255, 255, 0.5);  // Acaibird颜色修改
 						font-size: 28rpx;
 					}
 				}
 			}
 		}
-	
+
 		.content-box {
+			background: #16192B; // Acaibird颜色修改
 			display: flex;
 			flex-direction: column;
-			.intro_box{
+
+			.intro_box {
 				width: 100%;
 				box-sizing: border-box;
 				padding: 0rpx 30rpx;
@@ -355,7 +372,7 @@
 				align-items: center;
 				justify-content: space-between;
 				width: 100%;
-				color: #B7B9D6;
+				color: #979797; // Acaibird颜色修改
 				font-size: 30rpx;
 				min-height: 140rpx;
 				padding-top: var(--status-bar-height);
@@ -364,12 +381,14 @@
 				top: 0rpx;
 				left: 0rpx;
 				z-index: 120;
-				background: #16192B;
-				.content-title-box{
+				background: #16192B; // Acaibird 动态选项颜色修改
+
+				.content-title-box {
 					display: flex;
 					align-items: center;
 				}
-				.gajiu_btn{
+
+				.gajiu_btn {
 					display: flex;
 					align-items: center;
 					justify-content: center;
@@ -388,12 +407,14 @@
 						color: #FFFFFF;
 					}
 				}
-				.nav_box{
+
+				.nav_box {
 					display: none;
 					opacity: 0;
 					transition: all 0.3s;
 					padding-left: 24rpx;
-					&.show{
+
+					&.show {
 						display: block;
 						opacity: 1;
 					}
@@ -409,32 +430,34 @@
 							position: absolute;
 							bottom: -10rpx;
 							left: 10rpx;
-							width: 50rpx; 
+							width: 50rpx;
 							height: 6rpx;
 							background: #FF59C9;
 							border-radius: 3rpx;
+						}
+
 					}
-						
-					}
-	
+
 				}
 			}
+
 			.dynamic-details {
 				width: 100%;
 			}
+
 			.info-details {
 				padding: 0 30rpx;
-			
+
 				.info-details-item {
 					display: flex;
 					justify-content: space-between;
 					font-size: 28rpx;
 					padding-bottom: 50rpx;
-			
+
 					.item-name {
 						color: #9292BA;
 					}
-			
+
 					.item-info {
 						display: flex;
 						justify-content: flex-end;
@@ -455,12 +478,12 @@
 					font-size: 30rpx;
 					width: 690rpx;
 					height: 90rpx;
-					background: linear-gradient(270deg,#bb0cf9, #f92faf);
+					background: linear-gradient(270deg, #bb0cf9, #f92faf);
 					border-radius: 49rpx;
 				}
-				
+
 			}
-		
+
 		}
 	}
 </style>

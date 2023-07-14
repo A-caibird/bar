@@ -201,12 +201,10 @@
 <style lang="scss" scoped>
 	.container {
 		background-color: #20234b;
-
 		.dynamic-box {
 			display: flex;
 			flex-direction: column;
 			width: 100%;
-
 			.dynamic-item {
 				display: flex;
 				flex-direction: column;
@@ -216,12 +214,12 @@
 				.item-head {
 					display: flex;
 					padding: 30rpx;
-
+					background: #16192B; // Acaibird颜色修改
 					.avatar {
 						width: 74rpx;
 						height: 74rpx;
 						border-radius: 50%;
-					}
+						}
 
 					.item-head-right {
 						color: #ffffff;
@@ -267,7 +265,7 @@
 				.item-personal-content {
 					display: flex;
 					flex-direction: column;
-
+                    background: #16192B; // Acaibird颜色修改
 					.content-msg {
 						font-size: 30rpx;
 						color: #ffffff;

@@ -365,7 +365,7 @@
 	.divider{
 		height: 10rpx;
 		width: 100%;
-		background: #2C3158;
+		background: #16192B; // Acaibird #16192B
 	}
 	.container {
 		.header_img{
@@ -503,7 +503,7 @@
 				top: 0rpx;
 				left: 0rpx;
 				z-index: 120;
-				background: #16192B;
+				background: #191C3F; // Acaibird #191C3F
 				.content-title-box{
 					display: flex;
 					align-items: center;
