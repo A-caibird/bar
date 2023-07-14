@@ -28,19 +28,19 @@
 </template>
 
 <script>
-	export default{
-		props:{
+	export default {
+		props: {
 			info: [Object],
 			customEvent: {
 				type: Boolean,
 				default: false
 			}
 		},
-		methods:{
-			navigateTap(id){
-				if(this.customEvent){
+		methods: {
+			navigateTap(id) {
+				if (this.customEvent) {
 					this.$emit('click', id)
-				}else{
+				} else {
 					this.goClubDetail(id);
 				}
 			}
@@ -49,73 +49,89 @@
 </script>
 
 <style lang="scss" scoped>
-	.club_item_box{
+	.club_item_box {
 		width: 100%;
-		.club_header{
+		background: rgba(255, 255, 255, 0.05);
+		border-radius: 16rpx;
+		padding: 24rpx;
+		box-sizing: border-box;
+
+		.club_header {
 			width: 100%;
-			height: 120rpx;
-			padding: 0 30rpx;
+			height: 42rpx;
 			box-sizing: border-box;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			.header_left{
+			margin-bottom: 16rpx;
+
+			.header_left {
 				display: flex;
 				align-items: center;
-				.club_name{
+
+				.club_name {
 					font-size: 34rpx;
 					color: #FFFFFF;
 				}
 			}
-			.header_right{
-				.club_location{
+
+			.header_right {
+				.club_location {
 					display: flex;
 					align-items: center;
-					&>image{
-						height: 26rpx;
-						width: 22rpx;
+
+					&>image {
+						height: 24rpx;
+						width: 24rpx;
 					}
-					&>text{
+
+					&>text {
 						font-size: 24rpx;
-						color: #FFFFFF;
+						color: rgba(255, 255, 255, 0.5);
 						margin-left: 4rpx;
 					}
 				}
 			}
 		}
-		.club_img{
+
+		.club_img {
 			width: 100%;
-			height: 468.75rpx;
-			&>image{
+			height: 280rpx;
+
+			&>image {
 				height: 100%;
 				width: 100%;
 			}
 		}
-		.club_footer{
+
+		.club_footer {
 			width: 100%;
-			padding: 30rpx;
 			box-sizing: border-box;
-			.club_intro{
+
+			.club_intro {
 				width: 100%;
 				line-height: 40rpx;
 				max-height: 80rpx;
 				font-size: 30rpx;
 				color: #FFFFFF;
+				margin-top: 18rpx;
 			}
-			.club_labels{
+
+			.club_labels {
 				width: 100%;
 				display: flex;
 				align-items: center;
 				flex-wrap: wrap;
 				margin-top: 26rpx;
-				.commom_label{
+
+				.commom_label {
 					height: 40rpx;
 					@include flex-center();
-					border: 1px solid #565B86;
 					font-size: 20rpx;
-					color: #B3BAEF;
+					color: #FFF;
+					background: rgba(255, 255, 255, 0.1);
 					padding: 0 10rpx;
-					border-radius: 2rpx;
+					border-radius: 8rpx;
 					margin-right: 12rpx;
 					margin-bottom: 12rpx;
 				}

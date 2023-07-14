@@ -5,19 +5,19 @@
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			"path": "pages/init/init"
-		},{
+		}, {
 			"path": "pages/test/test",
-			"style" : {
-				"navigationBarBackgroundColor":"#191C3F",
+			"style": {
+				"navigationBarBackgroundColor": "#191C3F",
 				"navigationBarTitleText": "测试",
-				"navigationStyle":"default"
+				"navigationStyle": "default"
 			}
 		},
 		{
-			"path":"pages/customerRoom/index",
-			"style":{
-				"navigationBarTextStyle":"black",
-				"app-plus":{
+			"path": "pages/customerRoom/index",
+			"style": {
+				"navigationBarTextStyle": "black",
+				"app-plus": {
 					"softinputMode": "adjustResize"
 				}
 			}
@@ -30,7 +30,7 @@
 		},
 		{
 			"path": "pages/coupon/coupon-center"
-		},{
+		}, {
 			"path": "pages/coupon/coupon"
 		},
 		{
@@ -40,14 +40,14 @@
 			"path": "pages/index/index"
 		},
 		{
-			"path": "pages/logout/tips" 
-			
+			"path": "pages/logout/tips"
+
 		},
 		{
-			"path":"pages/discovery/dynamic_detail" //动态详情
+			"path": "pages/discovery/dynamic_detail" //动态详情
 		},
 		{
-			"path":"pages/discovery/report" //举报
+			"path": "pages/discovery/report" //举报
 		},
 		{
 			"path": "pages/login/login"
@@ -72,20 +72,20 @@
 		},
 		{
 			"path": "pages/club/list",
-			"navigationBarBackgroundColor":"#16192B",
+			"navigationBarBackgroundColor": "#16192B",
 			"navigationBarTitleText": "",
-			"navigationStyle":"default",
+			"navigationStyle": "default",
 			"style": {
 				"app-plus": {
 					"titleNView": {
-						"backgroundColor":"#16192B",
+						"backgroundColor": "#16192B",
 						"searchInput": {
-							"align":"left",
+							"align": "left",
 							"autoFocus": "false",
-							"color":"#FFFFFF",
+							"color": "#FFFFFF",
 							"backgroundColor": "rgba(255,255,255,0.1)",
-							"placeholderColor": "#fffff",
-							"borderRadius": "16px", //输入框圆角
+							"placeholderColor": "rgba(255, 255, 255, 0.2)",
+							"borderRadius": "31rpx", //输入框圆角
 							"placeholder": "搜索酒吧",
 							"disabled": false //disable时点击输入框不置焦，可以跳到新页面搜索
 						}
@@ -95,17 +95,17 @@
 		},
 		{
 			"path": "pages/club/search-list",
-			"navigationBarBackgroundColor":"#191C3F",
+			"navigationBarBackgroundColor": "#191C3F",
 			"navigationBarTitleText": "",
-			"navigationStyle":"default",
+			"navigationStyle": "default",
 			"style": {
 				"app-plus": {
 					"titleNView": {
-						"backgroundColor":"#191C3F",
+						"backgroundColor": "#191C3F",
 						"searchInput": {
-							"align":"left",
+							"align": "left",
 							"autoFocus": "true",
-							"color":"#FFFFFF",
+							"color": "#FFFFFF",
 							"backgroundColor": "#33365B",
 							"placeholderColor": "#FF9497B5",
 							"borderRadius": "16px", //输入框圆角
@@ -150,14 +150,14 @@
 			"path": "pages/club/dynamic/detail"
 		},
 		{
-			"path":"pages/club/consumption/paySuccess",
-			"style" : {
-				"navigationBarBackgroundColor":"#191C3F",
+			"path": "pages/club/consumption/paySuccess",
+			"style": {
+				"navigationBarBackgroundColor": "#191C3F",
 				"navigationBarTitleText": "支付成功",
-				"navigationStyle":"custom"
-				
+				"navigationStyle": "custom"
+
 			}
-			
+
 		},
 		{
 			"path": "pages/club/consumption/seat"
@@ -182,29 +182,29 @@
 		},
 		{
 			"path": "pages/club/consumption/payPage",
-			"style" : {
-				"navigationBarBackgroundColor":"#191C3F",
+			"style": {
+				"navigationBarBackgroundColor": "#191C3F",
 				"navigationBarTitleText": "我要支付",
-				"navigationStyle":"default"
+				"navigationStyle": "default"
 			}
 		},
 		{
-			"path":"pages/mine/wallet/index"
+			"path": "pages/mine/wallet/index"
 		},
 		{
-			"path":"pages/mine/balance/withdraw"
+			"path": "pages/mine/balance/withdraw"
 		},
 		{
-			"path":"pages/mine/balance/withdrawRecord"
+			"path": "pages/mine/balance/withdrawRecord"
 		},
 		{
-			"path":"pages/mine/balance/incomeRecord"
+			"path": "pages/mine/balance/incomeRecord"
 		},
 		{
-			"path":"pages/mine/balance/balance"
+			"path": "pages/mine/balance/balance"
 		},
 		{
-			"path":"pages/mine/setting/setPassword"
+			"path": "pages/mine/setting/setPassword"
 		},
 		{
 			"path": "pages/mine/setting/index"
@@ -222,7 +222,7 @@
 			"path": "pages/mine/setting/amend"
 		},
 		{
-			"path": "pages/mine/setting/forget_password" 
+			"path": "pages/mine/setting/forget_password"
 		},
 		{
 			"path": "pages/mine/setting/about_us"
@@ -277,7 +277,7 @@
 		},
 		{
 			"path": "pages/mine/myCollection/myCollection" //我的收藏
-			
+
 		},
 		{
 			"path": "pages/mine/setting/certification" //实名认证
@@ -307,102 +307,101 @@
 			"path": "pages/order/spellBill" //全部拼单
 		},
 		{
-			"path":"pages/order/index" //订单（我的订单， 拼享订单）
+			"path": "pages/order/index" //订单（我的订单， 拼享订单）
 		},
 		{
-			"path":"pages/order/bill/add" //开具发票
+			"path": "pages/order/bill/add" //开具发票
 		},
 		{
-			"path":"pages/order/yao-create-detail" //邀约订单创建者详情
+			"path": "pages/order/yao-create-detail" //邀约订单创建者详情
 		},
 		{
-			"path":"pages/order/yao-invited-detail" //邀约订单被邀请者详情
+			"path": "pages/order/yao-invited-detail" //邀约订单被邀请者详情
 		},
 		{
-			"path":"pages/order/ping-create-detail" //拼享订单创建者详情
+			"path": "pages/order/ping-create-detail" //拼享订单创建者详情
 		},
 		{
-			"path":"pages/order/ping-invited-detail" //拼享订单被邀请者详情
+			"path": "pages/order/ping-invited-detail" //拼享订单被邀请者详情
 		},
 		{
-			"path":"pages/order/evaluation" //我要评价
+			"path": "pages/order/evaluation" //我要评价
 		},
 		{
-			"path": "pages/info/activity/detail"  //消息模块 活动详情
+			"path": "pages/info/activity/detail" //消息模块 活动详情
 		},
 		{
-			"path": "pages/info/activity/index"  //消息模块 活动列表
+			"path": "pages/info/activity/index" //消息模块 活动列表
 		},
 		{
-			"path": "pages/info/comment"  //消息模块 评论
+			"path": "pages/info/comment" //消息模块 评论
 		},
 		{
-			"path": "pages/info/gift"  //消息模块 礼物
+			"path": "pages/info/gift" //消息模块 礼物
 		},
 		{
-			"path": "pages/info/fans"  //消息模块 粉丝
+			"path": "pages/info/fans" //消息模块 粉丝
 		},
 		{
-			"path": "pages/others/fans"  //他人的粉丝
+			"path": "pages/others/fans" //他人的粉丝
 		},
 		{
-			"path": "pages/info/systemNotification"  //消息模块 系统通知
+			"path": "pages/info/systemNotification" //消息模块 系统通知
 		},
 		{
-			"path": "pages/mine/mydiamond/mydiamond"  //我的钻石
+			"path": "pages/mine/mydiamond/mydiamond" //我的钻石
 		},
 		{
-			"path": "pages/mine/mydiamond/gift_income"  
+			"path": "pages/mine/mydiamond/gift_income"
 		},
 		{
-			"path": "pages/mine/mydiamond/deposit"  
+			"path": "pages/mine/mydiamond/deposit"
 		},
 		{
-			"path": "pages/mine/mydiamond/record"  
+			"path": "pages/mine/mydiamond/record"
 		},
 		{
-			"path": "pages/mine/myWallet/myWallet"  //我的钱包
-		},
-	    {
-            "path" : "pages/mine/myWallet/incomeRecord"
-        },
-        {
-            "path" : "pages/mine/myWallet/recharge"
-        },
-        {
-            "path" : "pages/mine/myWallet/recharge-record"
-        },
-        {
-            "path" : "pages/mine/myWallet/paySuccess"
-			
-        },
-        {
-            "path" : "pages/mine/myWallet/accountDetails"
-        },
-		{
-			"path":"pages/article/article" //文章列表
+			"path": "pages/mine/myWallet/myWallet" //我的钱包
 		},
 		{
-            "path" : "pages/snatch/snatch"//夺宝  
-        },
+			"path": "pages/mine/myWallet/incomeRecord"
+		},
 		{
-            "path" : "pages/order/add-wine"//加酒水
-        },
+			"path": "pages/mine/myWallet/recharge"
+		},
 		{
-            "path" : "pages/cut-avatar/cut-avatar"//裁剪头像
-        },
+			"path": "pages/mine/myWallet/recharge-record"
+		},
 		{
-            "path" : "pages/order/add-wine-goods-detail"//加酒水 套餐详情
-        }, {
+			"path": "pages/mine/myWallet/paySuccess"
+
+		},
+		{
+			"path": "pages/mine/myWallet/accountDetails"
+		},
+		{
+			"path": "pages/article/article" //文章列表
+		},
+		{
+			"path": "pages/snatch/snatch" //夺宝  
+		},
+		{
+			"path": "pages/order/add-wine" //加酒水
+		},
+		{
+			"path": "pages/cut-avatar/cut-avatar" //裁剪头像
+		},
+		{
+			"path": "pages/order/add-wine-goods-detail" //加酒水 套餐详情
+		}, {
 			"path": "pages/chat/chat",
 			"style": {
-				"navigationBarBackgroundColor":"#191C3F",
+				"navigationBarBackgroundColor": "#191C3F",
 				"navigationBarTitleText": "消息",
-				"navigationStyle":"default",
-				 "app-plus": {
+				"navigationStyle": "default",
+				"app-plus": {
 					"titleNView": {
-						"buttons": [ 
-							{
+						"buttons": [{
 								"text": "资料",
 								"fontSize": "14px"
 							},
@@ -414,21 +413,18 @@
 					}
 				}
 			}
-		}
-        ,{
-            "path" : "pages/receptionist-list/receptionist-list",
-            "style" : {
-				"navigationBarBackgroundColor":"#191C3F",
+		}, {
+			"path": "pages/receptionist-list/receptionist-list",
+			"style": {
+				"navigationBarBackgroundColor": "#191C3F",
 				"navigationBarTitleText": "接待员",
-				"navigationStyle":"default"
+				"navigationStyle": "default"
 			}
-        }
-        ,{
-            "path" : "pages/update-alipay-info/update-alipay-info"
-        }
-        ,{
-            "path" : "pages/gift-animation/gift-animation",
-            "style" : {
+		}, {
+			"path": "pages/update-alipay-info/update-alipay-info"
+		}, {
+			"path": "pages/gift-animation/gift-animation",
+			"style": {
 				"navigationStyle": "custom",
 				"backgroundColor": "transparent",
 				"app-plus": {
@@ -437,78 +433,66 @@
 					"popGesture": "none"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/snatch-back/snatch-back",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/feedback/feedback",
-            "style" : {
-				"navigationBarBackgroundColor":"#191C3F",
+		}, {
+			"path": "pages/snatch-back/snatch-back",
+			"style": {}
+		}, {
+			"path": "pages/feedback/feedback",
+			"style": {
+				"navigationBarBackgroundColor": "#191C3F",
 				"navigationBarTitleText": "意见反馈",
-				"navigationStyle":"default"
+				"navigationStyle": "default"
 			}
-        }
-        ,{
-            "path" : "pages/feedbackHelp/feedbackHelp",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/common-problem/common-problem",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/order/fetch-wine",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/business-settlement/business-settlement",
-            "style" : {
-				"navigationBarBackgroundColor":"#191C3F",
+		}, {
+			"path": "pages/feedbackHelp/feedbackHelp",
+			"style": {}
+		}, {
+			"path": "pages/common-problem/common-problem",
+			"style": {}
+		}, {
+			"path": "pages/order/fetch-wine",
+			"style": {}
+		}, {
+			"path": "pages/business-settlement/business-settlement",
+			"style": {
+				"navigationBarBackgroundColor": "#191C3F",
 				"navigationBarTitleText": "商家入驻",
-				"navigationStyle":"default"
+				"navigationStyle": "default"
 			}
-        }
-        ,{
-            "path" : "pages/ping-yao-list/ping-yao-list",
-            "style" : {
-            	"navigationBarBackgroundColor":"#191C3F",
-            	"navigationBarTitleText": "选择尬酒订单",
-            	"navigationStyle":"default"
-            }
-        }
-        ,{
-            "path" : "pages/discovery/report2"
-        }
-        ,{
-            "path" : "pages/mine/points-detail/points-detail",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/snatch-record/snatch-record",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/snatch-record-before/snatch-record-before",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/snatch-record-back/snatch-record-back",
-            "style" : {}
-        }
-    ],
+		}, {
+			"path": "pages/ping-yao-list/ping-yao-list",
+			"style": {
+				"navigationBarBackgroundColor": "#191C3F",
+				"navigationBarTitleText": "选择尬酒订单",
+				"navigationStyle": "default"
+			}
+		}, {
+			"path": "pages/discovery/report2"
+		}, {
+			"path": "pages/mine/points-detail/points-detail",
+			"style": {}
+		}, {
+			"path": "pages/snatch-record/snatch-record",
+			"style": {}
+		}, {
+			"path": "pages/snatch-record-before/snatch-record-before",
+			"style": {}
+		}, {
+			"path": "pages/snatch-record-back/snatch-record-back",
+			"style": {}
+		}
+	],
 	"globalStyle": {
 		"navigationStyle": "custom",
 		"navigationBarBackgroundColor": "#FFFFFF",
 		"navigationBarTextStyle": "white",
 		"pageOrientation": "portrait-primary",
-		"backgroundColor":"#191C3F",
-		"app-plus":{
-			"bounce":"none",
-			"background":"#191C3F",
-			"backgroundColor": "#191C3F",
-			"animationType":"slide-in-right"
+		"backgroundColor": "#16192B",
+		"app-plus": {
+			"bounce": "none",
+			"background": "#16192B",
+			"backgroundColor": "#16192B",
+			"animationType": "slide-in-right"
 		}
 	}
 	// ,

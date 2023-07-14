@@ -15,64 +15,56 @@
 				<text>我要拼享</text>
 			</view>
 		</view>
-		<pop
-			v-if="popShow"
-			title="拼享提醒"
-			content="您当前没有订单，请先在酒吧下单后邀约人一起拼享订单吧"
-			cancelText="加入拼享" confirmText="去下订单"
-			:isMask="true"
-			@cancel="popCancelTap"
-			@confirm="popConfirmTap"
-			@maskTap="popShow = false"
-		></pop>
+		<pop v-if="popShow" title="拼享提醒" content="您当前没有订单，请先在酒吧下单后邀约人一起拼享订单吧" cancelText="加入拼享" confirmText="去下订单"
+			:isMask="true" @cancel="popCancelTap" @confirm="popConfirmTap" @maskTap="popShow = false"></pop>
 	</view>
 </template>
 
 <script>
 	import pop from '@/components/commonPop/pop.vue'
-	export default{
-		components:{
+	export default {
+		components: {
 			pop
 		},
-		props:{
-			bottomHeight:{
-				type:Number,
-				default:50,
+		props: {
+			bottomHeight: {
+				type: Number,
+				default: 50,
 			}
 
 		},
-		data(){
+		data() {
 			return {
-				show:false,
+				show: false,
 				popShow: false,
 			}
 		},
-		methods:{
-			popCancelTap(){
+		methods: {
+			popCancelTap() {
 				this.close();
 				this.$emit('joinPingTap')
 			},
-			popConfirmTap(){
+			popConfirmTap() {
 				this.close();
 				uni.navigateTo({
 					url: '/pages/club/list?mode=list'
 				})
 			},
-      //跳到添加动态
-			tapGoAddNew(){
+			//跳到添加动态
+			tapGoAddNew() {
 				this.$u.route('/pages/discovery/addDynamic')
 				this.show = false
 			},
 
-      //跳到我要拼享
-			tapGoClub(){
+			//跳到我要拼享
+			tapGoClub() {
 				this.$u.api.hasPingOrderAPI().then(res => {
 					console.log(res);
 					let result = res.data.has;
-					if(result){
+					if (result) {
 						this.close();
 						this.$emit('goDynamic');
-					}else{
+					} else {
 						this.popShow = true;
 					}
 				}).catch(e => {
@@ -80,10 +72,10 @@
 					this.popShow = true;
 				})
 			},
-			open(){
+			open() {
 				this.show = true
 			},
-			close(){
+			close() {
 				this.show = false
 				this.popShow = false
 			},
@@ -94,9 +86,9 @@
 </script>
 
 <style lang="scss" scoped>
-	.add_box{
+	.add_box {
 		position: fixed;
-		top:0;
+		top: 0;
 		right: 0;
 		left: 0;
 
@@ -106,27 +98,32 @@
 		width: 100%;
 		display: flex;
 		flex-direction: column-reverse;
-		.btns{
+
+		.btns {
 			width: 100%;
 			display: flex;
 			align-items: center;
 			justify-content: space-around;
-			.common_btn{
+
+			.common_btn {
 				display: flex;
 				align-items: center;
 				flex-direction: column;
-				&>image{
+
+				&>image {
 					width: 120rpx;
 					height: 120rpx;
 				}
-				&>text{
+
+				&>text {
 					font-size: 30rpx;
-					color: #FFFFFF;
+					color: #979797;
 					margin-top: 30rpx;
 				}
 			}
 		}
-		.cancel{
+
+		.cancel {
 			height: 200rpx;
 			display: flex;
 			align-items: center;

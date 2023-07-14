@@ -2,11 +2,11 @@
 	<view class="find-page">
 		<block v-if="!pageLoading">
 			<view class="find_header_box">
-				<classify fontSize="28" bgColor="#191C3F" ref="tabs" :list="list" :current="swiperCurrent"
-					@dbTap="dbTap" @change="change" :is-scroll="false" swiperWidth="750" inactiveColor="#B7B9D6"
+				<classify fontSize="28" bgColor="#16192B" ref="tabs" :list="list" :current="swiperCurrent"
+					@dbTap="dbTap" @change="change" :is-scroll="false" swiperWidth="750" inactiveColor="#979797"
 					activeColor="#ffffff" :activeItemStyle="{
-						'font-size': '34rpx'
-					}"></classify>
+						'color': '#fff',
+						 }"></classify>
 			</view>
 			<view class="find_middle_box" v-if="!pageLoading">
 				<swiper class="swiper-box" :duration="250" :current="swiperCurrent" @change="animationfinish">
@@ -70,7 +70,7 @@
 	import appleAudit from '@/mixins/apple-audit.js'
 	import loginConfirm from '@/mixins/loginConfirm.js'
 	import $chat from '@/utils/chat/index.js'
-	import giftAnimation from '@/components/giftAnimation/giftAnimation.vue'//礼物动画相关
+	import giftAnimation from '@/components/giftAnimation/giftAnimation.vue' //礼物动画相关
 	import videoBox from '@/components/common-video/video.vue' //视频播放组件
 	var app = getApp();
 	export default {
@@ -138,17 +138,17 @@
 			})
 		},
 		methods: {
-			
+
 			//向上一级发送举报信息
 			reportTap(info) {
 				this.$emit('reportTap', info);
 			},
-			
+
 			//动态中涉及到一些视频需要播放
 			videoPlayHandle(e) {
 				this.$refs.videoBox.videoPlayTap(e.src);
 			},
-			
+
 			//打开动态评论
 			openDynamicComment(mode, e) {
 				let info = Object.assign(e, {
@@ -156,7 +156,7 @@
 				});
 				this.$emit('openDynamicComment', info);
 			},
-			
+
 			//打开显示礼物
 			oepnGift(mode, e) {
 				let info = Object.assign(e, {
@@ -164,8 +164,8 @@
 				});
 				this.$emit('oepnGift', info);
 			},
-			
-			
+
+
 			show() {
 				this.authorized = getApp().globalData.authorized;
 				console.log("准备跳转到附近动态")
@@ -177,7 +177,7 @@
 					}
 				}
 			},
-			
+
 			//看起来像是礼物发送完成的处理函数
 			handleSendGiftSuccess(e) {
 				this.$refs['follow-dynamic-list'].setGifttNum(e)
@@ -186,7 +186,7 @@
 					this.$refs.giftAnimation.show(e.gifUrl)
 				}
 			},
-			
+
 			//看起来像是评论发送完成的处理函数
 			handleSendComment(e) {
 				if (e.mode == 'follow') {
@@ -198,11 +198,11 @@
 					this.$refs['nearby-dynamic-list'].setCommentNum(e)
 				}
 			},
-			
+
 			goClub() {
 				this.$emit('goClub')
 			},
-			
+
 			pingOrderListConfirm(arr) {
 				console.log(this.pingOrderList[arr[0]]) //订单信息
 				console.log(this.pingInfo) //动态信息
@@ -211,7 +211,7 @@
 				friendUserInfo.hasSave = false
 				this.sendPing(this.pingOrderList[arr[0]], friendUserInfo)
 			},
-			
+
 			yaoOrderListConfirm(arr) {
 				console.log(this.yaoOrderList[arr[0]]) //订单信息
 				console.log(this.yaoInfo) //动态信息
@@ -220,7 +220,7 @@
 				friendUserInfo.hasSave = false
 				this.sendYaoyue(this.yaoOrderList[arr[0]], friendUserInfo)
 			},
-			
+
 			async sendPing(orderInfo, friendUserInfo) {
 				let userInfo = this.$u.deepClone(this.userInfo)
 				console.log(orderInfo)
@@ -238,7 +238,7 @@
 					userInfo: JSON.stringify(friendUserInfo)
 				})
 			},
-			
+
 			async sendYaoyue(orderInfo, friendUserInfo) {
 				let userInfo = this.$u.deepClone(this.userInfo)
 				console.log(orderInfo)
@@ -267,11 +267,11 @@
 					})
 				}
 			},
-			
+
 			goChat(e) {
 				this.$emit('goChat', e)
 			},
-			
+
 			async handleOpenPingOrderList(info) {
 				console.log(info)
 				let {
@@ -293,7 +293,7 @@
 					}
 				}
 			},
-			
+
 			async handleOpenYaoOrderList(info) {
 				console.log(info)
 				let {
@@ -315,11 +315,11 @@
 					}
 				}
 			},
-			
+
 			handleShowPing(e) {
 				this.$refs.pingPop.open(e)
 			},
-			
+
 			handleShowYaoyue(e) {
 				this.$refs.yaoyuePop.open(e)
 			},
@@ -416,7 +416,6 @@
 		}
 
 		.find_header_box {
-
 			background-color: transparent;
 			padding-top: var(--status-bar-height); //状态栏高度	
 		}
@@ -434,8 +433,6 @@
 
 			.swiper-item {
 				height: 100%;
-
-
 			}
 		}
 	}

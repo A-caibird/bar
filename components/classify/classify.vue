@@ -3,19 +3,24 @@
 			zIndex: zIndex,
 			background: bgColor
 		}">
-		<scroll-view scroll-x class="u-scroll-view" :scroll-left="scrollLeft" scroll-with-animation :style="{ zIndex: zIndex + 1 }">
+		<scroll-view scroll-x class="u-scroll-view" :scroll-left="scrollLeft" scroll-with-animation
+			:style="{ zIndex: zIndex + 1 }">
 			<view class="u-tabs-scroll-box" :class="{'u-tabs-scorll-flex': !isScroll}">
-				<view class="u-tabs-item" :style="[tabItemStyle(index)]"
-				 v-for="(item, index) in getTabs" :key="index" :class="[preId + index]" @tap="emit(index)">
-					{{ item[name] || item['name']}}
-					<view class="point" v-if="pointShow"></view>
-					<view v-if="showBar&&index==current" class="u-scroll-bar"  :style="[tabBarStyle]"></view>
-					<template v-if="item.num">
-						<view class="badge">
-							<u-badge :count="item.num"></u-badge>
-						</view>
-					</template>
+				<view class="u-tabs-item" :style="[tabItemStyle(index)]" v-for="(item, index) in getTabs" :key="index"
+					:class="[preId + index]" @tap="emit(index)">
+					<view :class="{'active-bg':  current == index}"
+						style="display: flex; position: relative;display: inline;text-align: center;">
+						{{ item[name] || item['name']}}
+						<view class="point" v-if="pointShow"></view>
+						<!-- <view v-if="showBar&&index==current" class="u-scroll-bar" :style="[tabBarStyle]"></view> -->
+						<template v-if="item.num">
+							<view class="badge">
+								<u-badge :count="item.num"></u-badge>
+							</view>
+						</template>
+					</view>
 				</view>
+
 			</view>
 		</scroll-view>
 	</view>
@@ -59,7 +64,7 @@
 		name: "u-tabs-swiper",
 		props: {
 			// 自定义
-			pointShow:{
+			pointShow: {
 				type: Boolean,
 				default: false
 			},
@@ -103,7 +108,7 @@
 			// 选中项的主题颜色
 			activeColor: {
 				type: String,
-				default: '#2979ff'
+				default: '#ffffff'
 			},
 			// 未选中项的颜色
 			inactiveColor: {
@@ -148,12 +153,12 @@
 			// 活动tab字体是否加粗
 			bold: {
 				type: Boolean,
-				default: true
+				default: false
 			},
 			// 当前活动tab item的样式
 			activeItemStyle: {
 				type: Object,
-				default() {
+				default () {
 					return {}
 				}
 			},
@@ -165,7 +170,7 @@
 			// 底部滑块的自定义样式
 			barStyle: {
 				type: Object,
-				default() {
+				default () {
 					return {}
 				}
 			}
@@ -216,12 +221,13 @@
 						height: this.height + 'rpx',
 						lineHeight: this.height + 'rpx',
 						padding: `0 ${this.gutter / 2}rpx`,
-						color: this.tabsInfo.length > 0 ? (this.tabsInfo[index] ? this.tabsInfo[index].color : this.activeColor) : this.inactiveColor,
+						color: this.tabsInfo.length > 0 ? (this.tabsInfo[index] ? this.tabsInfo[index].color : this
+							.activeColor) : this.inactiveColor,
 						fontSize: this.fontSize + 'rpx',
 						zIndex: this.zIndex + 2,
 						fontWeight: (index == this.getCurrent && this.bold) ? 'bold' : 'normal'
 					};
-					if(index == this.getCurrent) {
+					if (index == this.getCurrent) {
 						// 给选中的tab item添加外部自定义的样式
 						style = Object.assign(style, this.activeItemStyle);
 					}
@@ -299,32 +305,32 @@
 				this.sW = uni.upx2px(Number(this.swiperWidth));
 			},
 			emit(index) {
-				if(this.dbClick()){
+				if (this.dbClick()) {
 					this.$emit('dbTap', index);
-				}else{
+				} else {
 					this.$emit('change', index);
 				}
 			},
-			dbClick(){
-				if(tapIndex <= 0){
+			dbClick() {
+				if (tapIndex <= 0) {
 					tapIndex = tapIndex + 1;
 					tapStartTime = new Date().getTime();
 					setTimeout(() => {
 						tapIndex = tapStartTime = tapStartTime = 0;
 						return false;
 					}, 300)
-				}else{
+				} else {
 					tapEndTime = new Date().getTime();
-					if(tapEndTime - tapStartTime <= 300){
+					if (tapEndTime - tapStartTime <= 300) {
 						tapIndex = tapStartTime = tapStartTime = 0;
 						return true;
-					}else{
+					} else {
 						tapIndex = tapStartTime = tapStartTime = 0;
 						console.log(2);
 						return false;
 					}
 				}
-				
+
 			},
 			change() {
 				this.setScrollViewToCenter();
@@ -404,7 +410,7 @@
 				this.animationFinishCurrent = current;
 				this.countLine3Dx();
 			}
-		
+
 		}
 	};
 </script>
@@ -432,6 +438,7 @@
 		-webkit-appearance: none;
 		background: transparent;
 	}
+
 	/* #endif */
 
 	/* #ifdef H5 */
@@ -454,6 +461,21 @@
 
 	.u-tabs-scroll-box {
 		position: relative;
+
+		.active-bg {
+			&::after {
+				content: '';
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				z-index: -999;
+				background: #832DFF;
+				filter: blur(10rpx);
+				border-radius: 100%;
+			}
+		}
 	}
 
 	.u-tabs-scorll-flex {
@@ -470,13 +492,15 @@
 		display: inline-block;
 		text-align: center;
 		transition-property: background-color, color, font-weight;
+
 		.badge {
 			position: absolute;
 			right: -25rpx;
 			top: 5rpx;
 		}
 	}
-	.point{
+
+	.point {
 		height: 10rpx;
 		width: 10rpx;
 		background: #FF5858;

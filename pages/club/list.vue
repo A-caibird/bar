@@ -1,6 +1,5 @@
 <template>
 	<view class="container">
-	
 		<wyb-drop-down ref="dropDown" :defaultProps="dropDownDefaultProps" :options="dropDownOptions"
 			@select="filterChane" :dropIcon="'line'" :bg-color="{header:'#16192B',content: '#16192B'}"
 			:defaultColor="'#FFFFFF'" :activeColor="'#FFFFFF'"></wyb-drop-down>
@@ -12,7 +11,7 @@
 					<block v-for="(info, index) in pageList" :key="index">
 						<club :info="info" :customEvent="true" @click="clubTap"></club>
 						<block v-if="index != (pageList.length - 1)">
-							<u-gap :height="20" bgColor="#20234B"></u-gap>
+							<u-gap :height="20" bgColor="#16192Bs"></u-gap>
 						</block>
 					</block>
 				</block>
@@ -83,9 +82,12 @@
 							id: 'avgScore'
 						}
 					]
-				},{
+				}, {
 					header: '酒吧类型',
-					contents:[{name: '全类型', id: ''}]
+					contents: [{
+						name: '全类型',
+						id: ''
+					}]
 				}],
 				mode: 'list',
 				chatFriendInfo: ""
@@ -100,15 +102,15 @@
 			this.load()
 
 		},
-		onNavigationBarSearchInputConfirmed(e){
-			this.$u.debounce(this.searchKeyChange(e.text), 200,true)
+		onNavigationBarSearchInputConfirmed(e) {
+			this.$u.debounce(this.searchKeyChange(e.text), 200, true)
 			webView.setTitleNViewSearchInputFocus(false)
 		},
 		methods: {
-			clubTap(id){
+			clubTap(id) {
 				let url = "/pages/club/detail?id=" + id;
 				let chatFriendInfo = this.chatFriendInfo;
-				if(chatFriendInfo){
+				if (chatFriendInfo) {
 					url = url + `&chatFriendInfo=${chatFriendInfo}`
 				}
 				uni.navigateTo({
@@ -137,15 +139,18 @@
 				console.log("调用load")
 				this.getCitys()
 				this.getClubType();
-				if(this.mode=='list') {
-					this.$nextTick(function(){
+				if (this.mode == 'list') {
+					this.$nextTick(function() {
 						console.log("downCallback");
 						this.downCallback()
 					})
 				}
 			},
-			async getClubType(){
-				let {code ,data} = await this.$u.api.getClubTypeAPI();
+			async getClubType() {
+				let {
+					code,
+					data
+				} = await this.$u.api.getClubTypeAPI();
 				let typeList = [{
 					name: '全类型',
 					id: ''
@@ -179,7 +184,7 @@
 					}
 				} else if (e.headerIndex == 1) {
 					params.sortCondition = e.content.id
-				}else if(e.headerIndex == 2){
+				} else if (e.headerIndex == 2) {
 					params.clubTypeId = e.content.id
 				}
 				this.params = params
@@ -210,7 +215,7 @@
 					}
 				} else {
 					console.log("获取城市数据2")
-					if(this.canLocation) {
+					if (this.canLocation) {
 						this.getLocation()
 					}
 				}
@@ -231,6 +236,7 @@
 			flex-direction: column;
 
 			.middle-box {
+				padding: 0 32rpx;
 				flex: 1;
 				min-width: 0;
 				min-height: 0;

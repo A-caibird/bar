@@ -2,7 +2,7 @@
 	<view class="home_box">
 		<view class="header_box">
 			<u-navbar :isBack="false" :border-bottom="false" :is-fixed="false" :background="{
-					background: '#191C3F'
+					background: '#16192B'
 				}">
 				<view style="width: calc(100% - 60rpx);margin-left: 30rpx; display: flex; align-items: center;">
 					<view class="city_box" style="width: 160rpx; " @tap.stop="$u.throttle(tapGoSelectCity)">
@@ -19,37 +19,38 @@
 			</u-navbar>
 		</view>
 		<view class="middle-box">
-			<scroll-view :scroll-y="true" :lower-threshold="100" 
-				:refresher-threshold="10"
-				:refresher-enabled="true" refresher-default-style="none" 
-				:scroll-into-view="scrollBottom" style="height: 100%;"
-				@scrolltolower="reachBottomLoad" 
-				:refresher-triggered="refreshBool"
-				refresher-background="#191C3F"
-				@refresherpulling="refresherpulling" @refresherrefresh="refresherrefresh" @refresherrestore="refresherrestore">
-				<view class="loading_box" :class="{'show': refreshBool}"> <image class="load_text" style="height: 50rpx;width: 50rpx;" src="../../static/imgs/loading.gif"></image> </view>
-				<commonBanner ref="commonBanner" :bannerList="bannerList" imgKey="file" height="400" :showVideo="true" videoKey="videoUrl" mode="normal" :customEvent="true" @click="bannerTap"></commonBanner>
+			<scroll-view :scroll-y="true" :lower-threshold="100" :refresher-threshold="10" :refresher-enabled="true"
+				refresher-default-style="none" :scroll-into-view="scrollBottom" style="height: 100%;"
+				@scrolltolower="reachBottomLoad" :refresher-triggered="refreshBool" refresher-background="#16192B"
+				@refresherpulling="refresherpulling" @refresherrefresh="refresherrefresh"
+				@refresherrestore="refresherrestore">
+				<view class="loading_box" :class="{'show': refreshBool}">
+					<image class="load_text" style="height: 50rpx;width: 50rpx;" src="../../static/imgs/loading.gif">
+					</image>
+				</view>
+				<commonBanner ref="commonBanner" :bannerList="bannerList" imgKey="file" height="280" :showVideo="true"
+					videoKey="videoUrl" mode="normal" :customEvent="true" @click="bannerTap"></commonBanner>
 				<view class="feature_box" v-if="!isAppleAudit">
 					<u-grid col="4" :border="false" hover-class="none">
-						<u-grid-item bgColor="#191C3F">
+						<u-grid-item bgColor="#16192B">
 							<view class="feature_item" @tap="$u.throttle(tapGoClubList)">
 								<image src="/static/imgs/index/club.png"></image>
 								<text>CLUB</text>
 							</view>
 						</u-grid-item>
-						<u-grid-item bgColor="#191C3F" @tap="$u.throttle(goPing, 1200)">
+						<u-grid-item bgColor="#16192B" @tap="$u.throttle(goPing, 1200)">
 							<view class="feature_item">
 								<image src="/static/imgs/index/share.png"></image>
 								<text>拼享快乐</text>
 							</view>
 						</u-grid-item>
-						<u-grid-item bgColor="#191C3F">
+						<u-grid-item bgColor="#16192B">
 							<view class="feature_item" @tap="$u.throttle(goGift, 1200)">
 								<image src="/static/imgs/index/gift.png"></image>
 								<text>礼物排行</text>
 							</view>
 						</u-grid-item>
-						<u-grid-item bgColor="#191C3F">
+						<u-grid-item bgColor="#16192B">
 							<view class="feature_item" @tap="$u.throttle(goWheel, 1200)">
 								<image src="/static/imgs/index/treasure.png"></image>
 								<text>拆盲盒</text>
@@ -60,11 +61,10 @@
 				<view class="club_box" id="club-list">
 					<view class="club_label">
 						<view class="label_left">
-							<view class="line"></view>
-							<text>酒吧</text>
+							<text>酒吧推荐</text>
 						</view>
 						<view class="label_right" @tap="$u.throttle(tapGoClubList)">
-							<text>查看全部</text>
+							<text>更多</text>
 							<image src="/static/imgs/common/right.png"></image>
 						</view>
 					</view>
@@ -73,7 +73,7 @@
 							<block v-for="(info, index) in pageList" :key="index">
 								<club :info="info"></club>
 								<block v-if="index != pageList.length - 1">
-									<u-gap :height="20" bgColor="#20234B"></u-gap>
+									<u-gap :height="20" bgColor="#16192B"></u-gap>
 								</block>
 							</block>
 						</block>
@@ -92,7 +92,7 @@
 	import club from '@/components/club-item/club-item.vue';
 	import pageable from '@/mixins/pageable.js';
 	import location from '@/mixins/location.js';
-	import appleAudit from '@/mixins/apple-audit.js'//混合一个是否审核的变量进来，组件mounted就触发
+	import appleAudit from '@/mixins/apple-audit.js' //混合一个是否审核的变量进来，组件mounted就触发
 	import loginConfirm from '@/mixins/loginConfirm.js'
 	import commonBanner from '@/components/common-banner/common-banner.vue'
 	var app = getApp();
@@ -147,15 +147,15 @@
 		},
 		methods: {
 			// 自定义下拉刷新控件被下拉
-			refresherpulling(e){
-				if(e.detail.deltaY > 40){
+			refresherpulling(e) {
+				if (e.detail.deltaY > 40) {
 					this.refreshBool = true;
 				}
 			},
 			// 自定义下拉刷新被触发
-			refresherrefresh(){
-				if(this.refreshBool){
-					if(timeoutEvent) {
+			refresherrefresh() {
+				if (this.refreshBool) {
+					if (timeoutEvent) {
 						console.log("timeoutEvent", timeoutEvent);
 						return
 					};
@@ -165,23 +165,23 @@
 						});
 					}, 2000)
 				}
-				
+
 			},
 			// 自定义下拉刷新被复位
-			refresherrestore(){
+			refresherrestore() {
 				this.refreshBool = false;
-				if(timeoutEvent){
+				if (timeoutEvent) {
 					clearTimeout(timeoutEvent);
 					timeoutEvent = "";
 				}
 			},
 			// 页面隐藏事件，发现首页index有主动调用
-			hideEvent(){
-				if(this.$refs.commonBanner && this.$refs.commonBanner.playVideoUrl){
+			hideEvent() {
+				if (this.$refs.commonBanner && this.$refs.commonBanner.playVideoUrl) {
 					this.$refs.commonBanner.colseVideo();
 				}
 			},
-			
+
 			//点击轮播图
 			bannerTap(e) {
 				let index = e.detail.index;
@@ -192,7 +192,7 @@
 			tapGoSelectCity() {
 				this.$u.route('/pages/select/city')
 			},
-			
+
 			handleUpdateLocation() {
 				this.setLocation(() => {
 					let {
@@ -208,7 +208,7 @@
 					this.pullRefresh();
 				})
 			},
-			
+
 			handleUpdateLocationService() {
 				// this.updateLocationService(() => {
 				// 	if (this.canLocation && app.globalData.location.cityName == '未定位') {
@@ -219,7 +219,7 @@
 
 			//功能按钮区触发，去酒吧列表
 			tapGoClubList(mode = 'list') {
-				
+
 				if (mode == 'list') {
 					this.$u.route('/pages/club/list' + `?mode=${mode}`)
 				}
@@ -228,27 +228,27 @@
 				}
 
 			},
-			
-			
+
+
 			load() {
 				console.log("载入load方法")
 				this.getHomeBannerList()
 				this.getClubList()
 			},
-			
-			
+
+
 			scrollToClubList() {
 				this.scrollBottom = ''
 				this.$nextTick(() => {
 					this.scrollBottom = 'club-list'
 				})
 			},
-			
+
 			handlePullRefresh() {
 				this.clubListLoad = true
 			},
-			
-			
+
+
 			// getSelfLocation: function() {
 			// 	uni.getLocation({
 			// 		type: 'wgs84',
@@ -261,26 +261,26 @@
 			// 	});
 			// },
 			//最初的触发方法
-			 getHomeBannerList() {
-				 var that = this;
-			
-				this.$u.api.getHomeBannerListApi().then(function(res){
-					if(res.code == 0){
+			getHomeBannerList() {
+				var that = this;
+
+				this.$u.api.getHomeBannerListApi().then(function(res) {
+					if (res.code == 0) {
 						var list = res.data.list;
 						that.bannerList = list;
 						that.bannerListLoad = true
 					}
-				}).catch(function(){
-					
+				}).catch(function() {
+
 				});
-				
-				
+
+
 			},
 			//最初触发的方法,原先的方法，目前重写了
 			// async getClubList() {
 			// 	//调用mixins/location的方法，拿到经纬度和城市名，存起来
 			// 	await this.getLocation()
-				
+
 			// 	if (this.canLocation) {//是location.js中的一个变量
 			// 		let hasLocation = await this.getLocation()
 			// 		if (!hasLocation && this.hasLocation) {
@@ -292,38 +292,42 @@
 			// 		}
 			// 	}
 			// },
-			
+
 			//需要修改，目前这边只传了标准的经纬度，城市默认是宁波，但是后台这边是根据城市名来的
-			getClubList(){
+			getClubList() {
 				console.log("111")
 				var that = this;
 				uni.getLocation({
-					type:'gcj02',
-					geocode:true,
-					success(res){
+					type: 'gcj02',
+					geocode: true,
+					success(res) {
 						console.log("定位成功===>")
 						console.log(res)
-						let {latitude,longitude,address} = res
+						let {
+							latitude,
+							longitude,
+							address
+						} = res
 						let location = {
-							lng:longitude,
-							lat:latitude,
-							cityName:address.city
+							lng: longitude,
+							lat: latitude,
+							cityName: address.city
 						}
-						
+
 						getApp().globalData.location = location;
-						
+
 						// console.log(res)
 						that.pullRefresh()
-						
+
 					},
-					fail(err){
+					fail(err) {
 						console.log("定位失败===>")
 						console.log(err)
-						
+
 					}
 				})
 			},
-			
+
 			//功能按钮区触发，去礼物列表
 			goGift: function() {
 				if (!this.loginConfirmHandle(false)) return;
@@ -372,7 +376,8 @@
 			min-width: 0;
 			overflow: hidden;
 			position: relative;
-			.loading_box{
+
+			.loading_box {
 				// position: absolute;
 				// top: 40rpx;
 				// left: 0rpx;
@@ -383,14 +388,16 @@
 				text-align: center;
 				z-index: -1;
 				opacity: 0;
-				transition: all 0.3s; 
-				&.show{
+				transition: all 0.3s;
+
+				&.show {
 					height: 50rpx;
 					opacity: 1;
 					z-index: 2;
 					margin-bottom: 30rpx;
 				}
 			}
+
 			.feature_box {
 				width: 100%;
 
@@ -418,12 +425,12 @@
 				.club_label {
 					height: 100rpx;
 					width: 100%;
-					padding: 0 30rpx;
+					padding: 0 32rpx;
 					box-sizing: border-box;
 					display: flex;
 					align-items: center;
 					justify-content: space-between;
-					border-bottom: 1px solid #31345b;
+					background-color: #16192B;
 
 					.label_left {
 						display: flex;
@@ -444,14 +451,19 @@
 						display: flex;
 						align-items: center;
 						font-size: 26rpx;
-						color: #bdc0da;
+						color: rgba(255, 255, 255, 0.5);
 
 						&>image {
-							height: 22rpx;
-							width: 14rpx;
-							margin-left: 16rpx;
+							height: 20rpx;
+							width: 20rpx;
+							margin-left: 6rpx;
 						}
 					}
+				}
+
+				.club_list {
+					padding: 0 32rpx;
+					background-color: #16192B;
 				}
 			}
 

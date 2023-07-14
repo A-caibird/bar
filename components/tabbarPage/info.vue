@@ -3,7 +3,7 @@
 		<view class="header-box">
 			<u-navbar :is-fixed="true" :isBack="false" :background="{
 				'background': '#191C3F'
-			}" :titleColor="'#FFFFFF'" title="消息" :borderBottom="false">
+			}" :titleColor="'#979797'" title="消息" :borderBottom="false">
 			</u-navbar>
 		</view>
 		<view class="middle_box">
@@ -26,12 +26,14 @@
 		<view class="info_list">
 			<scroll-view scroll-y="true" style="height: 100%;">
 				<empty content="暂无消息" v-if="chatUserList.length==0"></empty>
-				<uni-swipe-action  v-else>
-					<uni-swipe-action-item v-for="(item,index) in chatUserList" :right-options="rightOptions" :key="item.userId" @change="swipeChange($event, index)" @click="swipeClick($event, index)">
+				<uni-swipe-action v-else>
+					<uni-swipe-action-item v-for="(item,index) in chatUserList" :right-options="rightOptions"
+						:key="item.userId" @change="swipeChange($event, index)" @click="swipeClick($event, index)">
 						<view class="common_info" @tap="tapGoChat(item.userId,item.data.nickname)">
 							<view class="person_img">
 								<image :src="item.data.avatar"></image>
-								<u-badge :absolute="true" :offset="[-10, -10]"  :count="item.unread" bgColor="#733CFF" color="#ffffff" :showZero="false"></u-badge>
+								<u-badge :absolute="true" :offset="[-10, -10]" :count="item.unread" bgColor="#733CFF"
+									color="#ffffff" :showZero="false"></u-badge>
 							</view>
 							<view class="person_info">
 								<view class="first_line">
@@ -56,20 +58,20 @@
 
 <script>
 	const app = getApp()
-  // import $chat from '@/utils/chat/index.js'
+	// import $chat from '@/utils/chat/index.js'
 	import empty from '@/components/empty/empty.vue'
 	import appleAudit from '@/mixins/apple-audit.js'
-	export default{
-		mixins:[appleAudit],
-		components:{
+	export default {
+		mixins: [appleAudit],
+		components: {
 			empty
 		},
 		data() {
 			return {
-				chatUserList:[],//实际的消息的数据列表
-				noticeNum: 0,//上面通知的数量
-				activityNum: 0,//上面活动的数量
-				rightOptions: [//右侧的按钮item
+				chatUserList: [], //实际的消息的数据列表
+				noticeNum: 0, //上面通知的数量
+				activityNum: 0, //上面活动的数量
+				rightOptions: [ //右侧的按钮item
 					{
 						text: '标记为已读',
 						style: {
@@ -95,58 +97,56 @@
 			// })
 		},
 
-		computed:{
-			classifyList(){
-				return this.isAppleAudit?[
-					{
+		computed: {
+			classifyList() {
+				return this.isAppleAudit ? [{
 						icon: '/static/imgs/information/notice.png',
 						value: '',
 						name: '通知',
-						url:'/pages/info/systemNotification'
+						url: '/pages/info/systemNotification'
 					},
 					{
 						icon: '/static/imgs/information/fans.png',
 						value: '',
 						name: '粉丝',
-						url:'/pages/info/fans'
+						url: '/pages/info/fans'
 					},
 					{
 						icon: '/static/imgs/information/evaluation.png',
 						value: '',
 						name: '评论',
-						url:'/pages/info/comment'
+						url: '/pages/info/comment'
 					},
 
-				]:[
-					{
+				] : [{
 						icon: '/static/imgs/information/notice.png',
 						value: '',
 						name: '通知',
-						url:'/pages/info/systemNotification'
+						url: '/pages/info/systemNotification'
 					},
 					{
 						icon: '/static/imgs/information/activity.png',
 						value: '',
 						name: '活动',
-						url:'/pages/info/activity/index'
+						url: '/pages/info/activity/index'
 					},
 					{
 						icon: '/static/imgs/information/fans.png',
 						value: '',
 						name: '粉丝',
-						url:'/pages/info/fans'
+						url: '/pages/info/fans'
 					},
 					{
 						icon: '/static/imgs/information/gift.png',
 						value: '',
 						name: '礼物',
-						url:'/pages/info/gift'
+						url: '/pages/info/gift'
 					},
 					{
 						icon: '/static/imgs/information/evaluation.png',
 						value: '',
 						name: '评论',
-						url:'/pages/info/comment'
+						url: '/pages/info/comment'
 					},
 
 				]
@@ -154,39 +154,39 @@
 		},
 
 
-		methods:{
-			show(){
-				this.chatUserList=[];
+		methods: {
+			show() {
+				this.chatUserList = [];
 				this.$u.api.chatSessionList().then(res => {
 					console.log("获取聊天数量")
 					let list = res.data.list;
-			
-				
-					for(var i = 0; i < list.length; i++){
+
+
+					for (var i = 0; i < list.length; i++) {
 						console.log(list[i])
 						var item = list[i];
 						this.chatUserList.unshift(item);
 					}
-				
+
 				}).catch(e => {
 					console.log(e);
 				})
-				
+
 				console.log('info show');
-				if(getApp().globalData.authorized){
+				if (getApp().globalData.authorized) {
 					this.getNoticeCount();
 					//uni.$emit('information_listener');//感觉这个也不需要
-				}else{
+				} else {
 					this.chatUserList = [];
-					if(this.noticeNum){
+					if (this.noticeNum) {
 						this.noticeNum = 0;
 					}
-					if(this.activityNum){
+					if (this.activityNum) {
 						this.activityNum = 0;
 					}
 				}
 			},
-			getNoticeCount(){
+			getNoticeCount() {
 				this.$u.api.getNoticeCountAPI().then(res => {
 					this.noticeNum = res.data.num || 0;
 					this.activityNum = res.data.activityUnReadNum || 0
@@ -198,8 +198,10 @@
 					console.log(e);
 				})
 			},
-			goPage: function(url){
-				this.$nav.navigateTo({url});
+			goPage: function(url) {
+				this.$nav.navigateTo({
+					url
+				});
 			},
 			swipeChange(e, index) {
 				console.log('返回：', e);
@@ -220,28 +222,28 @@
 				if (content.text === '标记为已读') {
 					console.log('标记为已读')
 					// this.$u.api.readUserAll(params).then((res) => {
-					
+
 					// });
 					// this.chatUserList[index].notReadNum = 0
 					// $chat.setChatUserListFromStorage(this.chatToken,this.chatUserList)
 				}
 			},
-			tapGoChat(friendUserId,friendNickname){
+			tapGoChat(friendUserId, friendNickname) {
 				let info = {
-						friendId:friendUserId,
-						name:friendNickname,
-					}
-				this.$u.route('/pages/chat/chat',{
-					userInfo : JSON.stringify(info)
+					friendId: friendUserId,
+					name: friendNickname,
+				}
+				this.$u.route('/pages/chat/chat', {
+					userInfo: JSON.stringify(info)
 				})
 				// this.$u.api.readUserAll(params).then((res) => {
-				
+
 				// });
 			},
-			chatUserListRefresh(chatUserList){
+			chatUserListRefresh(chatUserList) {
 				this.chatUserList = chatUserList
 			},
-			readChat(res){
+			readChat(res) {
 				// console.log('readChat');
 				// let {chatToken,friendChatToken} = res
 				// let index = this.chatUserList.findIndex(e=>{
@@ -260,20 +262,21 @@
 </script>
 
 <style lang="scss" scoped>
-
 	.info-box {
 		height: 100%;
-		display: flex!important;
-		flex-direction: column!important;
-		.middle_box{
-			.line{
+		display: flex !important;
+		flex-direction: column !important;
+
+		.middle_box {
+			.line {
 				width: calc(100% - 60rpx);
 				margin-left: 30rpx;
 				height: 1px;
 				background-color: #292C57;
 				margin-top: 20rpx;
 			}
-			.info_classify{
+
+			.info_classify {
 				width: 100%;
 				display: flex;
 				align-items: center;
@@ -281,32 +284,36 @@
 				padding: 20rpx 30rpx;
 				box-sizing: border-box;
 
-				.common_classify_item{
+				.common_classify_item {
 					flex: 1;
 					display: flex;
 					align-items: center;
 					flex-direction: column;
 					position: relative;
-					.badge{
+
+					.badge {
 						position: absolute;
 						top: -16rpx;
 						right: 10rpx;
 						z-index: 10;
 					}
-					&>image{
+
+					&>image {
 						height: 90rpx;
 						width: 90rpx;
 					}
-					&>text{
+
+					&>text {
 						font-size: 24rpx;
-						color: #FFFFFF;
+						color: #979797;
 						margin-top: 16rpx;
 					}
 				}
 			}
 
 		}
-		.info_list{
+
+		.info_list {
 			flex: 1;
 			min-width: 0;
 			min-height: 0;
@@ -315,44 +322,51 @@
 			// width: 100%;
 			padding: 20rpx 0rpx;
 
-			.common_info{
+			.common_info {
 				width: 100%;
 				padding: 30rpx;
 				box-sizing: border-box;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
-				.person_img{
+
+				.person_img {
 					height: 90rpx;
 					width: 90rpx;
 					position: relative;
-					&>image{
+
+					&>image {
 						width: 100%;
 						height: 100%;
 						border-radius: 50%;
 					}
 				}
-				.person_info{
+
+				.person_info {
 					height: 90rpx;
 					width: calc(100% - 120rpx);
-					.first_line{
+
+					.first_line {
 						display: flex;
 						align-items: center;
 						justify-content: space-between;
 						line-height: 45rpx;
-						.line_left{
-							font-size: 32rpx;
+
+						.line_left {
+							font-size: 30rpx;
 							color: #FFFFFF;
 						}
-						.line_right{
+
+						.line_right {
 							font-size: 24rpx;
-							color: #9497B5;
+							color: rgba(255, 255, 255, 0.5);
 						}
 					}
-					.second_line{
+
+					.second_line {
 						width: 100%;
 						font-size: 26rpx;
-						color: #9497B5;
+						color: rgba(255, 255, 255, 0.5);
 						line-height: 45rpx;
 						@include ellipsis();
 					}
@@ -363,6 +377,4 @@
 		}
 
 	}
-
-
 </style>

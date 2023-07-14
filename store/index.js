@@ -10,6 +10,7 @@ const store = new Vuex.Store({
 		'list': [{
 				'text': 'Club',
 				'customIcon': false,
+				"count": 0,
 			},
 			{
 				'text': '发现',
@@ -27,7 +28,6 @@ const store = new Vuex.Store({
 				'text': '消息',
 				'customIcon': false,
 				"count": 0,
-				"isDot": true,
 				// "badge": {
 				// 	isDot: true
 				// }
@@ -45,19 +45,19 @@ const store = new Vuex.Store({
 	},
 	mutations: {
 		// 清除消息
-		clearInfoCount(state, count){
+		clearInfoCount(state, count) {
 			console.log('清除消息');
 			console.log(count);
-			try{
+			try {
 				console.log(state.list[3]);
 				state.list[3].count = count;
-			}catch(e){
+			} catch (e) {
 				//TODO handle the exception
 				console.log(e);
 			}
 			console.log('清除消息后', state.list[3]);
 		},
-		setCount(state, count){
+		setCount(state, count) {
 			state.countFlag = count;
 		}
 		// // 设置通知消息
@@ -72,8 +72,8 @@ const store = new Vuex.Store({
 		// 	state.infoCount = count;
 		// 	state.list[3].count = count + state.pushCount;
 		// },
-		
+
 	}
-	
+
 })
 module.exports = store

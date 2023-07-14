@@ -1,0 +1,32 @@
+{
+    "version" : "1",
+    "prompt" : "template",
+    "disagreeMode" : {
+        "support" : true,
+        "loadNativePlugins" : false
+    },
+    "title" : "提示",
+    "message" : "　　感谢您使用爬梯秀！我们非常重视您的个人信息和隐私安全。为了更好地保障您的个人权益，请您务必仔细阅读、充分理解<a href=\"https://erp.patixiu.com/api/privacyPolicy.html\">《隐私政策》</a>信息，并在您充分理解并同意全部内容后开始使用我们的产品和服务。我们的应用是基于DCloud uni-app(5+ App/Wap2App)开发的，为了提供统计分析服务，应用进行期间数字天堂SDK，移动安全联盟SDK等SDK需要收集您的设备唯一识别码（IMEI/IDFA、SIM 卡 IMSI 信息、OAID等个人信息）,详情请查看隐私政策。  同时，我们将严格按照法律法规及协议政策约定收集、使用和保护您的个人信息，感谢您的信任！<br/>\t\t\t基于您的授权，我们会获取您的设备信息（为您提供更便捷登录方式）、设备标识码（保障您的账号交易安全）等，您有权拒绝或取消授权",
+    "buttonAccept" : "同意",
+    "buttonRefuse" : "不同意",
+    "hrefLoader" : "system|default",
+    "second" : {
+        "title" : "确认提示",
+        "message" : "　　使用前，您需先同意<a href=\"https://erp.patixiu.com/api/privacyPolicy.html\">《隐私政策》</a>。",
+        "buttonAccept" : "同意",
+        "buttonRefuse" : "取消"
+    },
+    "styles" : {
+        "backgroundColor" : "#FFFFFF",
+        "borderRadius" : "5px",
+        "title" : {
+            "color" : "#000000"
+        },
+        "buttonAccept" : {
+            "color" : "#000000"
+        },
+        "buttonRefuse" : {
+            "color" : "#99999"
+        }
+    }
+}

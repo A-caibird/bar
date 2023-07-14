@@ -12,37 +12,36 @@
 			}" @tap.stop="clickHandler(index)" :style="{
 				backgroundColor: bgColor,
 				'justifyContent': 'center'
-			}" >
+			}">
 				<view :class="[
 					midButton && item.midButton ? 'u-tabbar__content__circle__button self_img' : 'u-tabbar__content__item__button'
 				]" v-if="elIconPath(index)">
-					<block >
-						<tabbar-item
-							:size="midButton && item.midButton ? midButtonSize : iconSize"
-							:name="elIconPath(index)"
-							img-mode="scaleToFill"
-							:color="elColor(index)"
-							:custom-prefix="item.customIcon ? 'custom-icon' : 'uicon'"
-							
-						></tabbar-item>
+					<block>
+						<tabbar-item :size="midButton && item.midButton ? midButtonSize : iconSize"
+							:name="elIconPath(index)" img-mode="scaleToFill" :color="elColor(index)"
+							:custom-prefix="item.customIcon ? 'custom-icon' : 'uicon'"></tabbar-item>
 					</block>
-					<u-badge :count="item.count" :is-dot="item.isDot"
-						v-if="item.count"
-						:offset="[-2, getOffsetRight(item.count, item.isDot)]"
-					></u-badge>
+					<u-badge :count="item.count" :is-dot="item.isDot" v-if="item.count"
+						:offset="[-2, getOffsetRight(item.count, item.isDot)]"></u-badge>
 				</view>
-				<view class="u-tabbar__content__item__text center" :style="{
+				<view class="u-tabbar__content__item__text center " :style="{
 					color: elColor(index)
-				}" v-if="item.text">
-					<u-badge :count="item.count" :is-dot="item.isDot"
-					
-						:offset="[-2, getOffsetRight(item.count, item.isDot)]"
-					></u-badge>
-					<text class="u-line-1 tab_text">{{item.text}}</text>
-					<view class="select_icon" v-if="index == value"></view>
+				}" :class="{'active': value==index }" v-if="item.text">
+					<view
+						style="display: flex; width: 100%; height: 100%; align-items: center;justify-content: center;">
+
+						<view style="position: relative;display: flex; flex-direction: column;">
+							<view>
+								<text class="u-line-1 tab_text" :class="{'text-active': value==index }">{{item.text}}
+								</text>
+							</view>
+							<u-badge :count="item.count" :is-dot="item.isDot" size="mini" :offset="[0,-44]">
+							</u-badge>
+						</view>
+					</view>
 				</view>
-				
-				
+
+
 			</view>
 			<view v-if="midButton" class="u-tabbar__content__circle__border self_border" :class="{
 				'u-border': borderTop,
@@ -62,12 +61,12 @@
 <script>
 	import tabbarItem from '@/components/self-tabbar/tabbar-item.vue'
 	export default {
-		components:{
+		components: {
 			tabbarItem
 		},
 		props: {
-			zIndex:{
-				type: Number|String ,
+			zIndex: {
+				type: Number | String,
 				default: 200
 			},
 			// 显示与否
@@ -147,7 +146,7 @@
 		},
 		created() {
 			// 是否隐藏原生tabbar
-			if(this.hideTabBar) uni.hideTabBar();
+			if (this.hideTabBar) uni.hideTabBar();
 			// 获取引入了u-tabbar页面的路由地址，该地址没有路径前面的"/"
 			let pages = getCurrentPages();
 			// 页面栈中的最后一个即为项为当前页面，route属性为页面路径
@@ -162,8 +161,8 @@
 					let pagePath = this.list[index].pagePath;
 					// 如果定义了pagePath属性，意味着使用系统自带tabbar方案，否则使用一个页面用几个组件模拟tabbar页面的方案
 					// 这两个方案对处理tabbar item的激活与否方式不一样
-					if(pagePath) {
-						if(pagePath == this.pageUrl || pagePath == '/' + this.pageUrl) {
+					if (pagePath) {
+						if (pagePath == this.pageUrl || pagePath == '/' + this.pageUrl) {
 							return this.list[index].selectedIconPath;
 						} else {
 							return this.list[index].iconPath;
@@ -178,8 +177,8 @@
 				return (index) => {
 					// 判断方法同理于elIconPath
 					let pagePath = this.list[index].pagePath;
-					if(pagePath) {
-						if(pagePath == this.pageUrl || pagePath == '/' + this.pageUrl) return this.activeColor;
+					if (pagePath) {
+						if (pagePath == this.pageUrl || pagePath == '/' + this.pageUrl) return this.activeColor;
 						else return this.inactiveColor;
 					} else {
 						return index == this.value ? this.activeColor : this.inactiveColor;
@@ -192,7 +191,7 @@
 		},
 		methods: {
 			async clickHandler(index) {
-				if(this.beforeSwitch && typeof(this.beforeSwitch) === 'function') {
+				if (this.beforeSwitch && typeof(this.beforeSwitch) === 'function') {
 					// 执行回调，同时传入索引当作参数
 					// 在微信，支付宝等环境(H5正常)，会导致父组件定义的customBack()函数体中的this变成子组件的this
 					// 通过bind()方法，绑定父组件的this，让this.customBack()的this为父组件的上下文
@@ -205,7 +204,7 @@
 						}).catch(err => {
 
 						})
-					} else if(beforeSwitch === true) {
+					} else if (beforeSwitch === true) {
 						// 如果返回true
 						this.switchTab(index);
 					}
@@ -218,7 +217,7 @@
 				// 发出事件和修改v-model绑定的值
 				this.$emit('change', index);
 				// 如果有配置pagePath属性，使用uni.switchTab进行跳转
-				if(this.list[index].pagePath) {
+				if (this.list[index].pagePath) {
 					uni.switchTab({
 						url: this.list[index].pagePath
 					})
@@ -231,9 +230,9 @@
 			// 计算角标的right值
 			getOffsetRight(count, isDot) {
 				// 点类型，count大于9(两位数)，分别设置不同的right值，避免位置太挤
-				if(isDot) {
+				if (isDot) {
 					return -20;
-				} else if(count > 9) {
+				} else if (count > 9) {
 					return -40;
 				} else {
 					return -30;
@@ -251,38 +250,76 @@
 
 <style scoped lang="scss">
 	@import "uview-ui/libs/css/style.components.scss";
+
 	.u-fixed-placeholder {
 		/* #ifndef APP-NVUE */
 		box-sizing: content-box;
 		/* #endif */
 	}
-	.self_border{
+
+	.self_border {
 		top: -34rpx !important;
 	}
-	.self_img{
+
+	.self_img {
 		top: -26rpx !important;
 		background-color: transparent !important;
 	}
-	.center{
+
+	.center {
 		top: 50% !important;
-		transform: translate(-50%,-50%) !important;
+		transform: translate(-50%, -50%) !important;
 		font-size: 30rpx !important;
-		.tab_text{
-			position: relative;
-			z-index: 10;
+		line-height: 30rpx !important;
+		width: 100%;
+		height: 100%;
+
+		&.active {
+			&::after {
+				position: absolute;
+				content: '';
+				display: block;
+				width: 34rpx;
+				height: 6rpx;
+				background: #FFFFFF;
+				bottom: 25rpx;
+				left: 50%;
+				transform: translateX(-50%);
+				border-radius: 4rpx;
+				opacity: 0.2;
+			}
 		}
-		.select_icon{
+
+		.tab_text {
+			position: relative;
+
+			&.text-active {
+				&::after {
+					position: absolute;
+					top: 0;
+					bottom: 0;
+					left: 0;
+					right: 0;
+					content: '';
+					z-index: -999;
+					background: #832DFF;
+					filter: blur(10rpx);
+					border-radius: 100%;
+				}
+			}
+		}
+
+		.select_icon {
 			width: 100%;
-			position: absolute;
-			z-index: 5;
-			bottom: 2rpx;
-			background: #7D3FFF;
-			height: 10rpx;
-			border-radius: 5rpx;
+			background: #FFFFFF;
+			border-radius: 4rpx;
+			height: 8rpx;
+			opacity: 0.2;
+			margin-top: 4rpx;
 		}
 	}
-	.u-tabbar {
 
+	.u-tabbar {
 		&__content {
 			@include vue-flex;
 			align-items: center;
