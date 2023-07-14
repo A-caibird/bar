@@ -1227,7 +1227,7 @@
 					position: sticky;
 					top: 0;
 					z-index: 100;
-					background: #191C3F;
+					background: #16192B;
 					border-bottom: 1px solid #31345B;
 
 					.nav_box {

@@ -1,7 +1,7 @@
 <template>
 	<view class="dynamic_item_box" @tap="$u.throttle(tapGoDetail)">
 		<!-- <view class="dynamic_img" :style="`height:${swiperHeight}rpx;`" v-if="info.imgList.length>1">
-			<u-swiper :height="swiperHeight" :list="info.imgList" bgColor="#191C3F"  :autoplay="false" @click="$u.throttle(tapGoDetail)"></u-swiper>
+			<u-swiper :height="swiperHeight" :list="info.imgList" bgColor="#16192B"  :autoplay="false" @click="$u.throttle(tapGoDetail)"></u-swiper>
 		</view> -->
 		<view class="dynamic_img" :style="`height:${swiperHeight}rpx;`" v-if="info.imgList.length >= 1">
 			<image :src="info.imgList[0]" mode="aspectFill"></image>

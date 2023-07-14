@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="header_box">
 			<u-navbar :border-bottom="false" :is-fixed="true" :background="{
-				'background': '#191C3F'
+				'background': '#16192B'
 			}" :title="`活动`"
 			 title-color="#FFFFFF" back-icon-color="#FFFFFF"></u-navbar>
 		</view>

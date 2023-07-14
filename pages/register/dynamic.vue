@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="header_box">
-			<u-navbar back-icon-color="#FFFFFF" title="发布动态" title-color="#FFFFFF" :border-bottom="false" :background="{'backgroundColor': '#191C3F'}">
+			<u-navbar back-icon-color="#FFFFFF" title="发布动态" title-color="#FFFFFF" :border-bottom="false" :background="{'backgroundColor': '#16192B'}">
 				<view slot="right" style="margin-right: 30rpx; color: #FFFFFF; font-size: 30rpx;"> <text>跳过</text> </view>
 			</u-navbar>
 		</view>

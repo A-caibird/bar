@@ -1,6 +1,6 @@
 <template>
 	<view class="page-wrap">
-		<u-navbar back-icon-color="#FFFFFF" :title="title" title-size="36" title-color="#FFFFFF" :background="{ background: '#191C3F' }" :border-bottom="false"></u-navbar>
+		<u-navbar back-icon-color="#FFFFFF" :title="title" title-size="36" title-color="#FFFFFF" :background="{ background: '#16192B' }" :border-bottom="false"></u-navbar>
 		<view class="msg_part">
 			<text>真实姓名</text>
 			<view class="part">

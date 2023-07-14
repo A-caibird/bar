@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="header-box">
-			<u-navbar back-icon-color="#ffffff" title="我的钻石" title-size="36" title-color="#FFFFFF" :background="{ background: '#191C3F' }" :border-bottom="false">
+			<u-navbar back-icon-color="#ffffff" title="我的钻石" title-size="36" title-color="#FFFFFF" :background="{ background: '#16192B' }" :border-bottom="false">
 				<view class="header_box_right" slot="right" style="color: #FFFFFF; font-size: 30rpx; padding-right: 30rpx;" @tap="$u.throttle(goArticle('walletHelpCenter'))">帮助中心</view>
 			</u-navbar>
 		</view>

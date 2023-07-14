@@ -65,7 +65,7 @@
 
 	.u-cell-item-box {
 		// background-color: #FFFFFF;
-		background-color: #191C3F;
+		background-color: #16192B;
 		flex-direction: row;
 	}
 </style>

@@ -1020,7 +1020,7 @@
 						display: flex;
 
 						.content {
-							// background-color: #191C3F;
+							// background-color: #16192B;
 							// color: #FFFFFF;
 							background-color: #FFFFFF;
 							color: #000000;
@@ -1067,7 +1067,7 @@
 								width: 100%;
 								@include ellipsis();
 								font-size: 34rpx;
-								color: #191C3F;
+								color: #16192B;
 							}
 
 							.date-card {
@@ -1190,7 +1190,7 @@
 			.send-btn {
 				width: 120rpx;
 				height: 55rpx;
-				background-color: #191C3F;
+				background-color: #16192B;
 				border-radius: 27rpx;
 				@include flex-center();
 				color: #FFFFFF;

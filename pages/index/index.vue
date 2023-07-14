@@ -447,7 +447,7 @@
 				z-index: 220;
 				width: 100%;
 				height: 100%;
-				background: #191C3F;
+				background: #16192B;
 				opacity: 1;
 				transition: all 1s;
 

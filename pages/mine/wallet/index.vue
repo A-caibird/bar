@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<u-navbar back-icon-color="#FFFFFF" title="我的钱包" title-size="36" title-color="#FFFFFF" :background="{'background': '#191C3F'}"
+		<u-navbar back-icon-color="#FFFFFF" title="我的钱包" title-size="36" title-color="#FFFFFF" :background="{'background': '#16192B'}"
 		 :border-bottom="false">
 		
 		</u-navbar>

@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<u-navbar back-icon-color="#FFFFFF" title="账号注销" title-size="36" title-color="#FFFFFF" :background="{ background: '#191C3F' }"
+		<u-navbar back-icon-color="#FFFFFF" title="账号注销" title-size="36" title-color="#FFFFFF" :background="{ background: '#16192B' }"
 		 :border-bottom="false"></u-navbar>
 		<view class="tips_info">
 			<view class="tips_title">账号被注销后，如下信息将被清空且无法找回</view>

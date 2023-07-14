@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<u-navbar back-icon-color="#FFFFFF" title="个性背景" title-size="36" title-color="#FFFFFF"
-			:background="{'background': '#191C3F'}" :border-bottom="false">
+			:background="{'background': '#16192B'}" :border-bottom="false">
 		</u-navbar>
 		<view class="intro_box">
 			<image class="bg_img"@tap="$u.throttle(chooseTap)"  :src="bgImg || '/static/imgs/personalDynamic/dynamic_bgimg.png'" mode="aspectFill"></image>

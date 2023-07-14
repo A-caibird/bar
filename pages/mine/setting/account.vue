@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<u-navbar back-icon-color="#FFFFFF" title="账号与安全" title-size="36" title-color="#FFFFFF" :background="{ background: '#191C3F' }"
+		<u-navbar back-icon-color="#FFFFFF" title="账号与安全" title-size="36" title-color="#FFFFFF" :background="{ background: '#16192B' }"
 		 :border-bottom="false"></u-navbar>
 		<view class="list">
 			<view class="item" @tap="$u.throttle(tapGoSetPaswword)">
@@ -179,7 +179,7 @@
 		height: 100%;
 		.container {
 			min-height: 100%;
-			background-color: #191C3F;
+			background-color: #16192B;
 		
 			.list {
 				display: flex;

@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="header_box">
-			<u-navbar back-icon-color="#FFFFFF" title="填写信息" title-color="#FFFFFF" :border-bottom="false" :background="{'backgroundColor': '#191C3F'}"></u-navbar>
+			<u-navbar back-icon-color="#FFFFFF" title="填写信息" title-color="#FFFFFF" :border-bottom="false" :background="{'backgroundColor': '#16192B'}"></u-navbar>
 		</view>
 		<view class="middle_box">
 			<view class="avatar_panel">

@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<u-navbar back-icon-color="#FFFFFF" title="存酒记录" title-size="36" title-color="#FFFFFF" :background="{'background': '#191C3F'}"
+		<u-navbar back-icon-color="#FFFFFF" title="存酒记录" title-size="36" title-color="#FFFFFF" :background="{'background': '#16192B'}"
 		 :border-bottom="false"></u-navbar>
 		<view class="wine-list-wrap">
 			<view class="list">
@@ -252,7 +252,7 @@
 				height: 100rpx;
 				@include height-center();
 				justify-content: space-between;
-				background-color: #191c3f;
+				background-color: #16192B;
 				padding-right: 30rpx;
 				border-top: 1px solid #31345B;
 				.all-btn {

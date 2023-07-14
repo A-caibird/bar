@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<!-- <wyb-drop-down ref="dropDown" :defaultProps="dropDownDefaultProps" :options="dropDownOptions"
-			@select="filterChane" :dropIcon="'line'" :bg-color="{header:'#191C3F',content: '#191C3F'}"
+			@select="filterChane" :dropIcon="'line'" :bg-color="{header:'#16192B',content: '#16192B'}"
 			:defaultColor="'#FFFFFF'" :activeColor="'#FFFFFF'"></wyb-drop-down> -->
 		<!-- <view style="height: 100rpx;"></view> -->
 		<view class="middle-box">

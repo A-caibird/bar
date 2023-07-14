@@ -330,7 +330,7 @@
 					&.selectStatus {
 						background: #ffffff;
 						font-size: 28rpx;
-						color: #191c3f;
+						color: #16192B;
 						font-weight: 500;
 					}
 				}

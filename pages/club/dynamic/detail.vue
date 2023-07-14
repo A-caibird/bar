@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="header_box">
-			<u-navbar :border-bottom="false" :is-fixed="true" :background="{'background': '#191C3F'}" title="动态详情" title-color="#FFFFFF" back-icon-color="#FFFFFF"></u-navbar>
+			<u-navbar :border-bottom="false" :is-fixed="true" :background="{'background': '#16192B'}" title="动态详情" title-color="#FFFFFF" back-icon-color="#FFFFFF"></u-navbar>
 		</view>
 		<view class="media_box" v-if="info.imgList.length > 1 || (info.imgList.length == 1 && info.videoUrl)">
 			<swiper class="swiper_box" :indicator-dots="true" indicator-color="#CCCCCC" indicator-active-color="#FFFFFF">
@@ -15,7 +15,7 @@
 					</swiper-item>
 				</block>
 			</swiper>
-			<!-- <u-swiper height="468.75" :list="info.imgList" bgColor="#191C3F" @click="$u.throttle(previewImgList(info.imgList,$event,key=''))"></u-swiper> -->
+			<!-- <u-swiper height="468.75" :list="info.imgList" bgColor="#16192B" @click="$u.throttle(previewImgList(info.imgList,$event,key=''))"></u-swiper> -->
 		</view>
 		<view class="media_box" v-if="info.imgList.length == 1 && !info.videoUrl" @click="$u.throttle(previewImg(info.imgList[0]))">
 			<u-image class="dy_img" width="100%" height="100%" :src="info.imgList[0]"></u-image>

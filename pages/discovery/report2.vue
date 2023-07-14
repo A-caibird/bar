@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="header-box">
-			<u-navbar back-icon-color="#FFFFFF" title="举报" title-size="36" title-color="#FFFFFF" :background="{'background': '#191C3F'}"
+			<u-navbar back-icon-color="#FFFFFF" title="举报" title-size="36" title-color="#FFFFFF" :background="{'background': '#16192B'}"
 			 :border-bottom="false">
 			</u-navbar>
 		</view>

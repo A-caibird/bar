@@ -1,6 +1,6 @@
 <template>
     <view class="container">
-        <!-- <u-mask :show="maskShow" :custom-style="{background: '#191C3F'}">
+        <!-- <u-mask :show="maskShow" :custom-style="{background: '#16192B'}">
             <image
                 style="position: absolute;left: 50%; top:50%;transform: translate(-50%,-50%); width: 100rpx; height 100rpx;"
                 mode="aspectFit" src="/static/imgs/loading.gif">

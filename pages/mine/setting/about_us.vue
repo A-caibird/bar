@@ -1,7 +1,7 @@
 <template>
 	<view class="all_box">
 		<view class="header-box">
-			<u-navbar back-icon-color="#ffffff" title="关于我们" title-size="36" title-color="#FFFFFF" :background="{ background: '#191C3F' }" :border-bottom="false"></u-navbar>
+			<u-navbar back-icon-color="#ffffff" title="关于我们" title-size="36" title-color="#FFFFFF" :background="{ background: '#16192B' }" :border-bottom="false"></u-navbar>
 		</view>
 		<view class="content">
 			<view class="first_content">
@@ -33,7 +33,7 @@
 .all_box {
 	width: 100%;
 	height: 110%;
-	background: #191C3F ;
+	background: #16192B ;
 	
 }
 .content{

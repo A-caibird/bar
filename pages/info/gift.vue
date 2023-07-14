@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<u-navbar back-icon-color="#FFFFFF" title="礼物" title-size="36" title-color="#FFFFFF" :border-bottom="false" :background="{'backgroundColor': '#191C3F'}"></u-navbar>
+		<u-navbar back-icon-color="#FFFFFF" title="礼物" title-size="36" title-color="#FFFFFF" :border-bottom="false" :background="{'backgroundColor': '#16192B'}"></u-navbar>
 		<view class="gift-label">
 			<view class="label-left">
 				<text class="label-left-text">总收礼物</text>

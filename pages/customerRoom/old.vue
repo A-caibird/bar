@@ -434,7 +434,7 @@ page {
   height: 100%;
   background-color: #FAFAFA;
 }
-$base-color: '#191C3F';
+$base-color: '#16192B';
 .scroll_view {
   width: 100%;
   background-color: #F5F5F5;

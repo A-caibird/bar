@@ -2,7 +2,7 @@
 	<view class="info-box">
 		<view class="header-box">
 			<u-navbar :is-fixed="true" :isBack="false" :background="{
-				'background': '#191C3F'
+				'background': '#16192B'
 			}" :titleColor="'#979797'" title="消息" :borderBottom="false">
 			</u-navbar>
 		</view>

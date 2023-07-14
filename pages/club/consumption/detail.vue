@@ -2,13 +2,13 @@
 	<view class="container">
 		<view class="header_box">
 			<u-navbar :border-bottom="false" :is-fixed="true" :background="{
-				'background': '#191C3F'
+				'background': '#16192B'
 			}" title="套餐详情"
 			 title-color="#FFFFFF" back-icon-color="#FFFFFF"></u-navbar>
 		</view>
 		<view class="middle_box">
 			<view class="swiper_box" v-if="detail.imgList.length > 1">
-				<u-swiper :list="detail.imgList" height="350" bgColor="#191C3F" @click="$u.throttle(previewImgList(detail.imgList,$event,key=''))"></u-swiper>
+				<u-swiper :list="detail.imgList" height="350" bgColor="#16192B" @click="$u.throttle(previewImgList(detail.imgList,$event,key=''))"></u-swiper>
 			</view>
 			<view class="swiper_box" v-if="detail.imgList.length ==1">
 				<image :src="detail.imgList[0]" mode="aspectFill" @click="$u.throttle(previewImg(detail.imgList[0]))"></image>
@@ -198,7 +198,7 @@
 			.swiper_box {
 				width: 100%;
 				height: 350rpx;
-				background: #191C3F;
+				background: #16192B;
 				image{
 					height: 100%;
 					width: 100%;

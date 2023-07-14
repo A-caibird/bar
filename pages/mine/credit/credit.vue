@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="header_box">
 		<u-navbar back-icon-color="#FFFFFF" title="信用积分" title-size="36" title-color="#FFFFFF" :background="{
-					'background': '#191C3F'
+					'background': '#16192B'
 				}" :border-bottom="false">
 			<view class="header_box_right" @tap="$u.route('/pages/mine/credit/rule')" slot="right" style="color: #FFFFFF; font-size: 28rpx; padding-right: 30rpx;">
 				规则说明

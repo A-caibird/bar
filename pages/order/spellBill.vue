@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="header-box">
 			<u-navbar back-icon-color="#FFFFFF" title="全部拼单" title-size="36" title-color="#FFFFFF" :background="{
-						'background': '#191C3F'
+						'background': '#16192B'
 					}"
 			 :border-bottom="false">
 			</u-navbar>

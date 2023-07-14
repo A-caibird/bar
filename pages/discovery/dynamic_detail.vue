@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<u-navbar :border-bottom="false" :is-fixed="true" :background="{
-				background: '#191C3F'
+				background: '#16192B'
 			}" title="详情" title-color="#FFFFFF" back-icon-color="#FFFFFF"></u-navbar>
 		<view class="middle_box">
 			<view class="dynamic_text">

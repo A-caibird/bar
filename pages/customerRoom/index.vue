@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<u-navbar :border-bottom="false" :is-fixed="true" :background="{
-    		background: '#191C3F'
+    		background: '#16192B'
     	}" title="客服" title-color="#FFFFFF" back-icon-color="#FFFFFF"></u-navbar>
 		<view class="content" @touchstart="hideDrawer">
 			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation"

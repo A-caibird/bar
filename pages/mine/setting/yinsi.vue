@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="first_part">
-			<u-navbar back-icon-color="#FFFFFF" title="隐私" title-size="36" title-color="#FFFFFF" :background="{ background: '#191C3F' }" :border-bottom="false"></u-navbar>
+			<u-navbar back-icon-color="#FFFFFF" title="隐私" title-size="36" title-color="#FFFFFF" :background="{ background: '#16192B' }" :border-bottom="false"></u-navbar>
 		</view>
 
 		<view class="second_part">

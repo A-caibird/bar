@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<u-navbar back-icon-color="#FFFFFF" title="评论" title-color="#FFFFFF" :border-bottom="false" :background="{'backgroundColor': '#191C3F'}"></u-navbar>
+		<u-navbar back-icon-color="#FFFFFF" title="评论" title-color="#FFFFFF" :border-bottom="false" :background="{'backgroundColor': '#16192B'}"></u-navbar>
 		<view class="comment-person">
 			<mescroll-uni :fixed="false" ref="mescrollRef" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" @up="upCallback">
 				<view class="comment-item" :class="{active:mode=='jump'&&commentId==item.id}" v-for="item,index in pageList" :key="item.id">

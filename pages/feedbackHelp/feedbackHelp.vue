@@ -1,8 +1,8 @@
 <template>
 	<view class="container">
 		<view class="header-box">
-			<u-navbar back-icon-color="#FFFFFF" title="反馈与帮助" title-size="36" title-color="#FFFFFF" :background="{ background: '#191C3F' }"
-			 :border-bottom="false"></u-navbar>
+			<u-navbar back-icon-color="#FFFFFF" title="反馈与帮助" title-size="36" title-color="#FFFFFF"
+				:background="{ background: '#16192B' }" :border-bottom="false"></u-navbar>
 		</view>
 		<view class="first_part">
 			<view class="items" @tap="$u.throttle($u.route('/pages/feedback/feedback'))">
@@ -13,29 +13,27 @@
 				<text>常见问题</text>
 				<image src="/static/imgs/mine/common_right.png" mode=""></image>
 			</view>
-			
+
 		</view>
 	</view>
 </template>
 
 <script>
 	var app = getApp();
-	export default{
+	export default {
 		data() {
 			return {
 
 			}
 		},
-		methods:{
-			
+		methods: {
+
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	.container {
-		
-	}
+	.container {}
 
 	.first_part {
 		margin: 30rpx 30rpx 614rpx 30rpx;

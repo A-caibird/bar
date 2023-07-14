@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<scroll-view class="dynamic-details" scroll-y="true" @scrolltolower="upRefresh()" refresher-enabled="true"
-		 :refresher-triggered="triggered" :refresher-threshold="50" refresher-background="#191C3F" @refresherrefresh="downRefresh()">
+		 :refresher-triggered="triggered" :refresher-threshold="50" refresher-background="#16192B" @refresherrefresh="downRefresh()">
 		<view class="record-item" v-for="(item,index) in pageList" :key="index">
 			<view class="record-detail">
 				<text>{{item.text}}</text>

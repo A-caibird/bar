@@ -1,12 +1,12 @@
 <template>
 	<view class="container">
 		<u-navbar back-icon-color="#FFFFFF" title="我的优惠券" title-size="36" title-color="#FFFFFF" :background="{
-					'background': '#191C3F'
+					'background': '#16192B'
 				}"
 		 :border-bottom="false">
 		</u-navbar>
 		<view class="topbar">
-			<classify fontSize="28" bgColor="#191C3F" ref="tabs" :list="status" :current="currentIndex" @change="clickTopTar" :is-scroll="false"
+			<classify fontSize="28" bgColor="#16192B" ref="tabs" :list="status" :current="currentIndex" @change="clickTopTar" :is-scroll="false"
 			 swiperWidth="750" inactiveColor="#B7B9D6" activeColor="#ffffff" :activeItemStyle="{
 				 'font-size': '34rpx'
 			 }"></classify>

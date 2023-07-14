@@ -84,7 +84,7 @@
 			align-items: center;
 			width: 100%;
 			// height: 590rpx;
-			background-color: #191c3f;
+			background-color: #16192B;
 			border-radius: 10px;
 			margin-bottom: 25rpx;
 

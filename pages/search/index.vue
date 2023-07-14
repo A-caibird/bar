@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="header_box">
 			<u-navbar back-icon-color="#FFFFFF" :border-bottom="false" :is-fixed="true" :background="{
-				'background': '#191C3F'
+				'background': '#16192B'
 			}">
 				<view style="width: calc(100% - 60rpx);margin-left: 30rpx; display: flex; align-items: center;">
 					<view class="search_box" style="width: 100%;">

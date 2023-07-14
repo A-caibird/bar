@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="header-box">
-			<u-navbar back-icon-color="#FFFFFF" title="个人设置" title-size="36" title-color="#FFFFFF" :background="{'background': '#191C3F'}"
+			<u-navbar back-icon-color="#FFFFFF" title="个人设置" title-size="36" title-color="#FFFFFF" :background="{'background': '#16192B'}"
 			 :border-bottom="false">
 			</u-navbar>
 		</view>
@@ -133,7 +133,7 @@
 				if (parseInt(code) == 0) {
 					this.getMyInfo()
 					this.$u.toast('修改成功');
-					uni.$emit('personal-info-refresh')				} 
+					uni.$emit('personal-info-refresh')				} 
 			},
 			async proviceC(e){//选择省
 				console.log(e)

@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="header-box">
-			<u-navbar back-icon-color="#FFFFFF" title="充值" title-size="36" title-color="#FFFFFF" :background="{ background: '#191C3F' }" :border-bottom="false">
+			<u-navbar back-icon-color="#FFFFFF" title="充值" title-size="36" title-color="#FFFFFF" :background="{ background: '#16192B' }" :border-bottom="false">
 				<view class="header-box-right" slot="right" @tap="$u.throttle(tapGoRechargeRecord)"><text>充值记录</text></view>
 			</u-navbar>
 		</view>

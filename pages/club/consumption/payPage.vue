@@ -795,7 +795,7 @@
 		z-index: 10;
 		box-sizing: border-box;
 		padding-bottom: 30rpx;
-		background: #191C3F;
+		background: #16192B;
 		.pay_btn{
 			height: 80rpx;
 			width: calc(100% - 60rpx);

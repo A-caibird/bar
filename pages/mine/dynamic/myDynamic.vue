@@ -503,7 +503,7 @@
 				top: 0rpx;
 				left: 0rpx;
 				z-index: 120;
-				background: #191C3F;
+				background: #16192B;
 				.content-title-box{
 					display: flex;
 					align-items: center;

@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<u-navbar back-icon-color="#FFFFFF" title="粉丝" title-size="36" title-color="#FFFFFF" :background="{
-					'background': '#191C3F'
+					'background': '#16192B'
 				}"
 		 :border-bottom="false"></u-navbar>
 		<view class="follow-person">

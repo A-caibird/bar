@@ -1,5 +1,5 @@
-<template style="background: #191C3F;">
-	<view class="container" style="background: #191C3F;">
+<template style="background: #16192B;">
+	<view class="container" style="background: #16192B;">
 		<block v-if="!stickyStatus">
 			<u-navbar :border-bottom="false" :is-fixed="true" :title-color="`rgba(255,255,255,${navOpacity})`"
 				:background="{
@@ -710,7 +710,7 @@
 				position: sticky;
 				top: 0rpx;
 				z-index: 100;
-				background: #191C3F;
+				background: #16192B;
 				border-bottom: 1px solid #31345B;
 				transition: all, 0.1s;
 				&.paddingTop {

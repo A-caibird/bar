@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="header-box">
 			<u-navbar back-icon-color="#FFFFFF" title="订单详情" title-size="36" title-color="#FFFFFF" :background="{
-						'background': '#191C3F'
+						'background': '#16192B'
 					}"
 			 :border-bottom="false">
 			</u-navbar>
@@ -30,7 +30,7 @@
 			</block>	
 			<view class="club_info" @tap="$u.throttle(goClub)">
 				<view class="club_img" v-if="clubInfo.bannerList.length > 1">
-					<u-swiper :list="clubInfo.bannerList" height="435" bgColor="#191C3F" @click="$u.throttle(goClub)"></u-swiper>
+					<u-swiper :list="clubInfo.bannerList" height="435" bgColor="#16192B" @click="$u.throttle(goClub)"></u-swiper>
 				</view>
 				<view class="club_img" v-if="clubInfo.bannerList.length == 1">
 					<image :src="clubInfo.bannerList[0]" mode="aspectFill"></image>
@@ -474,7 +474,7 @@
 			.club_img {
 				width: 100%;
 				height: 435rpx;
-				background: #191C3F;
+				background: #16192B;
 				image{
 					width: 100%;
 					height: 100%;

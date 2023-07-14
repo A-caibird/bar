@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<u-navbar back-icon-color="#FFFFFF" title="个人简介" title-size="36" title-color="#FFFFFF"
-			:background="{'background': '#191C3F'}" :border-bottom="false">
+			:background="{'background': '#16192B'}" :border-bottom="false">
 		</u-navbar>
 		<view class="intro_box">
 			<textarea class="textarea_box" placeholder="请输入个人简介" v-model="introText"></textarea>

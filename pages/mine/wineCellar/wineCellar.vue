@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<u-navbar back-icon-color="#FFFFFF" title="我的酒库" title-size="36" title-color="#FFFFFF" :background="{'background': '#191C3F'}"
+		<u-navbar back-icon-color="#FFFFFF" title="我的酒库" title-size="36" title-color="#FFFFFF" :background="{'background': '#16192B'}"
 		 :border-bottom="false">
 			<view @tap="$u.throttle($u.route('pages/mine/wineCellar/wineRecord'))" class="header-box-right" slot="right">
 				取酒记录

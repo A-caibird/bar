@@ -245,7 +245,7 @@
 				.swiper_box {
 					width: 100%;
 					height: 435rpx;
-					background: #191C3F;
+					background: #16192B;
 					image {
 						width: 100%;
 						height: 100%;

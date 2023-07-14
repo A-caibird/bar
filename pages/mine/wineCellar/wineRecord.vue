@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<u-navbar back-icon-color="#FFFFFF" title="取酒记录" title-size="36" title-color="#FFFFFF"
-		:background="{'background': '#191C3F'}" :border-bottom="false">
+		:background="{'background': '#16192B'}" :border-bottom="false">
 		</u-navbar>
 		<view class="record-box">
 			<mescroll-uni ref="mescrollRef" :fixed="false" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" @up="upCallback">

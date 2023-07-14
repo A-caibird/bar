@@ -1,9 +1,9 @@
 <template>
 	<view class="container">
-		<u-navbar :border-bottom="false" :is-fixed="true" :background="{'background': '#191C3F'}" :title="data.clubName" title-color="#FFFFFF" back-icon-color="#FFFFFF"></u-navbar>
+		<u-navbar :border-bottom="false" :is-fixed="true" :background="{'background': '#16192B'}" :title="data.clubName" title-color="#FFFFFF" back-icon-color="#FFFFFF"></u-navbar>
 		<view class="middle_box">
 			<view class="classify_box">
-				<classify height="100" fontSize="28" bgColor="#191C3F" ref="tabs" :list="list" :current="current" @change="change" :is-scroll="false"
+				<classify height="100" fontSize="28" bgColor="#16192B" ref="tabs" :list="list" :current="current" @change="change" :is-scroll="false"
 			 swiperWidth="750" inactiveColor="#B7B9D6" activeColor="#ffffff" :activeItemStyle="{'font-size': '34rpx'}"></classify>
 			</view>
 			<view class="drinks_content">
@@ -271,7 +271,7 @@
 				.club_img {
 					height: 435rpx;
 					width: 100%;
-					background: #191C3F;
+					background: #16192B;
 					image{
 						width: 100%;
 						height: 100%;

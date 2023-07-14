@@ -1,6 +1,6 @@
 <template>
 	<view class="page-wrap">
-		<u-navbar back-icon-color="#FFFFFF" title="充值记录" title-size="36" title-color="#FFFFFF" :background="{ background: '#191C3F' }" :border-bottom="false"></u-navbar>
+		<u-navbar back-icon-color="#FFFFFF" title="充值记录" title-size="36" title-color="#FFFFFF" :background="{ background: '#16192B' }" :border-bottom="false"></u-navbar>
 		
 		<view class="list-wrap">
 			<mescroll-uni :fixed="false" ref="mescrollRef" @init="mescrollInit" :down="downOption" @down="downCallback" :up="upOption" @up="upCallback">

@@ -3,13 +3,13 @@
 		<view class="header-box">
 			<u-navbar :customBack="backEvent" back-icon-color="#FFFFFF" :title="title" title-size="36"
 				titleColor="#FFFFFF" :background="{
-						'background': '#191C3F'
+						'background': '#16192B'
 					}" :border-bottom="false">
 			</u-navbar>
 		</view>
 		<view class="middle_box">
 			<view class="classify_box">
-				<classify fontSize="28" bgColor="#191C3F" ref="tabs" :list="status" :current="current" @change="change"
+				<classify fontSize="28" bgColor="#16192B" ref="tabs" :list="status" :current="current" @change="change"
 					:is-scroll="false" swiperWidth="750" inactiveColor="#B7B9D6" activeColor="#ffffff" :activeItemStyle="{
 					 'font-size': '34rpx'
 				 }"></classify>

@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<u-navbar back-icon-color="#FFFFFF" title="礼物收入" title-size="36" title-color="#FFFFFF" :background="{ background: '#191C3F' }" :border-bottom="false"></u-navbar>
+		<u-navbar back-icon-color="#FFFFFF" title="礼物收入" title-size="36" title-color="#FFFFFF" :background="{ background: '#16192B' }" :border-bottom="false"></u-navbar>
 		<!-- <view class="content-title">
 			<view class="title" :class="{ active: currentIndex === 0 }" @tap="select(0)">收到</view>
 			<view class="title" :class="{ active: currentIndex === 1 }" @tap="select(1)">送出</view>

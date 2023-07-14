@@ -4,7 +4,7 @@
 			:border-bottom="false"
 			:is-fixed="true"
 			:background="{
-				background: '#191C3F'
+				background: '#16192B'
 			}"
 			title="拆盲盒赢酒币"
 			title-color="#FFFFFF"

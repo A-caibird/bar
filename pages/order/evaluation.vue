@@ -2,14 +2,14 @@
 	<view class="container">
 		<view class="header-box">
 			<u-navbar back-icon-color="#FFFFFF" title="我要评价" title-size="36" title-color="#FFFFFF" :background="{
-						'background': '#191C3F'
+						'background': '#16192B'
 					}" :border-bottom="false">
 			</u-navbar>
 		</view>
 		<view class="middle_box">
 			<view class="club_info">
 				<view class="club_img" v-if="info.bannerList.length > 1"> 
-					<u-swiper :list="info.bannerList" height="350" bgColor="#191C3F" @click="$u.throttle(previewImgList(info.bannerList,$event,key=''))"></u-swiper>
+					<u-swiper :list="info.bannerList" height="350" bgColor="#16192B" @click="$u.throttle(previewImgList(info.bannerList,$event,key=''))"></u-swiper>
 				</view>
 				<view class="club_img" v-if="info.bannerList.length == 1">
 					<image :src="info.bannerList[0]"  mode="aspectFill" @click="$u.throttle(previewImg(info.bannerList[0]))"></image>
@@ -181,7 +181,7 @@
 			.club_img {
 				width: 100%;
 				height: 350rpx;
-				background: #191C3F;
+				background: #16192B;
 				image{
 					width: 100%;
 					height: 100%;
@@ -262,7 +262,7 @@
 			height: 250rpx;
 			width: 100%;
 			padding: 30rpx;
-			// border-bottom: 2rpx solid #191C3F;
+			// border-bottom: 2rpx solid #16192B;
 			&>textarea{
 				width: 100%;
 				height: 100%;
