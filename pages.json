@@ -8,7 +8,7 @@
 		}, {
 			"path": "pages/test/test",
 			"style": {
-				"navigationBarBackgroundColor": "#191C3F",
+				"navigationBarBackgroundColor": "#16192B",
 				"navigationBarTitleText": "测试",
 				"navigationStyle": "default"
 			}
@@ -95,13 +95,13 @@
 		},
 		{
 			"path": "pages/club/search-list",
-			"navigationBarBackgroundColor": "#191C3F",
+			"navigationBarBackgroundColor": "#16192B",
 			"navigationBarTitleText": "",
 			"navigationStyle": "default",
 			"style": {
 				"app-plus": {
 					"titleNView": {
-						"backgroundColor": "#191C3F",
+						"backgroundColor": "#16192B",
 						"searchInput": {
 							"align": "left",
 							"autoFocus": "true",
@@ -152,7 +152,7 @@
 		{
 			"path": "pages/club/consumption/paySuccess",
 			"style": {
-				"navigationBarBackgroundColor": "#191C3F",
+				"navigationBarBackgroundColor": "#16192B",
 				"navigationBarTitleText": "支付成功",
 				"navigationStyle": "custom"
 
@@ -183,7 +183,7 @@
 		{
 			"path": "pages/club/consumption/payPage",
 			"style": {
-				"navigationBarBackgroundColor": "#191C3F",
+				"navigationBarBackgroundColor": "#16192B",
 				"navigationBarTitleText": "我要支付",
 				"navigationStyle": "default"
 			}
@@ -396,7 +396,7 @@
 		}, {
 			"path": "pages/chat/chat",
 			"style": {
-				"navigationBarBackgroundColor": "#191C3F",
+				"navigationBarBackgroundColor": "#16192B",
 				"navigationBarTitleText": "消息",
 				"navigationStyle": "default",
 				"app-plus": {
@@ -416,7 +416,7 @@
 		}, {
 			"path": "pages/receptionist-list/receptionist-list",
 			"style": {
-				"navigationBarBackgroundColor": "#191C3F",
+				"navigationBarBackgroundColor": "#16192B",
 				"navigationBarTitleText": "接待员",
 				"navigationStyle": "default"
 			}
@@ -439,7 +439,7 @@
 		}, {
 			"path": "pages/feedback/feedback",
 			"style": {
-				"navigationBarBackgroundColor": "#191C3F",
+				"navigationBarBackgroundColor": "#16192B",
 				"navigationBarTitleText": "意见反馈",
 				"navigationStyle": "default"
 			}
@@ -455,14 +455,14 @@
 		}, {
 			"path": "pages/business-settlement/business-settlement",
 			"style": {
-				"navigationBarBackgroundColor": "#191C3F",
+				"navigationBarBackgroundColor": "#16192B",
 				"navigationBarTitleText": "商家入驻",
 				"navigationStyle": "default"
 			}
 		}, {
 			"path": "pages/ping-yao-list/ping-yao-list",
 			"style": {
-				"navigationBarBackgroundColor": "#191C3F",
+				"navigationBarBackgroundColor": "#16192B",
 				"navigationBarTitleText": "选择尬酒订单",
 				"navigationStyle": "default"
 			}
