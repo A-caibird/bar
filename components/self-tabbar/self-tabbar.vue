@@ -304,6 +304,7 @@
 					z-index: -999;
 					background: #832DFF;
 					filter: blur(10rpx);
+					transform: translateZ(0);
 					border-radius: 100%;
 				}
 			}
