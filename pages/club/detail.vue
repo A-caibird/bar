@@ -42,10 +42,6 @@
 				</view>
 			</view>
 			<view class="classify_box" :class="{'paddingTop': stickyStatus}">
-				<view class="nav_box" :class="{'animalStart': stickyStatus}"
-					@tap="$u.throttle($u.route({type:'back'}))">
-					<u-icon name="arrow-left" color="#FFFFFF" size="44"></u-icon>
-				</view>
 				<view class="classify_panel">
 					<block v-for="(info, index) in infoType" :key="index">
 						<view class="common_classify" :class="{'select': selectIndex == index}"
@@ -733,6 +729,7 @@
 				}
 
 				.classify_panel {
+					justify-content: center;
 					width: 100%;
 					height: 110rpx;
 					display: flex;
