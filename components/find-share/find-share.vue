@@ -1,6 +1,6 @@
 <template>
 	<view class="club_item_box" @tap="$u.throttle(goGroupBuying(info))">
-	<!-- <view class="club_item_box"> -->
+		<!-- <view class="club_item_box"> -->
 		<view class="user_header">
 			<view class="header_left" @tap.stop="$u.throttle(goPersonPage(info.userId))">
 				<image :src="info.userAvatar"></image>
@@ -26,7 +26,7 @@
 			<text>{{info.shareRequirements}}</text>
 		</view>
 		<view class="club_img">
-			<image :src="info.clubCover"/>
+			<image :src="info.clubCover" />
 		</view>
 		<view class="club_footer">
 			<view class="club_name">{{info.clubName}}</view>
@@ -34,7 +34,8 @@
 				<text>{{info.clubAddress}}</text>
 			</view>
 			<view class="club_labels">
-				<view class="commom_label" v-for="item,index in info.labelList" :key="index"> <text>{{item}}</text> </view>
+				<view class="commom_label" v-for="item,index in info.labelList" :key="index"> <text>{{item}}</text>
+				</view>
 			</view>
 			<view class="feature_box">
 				<view class="feature_left">
@@ -47,11 +48,13 @@
 					<view class="first_line" v-if="info.type=='customize'">
 						<view class="info_item">
 							<text class="item_label">男：</text>
-							<text class="item_text">{{info.shareWay.menWineCoin>0?`${info.shareWay.menWineCoin}元/人`:'免费'}}</text>
+							<text
+								class="item_text">{{info.shareWay.menWineCoin>0?`${info.shareWay.menWineCoin}元/人`:'免费'}}</text>
 						</view>
 						<view class="info_item" style="margin-left: 40rpx;">
 							<text class="item_label">女：</text>
-							<text class="item_text">{{info.shareWay.womenWineCoin>0?`${info.shareWay.womenWineCoin}元/人`:'免费'}}</text>
+							<text
+								class="item_text">{{info.shareWay.womenWineCoin>0?`${info.shareWay.womenWineCoin}元/人`:'免费'}}</text>
 						</view>
 					</view>
 					<view class="first_line" v-if="info.type=='treat'">
@@ -91,17 +94,8 @@
 
 			</view>
 		</view>
-		<pop
-			v-if="popShow"
-			title="加入拼享"
-			cancelText="再看看" confirmText="加入拼享"
-			:isMask="true"
-			@cancel="popShow = false"
-			@confirm="tapPingTap"
-			@maskTap="popShow = false"
-			mode="price"
-			:price="popPrice"
-		></pop>
+		<pop v-if="popShow" title="加入拼享" cancelText="再看看" confirmText="加入拼享" :isMask="true" @cancel="popShow = false"
+			@confirm="tapPingTap" @maskTap="popShow = false" mode="price" :price="popPrice"></pop>
 	</view>
 </template>
 
@@ -111,72 +105,73 @@
 	import $chat from '@/utils/chat/index.js'
 	import loginMixins from '@/mixins/loginConfirm.js'
 	export default {
-		mixins:[loginMixins],
-		props:{
-			info:{
-				type:Object,
-				default:{
-					labelList:[],
+		mixins: [loginMixins],
+		props: {
+			info: {
+				type: Object,
+				default: {
+					labelList: [],
 				}
 			}
 		},
-		components:{
+		components: {
 			pop
 		},
-		data(){
+		data() {
 			return {
 				popPrice: '',
 				popShow: false,
 				userInfo: app.globalData.userInfo,
 			}
 		},
-		methods:{
-			goPersonPage(userId){
-				if(!this.loginConfirmHandle(false)) return;
+		methods: {
+			goPersonPage(userId) {
+				if (!this.loginConfirmHandle(false)) return;
 				this.goPersonalHomepage(userId);
 			},
-			pingTap(){
-				if(!this.loginConfirmHandle(false)) return;
+			pingTap() {
+				if (!this.loginConfirmHandle(false)) return;
 				this.popPrice = this.info.amount;
 				this.popShow = true;
 			},
-			async tapPingTap(){
+			async tapPingTap() {
 				var info = this.info;
 				this.judgeVerify().then(res => {
 					console.log(res);
-					if(res.hasAdult){
+					if (res.hasAdult) {
 						this.tapPing(info);
-					}else{
+					} else {
 						this.$u.toast("未成年人员禁止拼享");
 					}
 				}).catch(e => {
 					console.log(e);
 				})
 			},
-			async tapPing(info){
+			async tapPing(info) {
 				// await this.$toast.confirm('','确定要发起加入请求吗？')
 				console.log("点击了===》")
 				console.log(info)
-				
-				
+
+
 				this.popShow = false
 				uni.$on('sendInviteMsg2', (joinTogetherId) => {
 					console.log('joinTogetherId', joinTogetherId);
 					this.sendPingMsg(info, joinTogetherId);
-					uni.$emit('find-share-list-refresh');// 刷新拼享快乐
+					uni.$emit('find-share-list-refresh'); // 刷新拼享快乐
 					uni.$off('sendInviteMsg2');
 				})
-				this.$u.route('/pages/club/consumption/payPage',{
+				this.$u.route('/pages/club/consumption/payPage', {
 					allAmount: info.amount,
-					orderId:info.id,
+					orderId: info.id,
 					method: 'sendInviteMsg2',
-					type:'ping-join-order'})
+					type: 'ping-join-order'
+				})
 
 			},
-			
-			sendPingMsg: function(orderInfo, joinTogetherId = ""){
-				
-				
+
+			sendPingMsg: function(orderInfo, joinTogetherId = "") {
+
+
 				// let friendInfo = this.$u.deepClone(this.info)
 				console.log("用户信息===》")
 				console.log(this.info)
@@ -197,7 +192,7 @@
 				// 	cardTableName: info.cardTableSn,
 				// 	agreeStatus: 'none',
 				// })
-				
+
 				var p1 = {};
 				p1.orderId = orderInfo.id
 				p1.clubCover = orderInfo.clubCover
@@ -208,7 +203,7 @@
 				p1.agreeStatus = 'none'
 				p1.statement = "我想和你拼单"
 				var last = JSON.stringify(p1);
-				
+
 				let params = {
 					type: "applyJoinOrder",
 					payloadStr: last,
@@ -217,22 +212,22 @@
 				this.$u.api.chatFriendMessageSend(params).then((res) => {
 					console.log("发送成功")
 				});
-				
-				
+
+
 			},
 
-      /**
-       * 申请加入拼享订单
-       * @param info
-       */
-			goGroupBuying:function(info){
-				if(!this.loginConfirmHandle(false)) return;
+			/**
+			 * 申请加入拼享订单
+			 * @param info
+			 */
+			goGroupBuying: function(info) {
+				if (!this.loginConfirmHandle(false)) return;
 				let clubId = info.clubId
 				let orderId = info.id
 				uni.$off('sendInviteMsg');
 				this.$u.route('/pages/order/groupBuying', {
 					id: clubId,
-					orderId : orderId,
+					orderId: orderId,
 					pingStatus: info.pingStatus
 				});
 			}
@@ -247,9 +242,9 @@
 		margin-left: 30rpx;
 		padding: 30rpx;
 		box-sizing: border-box;
-		background: #2C3158;
-		border-radius: 10rpx;
-
+		background: rgba(255, 255, 255, 0.05);  // 发现页面->拼享快乐页面修改
+		border-radius: 16rpx;
+		border:2rpx solid rgba(255, 255, 255, 0.05);
 		.user_header {
 			width: 100%;
 			box-sizing: border-box;

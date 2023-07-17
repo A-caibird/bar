@@ -13,19 +13,19 @@
 					<view class="info_price"> <text>{{info.originalWineCoin}}元</text> </view>
 				</view>
 				<view class="item_info">
-					<view class="item_info_label" style="color: #B3B3DD;">预约时间：</view>
+					<view class="item_info_label" style="color: rgba(255,255,255,0.5);">预约时间：</view>
 					<view class="item_info_text">{{info.date}}</view>
 				</view>
 				<view class="item_info" v-if="info.canUseEndTime">
-					<view class="item_info_label" style="color: #B3B3DD;">到期时间：</view>
+					<view class="item_info_label" style="color: rgba(255,255,255,0.5);">到期时间：</view>
 					<view class="item_info_text">{{info.canUseEndTime}}</view>
 				</view>
 				<view class="item_info">
-					<view class="item_info_label" style="color: #B3B3DD;">台位位置：</view>
+					<view class="item_info_label" style="color: rgba(255,255,255,0.5);">台位位置：</view>
 					<view class="item_info_text">{{info.cardTableName}} 卡台</view>
 				</view>
 				<view class="item_info">
-					<view class="item_info_label" style="color: #B3B3DD;">参与人数：</view>
+					<view class="item_info_label" style="color: rgba(255,255,255,0.5);">参与人数：</view>
 					<view class="item_info_text">{{info.joinPersonNumber}}人</view>
 				</view>
 			</view>
@@ -252,11 +252,14 @@
 <style lang="scss" scoped>
 	.order_box{
 		width: 100%;
+		background: #16192B;
 		.order_info{
 			width: calc(100% - 60rpx);
 			margin-left: 30rpx;
-			border-radius: 10rpx;
-			background: #2C3158;
+			margin-left: 30rpx;
+			border:2rpx solid rgba(255, 255, 255, 0.05);
+			border-radius: 16rpx;
+			background: rgba(255, 255, 255, 0.05);
 			box-sizing: border-box;
 			padding: 26rpx 30rpx;
 			position: relative;
@@ -284,21 +287,23 @@
 					display: flex;
 					align-items: center;
 					justify-content: space-between;
-					font-size: 34rpx;
+					font-family: PingFangSC-Medium, PingFang SC;
+					font-size: 32rpx;
 					color: #FFFFFF;
 					font-weight: 500;
 				}
 				.item_info{
 					display: flex;
 					align-items: center;
-					height: 40rpx;
+					font-family: PingFangSC-Regular, PingFang SC;
+					line-height: 40rpx;
 					font-size: 26rpx;
-					color: #FFFFFF;
+					color: rgba(255,255,255,0.5);
 				}
 			}
 			.order_btn{
 				margin-top: 24rpx;
-				border-top: 1px solid #3C4176;
+				border-top: 1px solid rgba(255,255,255,0.05);
 				display: flex;
 				align-items: center;
 				flex-direction: row-reverse;

@@ -254,7 +254,8 @@
 		.order_info {
 			width: calc(100% - 60rpx);
 			margin-left: 30rpx;
-			border-radius: 10rpx;
+			border-radius: 16rpx;
+			border:2rpx solid rgba(255, 255, 255, 0.05);
 			background: rgba(255, 255, 255, 0.05);
 			box-sizing: border-box;
 			padding: 26rpx 30rpx;

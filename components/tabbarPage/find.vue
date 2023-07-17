@@ -424,15 +424,18 @@
 			flex: 1;
 			min-width: 0;
 			min-height: 0;
+			background: #16192B;
 
 			.swiper-box {
 				height: 100%;
 				width: 100%;
 				position: relative;
+				background: #16192B;
 			}
 
 			.swiper-item {
 				height: 100%;
+				background: #16192B;
 			}
 		}
 	}

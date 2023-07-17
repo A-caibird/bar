@@ -1,6 +1,6 @@
 <template>
 	<mescroll-uni :ref="'mescrollRef'+i" :canShowTop="false" :fixed="true" @init="mescrollInit" :down="downOption"
-		@down="downCallback" :up="upOption" @up="upCallback">
+		@down="downCallback" :up="upOption" @up="upCallback" class="mesuni">
 		<block v-if="hasLocation">
 			<block v-for="(info, index) in pageList" :key="index">
 				<view class="common_item">
@@ -112,3 +112,8 @@
 		}
 	}
 </script>
+<style lang="scss" scoped>
+	.mesuni{
+		
+	}
+</style>

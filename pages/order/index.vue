@@ -208,7 +208,7 @@
 					min-width: 0;
 					min-height: 0;
 					
-
+					
 					.swiper-box {
 						height: 100%;
 						width: 100%;

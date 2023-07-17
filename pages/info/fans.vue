@@ -139,7 +139,7 @@
 							.follow-btn{
 								width: 149rpx;
 								height: 50rpx;
-								background: #F72EB2;
+								background: linear-gradient(134deg, #B73FFF 0%, #5A1FFF 100%);
 								border-radius: 25rpx;
 								font-size: 24rpx;
 								@include flex-center();

@@ -29,10 +29,10 @@
 						<u-icon name="arrow-left" color="#FFFFFF" size="44"></u-icon>
 					</view>
 
-					<view  class="content-dynamic" 
+					<view  class="content-dynamic1" 
 					:class="{active:currentIndex === '0' }" @tap="select('0')">动态</view>
 					
-					<view  class="content-dynamic"
+					<view  class="content-dynamic2"
 					:class="{active:currentIndex === '1' }" @tap="select('1')">资料</view>
 				</view>
 				<view class="gajiu_btn" @tap="$u.route('pages/discovery/addDynamic')">
@@ -419,25 +419,69 @@
 						opacity: 1;
 					}
 				}
-				.content-dynamic{
+				.content-dynamic1{
 					position: relative;
 					margin: 0 30rpx;
+					left:7rpx;
 					&.active{
-						font-size: 34rpx;
-						color: #FFFFFF;
+						position:relative;
+					&::before{
+						  content: "";
+						  position: absolute;
+						  top: 0;
+						  left: 0;
+						  width: 100%;
+						  height: 100%;
+						  background: #832DFF; // 模糊字体背景颜色
+						  filter: blur(10rpx);
+						  z-index: -1;
+					}
 					&:after{
 							content: "";
 							position: absolute;
 							bottom: -10rpx;
 							left: 10rpx;
-							width: 50rpx;
-							height: 6rpx;
-							background: #FF59C9;
+							width: 40rpx;
+							height: 4rpx;
+							background: #FFFFFF;
 							border-radius: 3rpx;
+							opacity: 0.2;
+							transform: translateZ(0);
 						}
 
 					}
+					
 
+				}
+				.content-dynamic2{
+					position: relative;
+					left:80rpx;
+					&.active{
+						position:relative;
+					&::before{
+						  content: "";
+						  position: absolute;
+						  top: 0;
+						  left: 0;
+						  width: 100%;
+						  height: 100%;
+						  background: #832DFF; // 模糊字体背景颜色
+						  filter: blur(10rpx);
+						  z-index: -1;
+					}
+					&::after{
+							content: "";
+							position: absolute;
+							bottom: -10rpx;
+							left: 10rpx;
+							width: 40rpx;
+							height: 4rpx;
+							background: #FFFFFF;
+							border-radius: 3rpx;
+							opacity: 0.2;
+							transform: translateZ(0);
+						}
+					}
 				}
 			}
 
