@@ -1,9 +1,9 @@
 <template style="background: #16192B;">
 	<view class="container" style="background: #16192B;">
-		<block v-if="!stickyStatus">
+		<block>
 			<u-navbar :border-bottom="false" :is-fixed="true" :title-color="`rgba(255,255,255,${navOpacity})`"
 				:background="{
-					background: `rgba(25,28,63,${navOpacity})`
+					background: `rgba(22,25,43,${navOpacity})`
 				}" :title="clubInfo.name" :immersive=true back-icon-color="#FFFFFF"></u-navbar>
 		</block>
 		<view class="middle_box">
@@ -233,7 +233,7 @@
 			let vm = this;
 			this.$u.getRect('.classify_box').then(res => {
 				let top = res.top;
-				if (top <= this.statusBarHeight) {
+				if (top <= this.statusBarHeight + 44) {
 					vm.stickyStatus = true;
 				} else {
 					vm.stickyStatus = false;
@@ -708,7 +708,7 @@
 				display: flex;
 				align-items: center;
 				position: sticky;
-				top: 0rpx;
+				top: 88rpx;
 				z-index: 100;
 				background: #16192B;
 				border-bottom: 1px solid #31345B;
