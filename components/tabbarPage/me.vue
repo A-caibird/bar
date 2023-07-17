@@ -157,24 +157,24 @@
 				if (this.isAppleAudit) {
 					if (app.globalData.platform == 'ios') {
 						return [{
-								icon: '/static/imgs/mine/collect_icon.png',
+								icon: '/static/imgs/mine/collect_icon2.png',
 								text: '我的收藏',
 								url: '/pages/mine/myCollection/myCollection'
 
 							},
 							{
-								icon: '/static/imgs/mine/setting_icon.png',
+								icon: '/static/imgs/mine/setting_icon2.png',
 								text: '个人设置',
 								url: '/pages/mine/setting/index'
 							},
 							{
-								icon: '/static/imgs/mine/order_icon.png',
+								icon: '/static/imgs/mine/order_icon2.png',
 								text: '我的订单',
 								url: yaoOrderListUrl,
 								num: this.yaoOrderWaitPayNum,
 							},
 							{
-								icon: '/static/imgs/mine/share_order.png',
+								icon: '/static/imgs/mine/share_order2.png',
 								text: '拼享订单',
 								url: pingOrderListUrl,
 								num: this.pingOrderWaitPayNum,
@@ -182,12 +182,12 @@
 						]
 					} else {
 						return [{
-								icon: '/static/imgs/mine/collect_icon.png',
+								icon: '/static/imgs/mine/collect_icon2.png',
 								text: '我的收藏',
 								url: '/pages/mine/myCollection/myCollection'
 							},
 							{
-								icon: '/static/imgs/mine/setting_icon.png',
+								icon: '/static/imgs/mine/setting_icon2.png',
 								text: '个人设置',
 								url: '/pages/mine/setting/index'
 							}
@@ -195,41 +195,41 @@
 					}
 				} else {
 					return [{
-							icon: '/static/imgs/mine/wine_icon.png',
+							icon: '/static/imgs/mine/wine_icon2.png',
 							text: '酒库',
 							url: '/pages/mine/wineCellar/wineCellar',
 							num: this.wineCellarNum
 						},
 						{
-							icon: '/static/imgs/mine/wallet_icon.png',
+							icon: '/static/imgs/mine/wallet_icon2.png',
 							text: '我的钱包',
 							url: '/pages/mine/wallet/index'
 							// url: '/pages/mine/myWallet/myWallet'
 						},
 						{
-							icon: '/static/imgs/mine/order_icon.png',
+							icon: '/static/imgs/mine/order_icon2.png',
 							text: '我的订单',
 							url: yaoOrderListUrl,
 							num: this.yaoOrderWaitPayNum,
 						},
 						{
-							icon: '/static/imgs/mine/share_order.png',
+							icon: '/static/imgs/mine/share_order2.png',
 							text: '拼享订单',
 							url: pingOrderListUrl,
 							num: this.pingOrderWaitPayNum,
 						},
 						{
-							icon: '/static/imgs/mine/member_icon.png',
+							icon: '/static/imgs/mine/member_icon2.png',
 							text: '会员中心',
 							url: '/pages/mine/memberCenter/memberCenter'
 						},
 						{
-							icon: '/static/imgs/mine/youhuiquan_icon.png',
+							icon: '/static/imgs/mine/youhuiquan_icon2.png',
 							text: '优惠券',
 							url: '/pages/coupon/coupon'
 						},
 						{
-							icon: '/static/imgs/mine/collect_icon.png',
+							icon: '/static/imgs/mine/collect_icon2.png',
 							text: '我的收藏',
 							url: '/pages/mine/myCollection/myCollection'
 						},
@@ -239,7 +239,7 @@
 						// 	url: 'kefu'
 						// },
 						{
-							icon: '/static/imgs/mine/setting_icon.png',
+							icon: '/static/imgs/mine/setting_icon2.png',
 							text: '个人设置',
 							url: '/pages/mine/setting/index'
 						}
