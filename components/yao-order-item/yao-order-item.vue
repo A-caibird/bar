@@ -255,8 +255,7 @@
 			width: calc(100% - 60rpx);
 			margin-left: 30rpx;
 			border-radius: 10rpx;
-
-			background: #16192B;
+			background: rgba(255, 255, 255, 0.05);
 			box-sizing: border-box;
 			padding: 26rpx 30rpx;
 			position: relative;
@@ -301,7 +300,7 @@
 					font-family: PingFangSC-Regular, PingFang SC;
 					line-height: 40rpx;
 					font-size: 26rpx;
-					color: rgba(255,255,255,0.5);
+					color: rgba(255, 255, 255, 0.5);
 				}
 			}
 
