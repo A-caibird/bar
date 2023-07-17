@@ -70,7 +70,7 @@
 						</block>
 					</view>
 				</view>
-				<u-gap height="10" bgColor="#20234B"></u-gap>
+				<u-gap height="10" bgColor="rgba(255,255,255,0.5)"></u-gap>
 			</view>
 			<view class="order_club">
 				<view class="user-list">
@@ -133,7 +133,7 @@
 					</view>
 				</view>
 			
-				<!-- <u-gap height="1" bgColor="#20234B" style="margin-top: 20rpx;"></u-gap>
+				<!-- <u-gap height="1" bgColor="rgba(255,255,255,0.5)" style="margin-top: 20rpx;"></u-gap>
 				
 				<view class="common_info_item" style="margin-top: 20rpx;">
 					<view class="item_left"> 
@@ -152,7 +152,7 @@
 					</view>
 				</view> -->
 			</view>
-			<u-gap height="20" bgColor="#20234B"></u-gap>
+			<u-gap height="20" bgColor="rgba(255,255,255,0.5)"></u-gap>
 			<!-- <view class="order_info">
 				<common-label leftText="订单信息" :showRight="false"></common-label>
 				<view class="common_info_item">
@@ -181,7 +181,7 @@
 					</view>
 				</view>
 			</view>
-			<u-gap height="20" bgColor="#20234B"></u-gap> -->
+			<u-gap height="20" bgColor="rgba(255,255,255,0.5)"></u-gap> -->
 			<view class="oerder_goods">
 				<common-label leftText="酒水套餐" :showRight="false"></common-label>
 				<view class="goods_box">
@@ -373,7 +373,7 @@
 
 <style lang="scss" scoped>
 	.middle_box {
-		border-top: 1px solid #20234B;
+		border-top: 1px solid rgba(255,255,255,0.5);
 
 		.order_status_text {
 			width: 100%;

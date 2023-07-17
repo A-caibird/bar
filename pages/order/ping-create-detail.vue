@@ -68,7 +68,7 @@
 						</block>
 					</view>
 				</view>
-				<u-gap height="10" bgColor="#20234B"></u-gap>
+				<u-gap height="10" bgColor="#16192B"></u-gap>
 			</view>
 			<block v-if="orderInfo.isCreator">
 				<view class="service_box">
@@ -81,7 +81,7 @@
 					</view>
 					<view class="service_btn" @tap="$u.throttle(serviceTap)">联系客服</view>
 				</view>
-				<u-gap height="10" bgColor="#20234B"></u-gap>
+				<u-gap height="10" bgColor="#16192B"></u-gap>
 			</block>
 			<view class="order_club">
 				<view class="user-list">
@@ -191,7 +191,7 @@
 					</view>
 				</view>
 			</view>
-			<u-gap height="20" bgColor="#20234B"></u-gap>
+			<u-gap height="20" bgColor="#16192B"></u-gap>
 			<block v-if="orderInfo.isCreator">
 				<view class="order_info">
 					<common-label leftText="订单信息" :showRight="false"></common-label>
@@ -230,7 +230,7 @@
 						</view>
 					</view>
 				</view>
-				<u-gap height="20" bgColor="#20234B"></u-gap>
+				<u-gap height="20" bgColor="#16192B"></u-gap>
 			</block>
 			<view class="order_goods">
 				<common-label leftText="酒水套餐" :showRight="false"></common-label>
@@ -650,7 +650,7 @@
 
 <style lang="scss" scoped>
 	.middle_box {
-		border-top: 1px solid #20234B;
+		border-top: 1px solid #16192B;
 
 		.order_status_text {
 			width: 100%;

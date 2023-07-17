@@ -70,7 +70,7 @@
 						</block>
 					</view>
 				</view>
-				<u-gap height="10" bgColor="#20234B"></u-gap>
+				<u-gap height="10" bgColor="#16192B"></u-gap>
 			</view>
 			<block v-if="orderInfo.isCreator">
 				<view class="service_box">
@@ -83,7 +83,7 @@
 					</view>
 					<view class="service_btn" @tap="$u.throttle(serviceTap)">联系客服</view>
 				</view>
-				<u-gap height="10" bgColor="#20234B"></u-gap>
+				<u-gap height="10" bgColor="#16192B"></u-gap>
 			</block>
 			<view class="order_club">
 				<view class="user-list">
@@ -149,7 +149,7 @@
 					</view>
 				</block>
 			</view>
-			<u-gap height="20" bgColor="#20234B"></u-gap>
+			<u-gap height="20" bgColor="#16192B"></u-gap>
 			<block v-if="orderInfo.isCreator">
 				<view class="order_info">
 					<common-label leftText="订单信息" :showRight="false"></common-label>
@@ -188,7 +188,7 @@
 						</view>
 					</view>
 				</view>
-				<u-gap height="20" bgColor="#20234B"></u-gap>
+				<u-gap height="20" bgColor="#16192B"></u-gap>
 			</block>
 			<view class="oerder_goods">
 				<common-label leftText="酒水套餐" :showRight="false"></common-label>
@@ -554,7 +554,10 @@
 
 <style lang="scss" scoped>
 	.middle_box {
-		border-top: 1px solid #20234B;
+		background: rgba(255,255,255,0.05);
+		border-radius: 16rpx;
+		margin-left:32rpx;
+		margin-right:32rpx;
 		.order_status_text {
 			width: 100%;
 			height: 112rpx;
@@ -573,11 +576,11 @@
 				font-size: 34rpx;
 				color: #FFFFFF;
 			}
-		}
+		}	
 
 		.club_info {
 			width: 100%;
-
+	border-radius: 16rpx;
 			.club_img {
 				width: 100%;
 				height: 435rpx;
@@ -656,7 +659,7 @@
 					.line {
 						height: 20rpx;
 						width: 1px;
-						background: #575B85;
+						background: #16192B;
 						margin: 0 14rpx;
 					}
 				}
@@ -672,7 +675,7 @@
 						@include flex-center();
 						border-radius: 2rpx;
 						padding: 0 10rpx;
-						border: 1px solid #565B86;
+						border: 1px solid #16192B;
 						color: #B3BAEF;
 						font-size: 20rpx;
 						margin-right: 10rpx;

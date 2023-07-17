@@ -10,8 +10,8 @@
 		<view class="middle_box">
 			<view class="classify_box">
 				<classify fontSize="28" bgColor="#16192B" ref="tabs" :list="status" :current="current" @change="change"
-					:is-scroll="false" swiperWidth="750" inactiveColor="#B7B9D6" activeColor="#ffffff" :activeItemStyle="{
-					 'font-size': '34rpx'
+					:is-scroll="false" swiperWidth="750" inactiveColor="#B7B9D6" activeColor="#832DFF" :activeItemStyle="{
+					 'font-size': '34rpx;'
 				 }"></classify>
 			</view>
 			<view class="order_list">
@@ -187,11 +187,27 @@
 
 				display: flex;
 				flex-direction: column;
-
+				
+				// .classify_box {
+				//   position: relative;
+				// }
+				
+				// .classify_box::after {
+				//   content: "";
+				//   position: absolute;
+				//   top:40rpx;
+				//   width: 40rpx;
+				//   height: 4rpx;
+				//   background: red;
+				//   border-radius: 3rpx;
+				//   opacity: 0.2;
+				// }  
+				// // 尝试添加下滑横线
 				.order_list {
 					flex: 1;
 					min-width: 0;
 					min-height: 0;
+					
 
 					.swiper-box {
 						height: 100%;
