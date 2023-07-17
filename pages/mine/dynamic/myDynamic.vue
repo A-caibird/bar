@@ -46,10 +46,10 @@
 					<view class="nav_box" :class="{'show': navShow}" @tap="$u.throttle($u.route({type:'back'}))">
 						<u-icon name="arrow-left" color="#FFFFFF" size="44"></u-icon>
 					</view>
-					<view  class="content-dynamic" 
+					<view  class="content-dynamic1" 
 					:class="{active:currentIndex === '0' }" @tap="select('0')">动态</view>
 					
-					<view  class="content-dynamic"
+					<view  class="content-dynamic2"
 					:class="{active:currentIndex === '1' }" @tap="select('1')">资料</view>
 				</view>
 				<view class="gajiu_btn" @tap.stop="tapAwkwardWine" v-if="!isSelf">
@@ -503,7 +503,7 @@
 				top: 0rpx;
 				left: 0rpx;
 				z-index: 120;
-				background: #191C3F; // Acaibird #191C3F
+				background: #16192B; // Acaibird #16192B，其他人的动态样式修改
 				.content-title-box{
 					display: flex;
 					align-items: center;
@@ -537,27 +537,72 @@
 						opacity: 1;
 					}
 				}
-				.content-dynamic{
-					position: relative;
-					margin: 0 30rpx;
-					&.active{
-						font-size: 34rpx;
-						color: #FFFFFF;
-					&:after{
-							content: "";
-							position: absolute;
-							bottom: -10rpx;
-							left: 10rpx;
-							width: 50rpx; 
-							height: 6rpx;
-							background: #FF59C9;
-							border-radius: 3rpx;
-					}
+				.content-dynamic1{
+						position: relative;
+						margin: 0 30rpx;
+						left:7rpx;
+						&.active{
+							position:relative;
+						&::before{
+							  content: "";
+							  position: absolute;
+							  top: 0;
+							  left: 0;
+							  width: 100%;
+							  height: 100%;
+							  background: #832DFF; // 模糊字体背景颜色
+							  filter: blur(10rpx);
+							  z-index: -1;
+						}
+						&:after{
+								content: "";
+								position: absolute;
+								bottom: -10rpx;
+								left: 10rpx;
+								width: 40rpx;
+								height: 4rpx;
+								background: #FFFFFF;
+								border-radius: 3rpx;
+								opacity: 0.2;
+								transform: translateZ(0);
+							}
+				
+						}
 						
+				
 					}
-
+					.content-dynamic2{
+						position: relative;
+						left:80rpx;
+						&.active{
+							position:relative;
+						&::before{
+							  content: "";
+							  position: absolute;
+							  top: 0;
+							  left: 0;
+							  width: 100%;
+							  height: 100%;
+							  background: #832DFF; // 模糊字体背景颜色
+							  filter: blur(10rpx);
+							  z-index: -1;
+						}
+						&::after{
+								content: "";
+								position: absolute;
+								bottom: -10rpx;
+								left: 10rpx;
+								width: 40rpx;
+								height: 4rpx;
+								background: #FFFFFF;
+								border-radius: 3rpx;
+								opacity: 0.2;
+								transform: translateZ(0);
+							}
+						}
+					}
 				}
-			}
+				
 			.dynamic-details {
 				width: 100%;
 				.dynamic-details-item {
