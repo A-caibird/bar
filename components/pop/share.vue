@@ -139,10 +139,11 @@
 				padding-bottom: constant(safe-area-inset-bottom);
 				padding-bottom: env(safe-area-inset-bottom);
 				box-sizing: content-box;
+				height: 500rpx;   // 弹出页面高度
 				.title{
 					text-align: center;
 					font-size: 30rpx;
-					color: #666666;
+					color: #ffffff;
 					padding: 40rpx 0rpx;
 				}
 				.share_box{
@@ -177,12 +178,16 @@
 					
 				}
 				.btn_box{
-					width: 100%;
+					width: 686rpx;
+					height: 80rpx;
+					border-radius: 40rpx;
+					border: 1rpx solid rgba(255,255,255,0.5);
 					margin-top: 40rpx;
-					border-top: 1px solid #666666;
+					margin-left:32rpx;
+					margin-bottom: 40rpx;
 					.common_btn{
 						height: 100rpx;
-						line-height: 100rpx;
+						line-height: 70rpx;
 						text-align: center;
 						color: #666666;
 					}

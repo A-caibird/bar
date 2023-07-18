@@ -59,19 +59,25 @@
 
 				.problem-wrap {
 					padding: 30rpx 40rpx 20rpx 0;
-					border-bottom: 1px solid #31345B;
-
+                    background: rgba(255,255,255,0.05);
+					border: 1px solid rgba(255,255,255,0.05);
+                    border-radius: 16rpx;
+					margin-bottom: 35rpx;
 					.title {
 						font-size: 30rpx;
 						color: #FFFFFF;
-						font-weight: 700;
+						line-height: 42rpx;
+						font-weight: 400;
 						margin-bottom: 20rpx;
 					}
 
 					.answer {
 						text {
-							font-size: 26rpx;
-							color: #72729E;
+							font-size: 28rpx;
+							font-family: PingFangSC-Regular, PingFang SC;
+							font-weight: 400;
+							color: #979797;
+							line-height: 40rpx;
 						}
 
 					}

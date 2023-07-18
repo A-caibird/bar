@@ -25,7 +25,7 @@
 			<view class="attention-btn">
 				<view v-if="flag==true" class="btn-attench0" >
 					<button plain="true" type="default" @tap="atten_btn()">
-						<u-icon name="heart" color="#FFFFFF" size="28"></u-icon>
+						<u-icon name="heart" color="rgba(255,255,255,0.5)" size="28"></u-icon>
 						<text>未关注</text>
 					</button>
 				</view>
@@ -424,25 +424,24 @@
 				// width: 180rpx;
 				position: relative;
 				z-index: 10;
-				padding-top: 50rpx;
+				top:-20rpx;  // 关注按钮位置调整
 				justify-self: flex-end;
 				.btn-attench0{
 					width: 150rpx;
 					height: 50rpx;
-					border-radius: 49rpx;
 					color: #FFFFFF;
 					font-size: 28rpx;
+					
 					button {
 						padding: 0;
 						width: 150rpx;
 						height: 50rpx;
-						color: #FFFFFF;
+						border: 10rpx solid #16192B;  // 设置border 反而没有，与之相反
+						color: rgba(255,255,255,0.8);
 						background: null;
 						font-size: 26rpx;
-						border-radius: 49rpx;
 						@include flex-center();
 						box-sizing: content-box;
-						border: 1px solid #ffffff;
 						&>text{
 							margin-left: 8rpx;
 						}
@@ -452,20 +451,18 @@
 				.btn-attench1{
 					width: 150rpx;
 					height: 50rpx;
-					border-radius: 49rpx;
 					color: #FFFFFF;
 					font-size: 28rpx;
 					button {
 						padding: 0;
 						width: 150rpx;
 						height: 50rpx;
+						border: 10rpx solid #16192B;  // 设置border 反而没有，与之相反
 						color: #FFFFFF;
-						background: null;
 						font-size: 26rpx;
-						border-radius: 49rpx;
 						@include flex-center();
 						box-sizing: content-box;
-						background-color:#F72EB2 ;
+						background: null;
 						&>text{
 							margin-left: 8rpx;
 						}

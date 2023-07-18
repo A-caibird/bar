@@ -413,7 +413,7 @@
 
             .info-item {
                 padding: 20rpx 30rpx;
-                border-bottom: 1px solid #31345B;
+                // border-bottom: 1px solid #31345B;
 
                 .location-box {
                     display: flex;
@@ -463,7 +463,7 @@
                 display: flex;
                 flex-direction: column;
                 padding: 0 30rpx;
-                border-bottom: 1px solid #31345B;
+                // border-bottom: 1px solid #31345B;
 
                 &:last-child {
                     border-bottom: none;
