@@ -26,25 +26,31 @@
 				</view>
 				<view class="form_item_panel">
 					<view class="input_box" v-if="passwordLook">
-						<input v-model="passText" class="password_input" type="text" placeholder-class="placeholder" placeholder="请输入密码" />
+						<input v-model="passText" class="password_input" type="text" placeholder-class="placeholder"
+							placeholder="请输入密码" />
 					</view>
 					<view class="input_box" v-else>
-						<input v-model="passText" class="password_input" type="password" placeholder-class="placeholder" placeholder="请输入密码" />
+						<input v-model="passText" class="password_input" type="password" placeholder-class="placeholder"
+							placeholder="请输入密码" />
 					</view>
 
 					<block v-if="passwordLook">
-						<image class="input_icon password" src="/static/imgs/input/look_open.png" @tap="toggleLook"></image>
+						<image class="input_icon password" src="/static/imgs/input/look_open.png" @tap="toggleLook">
+						</image>
 					</block>
 					<block v-else>
-						<image class="input_icon password" src="/static/imgs/input/look_close.png" @tap="toggleLook"></image>
+						<image class="input_icon password" src="/static/imgs/input/look_close.png" @tap="toggleLook">
+						</image>
 					</block>
 				</view>
 			</view>
 			<view class="register_forget_box">
 				<view class="register_text" @tap="$u.route('pages/register/index')"> <text>注册账户</text> </view>
-				<view class="register_text" @tap="$u.route('pages/recoverPassword/recoverPassword')"> <text>忘记密码?</text> </view>
+				<view class="register_text" @tap="$u.route('pages/recoverPassword/recoverPassword')"> <text>忘记密码?</text>
+				</view>
 			</view>
-			<view class="login_btn" :class="{'active': btnActive}" @tap="$u.throttle(loginHandle)"> <text>登录</text> </view>
+			<view class="login_btn" :class="{'active': btnActive}" @tap="$u.throttle(loginHandle)"> <text>登录</text>
+			</view>
 			<view class="other_login" v-if="!isAppleAudit">
 				<view class="login_decoration">
 					<view class="line"></view>
@@ -61,7 +67,7 @@
 					</view>
 					<view class="login_way">
 						<!-- <view class="wechat_way" @tap="$u.route('pages/register/phoneBind')"> -->
-						<view class="wechat_way" @tap="$u.throttle(tapWXLogin)">
+						<view class="wechat_way" @tap="$u.throttle(phoneLogin)">
 							<image src="/static/imgs/common/iphoneNumber.png"></image>
 							<text>一键登录</text>
 						</view>
@@ -85,96 +91,110 @@
 	import appleAudit from '@/mixins/apple-audit.js'
 	var app = getApp();
 	export default {
-		mixins:[appleAudit],
+		mixins: [appleAudit],
 		data() {
 			return {
 				passwordLook: false,
 				phone: '',
 				passText: '',
-				isSelect:false,
-				options:"",
+				isSelect: false,
+				options: "",
 				isHome: false,
 			}
 		},
 		computed: {
 			btnActive: function() {
-				if (this.phone && this.passText &&this.isSelect) {
+				if (this.phone && this.passText && this.isSelect) {
 					return true;
 				} else {
 					return false;
 				}
 			}
 		},
-    //在实例初始化之后，数据观测(data observer)和 event/watcher 事件配置之前被调用，但是目前看起来好像没啥用了
 		beforeCreate() {
 			// #ifdef APP-PLUS
 			plus.screen.lockOrientation('portrait-primary'); //锁死屏幕方向为竖屏
 			// #endif
 
 		},
-		onLoad:function(options){
+		onLoad: function(options) {
 			if (options.data) {
 				this.options = JSON.parse(decodeURIComponent(options.data))
 				console.log(this.options);
 			}
-			if(options.register){
-				if(parseInt(options.register) == 1){
+			if (options.register) {
+				if (parseInt(options.register) == 1) {
 					this.isHome = true;
 				}
 			}
 		},
 		methods: {
-			backTap: function(){
-				if(this.isHome){
+			backTap: function() {
+				if (this.isHome) {
 					uni.reLaunch({
 						url: '/pages/index/index'
 					})
-				}else{
+				} else {
 					uni.navigateBack();
 				}
 			},
-			async wxLogin(params){
+			async wxLogin(params) {
 				uni.showLoading({
 					title: '加载中'
 				})
-				let {code,data} = await this.$u.api.wxLoginApi(params)
+				let {
+					code,
+					data
+				} = await this.$u.api.wxLoginApi(params)
 				// console.log(data)
 				uni.hideLoading();
-				if(code==0) {
+				if (code == 0) {
 					data['options'] = this.options;
 					login(data, this.isHome);
-				} else if(code==1) {//未绑定手机
-					this.$u.route('/pages/register/phoneBind',{
-						openId:params.openId,
-						wechatNickName:params.wechatNickName,
+				} else if (code == 1) { //未绑定手机
+					this.$u.route('/pages/register/phoneBind', {
+						openId: params.openId,
+						wechatNickName: params.wechatNickName,
 					})
 				}
 			},
-			tapWXLogin(){
-				if(!this.isSelect){
-					this.$u.toast('请勾选爬梯秀用户协议')
+			async phoneLogin(params) {
+				uni.showLoading({
+					title: '加载中'
+				})
+				let {
+					code,
+					data
+				} = await this.$u.api.phoneLoginApi(params)
+				// console.log(data)
+				uni.hideLoading();
+				if (code == 0) {
+					data['options'] = this.options;
+					login(data, this.isHome);
+				}
+			},
+			tapWXLogin() {
+				if (!this.isSelect) {
+					this.$u.toast('请勾选爬梯秀用户协议') // 显示消息
 					return;
 				}
 				let vm = this
 				uni.login({
-					provider:'weixin',
-					success: function (res) {
+					provider: 'weixin',
+					success: function(res) {
 						// console.log(res);
 						uni.getUserInfo({
 							provider: 'weixin',
 							success: function(infoRes) {
-								console.log("微信登录授权信息获取成功");
-								console.log(infoRes);
-								var cid = plus.push.getClientInfo().clientid
-				
+								// console.log(infoRes);
+
 								let params = {
-									openId:res.authResult.openid,
-									wechatNickName : infoRes.userInfo.nickName,
+									openId: res.authResult.openid,
+									wechatNickName: infoRes.userInfo.nickName,
 									// #ifdef APP-PLUS
-									clientId:cid,
+									clientId: plus.push.getClientInfo().clientid,
 									// #endif
 								}
-								console.log(cid)
 								vm.wxLogin(params)
 							},
 							fail(err) {
@@ -182,128 +202,100 @@
 								console.log(err);
 							}
 						});
-				
-				
-				
 					},
 					fail(err) {
 						vm.$toast.text('微信登录失败！')
 						console.log(err);
 					}
 				})
-				
 			},
-			// tapIphoneNumber(){
-			// 	if(!this.isSelect){
-			// 		this.$u.toast('请勾选爬梯秀用户协议')
-			// 		return;
-			// 	}
-			// 	let vm = this
-			// 	uni.login({
-			// 		provider:'univerify',
-			// 		univerifyStyle:{
-			// 			"fullScreen":false,
-			// 			"backgroundColor":"#ffffff",
-			// 			"phoneNum":{
-			// 				"color":"#2281F5",		
-			// 			},
-			// 			"authButton":{
-			// 				"normalColor":"#000000",
-			// 				"title":"本机号码一键登录",
-			// 				"textColor":"#ffffff",
-			// 				"disabledColor":"#73aaf5",
-			// 				"highlightColor":"#2861c5"
-			// 			}
-			// 		},
-			// 		success(res) { // 正式登录成功
-			// 	        console.log(res.authResult); // {openid:'登录授权唯一标识',access_token:'接口返回的 token'}
-					
-			// 			// 在得到access_token后，通过callfunction调用云函数
-			// 			uniCloud.callFunction({
-			// 			    name: 'getPhoneNumber', // 云函数名称
-			// 			    data: { //传给云函数的参数
-			// 			    'access_token': res.authResult.access_token, // 客户端一键登录接口返回的access_token
-			// 			    'openid': res.authResult.openid // 客户端一键登录接口返回的openid
-			// 			    },
-			// 		        success(callRes) {
-			// 					console.log('调用云函数成功' + callRes)
-			// 				},
-			// 				fail(callErr) {
-			// 					console.log('调用云函数出错' + callErr)
-			// 				},
-			// 				complete() {
-			// 					uni.closeAuthView() //关闭授权登录界面
-			// 				}
-			// 				})
-			// 	    },
-			// 		fail(err) {
-			// 			vm.$toast.text('手机号登录失败！')
-			// 			console.log(err.errCode)
-			// 			console.log(err.errMsg)
-			// 			uni.closeAuthView() //关闭授权登录界面
-			// 		}
-			// 	})			
-			// 			provider:'weixin',
-			// 			success: function (res) {
-			// 				// console.log(res);
-			// 				uni.getUserInfo({
-			// 					provider: 'weixin',
-			// 					success: function(infoRes) {
-			// 						console.log("微信登录授权信息获取成功");
-			// 						console.log(infoRes);
-			// 						var cid = plus.push.getClientInfo().clientid
-				
-			// 						let params = {
-			// 							openId:res.authResult.openid,
-			// 							wechatNickName : infoRes.userInfo.nickName,
-			// 							// #ifdef APP-PLUS
-			// 							clientId:cid,
-			// 							// #endif
-			// 						}
-			// 						console.log(cid)
-			// 						vm.wxLogin(params)
-			// 					},
-			// 					fail(err) {
-			// 						vm.$toast.text('微信登录失败！')
-			// 						console.log(err);
-			// 					}
-			// 				});
-				
-				
-				
-			// 			},
-			// 			fail(err) {
-			// 				vm.$toast.text('微信登录失败！')
-			// 				console.log(err);
-			// 			}
-			// 		})
-				
-			// 	},
-			// },
-			
-			
+			preLogin() {
+				uni.preLogin({
+					provider: 'univerify',
+					success() { //预登录成功
+						// 显示一键登录选项
+					},
+					fail(res) { // 预登录失败
+						// 不显示一键登录选项（或置灰）
+						// 根据错误信息判断失败原因，如有需要可将错误提交给统计服务器
+						console.log(res.errCode)
+						console.log(res.errMsg)
+					}
+				})
+			},
+			phoneLogin() {
+				if (!this.isSelect) {
+					this.$u.toast('请勾选爬梯秀用户协议')
+					return;
+				}
+				uni.login({ //正式登录，弹出授权窗
+					provider: 'univerify',
+					univerifyStyle: { // 自定义登录框样式
+						"fullScreen": true, // 是否全屏显示，true表示全屏模式，false表示非全屏模式，默认值为false。
+						"backgroundColor": "#ffffff", // 授权页面背景颜色，默认值：#ffffff 
+						"phoneNum": {
+							"color": "#2281F5", // 手机号文字颜色 默认值：#000000   
+						},
+						"authButton": {
+							"normalColor": "#3479f5", // 授权按钮正常状态背景颜色 默认值：#3479f5  
+							"highlightColor": "#2861c5", // 授权按钮按下状态背景颜色 默认值：#2861c5（仅ios支持）  
+							"disabledColor": "#73aaf5", // 授权按钮不可点击时背景颜色 默认值：#73aaf5（仅ios支持）  
+							"textColor": "#ffffff", // 授权按钮文字颜色 默认值：#ffffff  
+							"title": "本机号码一键登录" // 授权按钮文案 默认值：“本机号码一键登录”  
+						}
+					},
+					success(res) { // 正式登录成功
+						console.log(res.authResult); // {openid:'登录授权唯一标识',access_token:'接口返回的 token'}
+
+						// 在得到access_token后，通过callfunction调用云函数f
+						uniCloud.callFunction({
+							name: 'getPhoneNumber', // 云函数名称
+							data: { //传给云函数的参数
+								'access_token': res.authResult.access_token, // 客户端一键登录接口返回的access_token
+								'openid': res.authResult.openid // 客户端一键登录接口返回的openid
+							},
+							success(res) {
+								console.log('调用云函数成功' + res);
+								console.log(res.data.phoneNumber);
+								this.phone=res.data.phoneNumber;
+								this.passText="12345";
+								this.loginHandle();
+							},
+							fail(callErr) {
+								console.log('调用云函数出错' + callErr)
+							},
+							complete() {
+								uni.closeAuthView() //关闭授权登录界面
+							}
+						})
+					},
+					fail(err) { // 正式登录失败
+						vm.$toast.text('微信登录失败！')
+						console.log(err);
+						uni.closeAuthView() //关闭授权登录界面
+					}
+				})
+			},
 			// 登录事件 $u.throttle() 节流防抖处理
-			loginHandle: function(){
+			loginHandle: function() {
 				let params = {
 					phone: this.phone,
 					password: this.passText,
 					// #ifdef APP-PLUS
-					clientId:plus.push.getClientInfo().clientid,
+					clientId: plus.push.getClientInfo().clientid,
 					// #endif
 				}
-				
-				console.log("cid号码" + plus.push.getClientInfo().clientid)
 				let phoneCheck = this.$u.test.mobile(params.phone)
 
-				if(!phoneCheck){
+				if (!phoneCheck) {
 					this.$u.toast('请输入正确的手机号')
 					return;
 				}
-				if(!params.password){
+				if (!params.password) {
 					this.$u.toast('请输入密码')
 					return;
 				}
-				if(!this.isSelect){
+				if (!this.isSelect) {
 					this.$u.toast('请勾选爬梯秀用户协议')
 					return;
 				}
@@ -313,7 +305,7 @@
 				this.$u.api.phoneLoginApi(params).then(res => {
 					uni.hideLoading();
 					var code = res.code;
-					if(parseInt(code) == 0){
+					if (parseInt(code) == 0) {
 						login(res.data, this.isHome)
 					}
 				}).catch(e => {
@@ -336,6 +328,7 @@
 
 <style lang="scss" scoped>
 	$backImg: "/static/imgs/common/login_header.png";
+
 	.container {
 		width: 100%;
 		height: 100vh;
@@ -346,19 +339,22 @@
 			width: 100%;
 			position: relative;
 			padding-top: var(--status-bar-height);
-			.nav_box{
+
+			.nav_box {
 				height: 80rpx;
 				display: flex;
 				align-items: center;
 				justify-content: flex-start;
 				position: relative;
 				z-index: 10;
-				.back_panel{
+
+				.back_panel {
 					padding: 0rpx 24rpx;
 					display: flex;
 					align-items: center;
 				}
 			}
+
 			.filter_panel {
 				position: absolute;
 				top: 0rpx;
@@ -464,7 +460,8 @@
 				background: #82799B;
 				border-radius: 46rpx;
 				margin-top: 20rpx;
-				&.active{
+
+				&.active {
 					background: $uni-button-color;
 				}
 			}
@@ -527,16 +524,19 @@
 			justify-content: center;
 			align-items: center;
 			font-size: 26rpx;
+
 			.select {
 				width: 26rpx;
 				height: 26rpx;
 				margin-right: 10rpx;
 				@include flex-center();
+
 				image {
 					width: 100%;
 					height: 100%;
 				}
 			}
+
 			.text1 {
 				color: #9292BA;
 			}
