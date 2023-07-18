@@ -1,8 +1,8 @@
 <template>
 	<view class="animation_box">
-		<view class="animation_img" v-if="showImg" @tap="close">
+		<!-- <view class="animation_img" v-if="showImg" @tap="close">
 		    <l-svga :src="gifUrl"></l-svga>
-		</view>
+		</view> -->
 	</view>
 </template>
 
