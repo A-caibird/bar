@@ -8,10 +8,9 @@
 				<text>客服</text>
 			</view>
 			<view class="common_item" @tap="$u.throttle(clickTap('collect'), 1200)">
-				<!-- <image src="/static/imgs/common/collect_pre.png"></image> -->
 				<view class="common_icon">
-					<u-icon color="#ffffff" size="38" name="star" v-if="!collect"></u-icon>
-					<u-icon color="#FF59C9" size="38" name="star-fill" v-else></u-icon>
+					<image src="/static/imgs/common/star_icon.png" v-if="collect"></image>
+					<image src="/static/imgs/common/star_no_icon.png" v-else></image>
 				</view>
 				<text>收藏</text>
 			</view>
@@ -104,8 +103,8 @@
 					height: 50rpx;
 					@include flex-center();
 					image{
-						height: 32rpx;
-						width: 32rpx;
+						height: 40rpx;
+						width:40rpx;
 					}
 				}
 				&>text{
