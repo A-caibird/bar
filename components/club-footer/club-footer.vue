@@ -89,7 +89,6 @@
 			display: flex;
 			align-items: center;
 			background: $uni-title-color;
-			border-top: 1px solid #31345B;
 			position: relative;
 			.common_item{
 				height: 100%;
@@ -99,18 +98,17 @@
 				justify-content: center;
 				flex-direction: column;
 				.common_icon {
-					width: 50rpx;
-					height: 50rpx;
+					width: 40rpx;
+					height: 40rpx;
 					@include flex-center();
-					image{
+					image {
 						height: 40rpx;
-						width:40rpx;
+						width: 40rpx;
 					}
 				}
 				&>text{
-					font-size: 22rpx;
-					color: #FFFFFF;
-					margin-top: 10rpx;
+					font-size: 24rpx;
+					color: rgba(255,255,255,0.5);
 				}
 			}
 			.btn_text{
