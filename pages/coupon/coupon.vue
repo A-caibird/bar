@@ -8,7 +8,7 @@
 		<view class="topbar">
 			<classify fontSize="28" bgColor="#16192B" ref="tabs" :list="status" :current="currentIndex" @change="clickTopTar" :is-scroll="false"
 			 swiperWidth="750" inactiveColor="#B7B9D6" activeColor="#ffffff" :activeItemStyle="{
-				 'font-size': '34rpx'
+				 'color': '#fff'
 			 }"></classify>
 			<!-- <view data-status="unused" @tap="clickTopTar" class="item" :class=" currentIndex === 'unused' ? 'active' : '' ">可使用({{unused}})</view>
 			<view data-status="used" @tap="clickTopTar" class="item" :class=" currentIndex === 'used' ? 'active' : '' ">已使用({{used}})</view>
@@ -23,12 +23,12 @@
 				<view class="img">
 					<image src="/static/imgs/coupon/unll.png"></image>
 				</view>
-				<view class="title">每个月都有领券活动哦 ！</view>
+				<view class="title">暂无可使用的优惠券～</view>
 			</view>
 		</view>
 		<view v-if="noResult || !more" class="btn" @tap="goToCouponconter">
 			<!-- <image src="/static/imgs/coupon.png" class="img"></image> -->
-			<view>去领劵中心逛逛>></view>
+			<view>去领券中心逛逛>></view>
 		</view>
 
 		<view class="loading-wrapper" v-if="loading">
@@ -161,6 +161,9 @@
 
 	.main {
 		width: 100%;
+		.coupon-wrapper {
+			padding: 0 24rpx;
+		}
 	}
 
 
@@ -185,19 +188,27 @@
 		font-size: 30upx;
 		color: #999;
 		text-align: center;
-		margin-top: 45upx;
+		margin-top: 35rpx;
 	}
 
 	.btn {
-		width: 590upx;
-		height: 80upx;
-		line-height: 80upx;
-		margin-bottom: 35upx;
-		border: 1upx solid #ff59c9;
-		border-radius: 12upx;
-		color: #ff59c9;
-		font-size: 30upx;
-		text-align: center;
+		width: 486rpx;
+		height: 80rpx;
+		background-image: linear-gradient(90deg, rgba(184, 63, 255, 1), rgba(91, 31, 255, 1));
+		box-sizing: border-box;
+		padding: 2rpx;
+		border-radius: 40rpx;
+		view {
+			width: 100%;
+			height: 100%;
+			line-height: 80rpx;
+			margin-bottom: 35rpx;
+			color: #AB3BFF;
+			font-size: 32rpx;
+			text-align: center;
+			border-radius: 40rpx;
+			background-color: #16192B;
+		}
 	}
 
 	.btn .img {

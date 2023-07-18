@@ -7,7 +7,7 @@
 			:style="{ zIndex: zIndex + 1 }">
 			<view class="u-tabs-scroll-box" :class="{'u-tabs-scorll-flex': !isScroll}">
 				<view class="u-tabs-item" :style="[tabItemStyle(index)]" v-for="(item, index) in getTabs" :key="index"
-					:class="[preId + index]" @tap="emit(index)">
+					:class="[preId + index,{'active': current == index}]" @tap="emit(index)">
 					<view :class="{'active-bg':  current == index}"
 						style="display: flex; position: relative;display: inline;text-align: center;">
 						{{ item[name] || item['name']}}
@@ -493,6 +493,21 @@
 		display: inline-block;
 		text-align: center;
 		transition-property: background-color, color, font-weight;
+		&.active {
+			&::after {
+				position: absolute;
+				content: '';
+				display: block;
+				width: 40rpx;
+				height: 6rpx;
+				background: #FFFFFF;
+				bottom: 10rpx;
+				left: 50%;
+				transform: translateX(-50%);
+				border-radius: 4rpx;
+				opacity: 0.2;
+			}
+		}
 
 		.badge {
 			position: absolute;

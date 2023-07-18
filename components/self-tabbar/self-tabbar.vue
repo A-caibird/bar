@@ -282,7 +282,7 @@
 				width: 34rpx;
 				height: 6rpx;
 				background: #FFFFFF;
-				bottom: 25rpx;
+				bottom: 20rpx;
 				left: 50%;
 				transform: translateX(-50%);
 				border-radius: 4rpx;
