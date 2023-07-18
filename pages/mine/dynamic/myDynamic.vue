@@ -540,6 +540,7 @@
 						left:7rpx;
 						&.active{
 							position:relative;
+							color: #FFF;
 						&::before{
 							  content: "";
 							  position: absolute;
@@ -549,39 +550,8 @@
 							  height: 100%;
 							  background: #832DFF; // 模糊字体背景颜色
 							  filter: blur(10rpx);
-							  z-index: -1;
-						}
-						&:after{
-								content: "";
-								position: absolute;
-								bottom: -10rpx;
-								left: 10rpx;
-								width: 40rpx;
-								height: 4rpx;
-								background: #FFFFFF;
-								border-radius: 3rpx;
-								opacity: 0.2;
-								transform: translateZ(0);
-							}
-				
-						}
-						
-				
-					}
-					.content-dynamic2{
-						position: relative;
-						left:80rpx;
-						&.active{
-							position:relative;
-						&::before{
-							  content: "";
-							  position: absolute;
-							  top: 0;
-							  left: 0;
-							  width: 100%;
-							  height: 100%;
-							  background: #832DFF; // 模糊字体背景颜色
-							  filter: blur(10rpx);
+							  transform: translateZ(0);
+							  border-radius: 50%;
 							  z-index: -1;
 						}
 						&::after{
@@ -594,7 +564,41 @@
 								background: #FFFFFF;
 								border-radius: 3rpx;
 								opacity: 0.2;
-								transform: translateZ(0);
+							}
+				
+						}
+						
+				
+					}
+					.content-dynamic2{
+						position: relative;
+						left:80rpx;
+						&.active{
+							position:relative;
+							color: #FFF;
+						&::before{
+							  content: "";
+							  position: absolute;
+							  top: 0;
+							  left: 0;
+							  width: 100%;
+							  height: 100%;
+							  background: #832DFF; // 模糊字体背景颜色
+							  filter: blur(10rpx);
+							  transform: translateZ(0);
+							  border-radius: 50%;
+							  z-index: -1;
+						}
+						&::after{
+								content: "";
+								position: absolute;
+								bottom: -10rpx;
+								left: 10rpx;
+								width: 40rpx;
+								height: 4rpx;
+								background: #FFFFFF;
+								border-radius: 3rpx;
+								opacity: 0.2;
 							}
 						}
 					}

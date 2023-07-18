@@ -30,12 +30,14 @@
 						</block>
 					</view>
 					<view class="info_loaction">
-						<view class="loca_intro1"> <text>{{clubInfo.address}}</text> </view>
-						<view class="loca_intro2" @tap="tapOpenMap"> <text>{{clubInfo.areaName}}</text>
-							<u-icon name="map" size="32"></u-icon>
+						<view class="loca_intro1"> <text>{{clubInfo.address}}</text></view>
+						<view class="loca_intro2" @tap="tapOpenMap">
+							<image src="/static/imgs/common/location.png" style="width: 24rpx; height: 24rpx;vertical-align: middle; margin-right: 8rpx;"></image>
+							<text>{{clubInfo.areaName}}</text>
 						</view>
+						
 						<view class="call_box" @tap="callPhone">
-							<u-icon size="40" name="phone" color="#FFFFFF"></u-icon>
+							<image src="/static/imgs/common/phone_icon.png" style="width: 40rpx; height: 40rpx;"></image>
 							<text>电话</text>
 						</view>
 					</view>
@@ -130,7 +132,7 @@
 								</template>
 							</view>
 						</scroll-view>
-						<!-- </view>	 -->
+						<!-- </view> -->
 					</swiper-item>
 				</swiper>
 			</view>
@@ -612,31 +614,37 @@
 						font-size: 40rpx;
 						color: #FFFFFF;
 						font-weight: 500;
+						margin-bottom: 8rpx;
 					}
 
 					.info_intro {
 						line-height: 40rpx;
 						color: #FFFFFF;
 						font-size: 28rpx;
+						margin-bottom: 24rpx;
 					}
 
 					.info_eva {
-						height: 110rpx;
 						display: flex;
 						align-items: center;
 						color: #F72EB2;
 						font-size: 26rpx;
+						padding-bottom: 24rpx;
+						border-bottom: 2rpx solid rgba(255,255,255,0.08);
+						border-radius: 1rpx;
+						margin-bottom: 24rpx;
 
 						&>text {
 							margin-left: 14rpx;
+							color: #9633FF;
 						}
 					}
 
 					.info_open_time {
 						display: flex;
 						align-items: center;
-						font-size: 26rpx;
-						color: #FFFFFF;
+						font-size: 28rpx;
+						color: rgba(255,255,255,0.5);
 
 						.line {
 							height: 20rpx;
@@ -649,18 +657,18 @@
 					.info_label {
 						width: 100%;
 						display: flex;
-						margin: 16rpx 0rpx;
+						margin: 14rpx 0 40rpx;
 						flex-wrap: wrap;
 
 						.common_label {
 							height: 40rpx;
 							@include flex-center();
-							border: 1px solid #565B86;
 							font-size: 20rpx;
-							color: #B3BAEF;
+							color: #FFF;
 							padding: 0 10rpx;
-							border-radius: 2rpx;
-							margin-right: 12rpx;
+							border-radius: 8rpx;
+							background: rgba(255, 255, 255, 0.1);
+							margin-right: 16rpx;
 							margin-bottom: 12rpx;
 						}
 					}
@@ -676,7 +684,7 @@
 
 						.loca_intro2 {
 							font-size: 26rpx;
-							color: #B4B2CF;
+							color: rgba(255,255,255,0.5);
 							margin-top: 15rpx;
 						}
 
@@ -690,8 +698,8 @@
 							right: 30rpx;
 
 							&>text {
-								font-size: 22rpx;
-								color: #FFFFFF;
+								font-size: 24rpx;
+								color: rgba(255,255,255,0.5);
 							}
 						}
 					}
@@ -707,7 +715,7 @@
 				top: 88rpx;
 				z-index: 100;
 				background: #16192B;
-				border-bottom: 1px solid #31345B;
+				border-bottom: 2rpx solid rgba(255,255,255,0.08);
 				transition: all, 0.1s;
 				&.paddingTop {
 					padding-top: var(--status-bar-height);
@@ -737,25 +745,38 @@
 
 					.common_classify {
 						position: relative;
-						color: #B7B9D6;
-						font-size: 28rpx;
+						color: #979797;
+						font-size: 30rpx;
 						display: flex;
 						align-items: center;
 						flex-direction: column;
 						margin-right: 52rpx;
 
 						&.select {
-							font-size: 34rpx;
 							color: #FFFFFF;
+							&::after {
+								position: absolute;
+								top: 0;
+								bottom: 0;
+								left: 0;
+								right: 0;
+								content: '';
+								z-index: -999;
+								background: #832DFF;
+								filter: blur(10rpx);
+								transform: translateZ(0);
+								border-radius: 100%;
+							}
 						}
 
 						.select_icon {
 							position: absolute;
-							bottom: -20rpx;
+							bottom: -10rpx;
 							height: 4rpx;
 							width: 34rpx;
-							background: #FF59C9;
+							background: #FFF;
 							border-radius: 2rpx;
+							opacity: 0.2;
 						}
 					}
 				}
