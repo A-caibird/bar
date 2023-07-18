@@ -51,11 +51,20 @@
 					<view class="decoration_text">快捷登录</view>
 					<view class="line"></view>
 				</view>
-				<view class="login_way">
-					<!-- <view class="wechat_way" @tap="$u.route('pages/register/phoneBind')"> -->
-					<view class="wechat_way" @tap="$u.throttle(tapWXLogin)">
-						<image src="/static/imgs/common/wechat.png"></image>
-						<text>微信登录</text>
+				<view style="display:flex;flex-direction: row;">
+					<view class="login_way">
+						<!-- <view class="wechat_way" @tap="$u.route('pages/register/phoneBind')"> -->
+						<view class="wechat_way" @tap="$u.throttle(tapWXLogin)">
+							<image src="/static/imgs/common/wechat.png"></image>
+							<text>微信登录</text>
+						</view>
+					</view>
+					<view class="login_way">
+						<!-- <view class="wechat_way" @tap="$u.route('pages/register/phoneBind')"> -->
+						<view class="wechat_way" @tap="$u.throttle(tapWXLogin)">
+							<image src="/static/imgs/common/iphoneNumber.png"></image>
+							<text>一键登录</text>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -157,7 +166,7 @@
 								console.log("微信登录授权信息获取成功");
 								console.log(infoRes);
 								var cid = plus.push.getClientInfo().clientid
-
+				
 								let params = {
 									openId:res.authResult.openid,
 									wechatNickName : infoRes.userInfo.nickName,
@@ -173,17 +182,106 @@
 								console.log(err);
 							}
 						});
-
-
-
+				
+				
+				
 					},
 					fail(err) {
 						vm.$toast.text('微信登录失败！')
 						console.log(err);
 					}
 				})
-
+				
 			},
+			// tapIphoneNumber(){
+			// 	if(!this.isSelect){
+			// 		this.$u.toast('请勾选爬梯秀用户协议')
+			// 		return;
+			// 	}
+			// 	let vm = this
+			// 	uni.login({
+			// 		provider:'univerify',
+			// 		univerifyStyle:{
+			// 			"fullScreen":false,
+			// 			"backgroundColor":"#ffffff",
+			// 			"phoneNum":{
+			// 				"color":"#2281F5",		
+			// 			},
+			// 			"authButton":{
+			// 				"normalColor":"#000000",
+			// 				"title":"本机号码一键登录",
+			// 				"textColor":"#ffffff",
+			// 				"disabledColor":"#73aaf5",
+			// 				"highlightColor":"#2861c5"
+			// 			}
+			// 		},
+			// 		success(res) { // 正式登录成功
+			// 	        console.log(res.authResult); // {openid:'登录授权唯一标识',access_token:'接口返回的 token'}
+					
+			// 			// 在得到access_token后，通过callfunction调用云函数
+			// 			uniCloud.callFunction({
+			// 			    name: 'getPhoneNumber', // 云函数名称
+			// 			    data: { //传给云函数的参数
+			// 			    'access_token': res.authResult.access_token, // 客户端一键登录接口返回的access_token
+			// 			    'openid': res.authResult.openid // 客户端一键登录接口返回的openid
+			// 			    },
+			// 		        success(callRes) {
+			// 					console.log('调用云函数成功' + callRes)
+			// 				},
+			// 				fail(callErr) {
+			// 					console.log('调用云函数出错' + callErr)
+			// 				},
+			// 				complete() {
+			// 					uni.closeAuthView() //关闭授权登录界面
+			// 				}
+			// 				})
+			// 	    },
+			// 		fail(err) {
+			// 			vm.$toast.text('手机号登录失败！')
+			// 			console.log(err.errCode)
+			// 			console.log(err.errMsg)
+			// 			uni.closeAuthView() //关闭授权登录界面
+			// 		}
+			// 	})			
+			// 			provider:'weixin',
+			// 			success: function (res) {
+			// 				// console.log(res);
+			// 				uni.getUserInfo({
+			// 					provider: 'weixin',
+			// 					success: function(infoRes) {
+			// 						console.log("微信登录授权信息获取成功");
+			// 						console.log(infoRes);
+			// 						var cid = plus.push.getClientInfo().clientid
+				
+			// 						let params = {
+			// 							openId:res.authResult.openid,
+			// 							wechatNickName : infoRes.userInfo.nickName,
+			// 							// #ifdef APP-PLUS
+			// 							clientId:cid,
+			// 							// #endif
+			// 						}
+			// 						console.log(cid)
+			// 						vm.wxLogin(params)
+			// 					},
+			// 					fail(err) {
+			// 						vm.$toast.text('微信登录失败！')
+			// 						console.log(err);
+			// 					}
+			// 				});
+				
+				
+				
+			// 			},
+			// 			fail(err) {
+			// 				vm.$toast.text('微信登录失败！')
+			// 				console.log(err);
+			// 			}
+			// 		})
+				
+			// 	},
+			// },
+			
+			
 			// 登录事件 $u.throttle() 节流防抖处理
 			loginHandle: function(){
 				let params = {

@@ -413,7 +413,7 @@
 
             .info-item {
                 padding: 20rpx 30rpx;
-                border-bottom: 1px solid #31345B;
+                // border-bottom: 1px solid #31345B;
 
                 .location-box {
                     display: flex;
@@ -441,8 +441,8 @@
 
                 .input-wrap {
                     height: 80rpx;
-                    border-radius: 4rpx;
-                    background-color: #2C3158;
+                    border-radius: 16rpx;
+                    background-color: rgba(255,255,255,0.05);
                     padding-left: 20rpx;
                     padding-right: 20rpx;
 
@@ -454,7 +454,7 @@
                     }
 
                     .placeholder-class {
-                        color: #B2B7DD;
+                        color: #979797;
                     }
                 }
             }
@@ -463,7 +463,7 @@
                 display: flex;
                 flex-direction: column;
                 padding: 0 30rpx;
-                border-bottom: 1px solid #31345B;
+                // border-bottom: 1px solid #31345B;
 
                 &:last-child {
                     border-bottom: none;
@@ -479,7 +479,8 @@
 
                     .text-right {
                         font-size: 28rpx;
-                        color: #72729E;
+                        color: #979797;
+						margin-left:30rpx;
                     }
                 }
 
