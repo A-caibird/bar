@@ -441,8 +441,8 @@
 
                 .input-wrap {
                     height: 80rpx;
-                    border-radius: 4rpx;
-                    background-color: #2C3158;
+                    border-radius: 16rpx;
+                    background-color: rgba(255,255,255,0.05);
                     padding-left: 20rpx;
                     padding-right: 20rpx;
 
@@ -454,7 +454,7 @@
                     }
 
                     .placeholder-class {
-                        color: #B2B7DD;
+                        color: #979797;
                     }
                 }
             }
@@ -479,7 +479,8 @@
 
                     .text-right {
                         font-size: 28rpx;
-                        color: #72729E;
+                        color: #979797;
+						margin-left:30rpx;
                     }
                 }
 
