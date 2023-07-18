@@ -7,11 +7,14 @@ function formatTime(number, format) {
 	if (!format) {
 		format = 'Y-M-D h:m:s'
 	}
+	
+	
 
-	var formateArr = ['Y', 'M', 'D', 'h', 'm', 's'];
-	var returnArr = [];
+	let formateArr = ['Y', 'M', 'D', 'h', 'm', 's'];
+	let returnArr = [];
+	
 
-	var date = new Date(number);
+	let date = new Date(String(number).replace(/-/g,'/'));
 	returnArr.push(date.getFullYear());
 	returnArr.push(formatNumber(date.getMonth() + 1));
 	returnArr.push(formatNumber(date.getDate()));
@@ -21,7 +24,7 @@ function formatTime(number, format) {
 	returnArr.push(formatNumber(date.getSeconds()));
 
 	if(format){
-		for (var i = 0; i < returnArr.length; i++) {
+		for (let i = 0; i < returnArr.length; i++) {
 			format = format.replace(formateArr[i], returnArr[i]);
 		}
 	}

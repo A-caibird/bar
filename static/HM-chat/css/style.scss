@@ -350,7 +350,6 @@ page{
 						overflow: hidden;
 						image{
 							max-width: 350upx;
-							// max-height: 350upx;
 						}
 					}
 					&.red-envelope{
@@ -422,8 +421,22 @@ page{
 					align-items: center;
 					justify-content: flex-end;
 					.bubble{
-						background-color: #f06c7a;
+						position: relative;
+						background-color: rgba(255,255,255,0.2);
 						color: #fff;
+						font-size: 30rpx;
+						
+						&::after {
+							position: absolute;
+							left: 100%;
+							top: 10rpx;
+							content: '';
+							 width: 0; 
+							 height: 0;
+							 border-width: 12rpx;
+							 border-style: solid;
+							 border-color:transparent transparent transparent rgba(255,255,255,0.2);
+						}
 
 						&.voice{
 							.icon{
@@ -473,8 +486,22 @@ page{
 						}
 					}
 					.bubble{
-						background-color: #fff;
-						color: #333;
+						position: relative;
+						background-color: rgba(255,255,255,0.05);
+						color: #FFF;
+						font-size: 30rpx;
+						&::after {
+							position: absolute;
+							right: 100%;
+							top: 10rpx;
+							content: '';
+							width: 0;
+							height: 0;
+							border-width: 12rpx;
+							border-style: solid;
+							border-color: transparent rgba(255,255,255,0.05) transparent transparent;
+						}
+						
 						&.voice{
 							.icon{
 								color: #333;
