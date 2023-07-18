@@ -5,7 +5,7 @@
 				<view class="item-title">{{ item.name }}</view>
 				<view class="item-location" @tap.stop="$u.throttle(openMap(item.lng,item.lat,item.address))">
 				<!-- <view class="item-location"> -->
-					<image src="/static/imgs/common/location.png" mode=""></image>
+					<image src="/static/imgs/common/location.png"></image>
 					<text>{{ item.distance }}</text>
 				</view>
 			</view>
@@ -20,8 +20,8 @@
 						<view v-for="(item1, index) in item.labelList" :key="index">{{ item1 }}</view>
 					</view>
 					<view class="bottom-link-right" @tap.stop="tapCancelCollect(item)">
-						<u-icon color="#FF59C9" size="38" name="star-fill"></u-icon>
-						<!-- <u-icon name="more-dot-fill" color="#ffffff" size="40"></u-icon> -->
+						<!-- <u-icon color="#FF59C9" size="38" name="star-fill"></u-icon> -->
+						<image src="/static/imgs/common/star_icon.png" style="width: 40rpx; height: 40rpx;"></image>
 					</view>
 				</view>
 			</view>
@@ -76,23 +76,25 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		background-color: #20234b;
+		padding: 0 32rpx;
+		background-color: #16192B;
 
 		.order-info-item {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			width: 100%;
-			// height: 590rpx;
-			background-color: #16192B;
+			background:  rgba(255,255,255,0.05);;
 			border-radius: 10px;
 			margin-bottom: 25rpx;
+			padding: 24rpx;
 
 			.item-top {
 				width: 690rpx;
 				display: flex;
 				justify-content: space-between;
-				padding: 30rpx 0;
+				padding: 0 24rpx;
+				margin-bottom: 16rpx;
 
 				.item-title {
 					font-size: 34rpx;
@@ -103,11 +105,11 @@
 					display: flex;
 					align-items: center;
 					font-size: 24rpx;
-					color: #ffffff;
+					color: rgba(255,255,255,0.5);
 
 					& > image {
-						width: 21rpx;
-						height: 25rpx;
+						width: 24rpx;
+						height: 24rpx;
 						padding-right: 9rpx;
 					}
 				}
@@ -115,7 +117,8 @@
 
 			.cover {
 				width: 100%;
-				height: 468.75rpx;
+				height: 280rpx;
+				margin-bottom: 18rpx;
 				&>image{
 					height: 100%;
 					width: 100%;
@@ -125,8 +128,6 @@
 
 			.item-bottom {
 				width: 100%;
-				
-				padding: 30rpx;
 				.item-bottom-title {
 					font-size: 30rpx;
 					color: #ffffff;
@@ -142,15 +143,15 @@
 						display: flex;
 						flex-wrap: wrap;
 						view {
-							height: 40rpx;
+							height: 32rpx;
 							@include flex-center();
 							font-size: 20rpx;
-							color: #b3baef;
-							border: 1px solid #565b86;
-							padding: 0 10rpx;
-							border-radius: 2rpx;
-							margin-right: 12rpx;
+							color: #FFF;
+							padding: 2rpx 10rpx;
+							border-radius: 8rpx;
+							margin-right: 16rpx;
 							margin-bottom: 12rpx;
+							background: rgba(255, 255, 255, 0.1);
 						}
 					}
 					.bottom-link-right {

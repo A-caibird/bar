@@ -11,7 +11,8 @@
 			<view class="classify_box">
 				<classify fontSize="28" bgColor="#16192B" ref="tabs" :list="status" :current="current" @change="change"
 					:is-scroll="false" swiperWidth="750" inactiveColor="#B7B9D6" activeColor="#832DFF" :activeItemStyle="{
-					 'font-size': '34rpx;'
+					 'font-size': '34rpx;',
+					 'color': '#FFF'
 				 }"></classify>
 			</view>
 			<view class="order_list">
