@@ -210,6 +210,7 @@
 				})
 			},
 			preLogin() {
+				let vm = this;
 				uni.preLogin({
 					provider: 'univerify',
 					success() { //预登录成功
@@ -220,7 +221,7 @@
 						// 根据错误信息判断失败原因，如有需要可将错误提交给统计服务器
 						console.log(res.errCode)
 						console.log(res.errMsg)
-						this.$u.toast('当前无法通过手机号一键登录，请检查您的手机SIM卡是否已安装')
+						vm.$u.toast('当前无法通过手机号一键登录，请检查您的手机SIM卡是否已安装')
 					}
 				})
 			},
@@ -229,7 +230,8 @@
 					this.$u.toast('请勾选爬梯秀用户协议')
 					return;
 				}
-				this.preLogin();
+				let vm = this;
+				vm.preLogin();
 				uni.login({ //正式登录，弹出授权窗
 					provider: 'univerify',
 					univerifyStyle: { // 自定义登录框样式
@@ -249,14 +251,14 @@
 					success(res) { // 正式登录成功
 						console.log(res.authResult); // {openid:'登录授权唯一标识',access_token:'接口返回的 token'}
 						// 在得到access_token后，通过callfunction调用云函数f
-						let cloudRes = uniCloud.callFunction({
+						uniCloud.callFunction({
 							name: 'getPhoneNumber', // 云函数名称
 							data: { //传给云函数的参数
 								'access_token': res.authResult.access_token, // 客户端一键登录接口返回的access_token
 								'openid': res.authResult.openid // 客户端一键登录接口返回的openid
 							},
 							success(callSuc) {
-								console.log('调用云函数成功'+callSuc);
+								console.log('调用云函数成功' + callSuc);
 							},
 							fail(callErr) {
 								vm.$toast.text('手机号登录失败！')
@@ -265,11 +267,13 @@
 							complete() {
 								uni.closeAuthView() //关闭授权登录界面
 							}
-						})
-						console.log("跳转到登录处理函数");
-						this.phone = cloudRes.data.phoneNumber;
-						this.passText = "12345";
-						this.loginHandle();
+						}).then(
+							data => {
+								console.log("跳转到登录处理函数");
+								vm.phone = data.result.phoneNumber;
+								vm.passText = "12345"; //设置默认密码
+								vm.loginHandle();
+							})
 					},
 					fail(err) { // 正式登录失败
 						vm.$toast.text('微信登录失败！')
@@ -310,11 +314,12 @@
 					if (parseInt(code) == 0) {
 						login(res.data, this.isHome)
 					}
+					uni.closeAuthView();
 				}).catch(e => {
 					console.log(e)
 					uni.hideLoading();
+					uni.closeAuthView();
 				})
-
 			},
 			// 清空手机号
 			clearPhone: function() {

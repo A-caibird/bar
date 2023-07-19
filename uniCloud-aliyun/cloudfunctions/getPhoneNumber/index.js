@@ -11,6 +11,6 @@ exports.main = async (event, context) => {
       openid: event.openid
     })
     
-    //返回数据给客户端
+    //返回数据给客户端,是一个promise对象
     return res
 };
