@@ -57,42 +57,34 @@
 			<view class="club_detail">
 				<swiper class="classify_info" :current="selectIndex" @change="swiperChange">
 					<swiper-item v-for="(info, index) in infoType" :key="index">
-						<!-- <view :id="('swiper_content' + index)"> -->
-						<!-- <view style="box-sizing: border-box; padding: 0rpx 30rpx;" v-if="labelName">
-								<view class="common_label">
-									<view class="label_left">
-										<view class="line"></view>
-										<text>{{labelName}}</text>
-									</view>
-									<view class="label_right" @tap="navigateAll">
-										<text>查看全部</text>
-										<image src="/static/imgs/common/right.png"></image>
-									</view>
-								</view>
-							</view> -->
-						<scroll-view :scroll-y="stickyStatus" :style="{height:swiperHeight}"
-							v-if="info.type == 'introduction'"  @scrolltoupper="scrolltoupper" :upper-threshold="upperThreshold">
+						<!-- 简介 -->
+						<scroll-view scroll-top="0" :scroll-y="stickyStatus" :style="{height:swiperHeight}"
+							v-if="info.type == 'introduction'" @scrolltoupper="scrolltoupper" :upper-threshold="upperThreshold">
 							<view style="color: #FFFFFF;padding: 30rpx;">
 								<u-parse :html="clubContent"></u-parse>
 							</view>
 						</scroll-view>
-
+						<!-- 动态 -->
 						<block v-if="info.type == 'dynamic'">
 							<ping-dynamic-list :index="infoType[selectIndex].type == 'dynamic' ? 1 : -1" :i="1"
 								:clubId="clubId" :canScroll="stickyStatus" :height="swiperHeight"
 								:upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-dynamic-list>
 						</block>
+						<!-- 活动 -->
 						<block v-if="info.type == 'activity'">
 							<ping-activity-list :index="infoType[selectIndex].type == 'activity' ? 2 : -1" :i="2"
 								:clubId="clubId" :canScroll="stickyStatus" :height="swiperHeight"
 								:upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-activity-list>
 						</block>
+						<!-- 招聘 -->
 						<block v-if="info.type == 'job'">
 							<ping-recruitment-list :index="infoType[selectIndex].type == 'job' ? 3 : -1" :i="3"
 								:clubId="clubId" :canScroll="stickyStatus" :height="swiperHeight"
 								:upperThreshold="upperThreshold" @scrolltoupper="scrolltoupper"></ping-recruitment-list>
 						</block>
-						<scroll-view :scroll-y="stickyStatus" :style="{height:swiperHeight}"
+						
+						<!-- 评论 -->
+						<scroll-view :scroll-y="stickyStatus" scroll-top="0" :style="{height:swiperHeight}"
 							v-if="info.type == 'evaluate'" @scrolltoupper="scrolltoupper" @scrolltolower="scrolltolower" :upper-threshold="upperThreshold">
 							<view class="evaluate_box">
 								<view class="complex_rate">
@@ -218,6 +210,7 @@
 				swiperHeight: '',
 				pageNumber:1,
 				totalPages: 1,
+				scrollTop: 0,
 			}
 		},
 		computed: {
@@ -787,7 +780,7 @@
 
 				.classify_info {
 					width: 100%;
-					height: calc(100vh  - 230rpx);
+					height: calc(100vh  - 230rpx - 88rpx);
 					box-sizing: border-box;
 
 					.common_label {
