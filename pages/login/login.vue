@@ -256,16 +256,6 @@
 							data: { //传给云函数的参数
 								'access_token': res.authResult.access_token, // 客户端一键登录接口返回的access_token
 								'openid': res.authResult.openid // 客户端一键登录接口返回的openid
-							},
-							success(callSuc) {
-								console.log('调用云函数成功' + callSuc);
-							},
-							fail(callErr) {
-								vm.$toast.text('手机号登录失败！')
-								console.log('调用云函数出错' + callErr)
-							},
-							complete() {
-								uni.closeAuthView() //关闭授权登录界面
 							}
 						}).then(
 							data => {
@@ -273,7 +263,7 @@
 								vm.phone = data.result.phoneNumber;
 								vm.passText = "12345"; //设置默认密码
 								vm.loginHandle();
-							})
+						})
 					},
 					fail(err) { // 正式登录失败
 						vm.$toast.text('微信登录失败！')
