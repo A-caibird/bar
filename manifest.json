@@ -105,7 +105,8 @@
                         "appid" : "wx510d0e9d9c259e6c",
                         "appsecret" : "bf24ecfc3068d2038fcc9a3eed193060",
                         "UniversalLinks" : "https://erp.patixiu.com/ulink/"
-                    }
+                    },
+                    "univerify" : {}
                 },
                 "share" : {
                     "weixin" : {

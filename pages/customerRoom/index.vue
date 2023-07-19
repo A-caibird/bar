@@ -217,8 +217,8 @@
 			openConnection() {
 				var s = Date.parse(new Date());
 				var t = getApp().globalData.token;
-				// var url = "ws://erp.patixiu.com/websocket/messageHandler?username=user@" + t + "@" + s;
 				var url = "ws://erp.patixiu.com/websocket/messageHandler?username=user@" + t + "@" + s;
+				// var url = "ws://192.168.0.118:8080/websocket/messageHandler?username=user@" + t + "@" + s;
 
 				uni.showLoading({
 					title: '连接中'

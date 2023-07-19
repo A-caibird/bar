@@ -26,10 +26,9 @@
 				<view class="title">暂无可使用的优惠券～</view>
 			</view>
 		</view>
-		<view v-if="noResult || !more" class="btn" @tap="goToCouponconter">
-			<!-- <image src="/static/imgs/coupon.png" class="img"></image> -->
+		<!-- <view v-if="noResult || !more" class="btn" @tap="goToCouponconter">
 			<view>去领券中心逛逛>></view>
-		</view>
+		</view> -->
 
 		<view class="loading-wrapper" v-if="loading">
 			<loading></loading>
