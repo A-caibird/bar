@@ -26,7 +26,7 @@
 				<view v-if="flag==true" class="btn-attench0" >
 					<button plain="true" type="default" @tap="atten_btn()">
 						<u-icon name="heart" color="rgba(255,255,255,0.5)" size="28"></u-icon>
-						<text>未关注</text>
+						<text>未关注1</text>
 					</button>
 				</view>
 				<view v-if="flag==false" class="btn-attench1" >
@@ -436,7 +436,7 @@
 						padding: 0;
 						width: 150rpx;
 						height: 50rpx;
-						border: 10rpx solid #16192B;  // 设置border 反而没有，与之相反
+						border:none !important;
 						color: rgba(255,255,255,0.8);
 						background: null;
 						font-size: 26rpx;
@@ -457,7 +457,7 @@
 						padding: 0;
 						width: 150rpx;
 						height: 50rpx;
-						border: 10rpx solid #16192B;  // 设置border 反而没有，与之相反
+						border:none !important;
 						color: #FFFFFF;
 						font-size: 26rpx;
 						@include flex-center();

@@ -58,7 +58,7 @@
 				padding-left: 30rpx;
 
 				.problem-wrap {
-					padding: 30rpx 40rpx 20rpx 0;
+					padding: 20rpx 20rpx 20rpx 20rpx;
                     background: rgba(255,255,255,0.05);
 					border: 1px solid rgba(255,255,255,0.05);
                     border-radius: 16rpx;
