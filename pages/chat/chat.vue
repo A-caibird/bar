@@ -136,10 +136,10 @@
 										</view>
 										<view class="order-info">
 											<view class="club-name">
-												{{row.payload.clubName}}
+												{{row.payload.orderClubName}}
 											</view>
 											<view class="date-card">
-												<view class="date">邀约时间：{{row.timestamp}}</view>
+												<view class="date">邀约时间：{{row.createDate}}</view>
 											</view>
 											<view class="yaoyue-btn" v-if="row.payload.agreeStatus=='agreed'">
 												<view class="btn agreed">已同意</view>
@@ -874,41 +874,35 @@
 	.my {
 		.yaoyue {
 			width: 526rpx;
+			padding: 24rpx;
 			background: rgba(255, 255, 255, 0.05);
 			border-radius: 16rpx;
 
 			.title {
-				margin-top: 24rpx;
 				font-size: 30rpx;
 				font-family: PingFangSC-Medium, PingFang SC;
 				font-weight: 500;
 				color: #FFFFFF;
-				// line-height: 44rpx;
-				margin-left: 24rpx;
 			}
 
 
 			.club-cover {
-				margin-top: 24rpx;
-				margin-left: 24rpx;
-				height: 234rpx;
-
+				margin: 24rpx 0;
+				
 				image {
-					width: 478rpx;
+					width: 462rpx;
 					height: 234rpx;
+					border-radius: 16rpx;
 				}
 			}
 
 			.order-info {
 
-				margin-top: 30rpx;
-				margin-bottom: 30rpx;
-
 				.club-name {
 					width: 100%;
-					// @include ellipsis();
 					font-size: 34rpx;
 					color: #FFFFFF;
+					margin-top: 12rpx;
 				}
 
 				.date-card {
@@ -928,7 +922,7 @@
 			}
 
 			.yaoyue-btn {
-				margin-top: 28rpx;
+				margin-top: 24rpx;
 				display: flex;
 				justify-content: space-between;
 
@@ -967,39 +961,33 @@
 	.other {
 		.yaoyue {
 			width: 526rpx;
-			padding:0 24rpx;
+			padding: 24rpx;
 			background: rgba(255, 255, 255, 0.05);
 			border-radius: 16rpx;
 
 			.title {
-				margin-top: 24rpx;
 				font-size: 30rpx;
 				font-family: PingFangSC-Medium, PingFang SC;
 				font-weight: 500;
 				color: #fff;
-				margin-left: 24rpx;
 			}
 
 
 			.club-cover {
-				margin-top: 24rpx;
-				// margin-left: 24rpx;
-				height: 234rpx;
-
+				margin: 24rpx 0;
+				
 				image {
-					width: 478rpx;
+					width: 462rpx;
 					height: 234rpx;
+					border-radius: 16rpx;
 				}
 			}
 
 			.order-info {
 
-				margin-top: 30rpx;
-				margin-bottom: 30rpx;
-
 				.club-name {
 					width: 100%;
-					// @include ellipsis();
+					margin-bottom: 12rpx;
 					font-size: 34rpx;
 					color: #FFFFFF;
 				}
@@ -1016,7 +1004,7 @@
 			}
 
 			.yaoyue-btn {
-				margin-top: 28rpx;
+				margin-top: 24rpx;
 				display: flex;
 				justify-content: space-between;
 
