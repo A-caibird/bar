@@ -79,6 +79,16 @@
 				mode: 'credit'
 			}
 		},
+		mounted() {
+			uni.$on('credit-refresh', this.refresh)
+			this.refresh({
+				msg: 'refresh'
+			});
+		},
+		beforeDestroy() {
+			uni.$off('credit-refresh', this.refresh)
+		},
+		//注释为自定义 到达底部分页数据请求
 		onLoad() {
 			// this.getCredit();
 		},
@@ -111,6 +121,14 @@
 			// 		console.log(err);
 			// 	})
 			// },
+			
+			refresh(e) {
+				console.log(e);
+				if (e.msg != this.mode) {
+					console.log('刷新信用积分变化列表')
+					this.mescroll.resetUpScroll()
+				}
+			},
 		},
 		onReachBottom() {
 			// if (this.pageNumber == this.totalPage) {
@@ -145,7 +163,8 @@
 			align-items: center;
 			width: 100%;
 			height: 450rpx;
-
+			position: relative;
+			top:80rpx;
 			.middle_content {
 				display: flex;
 				flex-direction: column;
