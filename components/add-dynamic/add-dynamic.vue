@@ -111,8 +111,8 @@
 				flex-direction: column;
 
 				&>image {
-					width: 120rpx;
-					height: 120rpx;
+					width: 96rpx;
+					height: 96rpx;
 				}
 
 				&>text {
