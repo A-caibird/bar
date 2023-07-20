@@ -1,35 +1,35 @@
 <template>
 	<view class="order_box" @tap="$u.throttle(tapGoDetail(info))">
 		<view class="order_info">
-			<view class="info_first_line">
-				<view class="info_code"> <text style="color: #B4B2CF;">订单号：</text> <text>{{info.sn}}</text> </view>
-				<view class="info_status"> <text>{{getOrderStatus(info.status)}}</text> </view>
+			<view class="fri-part">
+				<view class="info_img">
+					<image :src="info.clubCover"></image>
+				</view>
+				<view class="info_box">
+					<view class="name_price">
+						<view class="info_name"> <text>{{info.clubName}}</text> </view>
+						<view class="info_status"> <text>{{getOrderStatus(info.status)}}</text> </view>
+						<view class="info_price"> <text>{{info.originalWineCoin}}元</text> </view>
+					</view>
+					<view class="item_info">
+						<view class="item_info_label" style="color: rgba(255,255,255,0.5);">预约时间：</view>
+						<view class="item_info_text">{{info.date}}</view>
+					</view>
+					<view class="item_info" v-if="info.canUseEndTime">
+						<view class="item_info_label" style="color: rgba(255,255,255,0.5);">到期时间：</view>
+						<view class="item_info_text">{{info.canUseEndTime}}</view>
+					</view>
+					<view class="item_info">
+						<view class="item_info_label" style="color: rgba(255,255,255,0.5);">台位位置：</view>
+						<view class="item_info_text">{{info.cardTableName}} 卡台</view>
+					</view>
+					<view class="item_info">
+						<view class="item_info_label" style="color: rgba(255,255,255,0.5);">参与人数：</view>
+						<view class="item_info_text">{{info.joinPersonNumber}}人</view>
+					</view>
+				</view>
 			</view>
-			<view class="info_img">
-				<image :src="info.clubCover"></image>
-			</view>
-			<view class="info_box">
-				<view class="name_price">
-					<view class="info_name"> <text>{{info.clubName}}</text> </view>
-					<view class="info_price"> <text>{{info.originalWineCoin}}元</text> </view>
-				</view>
-				<view class="item_info">
-					<view class="item_info_label" style="color: rgba(255,255,255,0.5);">预约时间：</view>
-					<view class="item_info_text">{{info.date}}</view>
-				</view>
-				<view class="item_info" v-if="info.canUseEndTime">
-					<view class="item_info_label" style="color: rgba(255,255,255,0.5);">到期时间：</view>
-					<view class="item_info_text">{{info.canUseEndTime}}</view>
-				</view>
-				<view class="item_info">
-					<view class="item_info_label" style="color: rgba(255,255,255,0.5);">台位位置：</view>
-					<view class="item_info_text">{{info.cardTableName}} 卡台</view>
-				</view>
-				<view class="item_info">
-					<view class="item_info_label" style="color: rgba(255,255,255,0.5);">参与人数：</view>
-					<view class="item_info_text">{{info.joinPersonNumber}}人</view>
-				</view>
-			</view>
+
 			<view class="order_btn"
 				v-if="deleteShow || goPayShow||cancelOrderShow||commentShow||arriveShow||yaoyueShow||addWineShow||quiteOrderShow||fetchWineShow || rescheduleShow">
 				<view class="common_btn" v-if="fetchWineShow" @tap.stop="$u.throttle(tapFetchWine)"> <text>取酒</text>
@@ -45,7 +45,7 @@
 				<view class="common_btn" v-if="deleteShow" @tap.stop="$u.throttle(tapGoDelete)"> <text>删除</text> </view>
 				<view class="common_btn" v-if="cancelOrderShow" @tap.stop="tapCancel"> <text>取消订单</text> </view>
 				<view class="common_btn" v-if="commentShow"
-					@tap.stop="$u.throttle($u.route('/pages/order/evaluation',{orderId:info.id}))"> <text>我要评价</text>
+					@tap.stop="$u.throttle($u.route('/pages/order/evaluation',{orderId:info.id}))"> <text>评价</text>
 				</view>
 				<view class="common_btn" v-if="arriveShow" @tap.stop="tapArrive"> <text>确认到店</text> </view>
 				<view class="common_btn" v-if="yaoyueShow" @tap.stop="$u.throttle(tapGoYaoyue)"> <text>去邀约</text>
@@ -248,87 +248,158 @@
 <style lang="scss" scoped>
 	.order_box {
 		width: 100%;
-
 		background: #16192B;
 
 		.order_info {
 			width: calc(100% - 60rpx);
 			margin-left: 30rpx;
 			border-radius: 16rpx;
-			border:2rpx solid rgba(255, 255, 255, 0.05);
+			border: 2rpx solid rgba(255, 255, 255, 0.05);
 			background: rgba(255, 255, 255, 0.05);
-			box-sizing: border-box;
-			padding: 26rpx 30rpx;
+			// box-sizing: border-box;
+			padding: 0rpx 20rpx 10rpx 10rpx;
 			position: relative;
+			display: flex;
+			flex-direction: column;
 
-			.info_first_line {
+			.fri-part {
 				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				font-size: 26rpx;
-				color: #FFFFFF;
-			}
+				flex-direction: row;
+				position: relative;
+				left: 20rpx;
 
-			.info_img {
-				width: 100%;
-				height: 313rpx;
-				margin-top: 30rpx;
-				border-radius: 6rpx;
+				.info_img {
+					width: 200rpx;
+					height: 200rpx;
+					margin-top: 30rpx;
+					border-radius: 6rpx;
 
-				image {
+					image {
+						width: 100%;
+						height: 100%;
+					}
+				}
+
+				.info_box {
+					margin-top: 26rpx;
 					width: 100%;
-					height: 100%;
+					position: relative;
+					left: 25rpx;
+					display: flex;
+					flex-direction: column;
+					padding-right: 24rpx;
+
+					.name_price {
+						display: flex;
+						align-items: center;
+						flex-direction: row;
+						font-family: PingFangSC-Medium, PingFang SC;
+						font-size: 32rpx;
+						color: #FFFFFF;
+						font-weight: 500;
+
+						.info_status {
+							border: 1px solid rgba(255, 255, 255, 0.05);
+							border-radius: 8rpx;
+							background-color: rgba(255, 255, 255, 0.10);
+							padding: 1rpx 1rpx 1rpx 1rpx;
+							position: relative;
+							top: 4rpx;
+							height: 28rpx;
+
+							// margin-right:
+							text {
+								font-size: 20rpx;
+								font-family: PingFangSC-Regular, PingFang SC;
+								font-weight: 400;
+								color: #FFFFFF;
+								position: relative;
+								top: -20rpx;
+
+							}
+						}
+
+						.info_name {
+							height: 42rpx;
+
+							text {
+								font-size: 30rpx;
+								font-family: PingFangSC-Regular, PingFang SC;
+								font-weight: 400;
+								color: #FFFFFF;
+							}
+
+							margin-right: 20rpx;
+						}
+
+						.info_price {
+							height: 44rpx;
+							font-size: 32rpx;
+							font-family: PingFangSC-Medium, PingFang SC;
+							font-weight: 500;
+							color: #FFFFFF;
+							line-height: 44rpx;
+							position: absolute;
+							right: 50rpx;
+						}
+					}
+
+					.item_info {
+						display: flex;
+						align-items: center;
+						position: relative;
+						top: 45rpx;
+						font-family: PingFangSC-Regular, PingFang SC;
+						line-height: 40rpx;
+						font-size: 26rpx;
+						color: rgba(255, 255, 255, 0.5);
+					}
 				}
 			}
 
-			.info_box {
-				margin-top: 26rpx;
-				width: 100%;
 
-				.name_price {
-					display: flex;
-					align-items: center;
-					justify-content: space-between;
-					font-family: PingFangSC-Medium, PingFang SC;
-					font-size: 32rpx;
-					color: #FFFFFF;
-					font-weight: 500;
-				}
-
-				.item_info {
-					display: flex;
-					align-items: center;
-					font-family: PingFangSC-Regular, PingFang SC;
-					line-height: 40rpx;
-					font-size: 26rpx;
-					color: rgba(255, 255, 255, 0.5);
-				}
-			}
 
 			.order_btn {
 				margin-top: 24rpx;
-				border-top: 1px solid #3C4176;
+				border-top: 1px solid rgba(255, 255, 255, 0.05);
+				width: 637rpx;
 				display: flex;
 				align-items: center;
 				flex-direction: row-reverse;
 				padding-top: 25rpx;
+				position: relative;
+				right: 10rpx;
+				left: 20rpx;
 
 				.common_btn {
-					height: 60rpx;
-					width: 160rpx;
+					height: 72rpx;
+					background: linear-gradient(134deg, #B73FFF 0%, #5A1FFF 100%);
+					border-radius: 36rpx;
 					text-align: center;
-					line-height: 54rpx;
-					border-radius: 30rpx;
-					border: 1px solid #585889;
-					color: #FFFFFF;
-					font-size: 26rpx;
+					
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
 					margin-left: 40rpx;
+					margin-bottom: 15rpx;
+					padding-left: 40rpx;
+					padding-right: 40rpx;
+					padding-top:14rpx;
+
+					text {
+						font-size: 30rpx;
+						font-family: PingFangSC-Regular, PingFang SC;
+						font-weight: 400;
+						color: #FFFFFF;
+						// line-height: 62rpx;
+					}
 
 					&.color {
-						background: $uni-button-color;
-						color: #FFFFFF;
-						border: 0rpx;
-						line-height: 60rpx;
+						// width: 60rpx;
+						// height: 42rpx;
+						// color: #FFFFFF;
+						// line-height: 42rpx;
+						// border: 0rpx;
+						// line-height: 60rpx;
 					}
 				}
 			}
