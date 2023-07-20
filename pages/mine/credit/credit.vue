@@ -15,7 +15,7 @@
 			<view class="middle_box">
 				<view class="middle_content">
 					<image src="@/static/imgs/credit/credit.png" mode=""></image>
-					<view class="score">100</view>
+					<view class="score">{{sorce}}</view>
 					<view class="score_text">信用分</view>
 				</view>
 			</view>
@@ -76,7 +76,8 @@
 					pageNumber: 0,
 					pageSize: 20
 				},
-				mode: 'credit'
+				mode: 'credit',
+				sorce:1
 			}
 		},
 		mounted() {
@@ -89,8 +90,9 @@
 			uni.$off('credit-refresh', this.refresh)
 		},
 		//注释为自定义 到达底部分页数据请求
-		onLoad() {
+		onLoad(props) {
 			// this.getCredit();
+			this.sorce=props.sorce;
 		},
 		methods: {
 			// getCredit() {

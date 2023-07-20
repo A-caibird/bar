@@ -45,7 +45,7 @@
 							<view> <text>{{userData.fanNumber || 0}}</text> </view>
 							<view>粉丝</view>
 						</view>
-						<view class="display_item"  @tap="$u.throttle(navigateHandle('/pages/mine/credit/credit'))">
+						<view class="display_item"  @tap="$u.throttle(navigateHandle('/pages/mine/credit/credit'+'?sorce='+userData.creditScore ))">
 							<view> <text>{{userData.creditScore || 0}}</text> </view>
 							<view>信用分</view>
 						</view>
