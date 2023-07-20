@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<view class="content" @touchstart="hideDrawer">
-			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation"
+		<view class="content" style="top: 0" @touchstart="hideDrawer">
+			<scroll-view class="msg-list" style="padding: 10rpx 32rpx 0" scroll-y="true" :scroll-with-animation="scrollAnimation"
 				:scroll-top="scrollTop" :scroll-into-view="scrollToView" @scrolltoupper="loadHistory"
 				upper-threshold="50">
 				<!-- 加载历史数据waitingUI -->

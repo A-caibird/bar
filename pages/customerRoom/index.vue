@@ -314,7 +314,6 @@
 						
 						// 获取消息中的图片,并处理显示尺寸
 						for (let i = 0; i < list.length; i++) {
-							console.log(list[i])
 							if (list[i].type == 'image') {
 								list[i].payload.url = this.setPicSize(list[i].payload.url);
 								this.msgImgList.push(list[i].payload.url);
