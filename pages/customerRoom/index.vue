@@ -1,12 +1,11 @@
 <template>
-	<view>
+	<view style="width: 100vw; height: 100vh; position: relative;">
 		<u-navbar :border-bottom="false" :is-fixed="true" :background="{
     		background: '#16192B'
     	}" title="客服" title-color="#FFFFFF" back-icon-color="#FFFFFF"></u-navbar>
 		<view class="content" @touchstart="hideDrawer">
 			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation"
-				:scroll-top="scrollTop" :scroll-into-view="scrollToView" @scrolltoupper="loadHistory"
-				upper-threshold="50">
+				:scroll-top="scrollTop" :scroll-into-view="scrollToView" @scroll="scroll" upper-threshold="0">
 				<!-- 加载历史数据waitingUI -->
 				<view class="loading" v-if="isHistoryLoading">
 					<view class="spinner">
@@ -18,7 +17,7 @@
 					</view>
 				</view>
 				<view class="row" v-for="(row, index) in msgList" :key="index" :id="'msg' + row.id">
-
+			
 					<!-- 用户消息 -->
 					<block>
 						<!-- 自己发出的消息 -->
@@ -123,7 +122,6 @@
 			return {
 				pageNumber: 1,
 				pageSize: 20,
-				nomore: false,
 				textMsg: "", //底部输入框中的文字
 				isHistoryLoading: false, //默认不加载历史消息
 				scrollAnimation: false, //scrollView组件的内置属性，是否需要滚动动画，scroll-with-animation
@@ -138,7 +136,12 @@
 				kefuId: "", //客服id
 				avatar: "", //客服头像
 				nickname: "", //客服昵称
-				clubId: "" //酒吧id
+				clubId: "" ,//酒吧id
+				count: 0,
+				flag: false,
+				old: {
+					scrollTop: 0
+				}
 			};
 		},
 
@@ -229,6 +232,15 @@
 					}
 				);
 			},
+			scroll(e) {
+				if(this.flag) {
+					return;
+				}
+				if(e.detail.scrollTop >= 50 || e.detail.scrollTop <= -50) {
+					this.loadHistory()
+				}
+				this.old.scrollTop = e.detail.scrollTop;
+			},
 			parseDate(date) {
 				let time = "";
 				let ymd = $date.formatTime(date, "Y-M-D");
@@ -260,16 +272,12 @@
 			},
 			//触发滑动到顶部(加载历史信息记录)，scroll-view自带的功能
 			loadHistory() {
-				if (this.nomore) {
-					return;
-				}
-				if (this.isHistoryLoading) {
-					return;
-				}
 				this.pageNumber = this.pageNumber + 1;
 				this.isHistoryLoading = true; //参数作为进入请求标识，防止重复请求
 				this.scrollAnimation = false; //关闭滑动动画
 				let Viewid = this.msgList[0].id; //记住第一个信息ID
+				this.flag = true;
+				this.goTop();
 				setTimeout(() => {
 					this.getMsgList(() => {
 						//这段代码很重要，不然每次加载历史数据都会跳到顶部
@@ -280,10 +288,17 @@
 							});
 						});
 						this.isHistoryLoading = false;
+						this.flag = false;
 					});
-				}, 1000);
+				},1000)
 			},
-
+			goTop() {
+				// 解决view层不同步的问题
+				this.scrollTop = this.old.scrollTop;
+				this.$nextTick(function() {
+					this.scrollTop = 0
+				});
+			},
 			// 加载初始页面消息
 			getMsgList(callback) {
 				this.$u.api.chatMessageList({
@@ -291,9 +306,7 @@
 						pageSize: this.pageSize,
 						clubId: this.clubId || '',
 						timestamp: Date.parse(new Date())
-					})
-					.then((res) => {
-						this.isHistoryLoading = false;
+				}).then((res) => {
 						let list = res.data.list;
 						for (let item of list) {
 							this.msgList.unshift(item);
@@ -307,11 +320,11 @@
 								this.msgImgList.push(list[i].payload.url);
 							}
 						}
+						
 						if (callback) {
 							callback();
 						}
-					});
-				return;
+				});
 			},
 			//更多功能(点击+弹出)
 			showMore() {
@@ -417,8 +430,6 @@
 			addTextMsg(msg) {
 				this.msgList.push(msg);
 			},
-
-			
 
 			// 添加图片消息到列表
 			addImgMsg(msg) {

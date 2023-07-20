@@ -258,13 +258,16 @@ page{
 	}
 }
 .content{
-	width: 100%;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 88rpx;
+	bottom: 100rpx;
 	.msg-list{
-		width: 96%;
-		padding: 0 2%;
-		position: absolute;
-		top: 0;
-		bottom: 100upx;
+		padding: 80rpx 32rpx 0;
+		height: 100%;
+		box-sizing: border-box;
+		
 		.loading{
 			//loading动画
 			display: flex;
