@@ -100,6 +100,7 @@
 				isSelect: false,
 				options: "",
 				isHome: false,
+				deviceId: ''
 			}
 		},
 		computed: {
@@ -262,8 +263,9 @@
 								console.log("跳转到登录处理函数");
 								vm.phone = data.result.phoneNumber;
 								vm.passText = "12345"; //设置默认密码
+								// vm.oneClickLogin();
 								vm.loginHandle();
-						})
+							})
 					},
 					fail(err) { // 正式登录失败
 						vm.$toast.text('微信登录失败！')
@@ -271,6 +273,26 @@
 						uni.closeAuthView() //关闭授权登录界面
 					}
 				})
+			},
+			getDeviceId() {
+				let vm = this;
+				uni.getSystemInfo({
+					success: function(res) {
+						console.log(res.deviceId);
+						this.deviceId = res.deviceId;
+					}
+				})
+			},
+			oneClickLogin() {
+				let vm = this;
+				let params = {
+					phone: vm.phone,
+					clientld: vm.deviceId
+				}
+				vm.$u.api.oneClickLogin(params).then(data=>{
+					console.log(JSON.stringify(data));
+				})
+				uni.closeAuthView() 
 			},
 			// 登录事件 $u.throttle() 节流防抖处理
 			loginHandle: function() {

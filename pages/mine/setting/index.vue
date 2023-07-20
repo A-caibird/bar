@@ -102,7 +102,7 @@
 			color: #ffffff;
 			font-size: 30rpx;
 			line-height: 90rpx;
-			background: linear-gradient(270deg, #BB0CF9, #F92FAF);
+			background:linear-gradient(134deg, #B73FFF 0%, #5A1FFF 100%);;
 			border-radius: 49px;
 		}
 	}

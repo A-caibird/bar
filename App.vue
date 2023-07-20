@@ -61,7 +61,8 @@
 			msgPath: '', // 推送消息路径；
 			passwordInputTimes: 0,
 			// baseUrl: 'https://erp.patixiu.com',
-			baseUrl: 'http://192.168.0.100:8080',//应该没在用了
+			baseUrl: 'https://jiubaws.vverp.com',
+			// baseUrl: 'http://192.168.0.118:8080',
 			authorized:  $storage.getLoginToken() ? true : false, //是否登录
 			// 用户识别码
 			token: $storage.getLoginToken(),

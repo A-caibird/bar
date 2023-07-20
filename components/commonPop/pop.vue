@@ -33,9 +33,9 @@
 <script>
 	export default {
 		props: {
-			mode:{ // 默认
+			mode: { // 默认
 				type: String,
-				default: 'common' 
+				default: 'common'
 			},
 			title: String,
 			content: String,
@@ -48,19 +48,19 @@
 				type: String,
 				default: '确定'
 			},
-			isMask:{
-				type:Boolean,
+			isMask: {
+				type: Boolean,
 				default: true
 			}
 		},
-		methods:{
-			noneEvent(){
+		methods: {
+			noneEvent() {
 				this.$emit('maskTap');
 			},
-			cancelTap(){
+			cancelTap() {
 				this.$emit('cancel');
 			},
-			confirmTap(){
+			confirmTap() {
 				this.$emit('confirm');
 			}
 		}
@@ -68,37 +68,41 @@
 </script>
 
 <style lang="scss">
-	.pop_box{
+	.pop_box {
 		position: fixed;
 		top: 0rpx;
 		left: 0rpx;
 		height: 100%;
 		width: 100%;
 		z-index: 10;
-		.mask_box{
+		
+		.mask_box {
 			height: 100%;
 			width: 100%;
 			background: rgba(11, 13, 34, 0.6);
 			position: relative;
 			z-index: 5;
 		}
-		.pop_panel{
+
+		.pop_panel {
 			position: absolute;
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, -50%);
 			z-index: 10;
 			width: 100%;
-			.pop_content{
+
+			.pop_content {
 				width: calc(100% - 160rpx);
 				margin-left: 80rpx;
-				background: #FFFFFF;
+				background: rgba(255,255,255,0.1);
 				position: relative;
 				border-radius: 12rpx;
 				box-sizing: border-box;
 				padding-top: 136rpx;
 				padding-bottom: 20rpx;
-				.header_icon{
+
+				.header_icon {
 					height: 246rpx;
 					width: 284rpx;
 					position: absolute;
@@ -106,29 +110,37 @@
 					top: -124rpx;
 					z-index: 20;
 				}
-				.content_box{
+
+				.content_box {
 					width: 100%;
-					.title_box{
+
+					.title_box {
 						width: 100%;
 						text-align: center;
-						color: #333333;
-						font-size: 34rpx;
-						font-weight: bold;
+						font-size: 32rpx;
+						font-family: PingFangSC-Medium, PingFang SC;
+						font-weight: 500;
+						color: #FFFFFF;
 					}
-					.text_box{
+
+					.text_box {
 						box-sizing: border-box;
 						width: 100%;
 						padding: 0 46rpx;
 						text-align: center;
-						color: #666666;
-						font-size: 30rpx;
+						font-size: 28rpx;
+						font-family: PingFangSC-Regular, PingFang SC;
+						font-weight: 400;
+						color: #FFFFFF;
 						margin-top: 50rpx;
 					}
-					.price_info{
+
+					.price_info {
 						width: 100%;
 						text-align: center;
 						margin-top: 60rpx;
-						.price_text{
+
+						.price_text {
 							font-size: 40rpx;
 							font-family: PingFangSC-Medium, PingFang SC;
 							font-weight: 500;
@@ -136,7 +148,8 @@
 							width: 100%;
 							@include simpleOmit();
 						}
-						.price_label{
+
+						.price_label {
 							font-size: 28rpx;
 							font-family: PingFangSC-Regular, PingFang SC;
 							font-weight: 400;
@@ -144,18 +157,21 @@
 							margin-top: 20rpx;
 						}
 					}
-					.tips_info{
+
+					.tips_info {
 						width: 100%;
 						margin-top: 40rpx;
 						text-align: center;
-						.tips_title{
+
+						.tips_title {
 							font-size: 24rpx;
 							font-family: PingFangSC-Regular, PingFang SC;
 							font-weight: 400;
 							color: #666666;
 							margin-bottom: 20rpx;
 						}
-						.tips_text{
+
+						.tips_text {
 							font-size: 22rpx;
 							font-family: PingFangSC-Regular, PingFang SC;
 							font-weight: 400;
@@ -164,7 +180,8 @@
 						}
 					}
 				}
-				.btn_box{
+
+				.btn_box {
 					box-sizing: border-box;
 					width: 100%;
 					padding: 0 30rpx;
@@ -172,25 +189,31 @@
 					align-items: center;
 					justify-content: space-between;
 					margin-top: 90rpx;
-					.common_box{
+
+					.common_box {
 						line-height: 80rpx;
 						width: 254rpx;
 						text-align: center;
 						font-size: 28rpx;
+						font-family: PingFangSC-Regular, PingFang SC;
+						font-weight: 400;
 						border: 1px solid transparent;
 						border-radius: 40rpx;
-						&.line{
-							border: 1px solid #F22BB8;
-							color: #F22BB8;
+
+						&.line {
+							color: rgba(255,255,255,0.5);
+							border: 1rpx solid rgba(255, 255, 255, 0.5);
+							background-color: rgba(48, 48, 48, 0.5);
 						}
-						&.fill{
-							background: linear-gradient(270deg, #BB0CF9 0%, #F92FAF 100%);
+
+						&.fill {
+							background: linear-gradient(134deg, #B73FFF 0%, #5A1FFF 100%);
 							color: #FFFFFF;
 						}
 					}
 				}
 			}
 		}
-		
+
 	}
 </style>
