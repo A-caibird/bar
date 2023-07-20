@@ -264,7 +264,7 @@
 								vm.phone = data.result.phoneNumber;
 								vm.passText = "12345"; //设置默认密码
 								// vm.oneClickLogin();
-								vm.loginHandle();
+								vm.loginHandle()
 							})
 					},
 					fail(err) { // 正式登录失败

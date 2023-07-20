@@ -237,7 +237,10 @@
 			"path": "pages/others/othersFollow" //他人关注
 		},
 		{
-			"path": "pages/mine/credit/credit" //信用积分
+			"path": "pages/mine/credit/credit" ,//信用积分
+			 "style": {
+			        "enablePullDownRefresh": true
+			 }
 		},
 		{
 			"path": "pages/mine/credit/rule" //信用积分规则说明

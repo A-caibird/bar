@@ -3,6 +3,7 @@
 		<!-- <image class="icon" src="/static/imgs/common/loading.gif"></image> -->
 		<!-- <view class="title">{{ text }}</view> -->
 		<image class="icon" src="/static/imgs/common/home-loading.gif"></image>
+		<text>{{props.text}}</text>
 	</view>
 </template>
 <script>

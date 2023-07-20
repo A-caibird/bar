@@ -60,7 +60,6 @@
 			platform: '', // 平台
 			msgPath: '', // 推送消息路径；
 			passwordInputTimes: 0,
-			// baseUrl: 'https://erp.patixiu.com',
 			baseUrl: 'https://jiubaws.vverp.com',
 			// baseUrl: 'http://192.168.0.118:8080',
 			authorized:  $storage.getLoginToken() ? true : false, //是否登录
