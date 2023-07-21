@@ -16,30 +16,26 @@
 				<view class="middle_content">
 					<image src="@/static/imgs/credit/credit.png" mode=""></image>
 					<view class="score">{{sorce}}</view>
-					<view class="score_text">信用分</view>
+					<view class="score_text">我的信用分</view>
 				</view>
 			</view>
-			<view class="bottom_box">
+			<view class="bottom_box" :style="{height:divheight}">
 				<view class="bottom_title">
-					<view class="title_left"></view>
 					<view class="title_text">信用分记录</view>
 				</view>
-				<u-gap height="1" bg-color="rgba(255,255,255,0.5)"></u-gap>
-
-				<view class="bottom_content">
-					<view class="content_item" v-for="item,index in list" :key="index">
+				<view class="bottom_content" >
+					<view class="content_item" v-for="(item,index) in pageList" :key="index" :class="{bar:index!=pageList.length-1}">
 						<view class="content_item_top">
 							<view class="top_left">
-								正常完成{{index}}次
+								{{item.content}}
 							</view>
 							<view class="top_right">
-								信用分+{{index}}
+								{{item.creditScore>0?'+':'-'}}{{item.creditScore}}
 							</view>
 						</view>
 						<view class="content_item_time">
-							2020-5-10 18:34
+							{{item.createDate}}
 						</view>
-						<u-gap height="1" bg-color="rgba(255,255,255,0.5)"></u-gap>
 					</view>
 				</view>
 			</view>
@@ -50,13 +46,16 @@
 <script>
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
 	import MescrollMoreItemMixin from "@/components/mescroll-uni/mixins/mescroll-more-item.js";
-    import $storage from '@/common/storage.js'
+	import $storage from '@/common/storage.js'
 	//组件
 	import MescrollUni from '@/components/mescroll-uni/mescroll-uni.vue'
 	import loadding from '@/components/loading/loading.vue';
 
 	export default {
 		mixins: [MescrollMixin, MescrollMoreItemMixin],
+		components: {
+			MescrollUni,
+		},
 		data() {
 			return {
 				downOption: {
@@ -77,7 +76,7 @@
 					pageSize: 20
 				},
 				mode: 'credit',
-				sorce:1
+				sorce: 1
 			}
 		},
 		mounted() {
@@ -92,7 +91,13 @@
 		//注释为自定义 到达底部分页数据请求
 		onLoad(props) {
 			// this.getCredit();
-			this.sorce=props.sorce;
+			this.sorce = props.sorce;
+		},
+		computed:{
+			divheight(){
+				let total=this.pageList.length*190;
+		        return total<1500?'1150rpx':'100%';
+			}
 		},
 		methods: {
 			// getCredit() {
@@ -123,7 +128,7 @@
 			// 		console.log(err);
 			// 	})
 			// },
-			
+
 			refresh(e) {
 				console.log(e);
 				if (e.msg != this.mode) {
@@ -166,13 +171,14 @@
 			width: 100%;
 			height: 450rpx;
 			position: relative;
-			top:80rpx;
+			top: 80rpx;
+
 			.middle_content {
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
 				align-items: center;
-				width: 108rpx;
+				width: 168rpx;
 
 				image {
 					width: 108rpx;
@@ -192,25 +198,20 @@
 		}
 
 		.bottom_box {
-			width: 100%;
-			padding: 0 30rpx;
-
+			width: 700rpx;
+			padding: 30rpx 30rpx 10rpx 30rpx;
+			background: rgba(255, 255, 255, 0.05);
+			border-radius: 16rpx 16rpx 0rpx 0rpx;
+            margin:20rpx 30rpx 30rpx 30rpx;
+			// height:100vh;
 			.bottom_title {
 				display: flex;
 				align-items: center;
 				margin-bottom: 20rpx;
 
-				.title_left {
-					width: 6rpx;
-					height: 26rpx;
-					background: linear-gradient(134deg, #B73FFF 0%, #5A1FFF 100%);
-
-				}
-
 				.title_text {
 					font-size: 30rpx;
 					color: #FFFFFF;
-					padding-left: 14rpx;
 				}
 			}
 
@@ -223,8 +224,11 @@
 					display: flex;
 					flex-direction: column;
 					width: 100%;
-					height: 162rpx;
-
+					height: 138rpx;
+					padding-bottom: 30rpx;   
+                   &.bar{
+					   border-bottom: 1rpx solid  rgba(255, 255, 255, 0.05);
+				   }
 					.content_item_top {
 						display: flex;
 						justify-content: space-between;
