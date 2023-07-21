@@ -55,6 +55,7 @@
 		border-radius: 16rpx;
 		padding: 24rpx;
 		box-sizing: border-box;
+		margin-bottom: 24rpx;
 
 		.club_header {
 			width: 100%;
