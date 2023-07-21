@@ -64,10 +64,13 @@ const MescrollMixin = {
 			}
 			
 			pageList = pageList.concat(data.list);
+			// // 测试
+			// pageList = [];
 			this.pageList = pageList;
 			this.totalPages = data.totalPage;
 			uni.hideLoading();
-
+			
+			
 			// 分页请求返回来的数据pageList.length,不要改这个,考虑到后台借口的问题
 			this.mescroll.endByPage(pageList.length, this.totalPages);
 		},

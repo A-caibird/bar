@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" >
 		<view class="header_box">
 			<u-navbar back-icon-color="#FFFFFF" title="信用积分" title-size="36" title-color="#FFFFFF" :background="{
 					'background': '#16192B'
@@ -10,36 +10,42 @@
 				</view>
 			</u-navbar>
 		</view>
-		<mescroll-uni ref="mescrollRef" :canShowTop="false" :fixed="true" @init="mescrollInit" :down="downOption"
-			@down="downCallback" :up="upOption" @up="upCallback">
-			<view class="middle_box">
-				<view class="middle_content">
-					<image src="@/static/imgs/credit/credit.png" mode=""></image>
-					<view class="score">{{sorce}}</view>
-					<view class="score_text">我的信用分</view>
-				</view>
-			</view>
-			<view class="bottom_box" :style="{height:divheight}">
-				<view class="bottom_title">
-					<view class="title_text">信用分记录</view>
-				</view>
-				<view class="bottom_content" >
-					<view class="content_item" v-for="(item,index) in pageList" :key="index" :class="{bar:index!=pageList.length-1}">
-						<view class="content_item_top">
-							<view class="top_left">
-								{{item.content}}
-							</view>
-							<view class="top_right">
-								{{item.creditScore>0?'+':'-'}}{{item.creditScore}}
-							</view>
+		<view >
+			<mescroll-uni ref="mescrollRef" :canShowTop="false" :fixed="true" @init="mescrollInit" :down="downOption"
+				@down="downCallback" :up="upOption" @up="upCallback" >
+				<view v-show="!pageList.length" class="control-space"></view>
+				<view v-show="pageList.length">
+					<view class="middle_box">
+						<view class="middle_content">
+							<image src="@/static/imgs/credit/credit.png" mode=""></image>
+							<view class="score">{{sorce}}</view>
+							<view class="score_text">我的信用分</view>
 						</view>
-						<view class="content_item_time">
-							{{item.createDate}}
+					</view>
+					<view class="bottom_box" :style="{height:divheight}">
+						<view class="bottom_title">
+							<view class="title_text">信用分记录</view>
+						</view>
+						<view class="bottom_content" >
+							<view class="content_item" v-for="(item,index) in pageList" :key="index" :class="{bar:index!=pageList.length-1}">
+								<view class="content_item_top">
+									<view class="top_left">
+										{{item.content}}
+									</view>
+									<view class="top_right">
+										{{item.creditScore>0?'+':'-'}}{{item.creditScore}}
+									</view>
+								</view>
+								<view class="content_item_time">
+									{{item.createDate}}
+								</view>
+							</view>
 						</view>
 					</view>
 				</view>
-			</view>
-		</mescroll-uni>
+				
+			</mescroll-uni>
+		</view>
 	</view>
 </template>
 
@@ -196,7 +202,10 @@
 				}
 			}
 		}
-
+		.control-space{
+			height: 500rpx;
+			// 	控制没有数据的时候空空如也显示的位置
+		}
 		.bottom_box {
 			width: 700rpx;
 			padding: 30rpx 30rpx 10rpx 30rpx;

@@ -46,7 +46,6 @@
 				
 				<view class="seat_detail">
 					<view class="seat_label">
-						<view class="line"></view>
 						<view class="label_text"> 台位详情 </view>
 					</view>
 					<view class="seat_info">
@@ -314,7 +313,7 @@
 							position: relative;
 							&.select{
 								color: #FFFFFF;
-								background-color: #2C3158;
+								background: linear-gradient(134deg, #B73FFF 0%, #5A1FFF 100%);;
 								border: none;
 							}
 							.week_text{
@@ -375,16 +374,10 @@
 					width: 100%;
 					display: flex;
 					align-items: center;
-					border-bottom: 1px solid #31345B;
-					.line{
-						height: 26rpx;
-						width: 6rpx;
-						background: #FF59C9;
-					}
+					border-bottom: 1px solid rgba(255,255,255,0.05);;
 					.label_text{
 						font-size: 30rpx;
 						color: #FFFFFF;
-						margin-left: 16rpx;
 					}
 				}
 				.seat_info{
@@ -409,11 +402,11 @@
 						line-height: 40rpx;
 						.tips1{
 							font-size: 26rpx;
-							color: #9292BA;
+							color: #979797;
 						}
 						.tips2{
 							font-size: 26rpx;
-							color: #B294FE;
+							color:#979797;
 							&.active{
 								color: #FFFFFF;
 							}
@@ -433,7 +426,7 @@
 			display: flex;
 			align-items: center;
 			background: $uni-title-color;
-			border-top: 1px solid #31345B;
+			border-top: 1px solid rgba(255,255,255,0.05);
 			.price_text{
 				font-size: 34rpx;
 				color: #FFFFFF;
