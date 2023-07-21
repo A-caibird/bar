@@ -195,6 +195,7 @@
 			height: 100%;
 			display: flex;
 			flex-direction: column;
+			padding: 28rpx 32rpx;
 
 			.middle-box {
 				flex: 1;

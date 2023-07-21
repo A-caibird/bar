@@ -46,7 +46,7 @@
 <script>
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
 	import MescrollMoreItemMixin from "@/components/mescroll-uni/mixins/mescroll-more-item.js";
-	import $storage from '@/common/storage.js'
+    import $storage from '@/common/storage.js'
 	//组件
 	import MescrollUni from '@/components/mescroll-uni/mescroll-uni.vue'
 	import loadding from '@/components/loading/loading.vue';

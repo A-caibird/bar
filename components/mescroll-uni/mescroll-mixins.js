@@ -12,14 +12,14 @@ const MescrollMixin = {
 		return {
 			mescroll: null, //mescroll实例对象
 			resultInfo: {},
-			url:'',
-			params:{},
-			totalPages: 1,
-			pageList:[],
+			url: '',
+			params: {},
+			totalPages: 0,
+			pageList: [],
 		}
 	},
 	// 注册系统自带的下拉刷新 (配置down.native为true时生效, 还需在pages配置enablePullDownRefresh:true;详请参考mescroll-native的案例)
-	onPullDownRefresh(){
+	onPullDownRefresh() {
 		this.mescroll && this.mescroll.onPullDownRefresh();
 	},
 	// 注册列表滚动事件,用于判定在顶部可下拉刷新,在指定位置可显示隐藏回到顶部按钮 (此方法为页面生命周期,无法在子组件中触发, 仅在mescroll-body生效)
@@ -39,49 +39,52 @@ const MescrollMixin = {
 		},
 		// 以ref的方式初始化mescroll对象 (兼容字节跳动小程序)
 		mescrollInitByRef() {
-			if(!this.mescroll || !this.mescroll.resetUpScroll){
+			if (!this.mescroll || !this.mescroll.resetUpScroll) {
 				let mescrollRef = this.$refs.mescrollRef;
-				if(mescrollRef) this.mescroll = mescrollRef.mescroll
+				if (mescrollRef) this.mescroll = mescrollRef.mescroll
 			}
 		},
 		// 下拉刷新的回调 (mixin默认resetUpScroll)
 		downCallback() {
 			console.log("downCallback")
-			if(this.mescroll.optUp.use){
+			if (this.mescroll.optUp.use) {
 				console.log("downCallback1111")
 				this.mescroll.resetUpScroll()
-			}else{
-				setTimeout(()=>{
+			} else {
+				setTimeout(() => {
 					console.log("downCallback222")
 					this.mescroll.endSuccess();
 				}, 500)
 			}
 		},
-		handleData(pageNumber,data){
+		handleData(pageNumber, data) {
 			let pageList = this.pageList
 			if (pageNumber <= 1) {
 				pageList = []
-			} 
+			}
+			
 			pageList = pageList.concat(data.list);
 			this.pageList = pageList;
 			this.totalPages = data.totalPage;
 			uni.hideLoading();
-			this.mescroll.endByPage(data.list.length, this.totalPages);
+
+			// 分页请求返回来的数据pageList.length,不要改这个,考虑到后台借口的问题
+			this.mescroll.endByPage(pageList.length, this.totalPages);
 		},
-		
+
 		//判断能否请求
-		judgeLoad(){
+		judgeLoad() {
 			return true
 		},
 		// 上拉加载的回调
 		async upCallback(page) {
 			let url = this.url;
 			console.log('上拉加载的回调', url)
-			if(!this.judgeLoad()) {
+			if (!this.judgeLoad()) {
 				console.log("1111222")
 				uni.hideLoading();
 				return this.mescroll.endErr()
-			} 
+			}
 			console.log("11118888")
 			let pageNumber = page.num;
 			let pageSize = page.size; // 页长, 默认每页10条
@@ -100,9 +103,9 @@ const MescrollMixin = {
 					pageNumber,
 					pageSize: pageSize
 				})
-				if(url == '/api/dynamic/myAttentionUserDynamic'){
+				if (url == '/api/dynamic/myAttentionUserDynamic') {
 					var app = getApp()
-					if(!app.globalData.token){
+					if (!app.globalData.token) {
 						uni.hideLoading();
 						this.pageList = [];
 						this.mescroll.endErr()
@@ -110,30 +113,33 @@ const MescrollMixin = {
 						return
 					}
 				}
-				let {code,data} = await this.$u.api.commonRequest(url, params)
-				if(code==0) {
+				let {
+					code,
+					data
+				} = await this.$u.api.commonRequest(url, params)
+				if (code == 0) {
 					// this.resultInfo = data;
 					console.log("获取到数据==》")
 					console.log(data)
-					this.handleData(pageNumber,data)
+					this.handleData(pageNumber, data)
 				} else {
 					console.log("error network")
 					uni.hideLoading();
 					this.mescroll.endErr()
 				}
-				
+
 			} else {
 				uni.hideLoading();
 				this.mescroll.endErr()
 			}
-			
-			
+
+
 		},
 	},
 	mounted() {
 		this.mescrollInitByRef(); // 兼容字节跳动小程序, 避免未设置@init或@init此时未能取到ref的情况
 	}
-	
+
 }
 
 export default MescrollMixin;
