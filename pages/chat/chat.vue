@@ -60,7 +60,7 @@
 											{{row.payload.clubName}}
 										</view>
 										<view class="date-card">
-											<view class="date">邀约时间：{{row.timestamp}}</view>
+											<view class="date">邀约时间：{{row.createDate}}</view>
 										</view>
 										<!-- <view class="yaoyue-btn" v-if="row.payload.agreeStatus=='agreed'">
 											<view class="btn agreed">已同意</view>
@@ -85,7 +85,7 @@
 											{{row.payload.clubName}}
 										</view>
 										<view class="date-card">
-											<view class="date">邀约时间：{{row.timestamp}}</view>
+											<view class="date">邀约时间：{{row.createDate}}</view>
 										</view>
 										<!-- <view class="yaoyue-btn" v-if="row.payload.agreeStatus=='agree'">
 											<view class="btn agreed">已同意</view>
@@ -167,7 +167,7 @@
 												{{row.payload.clubName}}
 											</view>
 											<view class="date-card">
-												<view class="date">邀约时间：{{row.timestamp}}</view>
+												<view class="date">邀约时间：{{row.createDate}}</view>
 											</view>
 											<view class="yaoyue-btn" v-if="row.payload.agreeStatus=='agreed'">
 												<view class="btn agreed">已同意</view>
@@ -198,7 +198,7 @@
 											{{row.payload.clubName}}
 										</view>
 										<view class="date-card">
-											<view class="date">邀约时间：{{row.timestamp}}</view>
+											<view class="date">邀约时间：{{row.createDate}}</view>
 										</view>
 										<view class="yaoyue-btn" v-if="row.payload.agreeStatus=='agreed'">
 											<view class="btn agreed">已同意</view>
@@ -521,7 +521,7 @@
 						pageNumber: this.pageNumber,
 						pageSize: this.pageSize,
 						chatUserId: this.friendId || '',
-						timestamp: Date.parse(new Date())
+						createDate: Date.parse(new Date())
 					})
 					.then((res) => {
 						console.log("获取到好友的聊天记录")
