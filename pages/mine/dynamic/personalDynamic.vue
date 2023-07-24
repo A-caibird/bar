@@ -425,6 +425,7 @@
 					left:7rpx;
 					&.active{
 						position:relative;
+						color: #FFF;
 					&::before{
 						  content: "";
 						  position: absolute;
@@ -433,7 +434,9 @@
 						  width: 100%;
 						  height: 100%;
 						  background: #832DFF; // 模糊字体背景颜色
+						  transform: translateZ(0);
 						  filter: blur(10rpx);
+						  border-radius: 100%;
 						  z-index: -1;
 					}
 					&:after{
@@ -458,6 +461,7 @@
 					left:80rpx;
 					&.active{
 						position:relative;
+						color: #FFF;
 					&::before{
 						  content: "";
 						  position: absolute;
@@ -467,6 +471,8 @@
 						  height: 100%;
 						  background: #832DFF; // 模糊字体背景颜色
 						  filter: blur(10rpx);
+						  transform: translateZ(0);
+						  border-radius: 100%;
 						  z-index: -1;
 					}
 					&::after{
