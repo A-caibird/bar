@@ -4,7 +4,7 @@
 			<view class="header_left">
 				<view class="club_name">{{info.name}}</view>
 			</view>
-			<view class="header_right">
+			<view class="header_right" v-if="info.distance">
 				<view class="club_location" @tap.stop="openMap(info.lng,info.lat,info.address)">
 					<image src="/static/imgs/common/location.png"></image>
 					<text>{{info.distance}}</text>

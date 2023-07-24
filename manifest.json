@@ -38,7 +38,8 @@
             "VideoPlayer" : {},
             "Payment" : {},
             "Statistic" : {},
-            "Camera" : {}
+            "Camera" : {},
+            "Maps" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
@@ -124,10 +125,8 @@
                     }
                 },
                 "geolocation" : {
-                    "amap" : {
-                        "__platform__" : [ "ios", "android" ],
-                        "appkey_ios" : "b6b4cc7c7650f6465a3aa3a0a44eff61",
-                        "appkey_android" : "6c18d2efed202273710590e790c68a55"
+                    "system" : {
+                        "__platform__" : [ "ios", "android" ]
                     }
                 },
                 "payment" : {
@@ -146,6 +145,12 @@
                         "channelid_ios" : "patixiu_ios",
                         "appkey_android" : "619caf81e014255fcb8907b0",
                         "channelid_android" : "patixiu_android"
+                    }
+                },
+                "maps" : {
+                    "amap" : {
+                        "appkey_ios" : "b6b4cc7c7650f6465a3aa3a0a44eff61",
+                        "appkey_android" : "6c18d2efed202273710590e790c68a55"
                     }
                 }
             },

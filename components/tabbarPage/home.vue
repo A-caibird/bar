@@ -95,8 +95,8 @@
 	import appleAudit from '@/mixins/apple-audit.js' //混合一个是否审核的变量进来，组件mounted就触发
 	import loginConfirm from '@/mixins/loginConfirm.js'
 	import commonBanner from '@/components/common-banner/common-banner.vue'
-	var app = getApp();
-	var timeoutEvent = null;
+	let app = getApp();
+	let timeoutEvent = null;
 	export default {
 		mixins: [pageable, location, appleAudit, loginConfirm],
 		components: {
@@ -109,7 +109,7 @@
 				playUrl: '',
 				bannerList: [],
 				videoImgFooter: '?x-oss-process=video/snapshot,t_0,f_jpg,w_0,h_0,m_fast',
-				cityName: app.globalData.location.cityName,
+				cityName: "宁波市",
 				params: {
 					cityName: app.globalData.location.cityName,
 					areaName: '',
@@ -125,9 +125,13 @@
 		},
 		mounted() {
 			setTimeout(() => {
-				this.$emit('homeLoad')
-			}, 5 * 1000)
-			this.load()
+				this.$emit('homeLoad');
+			}, 5 * 1000);
+			this.load();
+			uni.$on('update-clubList',(cityName) => {
+				this.cityName = cityName;
+				this.getClubList();
+			});
 		},
 		watch: {
 			clubListLoad(val) {
@@ -200,6 +204,7 @@
 						lng,
 						lat
 					} = app.globalData.location
+					
 					this.cityName = cityName
 					this.params.areaName = ""
 					this.params.lng = lng;
@@ -228,15 +233,12 @@
 				}
 
 			},
-
-
 			load() {
 				console.log("载入load方法")
 				this.getHomeBannerList()
 				this.getClubList()
+				console.log(this.cityName);
 			},
-
-
 			scrollToClubList() {
 				this.scrollBottom = ''
 				this.$nextTick(() => {
@@ -248,86 +250,59 @@
 				this.clubListLoad = true
 			},
 
-
-			// getSelfLocation: function() {
-			// 	uni.getLocation({
-			// 		type: 'wgs84',
-			// 		success: res => {
-			// 			console.log(res);
-			// 		},
-			// 		fail: e => {
-			// 			console.log(e);
-			// 		}
-			// 	});
-			// },
 			//最初的触发方法
 			getHomeBannerList() {
-				var that = this;
-
+				let that = this;
 				this.$u.api.getHomeBannerListApi().then(function(res) {
 					if (res.code == 0) {
-						var list = res.data.list;
+						let list = res.data.list;
 						that.bannerList = list;
 						that.bannerListLoad = true
 					}
 				}).catch(function() {
 
 				});
-
-
 			},
-			//最初触发的方法,原先的方法，目前重写了
-			// async getClubList() {
-			// 	//调用mixins/location的方法，拿到经纬度和城市名，存起来
-			// 	await this.getLocation()
-
-			// 	if (this.canLocation) {//是location.js中的一个变量
-			// 		let hasLocation = await this.getLocation()
-			// 		if (!hasLocation && this.hasLocation) {
-			// 			this.pullRefresh()
-			// 		}
-			// 	} else {
-			// 		if (this.hasLocation) {
-			// 			this.pullRefresh()
-			// 		}
-			// 	}
-			// },
-
-			//需要修改，目前这边只传了标准的经纬度，城市默认是宁波，但是后台这边是根据城市名来的
-			getClubList() {
-				console.log("111")
-				var that = this;
-				uni.getLocation({
-					type: 'gcj02',
-					geocode: true,
-					success(res) {
-						console.log("定位成功===>")
-						console.log(res)
-						let {
-							latitude,
-							longitude,
-							address
-						} = res
-						let location = {
-							lng: longitude,
-							lat: latitude,
-							cityName: address.city
+			
+			// 获取酒吧列表
+			async getClubList() {
+				let params;
+				
+				this.loading = true;
+				
+				if(getApp().globalData.isCurrentLocation) {
+					await new Promise((resolve) => {
+						this.getLocation(resolve)
+					})
+				}
+				
+				console.log("是否开启定位：",getApp().globalData.locationService);
+				console.log("城市名：",getApp().globalData.location.cityName);
+				console.log("是否在当前定位：",getApp().globalData.isCurrentLocation);
+				
+				if(!getApp().globalData.locationService) {
+					params = {cityName: getApp().globalData.location.cityName,areaName: ""}
+				} else {
+					params = {...getApp().globalData.location,areaName: ""}
+				}
+				
+				await this.$u.api.getClubListApi(params).then(res => {
+					this.pageList = [];
+					let { code, data } = res;
+					if(code == 0) {
+						if (params.pageNumber <= 1) {
+							this.pageList = data.list;
+						} else {
+							this.pageList = this.pageList.concat(data.list);
 						}
-
-						getApp().globalData.location = location;
-
-						// console.log(res)
-						that.pullRefresh()
-
-					},
-					fail(err) {
-						console.log("定位失败===>")
-						console.log(err)
-
+						this.totalPages = data.totalPage;
+						this.$nextTick(() => {
+							this.loading = false;
+						})
 					}
 				})
+				
 			},
-
 			//功能按钮区触发，去礼物列表
 			goGift: function() {
 				if (!this.loginConfirmHandle(false)) return;

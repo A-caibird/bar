@@ -67,9 +67,10 @@
 			token: $storage.getLoginToken(),
 			//用户信息 chatToken、userId、chatUserId、name、avatar
 			userInfo: $storage.getStorageFilter($storage.getUserInfo(),{}),
-			location: $storage.getStorageFilter($storage.getLocation(),{cityName: '宁波市',lng: 121.557239,lat: 29.809815}),
+			location: {cityName: '宁波市'},
 			payPassword: $storage.getStorageFilter($storage.getPayPassword(),''),
 			locationService:false,
+			isCurrentLocation: true,
 			locationPermission:false,
 			canLocation:false,
 			prizePoolId:'',//奖池id

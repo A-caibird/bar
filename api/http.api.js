@@ -53,6 +53,7 @@ const install = (Vue, vm) => {
 		registerCodeApi: (params) => vm.$u.post('/api/user/getCode', params), //获取验证码
 		getMyInfo: (params) => vm.$u.get('/api/user/myInfo', params), //获取个人信息
 		getHomeBannerListApi: (params) => vm.$u.get('/api/banner/list', params), //首页轮播图
+		getClubListApi: (params) => vm.$u.get('/api/club/list', params), // 酒吧列表
 		leaderBoardApi: (params) => vm.$u.get('/api/user/leaderBoard', params), //礼物排行
 		otherMsgApi: (params) => vm.$u.get('/api/user/otherInfo', params), //获取他人信息
 		orattenchApi: (params) => vm.$u.post('/api/user/attentionUser', params), //关注用户

@@ -48,9 +48,9 @@
 			// 获取开通城市
 			getCitys: function(){
 				this.$u.api.getCitys().then(res => {
-					//console.log(res)
 					if(res.code==0) {
 						this.citys = res.data.list || [];
+						console.log(JSON.stringify(this.citys));
 					}
 				}).catch(e => {
 					console.log(e);
@@ -58,11 +58,21 @@
 			},
 			// 选择城市
 			selectCity: function(city){
-				let location = app.globalData.location
-				location.cityName = city.cityName;
-				app.globalData.location = location
-				// $storage.setLocation(location)
-				uni.$emit('update-location')
+				console.log("选择城市",city.cityName);
+				
+				if(getApp().globalData.locationService) {
+					// 存储当前位置城市名
+					$storage.setLocation(getApp().globalData.location.cityName)
+				}
+				
+				if($storage.getLocation() && getApp().globalData.locationService) {
+					$storage.getLocation().cityName === city.cityName ? getApp().globalData.isCurrentLocation = true : getApp().globalData.isCurrentLocation = false;
+				}
+				
+				
+				getApp().globalData.location.cityName = city.cityName;
+				
+				uni.$emit('update-clubList',city.cityName)
 				uni.navigateBack();
 			}
 		}

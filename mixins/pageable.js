@@ -26,6 +26,7 @@ export default {
 		},
 		// 获取某个页面数据
 		async getPageContent(callback = null) {
+			console.log("获取某个页面数据");
 			let url = this.url;
 			let pageNumber = this.pageNumber;
 			let totalPages = this.totalPages;
@@ -41,7 +42,7 @@ export default {
 				// console.log(params);
 				this.loading = true;
 				let {code,data} = await this.$u.api.commonRequest(url, params)
-				if(code==0) {
+				if(code == 0) {
 					let pageList = this.pageList
 					if (pageNumber <= 1) {
 						pageList = data.list;
