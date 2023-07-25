@@ -38,9 +38,9 @@
 					<text>改期</text>
 				</view>
 				<block v-if="goPayShow">
-					<view class="common_btn color" v-if="chatTag" @tap.stop="$u.throttle(statementPopShowTap)">去付款
+					<view class="common_btn"  v-if="chatTag" @tap.stop="$u.throttle(statementPopShowTap)">去付款
 					</view>
-					<view class="common_btn color" v-else @tap.stop="$u.throttle(goPay)">去付款</view>
+					<view class="common_btn"  v-else @tap.stop="$u.throttle(goPay)">去付款</view>
 				</block>
 				<view class="common_btn" v-if="deleteShow" @tap.stop="$u.throttle(tapGoDelete)"> <text>删除</text> </view>
 				<view class="common_btn" v-if="cancelOrderShow" @tap.stop="tapCancel"> <text>取消订单</text> </view>
@@ -372,7 +372,7 @@
 				left: 20rpx;
 
 				.common_btn {
-					height: 72rpx;
+					height: 62rpx;
 					background: linear-gradient(134deg, #B73FFF 0%, #5A1FFF 100%);
 					border-radius: 36rpx;
 					text-align: center;
@@ -384,22 +384,13 @@
 					padding-left: 40rpx;
 					padding-right: 40rpx;
 					padding-top:14rpx;
-
+					color: #FFFFFF;
 					text {
 						font-size: 30rpx;
 						font-family: PingFangSC-Regular, PingFang SC;
 						font-weight: 400;
 						color: #FFFFFF;
-						// line-height: 62rpx;
-					}
-
-					&.color {
-						// width: 60rpx;
-						// height: 42rpx;
-						// color: #FFFFFF;
-						// line-height: 42rpx;
-						// border: 0rpx;
-						// line-height: 60rpx;
+						line-height: 32rpx;
 					}
 				}
 			}

@@ -8,7 +8,6 @@ const install = (Vue, vm) => {
 	Vue.prototype.$u.http.setConfig({
 		//正式域名
 		baseUrl: 'https://jiubaws.vverp.com', 
-		// baseUrl: 'http://192.168.0.118:8080',
 		//, 局域网
 		loadingText: '努力加载中~',
 		showLoading: false,

@@ -55,8 +55,11 @@
 			.tip {
 				padding: 30rpx;
 				@include height-center();
-				color: #ffffff;
-				font-size: 30rpx;
+				height: 20px;
+				font-size: 14px;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #FFFFFF;
 				background: #16192B; // Acaibird 颜色修改
 			}
 			.order-info-box {
