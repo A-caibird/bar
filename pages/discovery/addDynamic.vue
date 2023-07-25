@@ -106,8 +106,7 @@
 		},
 	
 		onLoad: function() {
-			this.load()
-			//uni.$on('updataLocation', this.handelUpdataLocation)
+			uni.$on('updataLocation', this.handelUpdataLocation)
 		},
 		onUnload: function() {
 			uni.$off('updataLocation', this.handelUpdataLocation)
@@ -213,9 +212,6 @@
 						this.getLocation()
 					}
 				})
-			},
-			async load(){
-				this.hasLocation = await this.getLocation()
 			},
 			handleLocation(res){
 				if(this.locInfo.areaName!='') return  
