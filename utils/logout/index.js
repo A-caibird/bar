@@ -19,7 +19,7 @@ const logout = function (out = true) {
 	app.globalData.passwordInputTimes = 0;
 	app.globalData.authorized = false;
 	app.globalData.userInfo = {}
-	app.globalData.location = {cityName: '宁波',lng: 121.557239,lat: 29.809815}
+	app.globalData.location = {cityName: '宁波市',lng: 121.557239,lat: 29.809815}
 	app.globalData.payPassword = ''
 	uni.navigateTo({
 		// url: '/pages/login/login?register=1'
