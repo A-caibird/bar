@@ -68,18 +68,26 @@
 							<image src="/static/imgs/common/right.png"></image>
 						</view>
 					</view>
+					
 					<view class="club_list">
-						<block v-if="hasLocation">
-							<block v-for="(info, index) in pageList" :key="index">
-								<club :info="info"></club>
-								<block v-if="index != pageList.length - 1">
-									<u-gap :height="20" bgColor="#16192B"></u-gap>
+						<block v-if="pageLoading">
+							<view class="loading_page" :class="{'hide': !pageLoading}">
+								<image src="/static/imgs/common/home-loading.gif"></image>
+							</view>
+						</block>
+						<block v-else>
+							<block v-if="hasLocation">
+								<block v-for="(info, index) in pageList" :key="index">
+									<club :info="info"></club>
+									<block v-if="index != pageList.length - 1">
+										<u-gap :height="20" bgColor="#16192B"></u-gap>
+									</block>
 								</block>
 							</block>
-						</block>
-
-						<block v-else>
-							<location-btn></location-btn>
+							
+							<block v-else>
+								<location-btn></location-btn>
+							</block>
 						</block>
 					</view>
 				</view>
@@ -106,6 +114,7 @@
 		data() {
 			return {
 				refreshBool: false,
+				pageLoading: false,
 				playUrl: '',
 				bannerList: [],
 				videoImgFooter: '?x-oss-process=video/snapshot,t_0,f_jpg,w_0,h_0,m_fast',
@@ -164,9 +173,9 @@
 						return
 					};
 					timeoutEvent = setTimeout(() => {
-						this.pullRefresh(() => {
+						this.load(() => {
 							this.refreshBool = false;
-						});
+						})
 					}, 2000)
 				}
 
@@ -210,7 +219,7 @@
 					this.params.lng = lng;
 					this.params.lat = lat;
 					this.params.cityName = cityName;
-					this.pullRefresh();
+					this.load();
 				})
 			},
 
@@ -233,11 +242,12 @@
 				}
 
 			},
-			load() {
+			load(callback) {
 				console.log("载入load方法")
 				this.getHomeBannerList()
 				this.getClubList()
 				console.log(this.cityName);
+				callback && callback();
 			},
 			scrollToClubList() {
 				this.scrollBottom = ''
@@ -266,9 +276,8 @@
 			
 			// 获取酒吧列表
 			async getClubList() {
+				this.pageLoading = true;
 				let params;
-				
-				this.loading = true;
 				
 				if(getApp().globalData.isCurrentLocation) {
 					await new Promise((resolve) => {
@@ -297,7 +306,7 @@
 						}
 						this.totalPages = data.totalPage;
 						this.$nextTick(() => {
-							this.loading = false;
+							this.pageLoading = false;
 						})
 					}
 				})
@@ -435,10 +444,28 @@
 						}
 					}
 				}
-
+				
 				.club_list {
+					height: 100%;
+					position: relative;
 					padding: 0 32rpx;
 					background-color: #16192B;
+					.loading_page {
+						position: absolute;
+						top: 0;
+						left: 50%;
+						transform: translate(-50%);
+						transition: all 0.3s;
+						&>image {
+							height: 60rpx;
+							width: 60rpx;
+						}
+						
+						&.hide {
+							opacity: 0;
+						}
+					}
+					
 				}
 			}
 
