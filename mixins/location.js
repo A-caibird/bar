@@ -85,13 +85,22 @@ let location = ({
 							
 							// 调用高德地图api 反向地理编码
 							plus.maps.Map.reverseGeocode(point,{},(event) => {
+								let city;
 								let address = event.address; // 转换后的地理位置
 								let point = event.coord; // 转换后的坐标信息
 								let coordType = event.coordType; // 转换后的坐标系类型
 								const reg = /.+?(省|市|自治区|自治州|县|区)/g;
 								let addressList = address.match(reg).toString().split(",");
 							    //注意 因为存在直辖市， 当所在地区为普通省市时，addressList.length == 3，city = addressList[1];当所在地区为直辖市时addressList.length == 2，city = addressList[0];
-								let city = addressList.length == 4 ? addressList[1] : addressList[0];
+								let provinceIndex = addressList.findIndex(el => el.includes("省"));
+								
+								// 判断是否有省，如果有省则取省后面的元素，反之直辖市取第一个元素
+								if(provinceIndex != -1) {
+									city = addressList[provinceIndex + 1];
+								} else {
+									city = addressList[0];
+								}
+								
 								console.log("addressList", addressList);
 								getApp({allowDefault: true}).globalData.location = {
 									lng: longitude,
