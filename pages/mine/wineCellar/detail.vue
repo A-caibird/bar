@@ -7,8 +7,12 @@
 			</u-navbar>
 		</view>
 		<view class="tag-select">
-			<view class="tag" :class="{ 'active': currentIndex === 0 }" @tap="tapSelect(0)">可使用({{}})</view>
-			<view class="tag" :class="{ 'active': currentIndex === 1 }" @tap="tapSelect(1)">已经过期({{}})</view>
+			<view class="tag" @tap="tapSelect(0)">
+				<view :class="{ 'active': currentIndex === 0 }" >可使用({{}})</view>
+			</view>
+			<view class="tag" @tap="tapSelect(1)">
+				<view :class="{ 'active': currentIndex === 1 }" >已经过期({{}})</view>
+			</view>
 		</view>
 		<template v-if="currentIndex === 0">
 			<view class="detail-area">
@@ -27,12 +31,12 @@
 								{{}}酒
 							</text>
 							<text>
-								{{ }}瓶
+								{{}}瓶
 							</text>
 						</view>
 						<view class="time">
 							<text>到期时间:</text>
-							<text>{{ }}</text>
+							<text>{{}}</text>
 						</view>
 					</view>
 					<view class="button">
@@ -72,47 +76,45 @@ export default {
 	padding: 0 40rpx;
 
 	.tag-select {
-		margin: 40rpx auto; //上下边距
 		display: flex;
-		flex-direction: row;
-		position: relative;
-		left: 13%;
-		gap: 200rpx;
-
 		.tag {
-
-			// transition: ;
-			color: #979797;
-
-			&.active {
+			flex: 1;
+			display: flex;
+			justify-content: center;
+			padding: 22rpx 0 24rpx;
+			view {
+				color: #979797;
+				font-size: 30rpx;
 				position: relative;
-				color: #FFF;
-
-				&::before {
-					content: "";
-					position: absolute;
-					top: 0;
-					left: 0;
-					width: 100rpx;
-					height: 100rpx;
-					background: #832DFF; // 模糊字体背景颜色
-					transform: translateZ(0);
-					filter: blur(10rpx);
-					border-radius: 50%;
-					z-index: -1;
-				}
-
-				&::after {
-					content: "";
-					position: absolute;
-					top: 50rpx;
-					left: 24%;
-					width: 40rpx;
-					height: 4rpx;
-					background: #FFFFFF;
-					border-radius: 3rpx;
-					opacity: 0.2;
-					transform: translateZ(0);
+				&.active {
+					color: #FFF;
+					z-index: 1;
+					&::after {
+						content: "";
+						position: absolute;
+						top: 0;
+						left: 0;
+						bottom: 0;
+						right: 0;
+						background: #832DFF; // 模糊字体背景颜色
+						transform: translateZ(0);
+						z-index: -1;
+						filter: blur(10rpx);
+						border-radius: 100%;
+					}
+								
+					&::before {
+						content: "";
+						position: absolute;
+						top: 50rpx;
+						left: 50%;
+						width: 40rpx;
+						height: 4rpx;
+						background: #FFFFFF;
+						border-radius: 3rpx;
+						opacity: 0.2;
+						transform: translateX(-50%);
+					}
 				}
 			}
 		}
