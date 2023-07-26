@@ -3,8 +3,7 @@
 		:up="upOption" @up="upCallback">
 		<view class="list">
 			<block v-for="(item,index) in pageList" :key="index">
-				<view class="order-info-item"
-					@tap="$u.throttle($u.route(`/pages/mine/wineCellar/detail?title=${item.clubName}`))">
+				<view class="order-info-item" @tap="tapGetDetail(item)">
 					<view class="item-box">
 						<image class="item-img" :src="item.clubCover" mode="aspectFill"></image>
 						<view class="item-bottom">
@@ -75,6 +74,25 @@
 					}
 				})
 				this.$forceUpdate();
+			},
+			tapGetDetail(params) {
+				let {
+					clubCover,
+					clubName,
+					surplusNum,
+					saveWineItemList,
+					expiringSoon,
+					canTake
+				} = params;
+				console.log(params);
+				this.$u.throttle(this.$u.route('/pages/mine/wineCellar/detail', {
+					clubName: clubName,
+					clubCover: clubCover,
+					surplusNum: surplusNum,
+					// saveWineItemList: saveWineItemList,
+					expiringSoon:expiringSoon,
+					canTake:canTake
+				}),500)
 			}
 		}
 	}
@@ -170,22 +188,23 @@
 				display: flex;
 				flex-direction: row;
 				justify-content: flex-end;
-				margin:20rpx 0;
-				gap:20rpx; //按钮的间隔
+				margin: 20rpx 0;
+				gap: 20rpx; //按钮的间隔
+
 				.btn {
 					width: 160rpx;
 					height: 72rpx;
 					// background: linear-gradient(134deg, #B73FFF 0%, #5A1FFF 100%);
-					background:rgba(255,255,255,0.05);
-					border: 1rpx solid rgba(255,255,255,0.5);
+					background: rgba(255, 255, 255, 0.05);
+					border: 1rpx solid rgba(255, 255, 255, 0.5);
 					border-radius: 36rpx;
 					font-size: 30rpx;
 					font-family: PingFangSC-Regular, PingFang SC;
 					font-weight: 400;
 					color: #FFFFFF;
 					line-height: 72rpx;
-					text-align:center;
-					
+					text-align: center;
+
 				}
 			}
 		}
