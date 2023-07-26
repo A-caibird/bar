@@ -93,6 +93,7 @@
 				</view>
 			</scroll-view>
 		</view>
+		<giftAnimation ref="giftAnimation"></giftAnimation>
 	</view>
 </template>
 
@@ -164,6 +165,10 @@
 				if (e.detail.deltaY > 40) {
 					this.refreshBool = true;
 				}
+			},
+			// 显示礼物动画
+			showGiftAnimaion(gifUrl) {
+				this.$refs.giftAnimation.gifUrl = gifUrl;
 			},
 			// 自定义下拉刷新被触发
 			refresherrefresh() {

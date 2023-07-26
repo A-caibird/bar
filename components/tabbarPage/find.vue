@@ -54,7 +54,7 @@
 			@confirm="yaoOrderListConfirm"></u-picker>
 		<u-picker mode="selector" v-model="pingOrderListShow" title="选择订单" :range="pingOrderList" range-key="changeStr"
 			@confirm="pingOrderListConfirm"></u-picker>
-		<giftAnimation ref="giftAnimation"></giftAnimation>
+		<!-- <giftAnimation ref="giftAnimation"></giftAnimation> -->
 	</view>
 </template>
 

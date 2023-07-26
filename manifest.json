@@ -30,7 +30,6 @@
         },
         /* 模块配置 */
         "modules" : {
-            "Push" : {},
             "SQLite" : {},
             "OAuth" : {},
             "Share" : {},
@@ -39,7 +38,8 @@
             "Payment" : {},
             "Statistic" : {},
             "Camera" : {},
-            "Maps" : {}
+            "Maps" : {},
+            "Push" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
@@ -99,7 +99,14 @@
             "sdkConfigs" : {
                 "ad" : {},
                 "push" : {
-                    "unipush" : {}
+                    "unipush" : {
+                        "version" : "2",
+                        "offline" : true,
+                        "hms" : {},
+                        "oppo" : {},
+                        "vivo" : {},
+                        "mi" : {}
+                    }
                 },
                 "oauth" : {
                     "weixin" : {

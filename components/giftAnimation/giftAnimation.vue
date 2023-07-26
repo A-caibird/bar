@@ -1,5 +1,6 @@
 <template>
-	<view class="animation_box">
+	<view class="animation_box" v-if="gifUrl !== ''" @tap="close">
+		<image class="animation_img"  mode="widthFix" :src="gifUrl"></image>
 		<!-- <view class="animation_img" v-if="showImg" @tap="close">
 		    <l-svga :src="gifUrl"></l-svga>
 		</view> -->
@@ -12,7 +13,6 @@
 		data() {
 			return {
 				gifUrl: '',
-				showImg: false,
 			}
 		},
 		methods: {
@@ -36,8 +36,8 @@
 			},
 			close() {
 				// uni.navigateBack()
-				this.clearTimeout()
-				this.showImg = false;
+				this.clearTimeout();
+				this.gifUrl = '';
 			},
 		}
 	}

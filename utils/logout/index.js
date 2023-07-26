@@ -22,7 +22,6 @@ const logout = function (out = true) {
 	app.globalData.location = {cityName: '宁波市',lng: 121.557239,lat: 29.809815}
 	app.globalData.payPassword = ''
 	uni.navigateTo({
-		// url: '/pages/login/login?register=1'
 		url: '/pages/login/login'
 	})
 }

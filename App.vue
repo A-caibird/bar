@@ -4,8 +4,9 @@
 	// import checkLocationPermision from '@/utils/checkLocationPermision.js'
 	import $store from '@/store/index.js'
 	export default {
-		onLaunch: async function(options) {
+		onLaunch: function(options) {
 			console.log('App Launch')
+			
 			init(this)
 			//if($storage.getLoginToken()){
 				// this.requestAPI('/api/user/use', {
