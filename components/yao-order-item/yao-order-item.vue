@@ -15,10 +15,6 @@
 						<view class="item_info_label" style="color: rgba(255,255,255,0.5);">预约时间：</view>
 						<view class="item_info_text">{{info.date}}</view>
 					</view>
-					<view class="item_info" v-if="info.canUseEndTime">
-						<view class="item_info_label" style="color: rgba(255,255,255,0.5);">到期时间：</view>
-						<view class="item_info_text">{{info.canUseEndTime}}</view>
-					</view>
 					<view class="item_info">
 						<view class="item_info_label" style="color: rgba(255,255,255,0.5);">台位位置：</view>
 						<view class="item_info_text">{{info.cardTableName}} 卡台</view>
@@ -231,12 +227,12 @@
 				if (info.isCreator) {
 					this.$u.route('/pages/order/yao-create-detail', {
 						orderId: info.id,
-						// inviteId: info.inviteId,
+						imagePath: this.info.clubCover
 					})
 				} else {
 					this.$u.route('/pages/order/yao-invited-detail', {
 						orderId: info.id,
-						// inviteId: info.inviteId,
+						imagePath: this.info.clubCover
 					})
 				}
 			},
@@ -306,8 +302,9 @@
 							position: relative;
 							top: 4rpx;
 							height: 28rpx;
-
-							// margin-right:
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
 							text {
 								font-size: 20rpx;
 								font-family: PingFangSC-Regular, PingFang SC;
@@ -321,7 +318,9 @@
 
 						.info_name {
 							height: 42rpx;
-
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
 							text {
 								font-size: 30rpx;
 								font-family: PingFangSC-Regular, PingFang SC;
@@ -341,6 +340,9 @@
 							line-height: 44rpx;
 							position: absolute;
 							right: 50rpx;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
 						}
 					}
 
@@ -353,6 +355,9 @@
 						line-height: 40rpx;
 						font-size: 26rpx;
 						color: rgba(255, 255, 255, 0.5);
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
 					}
 				}
 			}

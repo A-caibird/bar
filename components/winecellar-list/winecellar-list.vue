@@ -4,7 +4,7 @@
 		<view class="list">
 			<block v-for="(item,index) in pageList" :key="index">
 				<view class="order-info-item"
-					@tap="$u.throttle($u.route('/pages/mine/wineCellar/detail',{clubId:item.clubId,id:item.id}))">
+					@tap="$u.throttle($u.route(`/pages/mine/wineCellar/detail?title=${item.clubName}`))">
 					<view class="item-box">
 						<image class="item-img" :src="item.clubCover" mode="aspectFill"></image>
 						<view class="item-bottom">
