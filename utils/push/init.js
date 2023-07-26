@@ -47,12 +47,6 @@ function handlePushReceive(msg) {
 				// 显示礼物动画
 				vm.$refs.home.showGiftAnimaion(gifUrl);
 			}
-			// 创建本地消息
-			uni.createPushMessage({
-				content,
-				payload,
-				...option
-			});
 		}
 		
 		// 离线通知不用创建消息
@@ -257,7 +251,6 @@ function handlePushClick(msg) {
 		
 		// 关注通知
 		if(type == 'attention') { 
-			let { userId } =  payload
 			uni.navigateTo({
 				url:'/pages/info/fans'
 			});
@@ -402,7 +395,7 @@ function pageJump(payload){
 		});
 	}
 	
-	if(type=='gift') {
+	if(type == 'gift') {
 		let giftUrl = payload.gifUrl || "";
 		slientHandle(() => {
 			getApp().globalData.msgPath = '/pages/info/gift?url=' + giftUrl;
@@ -417,123 +410,103 @@ function pageJump(payload){
 		});
 	}
 	
-	/*
-	 存酒过期提醒、优惠券过期提醒、订单到店提醒
-	 */
+	// 存酒过期提醒、优惠券过期提醒、订单到店提醒
 	if (type == 'saveWineEnd' || type == 'couponEnd' || type == 'notShop' || type == 'outTime') {
 		console.log(type);
 		slientHandle(() => {
 			getApp().globalData.msgPath = '/pages/info/systemNotification'
 		})
 	}
-	if(type=='attention') { // 关注通知
-		let {userId} =  payload
+	if(type == 'attention') { // 关注通知
 		slientHandle(() => {
 			getApp().globalData.msgPath = '/pages/info/fans';
 		})
 	}
-	if(type=='orderInviteSuccess') {
-		console.log(payload)
-		console.log("同意邀请")
-		let {orderId,inviteOrder} =  payload
+	if(type == 'orderInviteSuccess') {
+		console.log(payload);
+		console.log("同意邀请");
+		let { orderId } = payload;
 		slientHandle(() => {
-			// uni.navigateTo({
-			// 	url:'/pages/order/yao-create-detail'+`?orderId=${orderId}`
-			// })
 			getApp().globalData.msgPath = '/pages/order/yao-create-detail'+`?orderId=${orderId}`;
 		})
 	}
-	if(type=='quitInviteOrder') {
-		console.log(payload)
-		let {orderId} =  payload
-		console.log("退出邀约")
+	if(type == 'quitInviteOrder') {
+		console.log(payload);
+		let {orderId} = payload;
+		console.log("退出邀约");
 		slientHandle(() => {
-			// uni.navigateTo({
-			// 	url:'/pages/order/yao-create-detail'+`?orderId=${orderId}`
-			// })
 			getApp().globalData.msgPath = '/pages/order/yao-create-detail'+`?orderId=${orderId}`;
 		})
 	}
-	if(type=='quitJoinOrder') {
-		console.log(payload)
-		let {orderId} =  payload
-		console.log("退出拼享")
+	if(type == 'quitJoinOrder') {
+		console.log(payload);
+		let {orderId} = payload;
+		console.log("退出拼享");
 		slientHandle(() => {
 			getApp().globalData.msgPath = '/pages/order/ping-create-detail'+`?orderId=${orderId}`;
 		})
 	}
-	if(type=='kickOut') {
-		//无操作
+	
+	if(type == 'kickOut') {
+		// 无操作
 	}
-	if(type=='endOrder') {
-		console.log(payload)
-		let {orderId,inviteOrder} =  payload
-		console.log('结束订单')
+	if(type == 'endOrder') {
+		console.log(payload);
+		let {orderId,inviteOrder} =  payload;
+		console.log('结束订单');
 		if(inviteOrder) {
 			slientHandle(() => {
 				getApp().globalData.msgPath = '/pages/order/yao-create-detail'+`?orderId=${orderId}`;
-			})
+			});
 		} else {
 			slientHandle(() => {
-				// uni.navigateTo({
-				// 	url:'/pages/order/ping-create-detail'+`?orderId=${orderId}`
-				// })
 				getApp().globalData.msgPath = '/pages/order/ping-create-detail'+`?orderId=${orderId}`;
-			})
+			});
 		}
 
 	}
-	if(type=='comment') {
-		console.log(payload)
-		let {id} =  payload
+	if(type == 'comment') {
+		console.log(payload);
+		let { id } = payload
 		console.log('评论');
 		slientHandle(() => {
-			// uni.navigateTo({
-			// 	url:'/pages/info/comment'+`?mode=jump`+`&commentId=${id}`
-			// })
 			getApp().globalData.msgPath = '/pages/info/comment'+`?mode=jump`+`&commentId=${id}`;
 		})
 	}
-	if(type=='like') {
-		console.log('点赞')
-		let {id} =  payload
+	if(type == 'like') {
+		console.log('点赞');
+		let { id } = payload;
 		slientHandle(() => {
-			// uni.navigateTo({
-			// 	url: `/pages/discovery/dynamic_detail?id=${id}`
-			// })
 			getApp().globalData.msgPath = `/pages/discovery/dynamic_detail?id=${id}`;
 		})
 	}
-	if(type=='pushDynamic'){
+	if(type == 'pushDynamic'){
 		console.log('关注动态');
 		slientHandle(() => {
 			let pages = getCurrentPages();
 			let page = pages[pages.length - 1];
-			let route = '/'+page.route
-			let vm = page.$vm
+			let route = '/'+page.route;
+			let vm = page.$vm;
 			console.log(route);
 			if(route=='/pages/index/index') {
 				vm.goAtten();
 			}else{
 				uni.reLaunch({
 					url: '/pages/index/index?goAtten=true'
-				})
+				});
 			}
 		}, 1200)
 	}
 	if(type == 'joinOrder'){
-		let {id} =  payload
+		let { id } = payload;
 		slientHandle(() => {
 			getApp().globalData.msgPath = `pages/order/spellBill?orderId=${id}&type=creater`;
-		})
+		});
 	}
 	if(type == 'customerChat'){
-		console.log('客服click')
+		console.log('客服click');
 		let{senderId, avatar, nickname} = payload;
 		slientHandle(() => {
-			// uni.navigateTo({
-			// 	url: `/pages/customerRoom/index?id=${senderId}&avatar=${avatar}&nickname=${nickname}`
-			// })
 			getApp().globalData.msgPath = `/pages/customerRoom/index?id=${senderId}&avatar=${avatar}&nickname=${nickname}`;
 		})
 	}
@@ -566,8 +539,6 @@ const init = function(){
 		}
 	});
 	// #endif
-
-
 }
 
 module.exports = init;
