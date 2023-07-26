@@ -233,12 +233,12 @@
 				if(info.isCreator) {
 					this.$u.route('/pages/order/ping-create-detail', {
 						orderId: info.id,
-						// joinTogetherId:info.joinTogetherId,
+						imagePath:this.info.clubCover
 					})
 				} else {
 					this.$u.route('/pages/order/ping-invited-detail', {
 						orderId: info.id,
-						// joinTogetherId:info.joinTogetherId,
+						imagePath:this.info.clubCover
 					})
 				}
 				

@@ -227,12 +227,12 @@
 				if (info.isCreator) {
 					this.$u.route('/pages/order/yao-create-detail', {
 						orderId: info.id,
-						imagePath: this.info.clubCover
+						imagePath: info.clubCover
 					})
 				} else {
 					this.$u.route('/pages/order/yao-invited-detail', {
 						orderId: info.id,
-						imagePath: this.info.clubCover
+						imagePath: info.clubCover
 					})
 				}
 			},
