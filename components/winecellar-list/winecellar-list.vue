@@ -90,9 +90,9 @@
 					clubCover: clubCover,
 					surplusNum: surplusNum,
 					// saveWineItemList: saveWineItemList,
-					expiringSoon:expiringSoon,
-					canTake:canTake
-				}),500)
+					expiringSoon: expiringSoon,
+					canTake: canTake
+				}), 500)
 			}
 		}
 	}
@@ -131,18 +131,18 @@
 
 				.item-bottom {
 					position: relative;
-
+					bottom: 10rpx;
 					.order-title {
 						font-size: 16px;
 						font-family: PingFangSC-Medium, PingFang SC;
 						font-weight: 500;
 						color: #FFFFFF;
 						line-height: 22px;
-						position: absolute;
-						top: -50rpx;
+						
 					}
 
 					.box {
+						margin-top:40rpx;
 						.order-wine-num {
 							display: flex;
 							font-size: 14px;
@@ -150,6 +150,9 @@
 							font-family: PingFangSC-Regular, PingFang SC;
 							font-weight: 400;
 							color: rgba(255, 255, 255, 0.5);
+							white-space: nowrap;
+							overflow: hidden;
+							text-overflow: ellipsis;
 
 							&>.title {
 								width: 130rpx;
@@ -166,8 +169,9 @@
 							font-weight: 400;
 							color: rgba(255, 255, 255, 0.5);
 							line-height: 20px;
-							margin-top: 10rpx;
-
+							white-space: nowrap;
+							overflow: hidden;
+							text-overflow: ellipsis;
 							&>text {
 								margin-left: 20rpx;
 							}
